@@ -1,20 +1,28 @@
 import theme from '@/config/theme';
 import { Link } from '@mui/material';
 
-export type LogoVariant = 'default' | 'light' | 'light-text';
+export enum LogoVariant {
+  Default = 'default',
+  Light = 'light',
+  LightText = 'light-text',
+}
 
 interface LogoProps {
   variant?: LogoVariant;
 }
 
-const Logo = ({ variant = 'default' }: LogoProps) => {
+const Logo = ({ variant = LogoVariant.Default }: LogoProps) => {
   const { palette } = theme;
   const leftPartColor =
-    variant === 'default' || 'light-text'
+    variant === LogoVariant.Default || variant === LogoVariant.LightText
       ? palette.primary.light
       : palette.common.white;
+
   const rightPartColor =
-    variant === 'default' ? palette.common.black : palette.common.white;
+    variant === LogoVariant.Default
+      ? palette.common.black
+      : palette.common.white;
+
   return (
     <Link href="/">
       <svg
