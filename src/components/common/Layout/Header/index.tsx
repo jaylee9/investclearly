@@ -61,7 +61,7 @@ const Header = ({
   };
   return (
     <header style={classes.root}>
-      {content && content}
+      {!!content && content}
       <Box sx={classes.leftSideWrapper}>
         <Logo variant={logoVariant} />
         {isSearch && (
