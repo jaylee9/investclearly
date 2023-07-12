@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import { useGlobalSearchStyles, useHeadBlockStyles } from './styles';
@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 type Deal = {
+  id: number;
   name: string;
   location: string;
   types: string[];
@@ -16,6 +17,7 @@ type Deal = {
 
 const deals: Deal[] = [
   {
+    id: 1,
     name: 'Miami Beach Apartments',
     location: 'Miami, FL',
     types: ['Industrial', 'Deal stage'],
@@ -23,6 +25,7 @@ const deals: Deal[] = [
       'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
   },
   {
+    id: 2,
     name: 'Austin Downtown Condos',
     location: 'Austin, TX',
     types: ['Residential', 'Offer stage'],
@@ -30,6 +33,7 @@ const deals: Deal[] = [
       'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
   },
   {
+    id: 3,
     name: 'Seattle Waterfront Villas',
     location: 'Seattle, WA',
     types: ['Residential', 'Pre-construction'],
@@ -88,8 +92,8 @@ const GlobalSearch = () => {
                 </Link>
               </Box>
               <Box>
-                {deals.map((deal, index) => (
-                  <Box sx={classes.blockListItem} key={index}>
+                {deals.map(deal => (
+                  <Box sx={classes.blockListItem} key={deal.id}>
                     <Image
                       src={deal.image}
                       alt="Deal image"
@@ -113,7 +117,7 @@ const GlobalSearch = () => {
                       </Typography>
                       <Box sx={classes.dealTypes}>
                         {deal.types.map((type, index) => (
-                          <>
+                          <React.Fragment key={type}>
                             <Typography
                               variant="caption"
                               sx={classes.blockListItemDefaultText}
@@ -123,7 +127,7 @@ const GlobalSearch = () => {
                             {index !== deal.types.length - 1 && (
                               <Box className="round-divider" />
                             )}
-                          </>
+                          </React.Fragment>
                         ))}
                       </Box>
                     </Box>
@@ -143,8 +147,8 @@ const GlobalSearch = () => {
                 </Link>
               </Box>
               <Box>
-                {deals.map((deal, index) => (
-                  <Box sx={classes.blockListItem} key={index}>
+                {deals.map(deal => (
+                  <Box sx={classes.blockListItem} key={deal.id}>
                     <Image
                       src={deal.image}
                       alt="Deal image"
@@ -168,7 +172,7 @@ const GlobalSearch = () => {
                       </Typography>
                       <Box sx={classes.dealTypes}>
                         {deal.types.map((type, index) => (
-                          <>
+                          <React.Fragment key={type}>
                             <Typography
                               variant="caption"
                               sx={classes.blockListItemDefaultText}
@@ -178,7 +182,7 @@ const GlobalSearch = () => {
                             {index !== deal.types.length - 1 && (
                               <Box className="round-divider" />
                             )}
-                          </>
+                          </React.Fragment>
                         ))}
                       </Box>
                     </Box>

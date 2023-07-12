@@ -3,33 +3,33 @@ import Link from 'next/link';
 import { blueTitleStyles, useDealsBlockStyles } from './styles';
 
 const AssetClasses = [
-  { name: 'Build-to-Rent', href: '#' },
-  { name: 'Co-Living', href: '#' },
-  { name: 'Data Center', href: '#' },
-  { name: 'Flex R&D', href: '#' },
-  { name: 'Flex/Office', href: '#' },
-  { name: 'Hospitality', href: '#' },
-  { name: 'Industrial', href: '#' },
-  { name: 'Land Manufactured Housing', href: '#' },
-  { name: 'Medical Office', href: '#' },
-  { name: 'Mixed Use', href: '#' },
-  { name: 'Multi-Asset', href: '#' },
-  { name: 'Multifamily', href: '#' },
-  { name: 'Office', href: '#' },
-  { name: 'Parking Garage', href: '#' },
-  { name: 'Retail', href: '#' },
-  { name: 'Senior Housing', href: '#' },
-  { name: 'Single Family', href: '#' },
-  { name: 'Specialty', href: '#' },
-  { name: 'Storage', href: '#' },
+  { id: 1, name: 'Build-to-Rent', href: '#' },
+  { id: 2, name: 'Co-Living', href: '#' },
+  { id: 3, name: 'Data Center', href: '#' },
+  { id: 4, name: 'Flex R&D', href: '#' },
+  { id: 5, name: 'Flex/Office', href: '#' },
+  { id: 6, name: 'Hospitality', href: '#' },
+  { id: 7, name: 'Industrial', href: '#' },
+  { id: 8, name: 'Land Manufactured Housing', href: '#' },
+  { id: 9, name: 'Medical Office', href: '#' },
+  { id: 10, name: 'Mixed Use', href: '#' },
+  { id: 11, name: 'Multi-Asset', href: '#' },
+  { id: 12, name: 'Multifamily', href: '#' },
+  { id: 13, name: 'Office', href: '#' },
+  { id: 14, name: 'Parking Garage', href: '#' },
+  { id: 15, name: 'Retail', href: '#' },
+  { id: 16, name: 'Senior Housing', href: '#' },
+  { id: 17, name: 'Single Family', href: '#' },
+  { id: 18, name: 'Specialty', href: '#' },
+  { id: 19, name: 'Storage', href: '#' },
 ];
 
 const Regions = [
-  { name: 'Midwest', href: '#' },
-  { name: 'Northwest', href: '#' },
-  { name: 'Northeast', href: '#' },
-  { name: 'Southeast', href: '#' },
-  { name: 'Southwest', href: '#' },
+  { id: 1, name: 'Midwest', href: '#' },
+  { id: 2, name: 'Northwest', href: '#' },
+  { id: 3, name: 'Northeast', href: '#' },
+  { id: 4, name: 'Southeast', href: '#' },
+  { id: 5, name: 'Southwest', href: '#' },
 ];
 
 const DealsBlock = () => {
@@ -48,8 +48,8 @@ const DealsBlock = () => {
             Asset Class
           </Typography>
           <Box sx={classes.list}>
-            {AssetClasses.map((asset, index) => (
-              <Link href={asset.href} key={index}>
+            {AssetClasses.map(asset => (
+              <Link href={asset.href} key={asset.id}>
                 <Typography variant="body1">
                   {asset.name}
                   <i className="icon-Caret-right"></i>
@@ -63,8 +63,8 @@ const DealsBlock = () => {
             Region
           </Typography>
           <Box sx={classes.list}>
-            {Regions.map((region, index) => (
-              <Link href={region.href} key={index}>
+            {Regions.map(region => (
+              <Link href={region.href} key={region.id}>
                 <Typography variant="body1">
                   {region.name}
                   <i className="icon-Caret-right"></i>
