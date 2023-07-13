@@ -44,8 +44,8 @@ export const useEntryLayoutStyles = () => {
       width: '65%',
       display: 'flex',
       flexdirection: 'column',
-      alignItems: 'center',
       justifyContent: 'center',
+      paddingTop: '135px',
     },
   };
 };

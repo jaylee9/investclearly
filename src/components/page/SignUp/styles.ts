@@ -40,3 +40,24 @@ export const useSignUpFormStyles = () => {
     },
   };
 };
+
+export const useConfirmEmailStyles = () => {
+  return {
+    root: {},
+    infoText: {
+      color: theme.palette.text.secondary,
+      marginBottom: '40px',
+      textAlign: 'center',
+      '& span': {
+        fontWeight: 600,
+      },
+    },
+    verificationInputWrapper: {
+      marginBottom: '32px',
+    },
+    sendAgainText: {
+      cursor: 'pointer',
+      color: theme.palette.primary.light,
+    },
+  };
+};

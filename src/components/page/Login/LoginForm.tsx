@@ -72,10 +72,10 @@ const LoginForm = () => {
         <Input
           variant="outlined"
           placeholder="Password"
-          type="password"
           register={register('password')}
           isClear={false}
           errorText={errors.password?.message}
+          isPassword
         />
         <Link href="/forgot-password">
           <Typography variant="body1" sx={classes.forgotPasswordLink}>

@@ -1,5 +1,5 @@
 import theme from '@/config/theme';
-import { TextField, Fade, InputAdornment } from '@mui/material';
+import { TextField, Fade, InputAdornment, Box } from '@mui/material';
 import { TextFieldProps, SxProps } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import { ReactNode, useState } from 'react';
@@ -12,6 +12,7 @@ interface InputProps extends Omit<TextFieldProps, 'variant'> {
   error?: boolean;
   isSearch?: boolean;
   isClear?: boolean;
+  isPassword?: boolean;
   customStyles?: SxProps<Theme>;
   height?: 'base' | 'large';
   endComponent?: ReactNode;
@@ -32,9 +33,14 @@ const Input = ({
   onChange,
   onClear,
   error,
+  isPassword = false,
   ...props
 }: InputProps) => {
   const [value, setValue] = useState('');
+  const [showPassword, setShowPassword] = useState(!isPassword);
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   const { palette, typography } = theme;
   const styles = {
     filled: {
@@ -73,8 +79,10 @@ const Input = ({
       onClear();
     }
   };
+  console.log(showPassword);
   return (
     <TextField
+      type={showPassword ? 'text' : 'password'}
       value={value}
       onChange={e => {
         setValue(e.target.value);
@@ -135,6 +143,17 @@ const Input = ({
                   ></i>
                 </InputAdornment>
               </Fade>
+            )}
+            {isPassword && (
+              <InputAdornment position="end">
+                <i
+                  onClick={handleShowPassword}
+                  className={
+                    !showPassword ? 'icon-Eye-opened' : 'icon-Eye-closed'
+                  }
+                  style={{ cursor: 'pointer', fontSize: 24 }}
+                ></i>
+              </InputAdornment>
             )}
             <InputAdornment position="end">{endComponent}</InputAdornment>
           </>

@@ -6,17 +6,19 @@ import { ReactNode } from 'react';
 interface CustomCheckboxProps extends CheckboxProps {
   label?: string | ReactNode;
   customStyles?: SxProps<Theme>;
+  error?: Boolean;
 }
 
 const CustomCheckbox = ({
   label,
   customStyles,
+  error,
   ...props
 }: CustomCheckboxProps) => {
   const checkboxStyles = {
     padding: 0,
     marginRight: '12px',
-    color: theme.palette.text.disabled,
+    color: error ? theme.palette.error.light : theme.palette.text.disabled,
     '&:hover': {
       color: theme.palette.secondary.dark,
     },

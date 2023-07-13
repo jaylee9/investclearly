@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { useSignUpFormStyles } from './styles';
 import Button from '@/components/common/Button';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import Input from '@/components/common/Input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -20,6 +20,9 @@ const validationSchema = z
     repeat_password: z
       .string()
       .min(8, { message: 'Password must be at least 8 characters long' }),
+    terms: z
+      .boolean()
+      .refine(value => value === true, 'You must agree to the terms'),
   })
   .refine(data => data.password === data.repeat_password, {
     message: 'Passwords must match',
@@ -28,18 +31,24 @@ const validationSchema = z
 
 type ValidationSchema = z.infer<typeof validationSchema>;
 
-const SignUpForm = () => {
+interface SignUpFormProps {
+  setEmail: (value: string) => void;
+}
+
+const SignUpForm = ({ setEmail }: SignUpFormProps) => {
   const classes = useSignUpFormStyles();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
   });
 
   const onSubmit = (data: ValidationSchema) => {
     console.log(data);
+    setEmail(data.email);
   };
   const handleGoogleSignUp = () => {
     signIn('google');
@@ -98,28 +107,40 @@ const SignUpForm = () => {
         <Input
           variant="outlined"
           placeholder="Password"
-          type="password"
           register={register('password')}
           isClear={false}
           errorText={errors.password?.message}
+          isPassword
         />
         <Input
           variant="outlined"
           placeholder="Repeat password"
-          type="password"
           register={register('repeat_password')}
           isClear={false}
           errorText={errors.repeat_password?.message}
+          isPassword
         />
-        <CustomCheckbox
-          label={
-            <Typography variant="body1">
-              I agree to Invest Clearly{' '}
-              <Link href="/terms_of_service">Terms of Service</Link>
-            </Typography>
-          }
-          customStyles={{ marginBottom: '32px' }}
+        <Controller
+          name="terms"
+          control={control}
+          defaultValue={false}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <CustomCheckbox
+              label={
+                <Typography variant="body1">
+                  I agree to Invest Clearly{' '}
+                  <Link href="/terms_of_service">Terms of Service</Link>
+                </Typography>
+              }
+              customStyles={{ marginBottom: '32px' }}
+              checked={field.value}
+              onChange={e => field.onChange(e.target.checked)}
+              error={!!errors.terms?.message}
+            />
+          )}
         />
+
         <Button type="submit" customStyles={{ marginBottom: '16px' }}>
           Create an account
         </Button>
