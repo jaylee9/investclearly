@@ -43,7 +43,7 @@ const ResetPassword = () => {
   return (
     <Layout variant={LayoutVariant.Entry}>
       <Box sx={classes.root}>
-        {!isChanged ? (
+        {isChanged ? (
           <>
             <Typography
               variant="h2"
