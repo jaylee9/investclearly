@@ -1,4 +1,5 @@
-import NextAuth from 'next-auth';
+import NextAuth, { Session } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 import GoogleProvider from 'next-auth/providers/google';
 
 if (!process.env.GOOGLE_ID || !process.env.GOOGLE_SECRET) {
@@ -14,7 +15,15 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_SECRET,
     }),
   ],
-  pages: {
-    signIn: '/auth/signin',
+  session: {
+    strategy: 'jwt',
+  },
+  callbacks: {
+    async jwt({ token, account }) {
+      if (account) {
+        token.accessToken = account.access_token;
+      }
+      return token;
+    },
   },
 });

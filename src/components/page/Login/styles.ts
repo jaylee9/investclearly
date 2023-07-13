@@ -1,6 +1,6 @@
 import theme from '@/config/theme';
 
-export const useSignUpFormStyles = () => {
+export const useLoginFormStyles = () => {
   return {
     root: {
       width: '420px',
@@ -30,13 +30,9 @@ export const useSignUpFormStyles = () => {
         background: theme.palette.background.paper,
       },
     },
-    nameWrapper: {
-      display: 'flex',
-      width: '100%',
-      gap: '12px',
-      '& .MuiFormControl-root': {
-        width: '50%',
-      },
+    forgotPasswordLink: {
+      fontWeight: 600,
+      marginBottom: '32px',
     },
   };
 };
