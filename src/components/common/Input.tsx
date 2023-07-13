@@ -3,16 +3,20 @@ import { TextField, Fade, InputAdornment } from '@mui/material';
 import { TextFieldProps, SxProps } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import { ReactNode, useState } from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
   variant?: 'filled' | 'outlined';
   isFilledWhite?: boolean;
   errorText?: string;
+  error?: boolean;
   isSearch?: boolean;
   isClear?: boolean;
   customStyles?: SxProps<Theme>;
   height?: 'base' | 'large';
   endComponent?: ReactNode;
+  register?: UseFormRegisterReturn;
+  onClear?: () => void;
 }
 
 const Input = ({
@@ -24,6 +28,10 @@ const Input = ({
   customStyles,
   height = 'base',
   endComponent,
+  register,
+  onChange,
+  onClear,
+  error,
   ...props
 }: InputProps) => {
   const [value, setValue] = useState('');
@@ -47,26 +55,46 @@ const Input = ({
       '& .MuiOutlinedInput-root': {
         borderRadius: '12px',
         border: `1px solid ${
-          errorText ? palette.error.light : palette.background.default
-        } ${errorText ? '!important' : ''}`,
+          errorText || error ? palette.error.light : palette.background.default
+        } ${errorText || error ? '!important' : ''}`,
         transition: 'border 0.3s ease-in-out',
+        '& input:-webkit-autofill, & input:-webkit-autofill:hover, & input:-webkit-autofill:focus, & input:-webkit-autofill:active':
+          {
+            padding: '0px',
+            borderRadius: 0,
+            marginLeft: '15px',
+          },
       },
     },
   };
   const handleClear = () => {
     setValue('');
+    if (onClear) {
+      onClear();
+    }
   };
   return (
     <TextField
       value={value}
-      onChange={e => setValue(e.target.value)}
+      onChange={e => {
+        setValue(e.target.value);
+        if (register) {
+          register.onChange(e);
+        }
+        if (onChange) {
+          onChange(e);
+        }
+      }}
       helperText={errorText}
       sx={{
         ...styles[variant],
         ...customStyles,
+        position: 'relative',
         '& .MuiInputBase-root': {
           height: height === 'base' ? '44px' : '56px',
           fontSize: typography.body1,
+          border:
+            variant === 'outlined' ? `1px solid ${palette.secondary.dark}` : '',
         },
         '& fieldset': {
           border: 'none',
@@ -80,8 +108,9 @@ const Input = ({
         },
         '& .MuiFormHelperText-root': {
           color: palette.error.light,
-          background: palette.common.white,
           fontSize: typography.caption,
+          position: 'absolute',
+          bottom: '-20px',
         },
       }}
       InputProps={{
@@ -112,6 +141,13 @@ const Input = ({
         ),
       }}
       {...props}
+      {...(register
+        ? {
+            name: register.name,
+            ref: register.ref,
+            onBlur: register.onBlur,
+          }
+        : {})}
     />
   );
 };
