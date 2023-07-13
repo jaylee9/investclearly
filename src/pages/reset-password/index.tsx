@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import Link from 'next/link';
+import { useState } from 'react';
 
 const validationSchema = z
   .object({
@@ -25,6 +26,7 @@ const validationSchema = z
 type ValidationSchema = z.infer<typeof validationSchema>;
 
 const ResetPassword = () => {
+  const [isChanged, setIsChanged] = useState(false);
   const classes = useResetPasswordStyles();
   const {
     register,
@@ -36,39 +38,58 @@ const ResetPassword = () => {
 
   const onSubmit = (data: ValidationSchema) => {
     console.log(data);
+    setIsChanged(true);
   };
   return (
     <Layout variant={LayoutVariant.Entry}>
       <Box sx={classes.root}>
-        <Typography variant="h2" fontWeight={600} marginBottom="8px">
-          Change password
-        </Typography>
-        <Typography variant="body1" sx={classes.infoText}>
-          Enter an email associated with your account
-        </Typography>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Box sx={classes.formWrapper}>
-            <Input
-              variant="outlined"
-              topLabel="New password"
-              register={register('new_password')}
-              showClearOption={false}
-              isPassword
-              customStyles={{ marginBottom: '20px' }}
-            />
-            <Input
-              variant="outlined"
-              topLabel="Repeat password"
-              register={register('repeat_password')}
-              showClearOption={false}
-              isPassword
-              customStyles={{ marginBottom: '32px' }}
-            />
-            <Button type="submit" disabled={!isValid}>
-              Save password
-            </Button>
-          </Box>
-        </form>
+        {!isChanged ? (
+          <>
+            <Typography
+              variant="h2"
+              fontWeight={600}
+              marginBottom="8px"
+              maxWidth="420px"
+            >
+              Password changed successfully!
+            </Typography>
+            <Typography variant="body1" sx={classes.infoText}>
+              You can now log in with your new password
+            </Typography>
+            <Link href="/login">
+              <Button customStyles={{ width: '100%' }}>Log in</Button>
+            </Link>
+          </>
+        ) : (
+          <>
+            <Typography variant="h2" fontWeight={600} marginBottom="40px">
+              Change password
+            </Typography>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Box sx={classes.formWrapper}>
+                <Input
+                  variant="outlined"
+                  topLabel="New password"
+                  register={register('new_password')}
+                  showClearOption={false}
+                  isPassword
+                  customStyles={{ marginBottom: '20px' }}
+                />
+                <Input
+                  variant="outlined"
+                  topLabel="Repeat password"
+                  register={register('repeat_password')}
+                  showClearOption={false}
+                  isPassword
+                  customStyles={{ marginBottom: '32px' }}
+                />
+                <Button type="submit" disabled={!isValid}>
+                  Save password
+                </Button>
+              </Box>
+            </form>
+          </>
+        )}
       </Box>
     </Layout>
   );
