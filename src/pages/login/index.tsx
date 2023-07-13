@@ -5,9 +5,7 @@ import LoginForm from '@/components/page/Login/LoginForm';
 const SignUp = () => {
   return (
     <Layout variant={LayoutVariant.Entry}>
-      <Box sx={classes.root}>
-        <LoginForm />
-      </Box>
+      <LoginForm />
     </Layout>
   );
 };
