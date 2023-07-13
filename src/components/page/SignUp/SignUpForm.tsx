@@ -86,14 +86,14 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
             variant="outlined"
             placeholder="First Name"
             register={register('first_name')}
-            isClear={false}
+            showClearOption={false}
             errorText={errors.first_name?.message}
           />
           <Input
             variant="outlined"
             placeholder="Last Name"
             register={register('last_name')}
-            isClear={false}
+            showClearOption={false}
             errorText={errors.last_name?.message}
           />
         </Box>
@@ -101,14 +101,14 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
           variant="outlined"
           placeholder="Email"
           register={register('email')}
-          isClear={false}
+          showClearOption={false}
           errorText={errors.email?.message}
         />
         <Input
           variant="outlined"
           placeholder="Password"
           register={register('password')}
-          isClear={false}
+          showClearOption={false}
           errorText={errors.password?.message}
           isPassword
         />
@@ -116,7 +116,7 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
           variant="outlined"
           placeholder="Repeat password"
           register={register('repeat_password')}
-          isClear={false}
+          showClearOption={false}
           errorText={errors.repeat_password?.message}
           isPassword
         />

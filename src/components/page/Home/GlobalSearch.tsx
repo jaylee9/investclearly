@@ -67,7 +67,7 @@ const GlobalSearch = () => {
         variant="filled"
         isFilledWhite
         isSearch
-        isClear={false}
+        showClearOption={false}
         placeholder="Deals, Sponsors, and Asset Class"
         customStyles={classes.searchInput}
         height="large"

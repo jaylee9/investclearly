@@ -2,7 +2,7 @@ import theme from '@/config/theme';
 import { TextField, Fade, InputAdornment, Box } from '@mui/material';
 import { TextFieldProps, SxProps } from '@mui/material';
 import { Theme } from '@mui/material/styles';
-import { ReactNode, useState } from 'react';
+import { ChangeEvent, ReactNode, useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
@@ -11,7 +11,7 @@ interface InputProps extends Omit<TextFieldProps, 'variant'> {
   errorText?: string;
   error?: boolean;
   isSearch?: boolean;
-  isClear?: boolean;
+  showClearOption?: boolean;
   isPassword?: boolean;
   customStyles?: SxProps<Theme>;
   height?: 'base' | 'large';
@@ -24,7 +24,7 @@ const Input = ({
   variant = 'outlined',
   errorText,
   isSearch,
-  isClear = true,
+  showClearOption = true,
   isFilledWhite = false,
   customStyles,
   height = 'base',
@@ -79,20 +79,22 @@ const Input = ({
       onClear();
     }
   };
-  console.log(showPassword);
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setValue(e.target.value);
+    if (register) {
+      register.onChange(e);
+    }
+    if (onChange) {
+      onChange(e);
+    }
+  };
   return (
     <TextField
       type={showPassword ? 'text' : 'password'}
       value={value}
-      onChange={e => {
-        setValue(e.target.value);
-        if (register) {
-          register.onChange(e);
-        }
-        if (onChange) {
-          onChange(e);
-        }
-      }}
+      onChange={handleChange}
       helperText={errorText}
       sx={{
         ...styles[variant],
@@ -133,7 +135,7 @@ const Input = ({
         ),
         endAdornment: (
           <>
-            {isClear && (
+            {showClearOption && (
               <Fade in={!!value}>
                 <InputAdornment position="end">
                   <i

@@ -34,8 +34,6 @@ const LoginForm = () => {
   const handleGoogleSignUp = () => {
     signIn('google');
   };
-  const { data: session } = useSession();
-  console.log(session);
   return (
     <Box sx={classes.root}>
       <Typography variant="h2" fontWeight={600} marginBottom="40px">
@@ -66,14 +64,14 @@ const LoginForm = () => {
           variant="outlined"
           placeholder="Email"
           register={register('email')}
-          isClear={false}
+          showClearOption={false}
           errorText={errors.email?.message}
         />
         <Input
           variant="outlined"
           placeholder="Password"
           register={register('password')}
-          isClear={false}
+          showClearOption={false}
           errorText={errors.password?.message}
           isPassword
         />
