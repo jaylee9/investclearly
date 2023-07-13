@@ -5,7 +5,7 @@ import { User } from '../../entities/user.entity';
 import { getUserById } from "../users/get-user-by-id";
 import { createToken } from "./create-token";
 
-export const verifyAccount = async (confirmationCode) => {
+export const verifyAccount = async (confirmationCode: string) => {
   const connection = await getDatabaseConnection();
   const user = await getUserByField(AuthConstants.emailConfirmationCodeField, confirmationCode);
 
@@ -15,7 +15,5 @@ export const verifyAccount = async (confirmationCode) => {
     const { expiresIn, accessToken } = await createToken(updatedUser);
 
     return { accessToken, expiresIn, updatedUser };
-  } else {
-    return;
   }
 }

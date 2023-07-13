@@ -37,8 +37,6 @@ const signIn = async (
     });
 
     response.status(200).json(userMapper(user));
-  } else {
-    response.status(405).json({ message: 'Method Not Allowed' });
   }
 }
 
