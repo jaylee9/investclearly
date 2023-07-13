@@ -1,5 +1,11 @@
 import theme from '@/config/theme';
-import { TextField, Fade, InputAdornment, Box } from '@mui/material';
+import {
+  TextField,
+  Fade,
+  InputAdornment,
+  Box,
+  Typography,
+} from '@mui/material';
 import { TextFieldProps, SxProps } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import { ChangeEvent, ReactNode, useState } from 'react';
@@ -18,6 +24,7 @@ interface InputProps extends Omit<TextFieldProps, 'variant'> {
   endComponent?: ReactNode;
   register?: UseFormRegisterReturn;
   onClear?: () => void;
+  topLabel?: string;
 }
 
 const Input = ({
@@ -34,6 +41,7 @@ const Input = ({
   onClear,
   error,
   isPassword = false,
+  topLabel,
   ...props
 }: InputProps) => {
   const [value, setValue] = useState('');
@@ -44,7 +52,7 @@ const Input = ({
   const { palette, typography } = theme;
   const styles = {
     filled: {
-      width: '320px',
+      width: '100%',
       borderRadius: '120px',
       '& .MuiOutlinedInput-root': {
         background: isFilledWhite
@@ -56,7 +64,7 @@ const Input = ({
       },
     },
     outlined: {
-      width: '320px',
+      width: '100%',
       borderRadius: '12px',
       '& .MuiOutlinedInput-root': {
         borderRadius: '12px',
@@ -91,85 +99,94 @@ const Input = ({
     }
   };
   return (
-    <TextField
-      type={showPassword ? 'text' : 'password'}
-      value={value}
-      onChange={handleChange}
-      helperText={errorText}
-      sx={{
-        ...styles[variant],
-        ...customStyles,
-        position: 'relative',
-        '& .MuiInputBase-root': {
-          height: height === 'base' ? '44px' : '56px',
-          fontSize: typography.body1,
-          border:
-            variant === 'outlined' ? `1px solid ${palette.secondary.dark}` : '',
-        },
-        '& fieldset': {
-          border: 'none',
-        },
-        '& .MuiOutlinedInput-root:hover': {
-          border: `1px solid ${palette.secondary.dark}`,
-        },
-        '& .MuiOutlinedInput-root.Mui-focused': {
-          border: `1px solid ${palette.primary.light}`,
-          background: palette.common.white,
-        },
-        '& .MuiFormHelperText-root': {
-          color: palette.error.light,
-          fontSize: typography.caption,
-          position: 'absolute',
-          bottom: '-20px',
-        },
-      }}
-      InputProps={{
-        startAdornment: isSearch && (
-          <InputAdornment position="start">
-            <i
-              className="icon-Search"
-              style={{ fontSize: 24 }}
-              onClick={handleClear}
-            ></i>
-          </InputAdornment>
-        ),
-        endAdornment: (
-          <>
-            {showClearOption && (
-              <Fade in={!!value}>
+    <Box textAlign="start">
+      {topLabel && (
+        <Typography variant="caption" fontWeight={600}>
+          {topLabel}
+        </Typography>
+      )}
+      <TextField
+        type={showPassword ? 'text' : 'password'}
+        value={value}
+        onChange={handleChange}
+        helperText={errorText}
+        sx={{
+          ...styles[variant],
+          ...customStyles,
+          position: 'relative',
+          '& .MuiInputBase-root': {
+            height: height === 'base' ? '44px' : '56px',
+            fontSize: typography.body1,
+            border:
+              variant === 'outlined'
+                ? `1px solid ${palette.secondary.dark}`
+                : '',
+          },
+          '& fieldset': {
+            border: 'none',
+          },
+          '& .MuiOutlinedInput-root:hover': {
+            border: `1px solid ${palette.secondary.dark}`,
+          },
+          '& .MuiOutlinedInput-root.Mui-focused': {
+            border: `1px solid ${palette.primary.light}`,
+            background: palette.common.white,
+          },
+          '& .MuiFormHelperText-root': {
+            color: palette.error.light,
+            fontSize: typography.caption,
+            position: 'absolute',
+            bottom: '-20px',
+          },
+        }}
+        InputProps={{
+          startAdornment: isSearch && (
+            <InputAdornment position="start">
+              <i
+                className="icon-Search"
+                style={{ fontSize: 24 }}
+                onClick={handleClear}
+              ></i>
+            </InputAdornment>
+          ),
+          endAdornment: (
+            <>
+              {showClearOption && (
+                <Fade in={!!value}>
+                  <InputAdornment position="end">
+                    <i
+                      className="icon-Cross"
+                      style={{ cursor: 'pointer', fontSize: 24 }}
+                      onClick={handleClear}
+                    ></i>
+                  </InputAdornment>
+                </Fade>
+              )}
+              {isPassword && (
                 <InputAdornment position="end">
                   <i
-                    className="icon-Cross"
+                    onClick={handleShowPassword}
+                    className={
+                      !showPassword ? 'icon-Eye-opened' : 'icon-Eye-closed'
+                    }
                     style={{ cursor: 'pointer', fontSize: 24 }}
-                    onClick={handleClear}
                   ></i>
                 </InputAdornment>
-              </Fade>
-            )}
-            {isPassword && (
-              <InputAdornment position="end">
-                <i
-                  onClick={handleShowPassword}
-                  className={
-                    !showPassword ? 'icon-Eye-opened' : 'icon-Eye-closed'
-                  }
-                  style={{ cursor: 'pointer', fontSize: 24 }}
-                ></i>
-              </InputAdornment>
-            )}
-            <InputAdornment position="end">{endComponent}</InputAdornment>
-          </>
-        ),
-      }}
-      {...props}
-      {...(register
-        ? {
-            name: register.name,
-            ref: register.ref,
-            onBlur: register.onBlur,
-          }
-        : {})}
-    />
+              )}
+              <InputAdornment position="end">{endComponent}</InputAdornment>
+            </>
+          ),
+        }}
+        {...props}
+        {...(register
+          ? {
+              name: register.name,
+              ref: register.ref,
+              onBlur: register.onBlur,
+            }
+          : {})}
+      />
+    </Box>
   );
 };
 
