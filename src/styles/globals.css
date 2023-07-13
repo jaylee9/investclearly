@@ -5,6 +5,7 @@ a {
 
 body {
   margin: 0px;
+  background: white;
 }
 
 .round-divider {
@@ -12,4 +13,25 @@ body {
   height: 4px;
   background-color: #717c89;
   border-radius: 50%;
+}
+
+.vi__container {
+  gap: 4px;
+  width: auto;
+}
+
+.vi__character {
+  border-radius: 12px;
+  border: 1px solid #dbe4f2;
+  background: white;
+  height: 44px;
+  width: 42px !important;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vi__character--selected {
+  outline: none;
 }

@@ -16,6 +16,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@hookform/resolvers": "^3.1.1",
     "@mui/material": "^5.13.6",
     "@sendgrid/mail": "^7.7.0",
     "@types/bcryptjs": "^2.4.2",
@@ -29,9 +30,12 @@
     "lodash": "^4.17.21",
     "next": "13.4.7",
     "pg": "^8.11.1",
+    "next-auth": "^4.22.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.45.1",
     "react-query": "^3.39.3",
+    "react-verification-input": "^3.3.1",
     "ts-node": "^10.9.1",
     "typeorm": "^0.3.17",
     "typeorm-naming-strategies": "^4.1.0",
@@ -39,6 +43,7 @@
     "url-loader": "^4.1.1",
     "usehooks-ts": "^2.9.1",
     "yup": "^1.2.0"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "eslint": "^8.43.0",

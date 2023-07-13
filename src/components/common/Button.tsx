@@ -7,7 +7,7 @@ import {
 import theme from '@/config/theme';
 
 interface IButtonProps extends Omit<MUIButtonProps, 'color' | 'variant'> {
-  variant?: 'main' | 'secondary' | 'tertiary' | 'white';
+  variant?: 'main' | 'secondary' | 'tertiary' | 'white' | 'auth';
   color?: 'primary' | 'error';
   customStyles?: SxProps<Theme>;
 }
@@ -24,12 +24,14 @@ const Button = ({
     secondary: palette.background.default,
     tertiary: 'transparent',
     white: palette.common.white,
+    auth: 'transparent',
   };
   const disabledColor = {
     main: palette.common.white,
     secondary: palette.text.disabled,
     tertiary: palette.text.disabled,
     white: palette.common.white,
+    auth: palette.text.disabled,
   };
   const styles = {
     main: {
@@ -75,6 +77,19 @@ const Button = ({
         color: palette[color].main,
       },
     },
+    auth: {
+      background: 'transparent',
+      color: palette.common.black,
+      border: `1px solid ${palette.secondary.dark}`,
+      '&:hover': {
+        background: 'transparent',
+        border: `1px solid ${palette.background.paper}`,
+      },
+      '&:active': {
+        background: palette.background.default,
+        border: `1px solid ${palette.secondary.dark}`,
+      },
+    },
   };
   return (
     <MUIButton
@@ -86,6 +101,7 @@ const Button = ({
         paddingX: '24px',
         paddingY: '12px',
         borderRadius: '48px',
+        height: '44px',
         textTransform: 'none',
         '&.Mui-disabled': {
           background: disabledBackground[variant],
