@@ -1,17 +1,24 @@
-import { Box, CssBaseline } from '@mui/material';
+import { Box, CssBaseline, Typography } from '@mui/material';
 import Header from './Header';
 import { ReactNode } from 'react';
 import { ThemeProvider } from '@emotion/react';
 import theme from '@/config/theme';
 import Footer from './Footer';
-import getLayoutStyles from './styles';
+import { useDefaultLayoutStyles, useEntryLayoutStyles } from './styles';
 import { HeaderProps } from '@/hooks/useHeaderProps';
+import Logo, { LogoVariant } from '@/assets/components/Logo';
 
+export enum LayoutVariant {
+  Default = 'default',
+  Entry = 'entry',
+}
 interface LayoutProps extends HeaderProps {
   children: ReactNode;
+  variant?: LayoutVariant;
 }
 
 const Layout = ({
+  variant = LayoutVariant.Default,
   children,
   isSearch,
   isLinks,
@@ -23,27 +30,51 @@ const Layout = ({
   type,
   content,
 }: LayoutProps) => {
-  const classes = getLayoutStyles();
+  const defaultStyles = useDefaultLayoutStyles();
+  const entryStyles = useEntryLayoutStyles();
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={classes.root}>
-        <Box>
-          <Header
-            isSearch={isSearch}
-            isLinks={isLinks}
-            isLogo={isLogo}
-            isShadow={isShadow}
-            isSignIn={isSignIn}
-            logoVariant={logoVariant}
-            title={title}
-            type={type}
-            content={content}
-          />
-          {children}
+      {variant === LayoutVariant.Default && (
+        <Box sx={defaultStyles.root}>
+          <Box>
+            <Header
+              isSearch={isSearch}
+              isLinks={isLinks}
+              isLogo={isLogo}
+              isShadow={isShadow}
+              isSignIn={isSignIn}
+              logoVariant={logoVariant}
+              title={title}
+              type={type}
+              content={content}
+            />
+            {children}
+          </Box>
+          <Footer />
         </Box>
-        <Footer />
-      </Box>
+      )}
+      {variant === LayoutVariant.Entry && (
+        <Box sx={entryStyles.root}>
+          <Box sx={entryStyles.leftPartWrapper}>
+            <Box sx={entryStyles.leftPartContent}>
+              <Logo variant={LogoVariant.LightText} />
+              <Box sx={entryStyles.textContent}>
+                <Typography variant="h1">
+                  Invest Clearly.
+                  <br /> Invest Confidently.
+                </Typography>
+                <Typography variant="body1">
+                  Real Estate syndications and funds in one place, paired with
+                  sponsor reviews from investors like you, so that you can
+                  invest with confidence.
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+          <Box sx={entryStyles.rightPartWrapper}>{children}</Box>
+        </Box>
+      )}
     </ThemeProvider>
   );
 };
