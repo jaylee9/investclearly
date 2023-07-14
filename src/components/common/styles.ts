@@ -82,28 +82,30 @@ interface UseCheckboxProps {
 export const useCheckboxStyles = ({ error }: UseCheckboxProps) => {
   return {
     root: {
-      padding: 0,
-      marginRight: '12px',
-      color: error ? theme.palette.error.light : theme.palette.text.disabled,
-      '&:hover': {
-        color: theme.palette.secondary.dark,
-      },
-      '&:active': {
-        color: theme.palette.text.secondary,
-      },
-      '&.Mui-disabled': {
-        color: theme.palette.background.paper,
-      },
-      '&.Mui-checked': {
-        color: theme.palette.primary.light,
+      '&.MuiCheckbox-root': {
+        padding: 0,
+        marginRight: '12px',
+        color: error ? palette.error.light : palette.text.disabled,
         '&:hover': {
-          color: theme.palette.primary.dark,
+          color: palette.secondary.dark,
         },
         '&:active': {
-          color: theme.palette.primary.main,
+          color: palette.text.secondary,
         },
         '&.Mui-disabled': {
-          color: theme.palette.background.paper,
+          color: palette.background.paper,
+        },
+        '&.Mui-checked': {
+          color: palette.primary.light,
+          '&:hover': {
+            color: palette.primary.dark,
+          },
+          '&:active': {
+            color: palette.primary.main,
+          },
+          '&.Mui-disabled': {
+            color: palette.background.paper,
+          },
         },
       },
     },

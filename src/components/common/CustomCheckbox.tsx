@@ -18,7 +18,7 @@ const CustomCheckbox = ({
   const checkboxStyles = useCheckboxStyles({ error });
   return (
     <FormControlLabel
-      control={<Checkbox disableRipple sx={checkboxStyles} {...props} />}
+      control={<Checkbox disableRipple sx={checkboxStyles.root} {...props} />}
       label={label}
       sx={{ margin: 0, ...customStyles }}
     />
