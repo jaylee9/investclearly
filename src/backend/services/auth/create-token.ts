@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
-import { AuthConstants } from '../../constants/auth-constants';
 import * as dotenv from 'dotenv';
 import path from 'path';
+import { AuthConstants } from '../../constants/auth-constants';
 import { UserInterface } from '../users/interfaces/user.interface';
 
 dotenv.config({ path: path.join(__dirname, '../../../../.env') });
