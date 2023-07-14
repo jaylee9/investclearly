@@ -3,7 +3,7 @@ import { generateRandomNumber } from '../../utils/generate-random-6-digit-number
 import { sendConfirmationEmail } from '../mails/send-confirmation-email';
 import { createUser } from '../users/create-user';
 import { SignUpInterface } from './interfaces/sign-up.interface';
-import { divideDigitNumber } from '../../utils/divide-6-digit-number.ts';
+import { divideDigitNumber } from '../../utils/divide-digit-number.ts';
 
 export const register = async (userData: SignUpInterface) => {
   const confirmationCode = generateRandomNumber(

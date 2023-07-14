@@ -4,7 +4,7 @@ import { generateRandomNumber } from '../../utils/generate-random-6-digit-number
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { User } from '../../entities/user.entity';
 import { sendConfirmationEmail } from '../mails/send-confirmation-email';
-import { divideDigitNumber } from '../../utils/divide-6-digit-number.ts';
+import { divideDigitNumber } from '../../utils/divide-digit-number.ts';
 
 export const resendUserVerificationCode = async (email: string) => {
   const connection = await getDatabaseConnection();
