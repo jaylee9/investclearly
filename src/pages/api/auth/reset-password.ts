@@ -5,11 +5,7 @@ import { resetUserPassword } from '../../../backend/services/auth/reset-password
 import { apiHandler } from '../../../backend/utils/api-handler';
 import { ValidationAuthConstants } from '../../../backend/constants/validation/auth-constants';
 import { AuthConstants } from '../../../backend/constants/auth-constants';
-
-interface RequestBody {
-  resetPasswordToken: string;
-  newPassword: string;
-}
+import { ResetPasswordInterface } from '../../../backend/services/auth/interfaces/reset-password.interface';
 
 const resetPasswordSchema = Yup.object().shape({
   resetPasswordToken: Yup.string().required(ValidationAuthConstants.resetPasswordTokenRequired),
@@ -20,7 +16,7 @@ const resetPassword = async (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
-  const body: RequestBody = request.body;
+  const body: ResetPasswordInterface = request.body;
   validateRequest(body, resetPasswordSchema);
 
   await resetUserPassword(body.resetPasswordToken, body.newPassword);
