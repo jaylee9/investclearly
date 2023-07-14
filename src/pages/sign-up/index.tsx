@@ -7,7 +7,7 @@ import ConfirmEmail from '@/components/page/SignUp/ConfirmEmail';
 
 const SignUp = () => {
   const classes = useSignUpStyles();
-  const [email, setEmail] = useState('test@gmail.com');
+  const [email, setEmail] = useState('');
   return (
     <Layout variant={LayoutVariant.Entry}>
       <Box sx={classes.root}>

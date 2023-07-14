@@ -34,9 +34,6 @@ export const useSignUpFormStyles = () => {
       display: 'flex',
       width: '100%',
       gap: '12px',
-      '& .MuiFormControl-root': {
-        width: '50%',
-      },
     },
   };
 };

@@ -5,9 +5,8 @@ import { useForm } from 'react-hook-form';
 import Input from '@/components/common/Input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import CustomCheckbox from '@/components/common/CustomCheckbox';
 import Link from 'next/link';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
 const validationSchema = z.object({
   email: z.string().email({ message: 'Email must be a valid email' }),

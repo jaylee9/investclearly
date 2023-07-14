@@ -1,7 +1,7 @@
-import theme from '@/config/theme';
 import { Checkbox, FormControlLabel, SxProps, Theme } from '@mui/material';
 import { CheckboxProps } from '@mui/material';
 import { ReactNode } from 'react';
+import { useCheckboxStyles } from './styles';
 
 interface CustomCheckboxProps extends CheckboxProps {
   label?: string | ReactNode;
@@ -15,35 +15,10 @@ const CustomCheckbox = ({
   error,
   ...props
 }: CustomCheckboxProps) => {
-  const checkboxStyles = {
-    padding: 0,
-    marginRight: '12px',
-    color: error ? theme.palette.error.light : theme.palette.text.disabled,
-    '&:hover': {
-      color: theme.palette.secondary.dark,
-    },
-    '&:active': {
-      color: theme.palette.text.secondary,
-    },
-    '&.Mui-disabled': {
-      color: theme.palette.background.paper,
-    },
-    '&.Mui-checked': {
-      color: theme.palette.primary.light,
-      '&:hover': {
-        color: theme.palette.primary.dark,
-      },
-      '&:active': {
-        color: theme.palette.primary.main,
-      },
-      '&.Mui-disabled': {
-        color: theme.palette.background.paper,
-      },
-    },
-  };
+  const checkboxStyles = useCheckboxStyles({ error });
   return (
     <FormControlLabel
-      control={<Checkbox disableRipple sx={checkboxStyles} {...props} />}
+      control={<Checkbox disableRipple sx={checkboxStyles.root} {...props} />}
       label={label}
       sx={{ margin: 0, ...customStyles }}
     />
