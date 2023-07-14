@@ -29,7 +29,7 @@ export const resetUserPassword = async (resetPasswordToken: string, newPassword:
   });
 
   if (!user) {
-    return;
+    throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);
   }
 
   if (decodedToken.expireAt <= moment().toISOString()) {
