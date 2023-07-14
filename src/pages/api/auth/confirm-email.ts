@@ -5,10 +5,7 @@ import { validateRequest } from '../../../backend/utils/yup';
 import { verifyAccount } from '../../../backend/services/auth/verify-account';
 import { apiHandler } from '../../../backend/utils/api-handler';
 import { ValidationAuthConstants } from '../../../backend/constants/validation/auth-constants';
-
-interface RequestBody {
-  confirmationCode: string;
-}
+import { ConfirmEmailInterface } from '../../../backend/services/auth/interfaces/confirm-email.interface';
 
 const confirmEmailSchema = Yup.object().shape({
   confirmationCode: Yup.string().required(ValidationAuthConstants.confirmationCodeRequired),
@@ -18,7 +15,7 @@ const confirmEmail = async (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
-  const body: RequestBody = request.body;
+  const body: ConfirmEmailInterface = request.body;
   validateRequest(body, confirmEmailSchema);
 
   const result = await verifyAccount(body.confirmationCode);
