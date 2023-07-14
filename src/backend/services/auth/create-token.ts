@@ -6,7 +6,7 @@ import { UserInterface } from '../users/interfaces/user.interface';
 
 dotenv.config({ path: path.join(__dirname, '../../../../.env') });
 
-export const createToken = async (user: UserInterface) => {
+export const createToken = (user: UserInterface) => {
   const expiresIn = AuthConstants.expiresInDay;
   const accessToken = jwt.sign(
     {

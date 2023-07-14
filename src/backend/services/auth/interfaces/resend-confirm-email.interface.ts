@@ -1,3 +1,3 @@
-export interface ResendConfirmEmailInterface{
+export interface ResendConfirmEmailInterface {
   email: string;
 }

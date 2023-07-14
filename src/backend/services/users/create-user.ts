@@ -3,9 +3,9 @@ import { getDatabaseConnection } from '../../config/data-source-config';
 import { User } from '../../entities/user.entity';
 import { getUserById } from './get-user-by-id';
 import { AuthConstants } from '../../constants/auth-constants';
-import { UserInterface } from './interfaces/user.interface';
+import { SignUpInterface } from '../auth/interfaces/sign-up.interface';
 
-export const createUser = async (data: UserInterface, confirmationCode: string) => {
+export const createUser = async (data: SignUpInterface, confirmationCode: string) => {
   const connection = await getDatabaseConnection();
 
   const { email } = data;

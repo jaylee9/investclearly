@@ -12,7 +12,7 @@ export const verifyAccount = async (confirmationCode: string) => {
   if (user) {
     await connection.manager.update(User, { id: user.id }, { emailConfirmationCode: '' });
     const updatedUser = await getUserById(user.id);
-    const { expiresIn, accessToken } = await createToken(updatedUser);
+    const { expiresIn, accessToken } = createToken(updatedUser);
 
     return { accessToken, expiresIn, updatedUser };
   }

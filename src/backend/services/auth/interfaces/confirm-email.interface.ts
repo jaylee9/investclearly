@@ -1,3 +1,3 @@
-export interface ConfirmEmailInterface{
+export interface ConfirmEmailInterface {
   confirmationCode: string;
 }

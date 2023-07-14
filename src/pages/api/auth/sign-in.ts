@@ -31,7 +31,7 @@ const signIn = async (
   }
 
   if (user && (await bcrypt.compare(body.password, user.password))) {
-    const token = await createToken(user);
+    const token = createToken(user);
 
     setCookie('accessToken', token.accessToken, {
       httpOnly: true,
