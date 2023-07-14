@@ -74,7 +74,7 @@ const Input = ({
   };
   return (
     <Box textAlign="start">
-      {topLabel && (
+      {!!topLabel && (
         <Typography variant="caption" fontWeight={600}>
           {topLabel}
         </Typography>
