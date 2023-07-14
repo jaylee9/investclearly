@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import * as bcrypt from 'bcryptjs';
 import { setCookie } from 'cookies-next';
 import * as Yup from 'yup';
+import createHttpError from 'http-errors';
 import { validateRequest } from '../../../backend/utils/yup';
 import { AuthConstants } from '../../../backend/constants/auth-constants';
 import { getUserByField } from '../../../backend/services/users/get-user-by-field';
@@ -25,6 +26,10 @@ const signIn = async (
 
   const user = await getUserByField(AuthConstants.emailField, body.email);
 
+  if (user.emailConfirmationCode !== null && user.emailConfirmationCode !== '') {
+    throw new createHttpError.BadRequest(AuthConstants.verifyAccountFirst);
+  }
+
   if (user && (await bcrypt.compare(body.password, user.password))) {
     const token = await createToken(user);
 
@@ -37,6 +42,8 @@ const signIn = async (
     });
 
     response.status(200).json(userMapper(user));
+  } else {
+    throw new createHttpError.BadRequest(AuthConstants.wrongEmailOrPassword);
   }
 }
 

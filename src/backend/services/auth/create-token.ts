@@ -13,10 +13,9 @@ export const createToken = async (user: UserInterface) => {
       id: user.id,
       email: user.email,
     },
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET || '',
     { expiresIn },
   );
-
   return {
     expiresIn,
     accessToken,

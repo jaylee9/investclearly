@@ -48,6 +48,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.2",
     "eslint": "^8.43.0",
     "eslint-config-next": "^13.4.7"
   }
