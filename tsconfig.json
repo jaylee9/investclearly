@@ -13,19 +13,23 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
+    "module": "commonjs",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
     "typeRoots": ["./node_modules/@types", "./types"],
     "incremental": true,
     "plugins": [
       {
-        "name": "next"
+        "name": "next",
       }
-    ]
+    ],
+    "strictNullChecks": true,
   },
   "include": ["src", "test", "e2e", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
