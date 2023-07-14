@@ -1,15 +1,17 @@
 import createHttpError from 'http-errors';
+import { getDatabaseConnection } from '../../config/data-source-config';
 import { AuthConstants } from '../../constants/auth-constants';
-import { getUserByField } from '../users/get-user-by-field';
 import { updateUserDataFromGoogle } from '../users/update-user-data-from-google';
 import { createToken } from './create-token';
 import { createGoogleUser } from '../users/create-google-user';
 import { GoogleAuthInterface } from './interfaces/google-auth.interface';
+import { User } from '../../entities/user.entity';
 
 export const signInWithGoogle = async (googleData: GoogleAuthInterface) => {
 
   if (googleData) {
-    let user = await getUserByField(AuthConstants.googleIdField, googleData.sub);
+    const connection = await getDatabaseConnection();
+    let user = await connection.manager.findOne(User, { where: { googleId: googleData.sub } });
 
     if (user) {
       const updatedUser = await updateUserDataFromGoogle(googleData, user.id);
@@ -17,7 +19,7 @@ export const signInWithGoogle = async (googleData: GoogleAuthInterface) => {
       return { expiresIn, accessToken, user: updatedUser };
     }
 
-    user = await getUserByField(AuthConstants.emailField, googleData.email);
+    user = await connection.manager.findOne(User, { where: { email: googleData.email } });
     if (user) {
       throw new createHttpError.BadRequest(AuthConstants.userAlreadyExistsGoogleAccountWasNotConnected);
     }
