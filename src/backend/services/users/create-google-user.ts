@@ -1,0 +1,29 @@
+import createHttpError from 'http-errors';
+import { getDatabaseConnection } from '../../config/data-source-config';
+import { AuthConstants } from '../../constants/auth-constants';
+import { User } from '../../entities/user.entity';
+import { getUserById } from './get-user-by-id';
+import { GoogleAuthInterface } from '../auth/interfaces/google-auth.interface';
+import { splitGoogleName } from '../../../backend/utils/split-google-name';
+
+export const createGoogleUser = async (googleData: GoogleAuthInterface) => {
+  const connection = await getDatabaseConnection();
+
+  const { name, email, picture, sub } = googleData;
+  const { firstName, lastName } = splitGoogleName(name);
+
+  const user = await connection.manager.create(User, {
+    googleId: sub,
+    profilePicture: picture,
+    firstName,
+    lastName,
+    email,
+  });
+
+  await connection.manager.save(user);
+
+  if (!user) {
+    throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);
+  }
+  return getUserById(user.id);
+}

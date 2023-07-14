@@ -7,4 +7,5 @@ export const ValidationAuthConstants = {
   resetPasswordTokenRequired: 'Reset password is required',
   newPasswordRequired: 'New password is required',
   confirmationCodeRequired: 'Confirmation code is required',
+  googleSubRequired: 'Sub is required',
 };
