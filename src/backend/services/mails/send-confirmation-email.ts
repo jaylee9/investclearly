@@ -1,11 +1,8 @@
 import * as sgMail from '@sendgrid/mail';
 import { MailConfig, TemplatesIds } from '../../config/mail-config';
+import { UserInterface } from '../users/interfaces/user.interface';
 
-interface userData {
-  email: string;
-};
-
-export const sendConfirmationEmail = async (user: userData, confirmationCode: string) => {
+export const sendConfirmationEmail = async (user: UserInterface, confirmationCode: string) => {
   sgMail.setApiKey(MailConfig.sendgridApiKey);
 
   const mailData = {

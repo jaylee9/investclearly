@@ -20,6 +20,7 @@ export const AuthConstants = {
   successfulVerification: 'Account was successfully verifying',
   verificationFailed: 'Verification failed',
   unauthorized: 'Unauthorized',
+  verifyAccountFirst: 'Please verify account first',
   minForRandomSixDigitNumber: 100000,
   maxForRandomSixDigitNumber: 900000,
 };
