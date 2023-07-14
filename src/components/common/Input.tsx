@@ -1,4 +1,3 @@
-import theme from '@/config/theme';
 import {
   TextField,
   Fade,
@@ -7,9 +6,9 @@ import {
   Typography,
 } from '@mui/material';
 import { TextFieldProps, SxProps } from '@mui/material';
-import { Theme } from '@mui/material/styles';
-import { ChangeEvent, ReactNode, useState } from 'react';
+import { CSSProperties, ChangeEvent, ReactNode, useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
+import { useInputStyles } from './styles';
 
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
   variant?: 'filled' | 'outlined';
@@ -19,7 +18,7 @@ interface InputProps extends Omit<TextFieldProps, 'variant'> {
   isSearch?: boolean;
   showClearOption?: boolean;
   isPassword?: boolean;
-  customStyles?: SxProps<Theme>;
+  customStyles?: CSSProperties;
   height?: 'base' | 'large';
   endComponent?: ReactNode;
   register?: UseFormRegisterReturn;
@@ -33,7 +32,7 @@ const Input = ({
   isSearch,
   showClearOption = true,
   isFilledWhite = false,
-  customStyles,
+  customStyles = {},
   height = 'base',
   endComponent,
   register,
@@ -49,38 +48,13 @@ const Input = ({
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  const { palette, typography } = theme;
-  const styles = {
-    filled: {
-      width: '100%',
-      borderRadius: '120px',
-      '& .MuiOutlinedInput-root': {
-        background: isFilledWhite
-          ? palette.common.white
-          : palette.background.default,
-        borderRadius: '120px',
-        border: `1px solid ${palette.background.default}`,
-        transition: 'border 0.3s ease-in-out',
-      },
-    },
-    outlined: {
-      width: '100%',
-      borderRadius: '12px',
-      '& .MuiOutlinedInput-root': {
-        borderRadius: '12px',
-        border: `1px solid ${
-          errorText || error ? palette.error.light : palette.background.default
-        } ${errorText || error ? '!important' : ''}`,
-        transition: 'border 0.3s ease-in-out',
-        '& input:-webkit-autofill, & input:-webkit-autofill:hover, & input:-webkit-autofill:focus, & input:-webkit-autofill:active':
-          {
-            padding: '0px',
-            borderRadius: 0,
-            marginLeft: '15px',
-          },
-      },
-    },
-  };
+  const styles = useInputStyles({
+    variant,
+    errorText,
+    error,
+    isFilledWhite,
+    height,
+  });
   const handleClear = () => {
     setValue('');
     if (onClear) {
@@ -112,33 +86,9 @@ const Input = ({
         helperText={errorText}
         sx={{
           ...styles[variant],
-          ...customStyles,
-          position: 'relative',
-          '& .MuiInputBase-root': {
-            height: height === 'base' ? '44px' : '56px',
-            fontSize: typography.body1,
-            border:
-              variant === 'outlined'
-                ? `1px solid ${palette.secondary.dark}`
-                : '',
-          },
-          '& fieldset': {
-            border: 'none',
-          },
-          '& .MuiOutlinedInput-root:hover': {
-            border: `1px solid ${palette.secondary.dark}`,
-          },
-          '& .MuiOutlinedInput-root.Mui-focused': {
-            border: `1px solid ${palette.primary.light}`,
-            background: palette.common.white,
-          },
-          '& .MuiFormHelperText-root': {
-            color: palette.error.light,
-            fontSize: typography.caption,
-            position: 'absolute',
-            bottom: '-20px',
-          },
+          ...styles.root,
         }}
+        style={customStyles}
         InputProps={{
           startAdornment: isSearch && (
             <InputAdornment position="start">
