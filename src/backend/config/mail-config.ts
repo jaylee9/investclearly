@@ -19,4 +19,5 @@ export const MailConfig = {
 
 export const TemplatesIds = {
   confirmEmail: 'd-83a1ea25306c4727aa2f11ca5a61cc42',
+  resetPasswordEmail: 'd-6e26ea582d8846c98da66f913dec1eb2',
 };
