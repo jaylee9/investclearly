@@ -1,9 +1,9 @@
-import { AuthConstants } from "../../constants/auth-constants";
+import { AuthConstants } from '../../constants/auth-constants';
 import { getUserByField } from '../users/get-user-by-field';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { User } from '../../entities/user.entity';
-import { getUserById } from "../users/get-user-by-id";
-import { createToken } from "./create-token";
+import { getUserById } from '../users/get-user-by-id';
+import { createToken } from './create-token';
 
 export const verifyAccount = async (confirmationCode: string) => {
   const connection = await getDatabaseConnection();

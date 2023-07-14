@@ -1,10 +1,10 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { getCookies, deleteCookie } from "cookies-next";
-import * as Yup from "yup";
-import { apiHandler } from "../../../backend/utils/api-handler";
-import { ValidationAuthConstants } from "../../../backend/constants/validation/auth-constants";
-import { validateRequest } from "../../../backend/utils/yup";
-import { AuthConstants } from "../../../backend/constants/auth-constants";
+import { NextApiRequest, NextApiResponse } from 'next';
+import { getCookies, deleteCookie } from 'cookies-next';
+import * as Yup from 'yup';
+import { apiHandler } from '../../../backend/utils/api-handler';
+import { ValidationAuthConstants } from '../../../backend/constants/validation/auth-constants';
+import { validateRequest } from '../../../backend/utils/yup';
+import { AuthConstants } from '../../../backend/constants/auth-constants';
 
 const signOutSchema = Yup.object().shape({
   token: Yup.string().required(ValidationAuthConstants.tokenRequired),

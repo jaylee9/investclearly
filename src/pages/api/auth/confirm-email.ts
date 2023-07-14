@@ -1,10 +1,10 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { setCookie } from "cookies-next";
-import * as Yup from "yup";
-import { validateRequest } from "../../../backend/utils/yup";
-import { verifyAccount } from "../../../backend/services/auth/verify-account";
-import { apiHandler } from "../../../backend/utils/api-handler";
-import { ValidationAuthConstants } from "../../../backend/constants/validation/auth-constants";
+import { NextApiRequest, NextApiResponse } from 'next';
+import { setCookie } from 'cookies-next';
+import * as Yup from 'yup';
+import { validateRequest } from '../../../backend/utils/yup';
+import { verifyAccount } from '../../../backend/services/auth/verify-account';
+import { apiHandler } from '../../../backend/utils/api-handler';
+import { ValidationAuthConstants } from '../../../backend/constants/validation/auth-constants';
 
 interface RequestBody {
   confirmationCode: string;

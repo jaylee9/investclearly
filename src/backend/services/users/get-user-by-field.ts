@@ -1,7 +1,7 @@
-import createHttpError from "http-errors";
-import { getDatabaseConnection } from "../../config/data-source-config";
-import { AuthConstants } from "../../constants/auth-constants";
-import { User } from "../../entities/user.entity";
+import createHttpError from 'http-errors';
+import { getDatabaseConnection } from '../../config/data-source-config';
+import { AuthConstants } from '../../constants/auth-constants';
+import { User } from '../../entities/user.entity';
 
 export const getUserByField = async (fieldName: string, value: any) => {
   const connection = await getDatabaseConnection();

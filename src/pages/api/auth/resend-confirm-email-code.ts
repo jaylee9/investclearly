@@ -1,10 +1,10 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import * as Yup from "yup";
-import { validateRequest } from "../../../backend/utils/yup";
-import { apiHandler } from "../../../backend/utils/api-handler";
-import { ValidationAuthConstants } from "../../../backend/constants/validation/auth-constants";
-import { MailConstants } from "../../../backend/constants/mail-constants";
-import { resendUserVerificationCode } from "../../../backend/services/auth/resend-user-verification-code";
+import { NextApiRequest, NextApiResponse } from 'next';
+import * as Yup from 'yup';
+import { validateRequest } from '../../../backend/utils/yup';
+import { apiHandler } from '../../../backend/utils/api-handler';
+import { ValidationAuthConstants } from '../../../backend/constants/validation/auth-constants';
+import { MailConstants } from '../../../backend/constants/mail-constants';
+import { resendUserVerificationCode } from '../../../backend/services/auth/resend-user-verification-code';
 
 interface RequestBody {
   email: string;

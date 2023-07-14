@@ -1,15 +1,15 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import * as bcrypt from "bcryptjs";
-import { setCookie } from "cookies-next";
-import * as Yup from "yup";
-import { validateRequest } from "../../../backend/utils/yup";
-import { AuthConstants } from "../../../backend/constants/auth-constants";
-import { getUserByField } from "../../../backend/services/users/get-user-by-field";
-import { createToken } from "../../../backend/services/auth/create-token";
-import { userMapper } from "../../../backend/mappers/user.mapper";
-import { apiHandler } from "../../../backend/utils/api-handler";
-import { ValidationAuthConstants } from "../../../backend/constants/validation/auth-constants";
-import { SignInInterface } from "../../../backend/services/auth/interfaces/sign-in.interface";
+import { NextApiRequest, NextApiResponse } from 'next';
+import * as bcrypt from 'bcryptjs';
+import { setCookie } from 'cookies-next';
+import * as Yup from 'yup';
+import { validateRequest } from '../../../backend/utils/yup';
+import { AuthConstants } from '../../../backend/constants/auth-constants';
+import { getUserByField } from '../../../backend/services/users/get-user-by-field';
+import { createToken } from '../../../backend/services/auth/create-token';
+import { userMapper } from '../../../backend/mappers/user.mapper';
+import { apiHandler } from '../../../backend/utils/api-handler';
+import { ValidationAuthConstants } from '../../../backend/constants/validation/auth-constants';
+import { SignInInterface } from '../../../backend/services/auth/interfaces/sign-in.interface';
 
 const signInSchema = Yup.object().shape({
   email: Yup.string().required(ValidationAuthConstants.emailRequired),
