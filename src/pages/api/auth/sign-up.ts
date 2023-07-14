@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import * as Yup from "yup";
-import { validateRequest } from "../../../backend/utils/yup";
-import { apiHandler } from "../../../backend/utils/api-handler";
+import * as Yup from 'yup';
+import { validateRequest } from '../../../backend/utils/yup';
+import { apiHandler } from '../../../backend/utils/api-handler';
 import { ValidationAuthConstants } from '../../../backend/constants/validation/auth-constants';
 import { register } from '../../../backend/services/auth/register';
 import { SignUpInterface } from '../../../backend/services/auth/interfaces/sign-up.interface';

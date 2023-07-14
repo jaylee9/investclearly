@@ -1,5 +1,5 @@
-import * as sgMail from "@sendgrid/mail";
-import { MailConfig, TemplatesIds } from "../../config/mail-config";
+import * as sgMail from '@sendgrid/mail';
+import { MailConfig, TemplatesIds } from '../../config/mail-config';
 
 interface userData {
   email: string;

@@ -1,8 +1,8 @@
-import createHttpError from "http-errors";
-import { getDatabaseConnection } from "../../config/data-source-config";
-import { User } from "../../entities/user.entity";
-import { getUserById } from "./get-user-by-id";
-import { AuthConstants } from "../../constants/auth-constants";
+import createHttpError from 'http-errors';
+import { getDatabaseConnection } from '../../config/data-source-config';
+import { User } from '../../entities/user.entity';
+import { getUserById } from './get-user-by-id';
+import { AuthConstants } from '../../constants/auth-constants';
 
 interface userData {
   firstName: string;

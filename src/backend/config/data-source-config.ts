@@ -1,9 +1,9 @@
-import "reflect-metadata"
-import { DataSource, DataSourceOptions } from "typeorm"
-import { SnakeNamingStrategy } from "typeorm-naming-strategies";
-import * as dotenv from "dotenv";
-import path from "path";
-import { User } from "../entities/user.entity";
+import 'reflect-metadata'
+import { DataSource, DataSourceOptions } from 'typeorm'
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import * as dotenv from 'dotenv';
+import path from 'path';
+import { User } from '../entities/user.entity';
 
 dotenv.config({ path: path.join(__dirname, '../../../.env') });
 

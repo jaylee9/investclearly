@@ -1,4 +1,4 @@
-import { Schema } from "yup";
+import { Schema } from 'yup';
 
 export function validateRequest<T extends object>(
   data: unknown,
