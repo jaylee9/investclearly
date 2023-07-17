@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import createHttpError from 'http-errors';
 import { validateRequest } from '../../../backend/utils/yup';
 import { signInWithGoogle } from '../../../backend/services/auth/sign-in-with-google';
-import { apiHandler } from '../../../backend/utilssrc/pages/api/auth/resend-confirm-email-code.ts/api-handler';
+import { apiHandler } from '../../../backend/utils/api-handler';
 import { ValidationAuthConstants } from '../../../backend/constants/validation/auth-constants';
 import { GoogleAuthInterface } from '../../../backend/services/auth/interfaces/google-auth.interface';
 import { AuthConstants } from '../../../backend/constants/auth-constants';
