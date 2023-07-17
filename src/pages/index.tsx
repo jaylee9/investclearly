@@ -1,3 +1,4 @@
+import { LogoVariant } from '@/assets/components/Logo';
 import getHomeStyles from './homeStyles';
 import Layout from '@/components/common/Layout';
 import DealsBlock from '@/components/page/Home/DealsBlock';
@@ -15,7 +16,7 @@ const Home = () => {
     isLinks: true,
     isShadow: false,
     isSignIn: true,
-    logoVariant: 'light-text',
+    logoVariant: LogoVariant.LightText,
   });
   return (
     <Layout {...headerProps}>
