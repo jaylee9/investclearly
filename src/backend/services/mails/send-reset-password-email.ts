@@ -21,5 +21,5 @@ export const sendResetPasswordEmail = async (
     },
   };
 
-  return sgMail.send(mailData as any);
+  return sgMail.send(mailData);
 };

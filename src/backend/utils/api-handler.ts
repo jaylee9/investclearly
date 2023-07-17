@@ -17,7 +17,7 @@ export type Method =
 interface ErrorResponse {
   error: {
     message: string;
-    err?: any;
+    err?: unknown;
   };
   status?: number;
 }

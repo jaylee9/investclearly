@@ -3,7 +3,7 @@ import { getDatabaseConnection } from '../../config/data-source-config';
 import { AuthConstants } from '../../constants/auth-constants';
 import { User } from '../../entities/user.entity';
 
-export const getUserByField = async (fieldName: string, value: any) => {
+export const getUserByField = async (fieldName: string, value: string) => {
   const connection = await getDatabaseConnection();
 
   if (fieldName === AuthConstants.emailField) {

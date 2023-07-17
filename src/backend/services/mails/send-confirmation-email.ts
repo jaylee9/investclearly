@@ -29,5 +29,5 @@ export const sendConfirmationEmail = async (
     },
   };
 
-  return sgMail.send(mailData as any);
+  return sgMail.send(mailData);
 };
