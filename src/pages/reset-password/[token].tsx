@@ -29,7 +29,6 @@ type ValidationSchema = z.infer<typeof validationSchema>;
 
 const ResetPassword = () => {
   const router = useRouter();
-  console.log(router.query);
   const [isChanged, setIsChanged] = useState(false);
   const classes = useResetPasswordStyles();
   const {
