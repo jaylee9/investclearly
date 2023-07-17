@@ -21,7 +21,7 @@ export const createUser = async (data: SignUpInterface, confirmationCode: string
     throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);
   }
 
-  const user = await connection.manager.create(User, { ...data, emailConfirmationCode: confirmationCode });
+  const user = connection.manager.create(User, { ...data, emailConfirmationCode: confirmationCode });
   await connection.manager.save(user);
   return getUserById(user.id);
 }

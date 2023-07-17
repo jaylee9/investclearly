@@ -10,7 +10,7 @@ export const createGoogleUser = async (googleData: GoogleAuthInterface) => {
   const { name, email, picture, sub } = googleData;
   const { firstName, lastName } = splitGoogleName(name);
 
-  const user = await connection.manager.create(User, {
+  const user = connection.manager.create(User, {
     googleId: sub,
     profilePicture: picture,
     firstName,
