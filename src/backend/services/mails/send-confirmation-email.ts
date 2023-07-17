@@ -15,7 +15,7 @@ export const sendConfirmationEmail = async (
     digit3,
     digit4,
     digit5,
-    digit6
+    digit6,
   } = dividedConfirmationCodeData;
 
   const mailData: MailDataRequired = {
