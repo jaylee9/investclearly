@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
-import { useGlobalSearchStyles, useHeadBlockStyles } from './styles';
+import { useGlobalSearchStyles } from './styles';
 import { Box, Fade, Typography } from '@mui/material';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
 import Link from 'next/link';
@@ -72,7 +72,15 @@ const GlobalSearch = () => {
         customStyles={classes.searchInput}
         height="large"
         endComponent={
-          <Button customStyles={classes.searchButton}>Search</Button>
+          <Button
+            customStyles={{
+              boxSizing: 'border-box',
+              padding: '12px 40px !important',
+              height: '48px !important',
+            }}
+          >
+            Search
+          </Button>
         }
         onChange={handleChange}
         value={globalSearchValue}

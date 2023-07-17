@@ -1,5 +1,4 @@
-import NextAuth, { Session } from 'next-auth';
-import { JWT } from 'next-auth/jwt';
+import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 
 if (!process.env.GOOGLE_ID || !process.env.GOOGLE_SECRET) {

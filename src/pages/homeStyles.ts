@@ -1,5 +1,3 @@
-import theme from '@/config/theme';
-
 const getHomeStyles = () => {
   return {
     root: {

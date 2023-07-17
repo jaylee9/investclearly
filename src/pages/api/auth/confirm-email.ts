@@ -8,7 +8,9 @@ import { ValidationAuthConstants } from '../../../backend/constants/validation/a
 import { ConfirmEmailInterface } from '../../../backend/services/auth/interfaces/confirm-email.interface';
 
 const confirmEmailSchema = Yup.object().shape({
-  confirmationCode: Yup.string().required(ValidationAuthConstants.confirmationCodeRequired),
+  confirmationCode: Yup.string().required(
+    ValidationAuthConstants.confirmationCodeRequired
+  ),
 });
 
 const confirmEmail = async (
@@ -31,6 +33,6 @@ const confirmEmail = async (
 
     response.status(200).json(result.updatedUser);
   }
-}
+};
 
 export default apiHandler({ PUT: confirmEmail });

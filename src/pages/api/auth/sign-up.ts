@@ -13,10 +13,7 @@ const signUpSchema = Yup.object().shape({
   password: Yup.string().required(ValidationAuthConstants.passwordRequired),
 });
 
-const signUp = async (
-  request: NextApiRequest,
-  response: NextApiResponse
-) => {
+const signUp = async (request: NextApiRequest, response: NextApiResponse) => {
   const body: SignUpInterface = request.body;
   validateRequest(body, signUpSchema);
 
@@ -25,11 +22,11 @@ const signUp = async (
     lastName: body.lastName,
     email: body.email,
     password: body.password,
-  }
+  };
 
   const newUserEmail = await register(userData);
 
   response.status(201).json({ email: newUserEmail });
-}
+};
 
 export default apiHandler({ POST: signUp });

@@ -2,7 +2,10 @@ import * as sgMail from '@sendgrid/mail';
 import { MailConfig, TemplatesIds } from '../../config/mail-config';
 import { UserInterface } from '../users/interfaces/user.interface';
 
-export const sendResetPasswordEmail = async (user: UserInterface, resetPasswordToken: string) => {
+export const sendResetPasswordEmail = async (
+  user: UserInterface,
+  resetPasswordToken: string
+) => {
   sgMail.setApiKey(MailConfig.sendgridApiKey);
 
   const mailData = {
@@ -19,4 +22,4 @@ export const sendResetPasswordEmail = async (user: UserInterface, resetPasswordT
   };
 
   return sgMail.send(mailData as any);
-}
+};

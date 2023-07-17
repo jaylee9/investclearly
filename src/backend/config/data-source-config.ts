@@ -1,5 +1,5 @@
-import 'reflect-metadata'
-import { DataSource, DataSourceOptions } from 'typeorm'
+import 'reflect-metadata';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import * as dotenv from 'dotenv';
 import path from 'path';
@@ -18,12 +18,12 @@ const config = {
   namingStrategy: new SnakeNamingStrategy(),
   logging: false,
   entities: [User],
-}
+};
 
 export const AppDataSource = new DataSource({
   ...config,
   migrations: ['src/backend/database/migrations/*'],
-} as DataSourceOptions)
+} as DataSourceOptions);
 
 const dataSource = new DataSource(config as DataSourceOptions);
 
@@ -32,4 +32,4 @@ export const getDatabaseConnection = async () => {
     await dataSource.initialize();
   }
   return dataSource;
-}
+};

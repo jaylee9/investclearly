@@ -11,7 +11,10 @@ import { DecodedTokenInterface } from './interfaces/decoded-token.interface';
 
 dotenv.config({ path: path.join(__dirname, '../../../.env') });
 
-export const resetUserPassword = async (resetPasswordToken: string, newPassword: string) => {
+export const resetUserPassword = async (
+  resetPasswordToken: string,
+  newPassword: string
+) => {
   const connection = await getDatabaseConnection();
   const jwtSecret = process.env.JWT_SECRET;
 
@@ -19,7 +22,10 @@ export const resetUserPassword = async (resetPasswordToken: string, newPassword:
     throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);
   }
 
-  const decodedToken = jwt.verify(resetPasswordToken, jwtSecret) as DecodedTokenInterface;
+  const decodedToken = jwt.verify(
+    resetPasswordToken,
+    jwtSecret
+  ) as DecodedTokenInterface;
 
   const user = await connection.manager.findOne(User, {
     where: {
@@ -37,10 +43,11 @@ export const resetUserPassword = async (resetPasswordToken: string, newPassword:
   }
 
   const password = await bcrypt.hash(newPassword, 10);
-  await connection.manager.update(User,
+  await connection.manager.update(
+    User,
     { id: user.id },
     {
       password,
-    },
+    }
   );
-}
+};

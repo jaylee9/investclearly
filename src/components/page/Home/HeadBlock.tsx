@@ -1,6 +1,5 @@
 import { useHeadBlockStyles } from './styles';
 import { Box, Typography } from '@mui/material';
-import { useState } from 'react';
 import GlobalSearch from './GlobalSearch';
 
 const HeadBlock = () => {

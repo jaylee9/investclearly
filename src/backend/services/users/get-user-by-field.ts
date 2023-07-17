@@ -10,11 +10,13 @@ export const getUserByField = async (fieldName: string, value: any) => {
     value = value.toLowerCase();
   }
 
-  const user = await connection.manager.findOne(User, { where: { [fieldName]: value } });
+  const user = await connection.manager.findOne(User, {
+    where: { [fieldName]: value },
+  });
 
   if (!user) {
     throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);
   }
 
   return user;
-}
+};

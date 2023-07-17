@@ -8,7 +8,7 @@ import { divideDigitNumber } from '../../utils/divide-digit-number.ts';
 export const register = async (userData: SignUpInterface) => {
   const confirmationCode = generateRandomNumber(
     AuthConstants.minForRandomSixDigitNumber,
-    AuthConstants.maxForRandomSixDigitNumber,
+    AuthConstants.maxForRandomSixDigitNumber
   ).toString();
 
   const newUser = await createUser(userData, confirmationCode);
@@ -18,4 +18,4 @@ export const register = async (userData: SignUpInterface) => {
     await sendConfirmationEmail(newUser, dividedConfirmationCodeData);
     return newUser.email;
   }
-}
+};

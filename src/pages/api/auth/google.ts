@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import createHttpError from 'http-errors';
 import { validateRequest } from '../../../backend/utils/yup';
 import { signInWithGoogle } from '../../../backend/services/auth/sign-in-with-google';
-import { apiHandler } from '../../../backend/utils/api-handler';
+import { apiHandler } from '../../../backend/utilssrc/pages/api/auth/resend-confirm-email-code.ts/api-handler';
 import { ValidationAuthConstants } from '../../../backend/constants/validation/auth-constants';
 import { GoogleAuthInterface } from '../../../backend/services/auth/interfaces/google-auth.interface';
 import { AuthConstants } from '../../../backend/constants/auth-constants';
@@ -21,7 +21,7 @@ const googleAuth = async (
   const body: GoogleAuthInterface = request.body;
   validateRequest(body, googleAuthSchema);
 
-  const result = await signInWithGoogle(body)
+  const result = await signInWithGoogle(body);
 
   if (result.accessToken && result.expiresIn) {
     setCookie('accessToken', result.accessToken, {
@@ -36,6 +36,6 @@ const googleAuth = async (
   } else {
     throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);
   }
-}
+};
 
 export default apiHandler({ POST: googleAuth });

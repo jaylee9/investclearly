@@ -76,7 +76,7 @@ export const useInputStyles = ({
 };
 
 interface UseCheckboxProps {
-  error?: Boolean;
+  error?: boolean;
 }
 
 export const useCheckboxStyles = ({ error }: UseCheckboxProps) => {

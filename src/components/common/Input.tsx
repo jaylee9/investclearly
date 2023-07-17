@@ -5,7 +5,7 @@ import {
   Box,
   Typography,
 } from '@mui/material';
-import { TextFieldProps, SxProps } from '@mui/material';
+import { TextFieldProps } from '@mui/material';
 import { CSSProperties, ChangeEvent, ReactNode, useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import { useInputStyles } from './styles';

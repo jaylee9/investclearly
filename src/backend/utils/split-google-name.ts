@@ -9,6 +9,6 @@ export const splitGoogleName = (googleName: string) => {
 
   return {
     firstName: firstName,
-    lastName: lastName
+    lastName: lastName,
   };
 };

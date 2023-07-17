@@ -17,16 +17,16 @@ const signInSchema = Yup.object().shape({
   password: Yup.string().required(ValidationAuthConstants.passwordRequired),
 });
 
-const signIn = async (
-  request: NextApiRequest,
-  response: NextApiResponse
-) => {
+const signIn = async (request: NextApiRequest, response: NextApiResponse) => {
   const body: SignInInterface = request.body;
   validateRequest(body, signInSchema);
 
   const user = await getUserByField(AuthConstants.emailField, body.email);
 
-  if (user.emailConfirmationCode !== null && user.emailConfirmationCode !== '') {
+  if (
+    user.emailConfirmationCode !== null &&
+    user.emailConfirmationCode !== ''
+  ) {
     throw new createHttpError.BadRequest(AuthConstants.verifyAccountFirst);
   }
 
@@ -45,6 +45,6 @@ const signIn = async (
   } else {
     throw new createHttpError.BadRequest(AuthConstants.wrongEmailOrPassword);
   }
-}
+};
 
 export default apiHandler({ POST: signIn });

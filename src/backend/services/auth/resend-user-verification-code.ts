@@ -13,12 +13,16 @@ export const resendUserVerificationCode = async (email: string) => {
   if (user) {
     const confirmationCode = generateRandomNumber(
       AuthConstants.minForRandomSixDigitNumber,
-      AuthConstants.maxForRandomSixDigitNumber,
+      AuthConstants.maxForRandomSixDigitNumber
     ).toString();
 
-    await connection.manager.update(User, { id: user.id }, { emailConfirmationCode: confirmationCode });
+    await connection.manager.update(
+      User,
+      { id: user.id },
+      { emailConfirmationCode: confirmationCode }
+    );
 
     const dividedConfirmationCodeData = divideDigitNumber(confirmationCode);
     await sendConfirmationEmail(user, dividedConfirmationCodeData);
   }
-}
+};

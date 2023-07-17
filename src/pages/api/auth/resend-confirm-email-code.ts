@@ -21,6 +21,6 @@ const resendConfirmEmailCode = async (
   await resendUserVerificationCode(body.email);
 
   response.status(200).json({ message: MailConstants.mailSuccessfullySent });
-}
+};
 
 export default apiHandler({ POST: resendConfirmEmailCode });

@@ -14,10 +14,10 @@ export const createToken = (user: UserInterface) => {
       email: user.email,
     },
     process.env.JWT_SECRET || '',
-    { expiresIn },
+    { expiresIn }
   );
   return {
     expiresIn,
     accessToken,
   };
-}
+};
