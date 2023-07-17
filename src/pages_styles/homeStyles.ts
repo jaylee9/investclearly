@@ -1,4 +1,4 @@
-const getHomeStyles = () => {
+const useHomeStyles = () => {
   return {
     root: {
       display: 'flex',
@@ -12,4 +12,4 @@ const getHomeStyles = () => {
   };
 };
 
-export default getHomeStyles;
+export default useHomeStyles;

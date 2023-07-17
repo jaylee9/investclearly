@@ -1,6 +1,6 @@
 import Layout, { LayoutVariant } from '@/components/common/Layout';
 import { Box, Typography } from '@mui/material';
-import useForgotPasswordStyles from './styles';
+import useForgotPasswordStyles from '../../pages_styles/forgotPasswordStyles';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';

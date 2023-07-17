@@ -1,5 +1,5 @@
 import { LogoVariant } from '@/assets/components/Logo';
-import getHomeStyles from './homeStyles';
+import useHomeStyles from '../pages_styles/homeStyles';
 import Layout from '@/components/common/Layout';
 import DealsBlock from '@/components/page/Home/DealsBlock';
 import HeadBlock from '@/components/page/Home/HeadBlock';
@@ -10,7 +10,7 @@ import useHeaderProps from '@/hooks/useHeaderProps';
 import { Box } from '@mui/material';
 
 const Home = () => {
-  const classes = getHomeStyles();
+  const classes = useHomeStyles();
   const headerProps = useHeaderProps({
     type: 'light',
     isLinks: true,
