@@ -10,15 +10,12 @@ const signOutSchema = Yup.object().shape({
   token: Yup.string().required(ValidationAuthConstants.tokenRequired),
 });
 
-const signOut = async (
-  request: NextApiRequest,
-  response: NextApiResponse
-) => {
+const signOut = async (request: NextApiRequest, response: NextApiResponse) => {
   const token = getCookies({ req: request, res: response });
 
   validateRequest({ token: token.accessToken }, signOutSchema);
   deleteCookie('accessToken', { req: request, res: response });
   response.status(200).json({ message: AuthConstants.signedOut });
-}
+};
 
 export default apiHandler({ POST: signOut });

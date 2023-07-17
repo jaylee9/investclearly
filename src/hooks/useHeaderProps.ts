@@ -27,7 +27,7 @@ const useHeaderProps = (headerProps: HeaderProps = {}) => {
     isLinks: true,
     isSignIn: true,
     isShadow: true,
-    logoVariant: 'default',
+    logoVariant: LogoVariant.Default,
   };
   const formattedHeaderProps = { ...defaultHeaderProps, ...headerProps };
   return formattedHeaderProps;

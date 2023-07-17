@@ -20,4 +20,4 @@ export const createGoogleUser = async (googleData: GoogleAuthInterface) => {
 
   await connection.manager.save(user);
   return getUserById(user.id);
-}
+};

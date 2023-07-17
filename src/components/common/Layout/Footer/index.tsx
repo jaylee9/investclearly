@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import getStyles from './styles';
-import Logo from '@/assets/components/Logo';
+import Logo, { LogoVariant } from '@/assets/components/Logo';
 import Link from 'next/link';
 import { TLinks } from '@/types/common';
 
@@ -18,7 +18,7 @@ const Footer = () => {
   return (
     <Box sx={classes.root}>
       <Box sx={classes.content}>
-        <Logo variant="light" />
+        <Logo variant={LogoVariant.Light} />
         <Box sx={classes.linksWrapper}>
           {links.map(link => (
             <Link href={link.label} key={link.href}>

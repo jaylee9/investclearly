@@ -21,7 +21,7 @@ const googleAuth = async (
   const body: GoogleAuthInterface = request.body;
   validateRequest(body, googleAuthSchema);
 
-  const result = await signInWithGoogle(body)
+  const result = await signInWithGoogle(body);
 
   if (result.accessToken && result.expiresIn) {
     setCookie('accessToken', result.accessToken, {
@@ -36,6 +36,6 @@ const googleAuth = async (
   } else {
     throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);
   }
-}
+};
 
 export default apiHandler({ POST: googleAuth });

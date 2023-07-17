@@ -21,6 +21,6 @@ const forgotPassword = async (
   await sendResetPasswordInstructions(body.email);
 
   response.status(200).json({ message: MailConstants.mailSuccessfullySent });
-}
+};
 
 export default apiHandler({ POST: forgotPassword });

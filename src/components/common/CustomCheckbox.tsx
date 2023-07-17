@@ -6,7 +6,7 @@ import { useCheckboxStyles } from './styles';
 interface CustomCheckboxProps extends CheckboxProps {
   label?: string | ReactNode;
   customStyles?: SxProps<Theme>;
-  error?: Boolean;
+  error?: boolean;
 }
 
 const CustomCheckbox = ({

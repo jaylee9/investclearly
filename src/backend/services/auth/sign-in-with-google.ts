@@ -9,7 +9,9 @@ import { User } from '../../entities/user.entity';
 
 export const signInWithGoogle = async (googleData: GoogleAuthInterface) => {
   const connection = await getDatabaseConnection();
-  let user = await connection.manager.findOne(User, { where: { googleId: googleData.sub } });
+  let user = await connection.manager.findOne(User, {
+    where: { googleId: googleData.sub },
+  });
 
   if (user) {
     const updatedUser = await updateUserDataFromGoogle(googleData, user.id);
@@ -17,13 +19,17 @@ export const signInWithGoogle = async (googleData: GoogleAuthInterface) => {
     return { expiresIn, accessToken, user: updatedUser };
   }
 
-  user = await connection.manager.findOne(User, { where: { email: googleData.email } });
+  user = await connection.manager.findOne(User, {
+    where: { email: googleData.email },
+  });
   if (user) {
-    throw new createHttpError.BadRequest(AuthConstants.userAlreadyExistsGoogleAccountWasNotConnected);
+    throw new createHttpError.BadRequest(
+      AuthConstants.userAlreadyExistsGoogleAccountWasNotConnected
+    );
   }
 
   const newUser = await createGoogleUser(googleData);
 
   const { expiresIn, accessToken } = await createToken(newUser);
   return { expiresIn, accessToken, user: newUser };
-}
+};

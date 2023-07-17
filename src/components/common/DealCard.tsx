@@ -5,13 +5,13 @@ import theme from '@/config/theme';
 import Image from 'next/image';
 
 interface DealCardProps extends BoxProps {
-  variant?: 'base' | 'large';
+  // variant?: 'base' | 'large';
   image: string;
   children: ReactNode;
 }
 
 const DealCard = ({
-  variant = 'base',
+  // variant = 'base',
   image,
   children,
   ...props

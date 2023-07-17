@@ -14,4 +14,4 @@ export const getUserById = async (id: number) => {
   }
 
   return userMapper(user);
-}
+};
