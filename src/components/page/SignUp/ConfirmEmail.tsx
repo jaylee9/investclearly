@@ -39,7 +39,9 @@ const ConfirmEmail = ({ email }: ConfirmEmailProps) => {
           validChars="0-9"
           placeholder=""
           classNames={{
-            character: `${error ? 'vi__character vi__character-error' : 'vi__character'}`,
+            character: `${
+              error ? 'vi__character vi__character-error' : 'vi__character'
+            }`,
           }}
         />
       </Box>
