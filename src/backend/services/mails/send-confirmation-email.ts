@@ -10,7 +10,6 @@ export const sendConfirmationEmail = async (
   sgMail.setApiKey(MailConfig.sendgridApiKey);
 
   const { digit1, digit2, digit3, digit4, digit5, digit6 } = dividedConfirmationCodeData;
-
   const mailData: MailDataRequired = {
     to: user.email,
     from: {
