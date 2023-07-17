@@ -7,6 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
+import { login } from '@/actions/auth';
+import { useRouter } from 'next/router';
 
 const validationSchema = z.object({
   email: z.string().email({ message: 'Email must be a valid email' }),
@@ -19,6 +21,7 @@ type ValidationSchema = z.infer<typeof validationSchema>;
 
 const LoginForm = () => {
   const classes = useLoginFormStyles();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -27,8 +30,12 @@ const LoginForm = () => {
     resolver: zodResolver(validationSchema),
   });
 
-  const onSubmit = (data: ValidationSchema) => {
-    console.log(data);
+  const onSubmit = async (data: ValidationSchema) => {
+    const { email, password } = data;
+    const { isError } = await login({ email, password });
+    if (!isError) {
+      router.push('/');
+    }
   };
   const handleGoogleSignUp = () => {
     signIn('google');

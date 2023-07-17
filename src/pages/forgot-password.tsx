@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import Link from 'next/link';
+import { forgotPassword } from '@/actions/auth';
 
 const validationSchema = z.object({
   email: z.string().email({ message: 'Email must be a valid email' }),
@@ -24,8 +25,9 @@ const ForgotPassword = () => {
     resolver: zodResolver(validationSchema),
   });
 
-  const onSubmit = (data: ValidationSchema) => {
-    console.log(data);
+  const onSubmit = async (data: ValidationSchema) => {
+    const { email } = data;
+    await forgotPassword({ email });
   };
   return (
     <Layout variant={LayoutVariant.Entry}>

@@ -7,12 +7,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
 import Link from 'next/link';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
+import { signUp } from '@/actions/auth';
 
 const validationSchema = z
   .object({
-    first_name: z.string().min(1, { message: 'First name is required' }),
-    last_name: z.string().min(1, { message: 'Last name is required' }),
+    firstName: z.string().min(1, { message: 'First name is required' }),
+    lastName: z.string().min(1, { message: 'Last name is required' }),
     email: z.string().email({ message: 'Email must be a valid email' }),
     password: z
       .string()
@@ -46,15 +47,16 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
     resolver: zodResolver(validationSchema),
   });
 
-  const onSubmit = (data: ValidationSchema) => {
-    console.log(data);
-    setEmail(data.email);
+  const onSubmit = async (data: ValidationSchema) => {
+    const { email, password, firstName, lastName } = data;
+    const { isError } = await signUp({ email, password, firstName, lastName });
+    if (!isError) {
+      setEmail(data.email);
+    }
   };
   const handleGoogleSignUp = () => {
     signIn('google');
   };
-  const { data: session } = useSession();
-  console.log(session);
   return (
     <Box sx={classes.root}>
       <Typography variant="h2" fontWeight={600} marginBottom="40px">
@@ -85,16 +87,16 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
           <Input
             variant="outlined"
             placeholder="First Name"
-            register={register('first_name')}
+            register={register('firstName')}
             showClearOption={false}
-            errorText={errors.first_name?.message}
+            errorText={errors.firstName?.message}
           />
           <Input
             variant="outlined"
             placeholder="Last Name"
-            register={register('last_name')}
+            register={register('lastName')}
             showClearOption={false}
-            errorText={errors.last_name?.message}
+            errorText={errors.lastName?.message}
           />
         </Box>
         <Input
