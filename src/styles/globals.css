@@ -20,6 +20,15 @@ body {
   width: auto;
 }
 
+@keyframes border-fade {
+  0% {
+    border-color: #dbe4f2;
+  }
+  100% {
+    border-color: red;
+  }
+}
+
 .vi__character {
   border-radius: 12px;
   border: 1px solid #dbe4f2;
@@ -30,6 +39,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: border-color 0.5s ease-in-out;
+}
+
+.vi__character-error {
+  border: 1px solid red;
+  animation: border-fade 0.5s ease-in-out;
 }
 
 .vi__character--selected {

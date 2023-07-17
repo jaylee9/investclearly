@@ -1,6 +1,6 @@
 import Layout, { LayoutVariant } from '@/components/common/Layout';
 import { Box, Typography } from '@mui/material';
-import useResetPasswordStyles from '../pages_styles/resetPasswordStyles';
+import useResetPasswordStyles from '../../pages_styles/resetPasswordStyles';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,6 +8,8 @@ import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { resetPassword } from '@/actions/auth';
 
 const validationSchema = z
   .object({
@@ -26,6 +28,8 @@ const validationSchema = z
 type ValidationSchema = z.infer<typeof validationSchema>;
 
 const ResetPassword = () => {
+  const router = useRouter();
+  console.log(router.query);
   const [isChanged, setIsChanged] = useState(false);
   const classes = useResetPasswordStyles();
   const {
@@ -36,9 +40,16 @@ const ResetPassword = () => {
     resolver: zodResolver(validationSchema),
   });
 
-  const onSubmit = (data: ValidationSchema) => {
-    console.log(data);
-    setIsChanged(true);
+  const onSubmit = async (data: ValidationSchema) => {
+    const { new_password } = data;
+    const resetPasswordToken = router.query.token as string;
+    const { isError } = await resetPassword({
+      newPassword: new_password,
+      resetPasswordToken,
+    });
+    if (!isError) {
+      setIsChanged(true);
+    }
   };
   return (
     <Layout variant={LayoutVariant.Entry}>

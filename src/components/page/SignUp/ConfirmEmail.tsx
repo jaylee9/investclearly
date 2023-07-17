@@ -1,13 +1,29 @@
 import { Box, Typography } from '@mui/material';
 import { useConfirmEmailStyles } from './styles';
 import VerificationInput from 'react-verification-input';
+import { confirmEmail } from '@/actions/auth';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 interface ConfirmEmailProps {
   email: string;
 }
 
 const ConfirmEmail = ({ email }: ConfirmEmailProps) => {
+  const [error, setError] = useState(false);
   const classes = useConfirmEmailStyles();
+  const router = useRouter();
+  const onComplete = async (confirmationCode: string) => {
+    const { isError } = await confirmEmail({ confirmationCode });
+    if (isError) {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 1000);
+    } else {
+      router.push('/');
+    }
+  };
   return (
     <Box>
       <Typography variant="h2" fontWeight={600} marginBottom="8px">
@@ -19,11 +35,12 @@ const ConfirmEmail = ({ email }: ConfirmEmailProps) => {
       <Box sx={classes.verificationInputWrapper}>
         <VerificationInput
           length={6}
-          onComplete={code => {
-            console.log(code);
-          }}
+          onComplete={code => onComplete(code)}
           validChars="0-9"
           placeholder=""
+          classNames={{
+            character: `${error ? 'vi__character vi__character-error' : 'vi__character'}`,
+          }}
         />
       </Box>
       <Typography variant="body1">
