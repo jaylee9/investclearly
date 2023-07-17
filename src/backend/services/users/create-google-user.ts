@@ -1,6 +1,4 @@
-import createHttpError from 'http-errors';
 import { getDatabaseConnection } from '../../config/data-source-config';
-import { AuthConstants } from '../../constants/auth-constants';
 import { User } from '../../entities/user.entity';
 import { getUserById } from './get-user-by-id';
 import { GoogleAuthInterface } from '../auth/interfaces/google-auth.interface';
@@ -21,9 +19,5 @@ export const createGoogleUser = async (googleData: GoogleAuthInterface) => {
   });
 
   await connection.manager.save(user);
-
-  if (!user) {
-    throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);
-  }
   return getUserById(user.id);
 }
