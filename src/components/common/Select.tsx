@@ -1,6 +1,6 @@
 import { MenuItem, Select, SelectProps } from '@mui/material';
 import { useSelectStyles } from './styles';
-import { CSSProperties, useState } from 'react';
+import { CSSProperties } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 interface Option {

@@ -1,7 +1,7 @@
 import theme from '@/config/theme';
 
 const useDealsPageStyles = () => {
-  const { palette, typography } = theme;
+  const { palette } = theme;
   return {
     root: {
       display: 'flex',

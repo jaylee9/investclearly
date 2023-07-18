@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import { Box, Typography } from '@mui/material';
 import { BoxProps } from '@mui/material';
 import theme from '@/config/theme';
