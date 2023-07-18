@@ -205,3 +205,28 @@ export const useButtonStyles = ({ color, variant }: UseButtonStylesProps) => {
     },
   };
 };
+
+export const useDealCardStyles = () => {
+  return {
+    baseDealCardContent: {
+      padding: '16px 20px',
+    },
+    baseDealName: {
+      fontWeight: 600,
+    },
+    baseDealLocation: {
+      color: theme.palette.text.secondary,
+      marginBottom: '12px',
+    },
+    baseDealDetail: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      color: theme.palette.text.secondary,
+      '& i': {
+        fontSize: '24px',
+        color: theme.palette.primary.light,
+      },
+    },
+  };
+};

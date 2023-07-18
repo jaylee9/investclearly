@@ -1,8 +1,8 @@
-import { Box, Grid, Typography } from '@mui/material';
-import { blueTitleStyles, useNewDealsBlockStyles, viewAllLink } from './styles';
-import DealCard from '@/components/common/DealCard';
-import Link from 'next/link';
+import Layout from '@/components/common/Layout';
+import useHeaderProps from '@/hooks/useHeaderProps';
+import useDealsPageStyles from '@/pages_styles/dealsStyles';
 import { IDeal } from '@/types/deal';
+import { Box, Typography } from '@mui/material';
 
 const mockData: IDeal[] = [
   {
@@ -63,30 +63,29 @@ const mockData: IDeal[] = [
   },
 ];
 
-const NewDealsBlock = () => {
-  const classes = useNewDealsBlockStyles();
+const Deals = () => {
+  const classes = useDealsPageStyles();
+  const headerProps = useHeaderProps({
+    type: 'search-dark',
+    isLinks: true,
+    isSignIn: true,
+    isSearch: true,
+  });
   return (
-    <Box sx={classes.root}>
-      <Typography variant="caption" sx={blueTitleStyles}>
-        NEW DEALS
-      </Typography>
-      <Typography variant="h2" fontWeight={600} marginBottom="40px">
-        View Active Deals
-      </Typography>
-      <Box sx={classes.dealCardsWrapper}>
-        {mockData.map((deal, index) => (
-          <Grid item xs={3} key={index}>
-            <DealCard deal={deal} />
-          </Grid>
-        ))}
+    <Layout {...headerProps}>
+      <Box sx={classes.root}>
+        <Box sx={classes.leftColumn}></Box>
+        <Box sx={classes.rightColumn}>
+          <Box sx={classes.rightColumnHeader}>
+            <Typography variant="body1">
+              <span style={{ fontWeight: 600 }}>{mockData.length} Deals</span>{' '}
+              found for Invest
+            </Typography>
+          </Box>
+        </Box>
       </Box>
-      <Link href="/deals">
-        <Typography variant="body1" sx={viewAllLink}>
-          View all deals
-        </Typography>
-      </Link>
-    </Box>
+    </Layout>
   );
 };
 
-export default NewDealsBlock;
+export default Deals;

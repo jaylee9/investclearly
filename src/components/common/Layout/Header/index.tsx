@@ -34,7 +34,7 @@ const popoverMockData: { value: string; href: string }[] = [
   { value: 'Senior Housing', href: '/example' },
   { value: 'Single Family', href: '/example' },
   { value: 'Specialty', href: '/example' },
-  { value: 'All Deals', href: '/example' },
+  { value: 'All Deals', href: '/deals' },
   { value: 'Storage', href: '/example' },
 ];
 
