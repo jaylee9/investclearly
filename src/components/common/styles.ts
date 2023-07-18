@@ -1,4 +1,5 @@
 import theme from '@/config/theme';
+import { SelectVariant } from './Select';
 
 const { palette, typography } = theme;
 
@@ -226,6 +227,142 @@ export const useDealCardStyles = () => {
       '& i': {
         fontSize: '24px',
         color: theme.palette.primary.light,
+      },
+    },
+    largeRoot: {
+      display: 'flex',
+      borderRadius: '0px 12px 12px 0px',
+      width: '100%',
+      background: palette.common.white,
+      gap: '16px',
+      alignItems: 'stretch',
+      '& img': {
+        borderRadius: '12px 0px 0px 12px',
+        height: 'auto',
+      },
+    },
+    largeContent: {
+      padding: '24px 24px 24px 0px',
+      boxSizing: 'border-box',
+      width: '100%',
+    },
+    largeHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginBottom: '12px',
+      '& i': {
+        fontSize: '24px',
+        color: palette.text.secondary,
+        cursor: 'pointer',
+      },
+    },
+    largeHeaderLeftColumn: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '4px',
+    },
+    promoted: {
+      padding: '4px 12px',
+      color: palette.common.white,
+      borderRadius: '12px',
+      background: palette.secondary.main,
+      fontWeight: 600,
+      height: '24px',
+      display: 'flex',
+      alignItems: 'center',
+      width: 'fit-content',
+    },
+    sponsorInfo: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      color: palette.text.secondary,
+    },
+    sponsorRating: {
+      display: 'flex',
+      gap: '4px',
+      alignItems: 'center',
+      '& .icon-Star': {
+        fontSize: '12px',
+        color: palette.secondary.main,
+      },
+      color: palette.secondary.main,
+      '& span': {
+        '&:last-child': {
+          color: palette.text.secondary,
+        },
+      },
+    },
+    sponsorProperties: {
+      display: 'flex',
+    },
+    sponsorPropertiesColumn: {
+      width: '50%',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px',
+    },
+    sponsorProperty: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      '& i': {
+        fontSize: '24px',
+        color: palette.primary.light,
+      },
+    },
+  };
+};
+
+interface UseSelectStylesProps {
+  variant: SelectVariant;
+}
+
+export const useSelectStyles = ({ variant }: UseSelectStylesProps) => {
+  return {
+    root: {
+      color:
+        variant === SelectVariant.Light
+          ? palette.text.disabled
+          : palette.common.black,
+      paddingRight: '12px',
+      fontSize: '15px',
+      borderRadius: '12px',
+      width: '100%',
+      height: '44px',
+      boxShadow: 'none',
+      border: 'none',
+      background: palette.common.white,
+      '&:hover .MuiOutlinedInput-notchedOutline': {
+        borderColor: palette.secondary.dark,
+        borderWidth: '1px',
+      },
+      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+        borderWidth: '1px',
+        borderColor: palette.primary.light,
+      },
+      '& .MuiOutlinedInput-notchedOutline': {
+        border: `1px solid ${theme.palette.background.paper}`,
+      },
+    },
+    menuPaper: {
+      '& .MuiPaper-root': {
+        background: palette.common.white,
+        borderRadius: '12px',
+        border: `1px solid ${palette.background.default}`,
+        marginTop: '4px',
+        '& ul': {
+          padding: '0px',
+        },
+        '& li': {
+          padding: '6px 24px',
+          '&:hover': {
+            background: palette.background.default,
+          },
+        },
+        '& .Mui-disabled': {
+          display: 'none',
+        },
       },
     },
   };

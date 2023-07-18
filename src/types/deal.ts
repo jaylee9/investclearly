@@ -1,4 +1,5 @@
 export interface IDeal {
+  id?: number;
   name: string;
   sponsor_name: string;
   rating: number;

@@ -57,7 +57,56 @@ const DealCard = ({
       </Box>
     </Box>
   ) : (
-    <Box></Box>
+    <Box sx={classes.largeRoot}>
+      <Image src={deal.image} alt="deal image" width={200} height={170} />
+      <Box sx={classes.largeContent}>
+        <Box sx={classes.largeHeader}>
+          <Box sx={classes.largeHeaderLeftColumn}>
+            {deal.promoted && (
+              <Typography variant="caption" sx={classes.promoted}>
+                Promoted
+              </Typography>
+            )}
+            <Typography variant="h5" fontWeight={600}>
+              {deal.name}
+            </Typography>
+            <Box sx={classes.sponsorInfo}>
+              <Typography variant="caption">{deal.sponsor_name}</Typography>
+              <Typography variant="caption" sx={classes.sponsorRating}>
+                <i className="icon-Star"></i>
+                <span>{deal.rating}</span>
+                <span>({deal.rating_amount})</span>
+              </Typography>
+            </Box>
+          </Box>
+          <div>
+            <i className="icon-Saved"></i>
+          </div>
+        </Box>
+        <Box sx={classes.sponsorProperties}>
+          <Box sx={classes.sponsorPropertiesColumn}>
+            <Typography variant="body1" sx={classes.sponsorProperty}>
+              <i className="icon-Location"></i>
+              {deal.location}
+            </Typography>
+            <Typography variant="body1" sx={classes.sponsorProperty}>
+              <i className="icon-Status"></i>
+              {deal.status}
+            </Typography>
+          </Box>
+          <Box sx={classes.sponsorPropertiesColumn}>
+            <Typography variant="body1" sx={classes.sponsorProperty}>
+              <i className="icon-Investment"></i>
+              Min investment ${deal.min_investment}
+            </Typography>
+            <Typography variant="body1" sx={classes.sponsorProperty}>
+              <i className="icon-Asset-class"></i>
+              {deal.asset_class}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

@@ -20,10 +20,28 @@ const useDealsPageStyles = () => {
       padding: '12px 24px',
       display: 'flex',
       justifyContent: 'space-between',
+      alignItems: 'center',
       borderRadius: '12px',
       '& p': {
         color: palette.text.secondary,
       },
+      marginBottom: '16px',
+    },
+    selectWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      '& p': {
+        color: palette.text.secondary,
+      },
+    },
+    selectContent: {
+      width: '200px',
+    },
+    dealsWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
     },
   };
 };
