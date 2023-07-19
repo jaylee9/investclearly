@@ -1,15 +1,17 @@
 import CustomAccordion from '@/components/common/Accordion';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
-import { RATINGS, STATUSES } from '@/config/constants';
+import { RATINGS, REGIONS, STATUSES } from '@/config/constants';
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useDealsFiltersStyles } from './styles';
 import { assetClasses } from '@/components/common/Layout/Header';
+import CustomSlider from '@/components/common/Slider';
 
 interface IFilters {
   ratings: number[];
   asset_classes: string[];
   statuses: string[];
+  regions: string[];
 }
 
 const DealsFilters = () => {
@@ -19,6 +21,7 @@ const DealsFilters = () => {
     ratings: [],
     asset_classes: [],
     statuses: [],
+    regions: [],
   });
   const [showAll, setShowAll] = useState({
     asset_classes: false,
@@ -67,6 +70,16 @@ const DealsFilters = () => {
     } else {
       const statuses = [...filters.statuses, value];
       setFilters({ ...filters, statuses });
+    }
+  };
+
+  const handleRegionsChange = (value: string) => {
+    if (filters.regions.includes(value)) {
+      const regions = filters.regions.filter(item => item !== value);
+      setFilters({ ...filters, regions });
+    } else {
+      const regions = [...filters.regions, value];
+      setFilters({ ...filters, regions });
     }
   };
   return (
@@ -136,6 +149,28 @@ const DealsFilters = () => {
                 label={status.label}
               />
             ))}
+          </Box>
+        </Box>
+      </CustomAccordion>
+      <CustomAccordion label="Region">
+        <Box sx={classes.accordionContent}>
+          <Box sx={classes.assetClassesWrapper}>
+            {REGIONS.map(region => (
+              <CustomCheckbox
+                customStyles={classes.ratingCheckbox}
+                key={region.value}
+                onChange={() => handleRegionsChange(region.value)}
+                checked={filters.regions.includes(region.value)}
+                label={region.label}
+              />
+            ))}
+          </Box>
+        </Box>
+      </CustomAccordion>
+      <CustomAccordion label="Target IRR, %">
+        <Box sx={classes.accordionContent}>
+          <Box>
+            <CustomSlider min={2} max={12} />
           </Box>
         </Box>
       </CustomAccordion>

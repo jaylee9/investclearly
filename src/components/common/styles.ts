@@ -400,3 +400,13 @@ export const useAccordionStyles = () => {
     },
   };
 };
+
+export const useSliderStyles = () => {
+  return {
+    inputsWrapper: {
+      display: 'flex',
+      gap: '12px',
+      alignItems: 'center',
+    },
+  };
+};
