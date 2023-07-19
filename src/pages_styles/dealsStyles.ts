@@ -1,7 +1,7 @@
 import theme from '@/config/theme';
 
 const useDealsPageStyles = () => {
-  const { palette } = theme;
+  const { palette, customShadows } = theme;
   return {
     root: {
       display: 'flex',
@@ -11,6 +11,8 @@ const useDealsPageStyles = () => {
     leftColumn: {
       flex: '30%',
       background: palette.common.white,
+      borderRadius: '12px',
+      boxShadow: customShadows.header,
     },
     rightColumn: {
       flex: '70%',
