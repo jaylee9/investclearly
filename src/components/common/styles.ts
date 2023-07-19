@@ -367,3 +367,27 @@ export const useSelectStyles = ({ variant }: UseSelectStylesProps) => {
     },
   };
 };
+
+export const useAccordionStyles = () => {
+  return {
+    root: {
+      background: palette.common.white,
+      boxShadow: 'none',
+      borderRadius: '0px !important',
+      padding: '0px 16px',
+      borderBottom: `1px solid ${palette.background.paper}`,
+      '& .MuiAccordionSummary-content': {
+        '& .MuiTypography-root': {
+          fontWeight: 600,
+          color: palette.common.black,
+        },
+      },
+      '& .MuiAccordionDetails-root': {
+        padding: '8px 0px 16px 0px',
+      },
+      '& div': {
+        padding: 0,
+      },
+    },
+  };
+};

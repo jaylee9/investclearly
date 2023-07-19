@@ -1,3 +1,4 @@
+import CustomAccordion from '@/components/common/Accordion';
 import DealCard, { DealCardVariant } from '@/components/common/DealCard';
 import Layout from '@/components/common/Layout';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
@@ -85,7 +86,9 @@ const Deals = () => {
   return (
     <Layout {...headerProps}>
       <Box sx={classes.root}>
-        <Box sx={classes.leftColumn}></Box>
+        <Box sx={classes.leftColumn}>
+          <CustomAccordion label="Test">123</CustomAccordion>
+        </Box>
         <Box sx={classes.rightColumn}>
           <Box sx={classes.rightColumnHeader}>
             <Typography variant="body1">
