@@ -376,6 +376,7 @@ export const useAccordionStyles = () => {
       borderRadius: '0px !important',
       padding: '0px 16px',
       borderBottom: `1px solid ${palette.background.paper}`,
+      margin: '0px !important',
       '& .MuiButtonBase-root': {
         '&:first-child': {
           minHeight: 0,
@@ -385,7 +386,6 @@ export const useAccordionStyles = () => {
         display: 'none',
       },
       '& .MuiAccordionSummary-content': {
-        margin: '16px 0px 8px 0px',
         '& .MuiTypography-root': {
           fontWeight: 600,
           color: palette.common.black,

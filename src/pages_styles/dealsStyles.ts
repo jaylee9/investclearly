@@ -13,6 +13,7 @@ const useDealsPageStyles = () => {
       background: palette.common.white,
       borderRadius: '12px',
       boxShadow: customShadows.header,
+      paddingBottom: '24px',
       '& .MuiPaper-root': {
         '&:first-child': {
           borderRadius: '100px 100px 0px 0px !important',
