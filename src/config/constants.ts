@@ -11,3 +11,5 @@ export const REGIONS = [
   { id: 4, label: 'Southeast', value: 'southeast', href: '#' },
   { id: 5, label: 'Southwest', value: 'southwest', href: '#' },
 ];
+
+export const RATINGS = [5, 4, 3];
