@@ -376,6 +376,9 @@ export const useAccordionStyles = () => {
       borderRadius: '0px !important',
       padding: '0px 16px',
       borderBottom: `1px solid ${palette.background.paper}`,
+      '&:before': {
+        display: 'none',
+      },
       '& .MuiAccordionSummary-content': {
         '& .MuiTypography-root': {
           fontWeight: 600,

@@ -14,7 +14,7 @@ const links: TLinks = [
   { href: '/sponsor-profile', label: 'Claim Sponsor Profile' },
 ];
 
-const popoverMockData: { value: string; href: string }[] = [
+export const assetClasses: { value: string; href: string }[] = [
   { value: 'Build-to-Rent', href: '/example' },
   { value: 'Co-Living', href: '/example' },
   { value: 'Data Center', href: '/example' },
@@ -94,7 +94,7 @@ const Header = ({
               }
             >
               <Box sx={classes.popoverWrapper}>
-                {popoverMockData.map(item => (
+                {assetClasses.map(item => (
                   <Link
                     href={item.href}
                     key={item.value}
