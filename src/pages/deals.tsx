@@ -4,6 +4,7 @@ import DealCard, { DealCardVariant } from '@/components/common/DealCard';
 import Layout from '@/components/common/Layout';
 import { assetClasses } from '@/components/common/Layout/Header';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
+import { STATUSES } from '@/config/constants';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealsPageStyles from '@/pages_styles/dealsStyles';
 import { IDeal } from '@/types/deal';
@@ -13,6 +14,7 @@ import { useState } from 'react';
 interface IFilters {
   ratings: number[];
   asset_classes: string[];
+  statuses: string[];
 }
 
 const mockData: IDeal[] = [
@@ -98,6 +100,7 @@ const Deals = () => {
   const [filters, setFilters] = useState<IFilters>({
     ratings: [],
     asset_classes: [],
+    statuses: [],
   });
   const [showAll, setShowAll] = useState({
     asset_classes: false,
@@ -116,7 +119,6 @@ const Deals = () => {
   };
 
   //asset_classes
-
   const handleShowMoreAssetClasses = () => {
     if (showAll.asset_classes) {
       setShowAll({ ...showAll, asset_classes: false });
@@ -124,11 +126,9 @@ const Deals = () => {
       setShowAll({ ...showAll, asset_classes: true });
     }
   };
-
   const assetClassesToShow = showAll.asset_classes
     ? assetClasses
     : assetClasses.slice(0, 8);
-
   const handleAssetClassChange = (value: string) => {
     if (filters.asset_classes.includes(value)) {
       const asset_classes = filters.asset_classes.filter(
@@ -138,6 +138,17 @@ const Deals = () => {
     } else {
       const asset_classes = [...filters.asset_classes, value];
       setFilters({ ...filters, asset_classes });
+    }
+  };
+
+  //statuses
+  const handleStatusesChange = (value: string) => {
+    if (filters.statuses.includes(value)) {
+      const statuses = filters.statuses.filter(item => item !== value);
+      setFilters({ ...filters, statuses });
+    } else {
+      const statuses = [...filters.statuses, value];
+      setFilters({ ...filters, statuses });
     }
   };
 
@@ -196,6 +207,21 @@ const Deals = () => {
                   }`}
                 ></span>
               </Typography>
+            </Box>
+          </CustomAccordion>
+          <CustomAccordion label="Status">
+            <Box sx={classes.accordionContent}>
+              <Box sx={classes.assetClassesWrapper}>
+                {STATUSES.map(status => (
+                  <CustomCheckbox
+                    customStyles={classes.ratingCheckbox}
+                    key={status.value}
+                    onChange={() => handleStatusesChange(status.value)}
+                    checked={filters.statuses.includes(status.value)}
+                    label={status.label}
+                  />
+                ))}
+              </Box>
             </Box>
           </CustomAccordion>
         </Box>
