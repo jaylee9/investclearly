@@ -1,7 +1,7 @@
 import { Box, Typography, Grid } from '@mui/material';
 import Link from 'next/link';
 import { blueTitleStyles, useDealsBlockStyles } from './styles';
-import { REGIONS } from '@/config/constants';
+import { Regions } from '@/backend/constants/enums/regions';
 
 const AssetClasses = [
   { id: 1, name: 'Build-to-Rent', href: '#' },
@@ -27,6 +27,10 @@ const AssetClasses = [
 
 const DealsBlock = () => {
   const classes = useDealsBlockStyles();
+  const regionArray = Object.values(Regions).map(value => ({
+    value: value,
+    href: value.replace(/\s+/g, '_').toLowerCase(),
+  }));
   return (
     <Box sx={classes.root}>
       <Typography variant="caption" sx={blueTitleStyles}>
@@ -56,10 +60,10 @@ const DealsBlock = () => {
             Region
           </Typography>
           <Box sx={classes.list}>
-            {REGIONS.map(region => (
+            {regionArray.map(region => (
               <Link href={region.href} key={region.value}>
                 <Typography variant="body1">
-                  {region.label}
+                  {region.value}
                   <i className="icon-Caret-right"></i>
                 </Typography>
               </Link>
