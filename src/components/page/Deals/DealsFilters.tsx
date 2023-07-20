@@ -22,11 +22,12 @@ interface IFilters {
   asset_classes: string[];
   statuses: string[];
   regions: string[];
+  investment_structure: string[];
   targetIRR: Range;
   actualIRR: Range;
   fees: Range;
   min_investment: Range;
-  investment_structure: string[];
+  prefferd_return: Range;
 }
 
 const DealsFilters = () => {
@@ -51,6 +52,10 @@ const DealsFilters = () => {
       to: 12,
     },
     min_investment: {
+      from: 5000,
+      to: 25000,
+    },
+    prefferd_return: {
       from: 5000,
       to: 25000,
     },
@@ -98,7 +103,12 @@ const DealsFilters = () => {
   //irr + min investment + fees
   const handleSliderChange = (
     values: number[],
-    key: 'targetIRR' | 'actualIRR' | 'fees' | 'min_investment'
+    key:
+      | 'targetIRR'
+      | 'actualIRR'
+      | 'fees'
+      | 'min_investment'
+      | 'preffered_return'
   ) => {
     setFilters(prevFilters => ({
       ...prevFilters,
@@ -207,15 +217,15 @@ const DealsFilters = () => {
       <CustomAccordion label="Region">
         <Box sx={classes.accordionContent}>
           <Box sx={classes.assetClassesWrapper}>
-            {INVESTMENT_STRUCTURES.map(structure => (
+            {REGIONS.map(region => (
               <CustomCheckbox
                 customStyles={classes.ratingCheckbox}
-                key={structure.value}
+                key={region.value}
                 onChange={() =>
-                  handleStringArrayChange('regions', structure.value)
+                  handleStringArrayChange('regions', region.value)
                 }
-                checked={filters.regions.includes(structure.value)}
-                label={structure.label}
+                checked={filters.regions.includes(region.value)}
+                label={region.label}
               />
             ))}
           </Box>
@@ -266,6 +276,19 @@ const DealsFilters = () => {
               max={25000}
               onSubmit={value =>
                 handleSliderChange(value as number[], 'min_investment')
+              }
+            />
+          </Box>
+        </Box>
+      </CustomAccordion>
+      <CustomAccordion label="Preffered Return, USD">
+        <Box sx={classes.accordionContent}>
+          <Box>
+            <CustomSlider
+              min={5000}
+              max={25000}
+              onSubmit={value =>
+                handleSliderChange(value as number[], 'preffered_return')
               }
             />
           </Box>
