@@ -367,3 +367,57 @@ export const useSelectStyles = ({ variant }: UseSelectStylesProps) => {
     },
   };
 };
+
+export const useAccordionStyles = () => {
+  return {
+    root: {
+      background: palette.common.white,
+      boxShadow: 'none',
+      borderRadius: '0px !important',
+      padding: '0px 16px',
+      borderBottom: `1px solid ${palette.background.paper}`,
+      margin: '0px !important',
+      '& .MuiButtonBase-root': {
+        '&:first-child': {
+          minHeight: 0,
+        },
+      },
+      '&:before': {
+        display: 'none',
+      },
+      '& .MuiAccordionSummary-content': {
+        '& .MuiTypography-root': {
+          fontWeight: 600,
+          color: palette.common.black,
+        },
+      },
+      '& .MuiAccordionDetails-root': {
+        padding: '0px 0px 16px 0px',
+      },
+      '& div': {
+        padding: 0,
+      },
+    },
+  };
+};
+
+export const useSliderStyles = () => {
+  return {
+    root: {
+      color: palette.primary.light,
+      '& .MuiSlider-thumb': {
+        width: '16px',
+        height: '16px',
+      },
+      '& .MuiSlider-rail': {
+        backgroundColor: palette.background.paper,
+        opacity: 1,
+      },
+    },
+    inputsWrapper: {
+      display: 'flex',
+      gap: '12px',
+      alignItems: 'center',
+    },
+  };
+};

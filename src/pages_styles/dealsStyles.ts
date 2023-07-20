@@ -1,7 +1,7 @@
 import theme from '@/config/theme';
 
 const useDealsPageStyles = () => {
-  const { palette } = theme;
+  const { palette, customShadows } = theme;
   return {
     root: {
       display: 'flex',
@@ -9,11 +9,19 @@ const useDealsPageStyles = () => {
       padding: '32px 48px',
     },
     leftColumn: {
-      flex: '30%',
+      flex: '25%',
       background: palette.common.white,
+      borderRadius: '12px',
+      boxShadow: customShadows.header,
+      paddingBottom: '24px',
+      '& .MuiPaper-root': {
+        '&:first-child': {
+          borderRadius: '100px 100px 0px 0px !important',
+        },
+      },
     },
     rightColumn: {
-      flex: '70%',
+      flex: '75%',
     },
     rightColumnHeader: {
       background: palette.common.white,

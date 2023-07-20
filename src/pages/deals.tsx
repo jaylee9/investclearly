@@ -1,6 +1,7 @@
 import DealCard, { DealCardVariant } from '@/components/common/DealCard';
 import Layout from '@/components/common/Layout';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
+import DealsFilters from '@/components/page/Deals/DealsFilters';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealsPageStyles from '@/pages_styles/dealsStyles';
 import { IDeal } from '@/types/deal';
@@ -76,16 +77,20 @@ const sortOptions = [
 
 const Deals = () => {
   const classes = useDealsPageStyles();
+
   const headerProps = useHeaderProps({
     type: 'search-dark',
     isLinks: true,
     isSignIn: true,
     isSearch: true,
   });
+
   return (
     <Layout {...headerProps}>
       <Box sx={classes.root}>
-        <Box sx={classes.leftColumn}></Box>
+        <Box sx={classes.leftColumn}>
+          <DealsFilters />
+        </Box>
         <Box sx={classes.rightColumn}>
           <Box sx={classes.rightColumnHeader}>
             <Typography variant="body1">
