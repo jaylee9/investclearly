@@ -92,7 +92,7 @@ const CustomSlider = ({
         {isSubmitOption && (
           <Button
             variant="secondary"
-            customStyles={{ minWidth: '100px !important' }}
+            customStyles={{ minWidth: '30%' }}
             onClick={handleSubmit}
           >
             OK
