@@ -8,34 +8,11 @@ import Input from '@/components/common/Input';
 import CustomPopover from '@/components/common/Popover';
 import { TLinks } from '@/types/common';
 import { HeaderProps } from '@/hooks/useHeaderProps';
+import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 
 const links: TLinks = [
   { href: '/review', label: 'Write a Review' },
   { href: '/sponsor-profile', label: 'Claim Sponsor Profile' },
-];
-
-export const assetClasses: { value: string; href: string }[] = [
-  { value: 'Build-to-Rent', href: '/example' },
-  { value: 'Co-Living', href: '/example' },
-  { value: 'Data Center', href: '/example' },
-  { value: 'Flex R&D', href: '/example' },
-  { value: 'Flex/Office', href: '/example' },
-  { value: 'Hospitality', href: '/example' },
-  { value: 'Industrial', href: '/example' },
-  { value: 'Land Manufactured Housing', href: '/example' },
-  { value: 'Medical Office', href: '/example' },
-  { value: 'Mixed Use', href: '/example' },
-  { value: 'Mobile Home', href: '/example' },
-  { value: 'Multi-Asset', href: '/example' },
-  { value: 'Multifamily', href: '/example' },
-  { value: 'Office', href: '/example' },
-  { value: 'Parking Garage', href: '/example' },
-  { value: 'Retail', href: '/example' },
-  { value: 'Senior Housing', href: '/example' },
-  { value: 'Single Family', href: '/example' },
-  { value: 'Specialty', href: '/example' },
-  { value: 'All Deals', href: '/deals' },
-  { value: 'Storage', href: '/example' },
 ];
 
 const Header = ({
@@ -59,6 +36,17 @@ const Header = ({
   const handleArrowClick = () => {
     setIsArrowRotated(!isArrowRotated);
   };
+  const assetClassesArray = [
+    ...Object.keys(AssetClasses).map(key => {
+      const value = AssetClasses[key as keyof typeof AssetClasses];
+      const href = value.replace(/[\s']/g, '_').toLowerCase();
+      return { value, href };
+    }),
+    { value: 'All Deals', href: '/deals' },
+  ];
+  const columnLength = Math.ceil(assetClassesArray.length / 2);
+  const firstColumn = assetClassesArray.slice(0, columnLength);
+  const secondColumn = assetClassesArray.slice(columnLength);
   return (
     <header style={classes.root}>
       {!!content && content}
@@ -94,19 +82,32 @@ const Header = ({
               }
             >
               <Box sx={classes.popoverWrapper}>
-                {assetClasses.map(item => (
-                  <Link
-                    href={item.href}
-                    key={item.value}
-                    style={
-                      item.value === 'All Deals'
-                        ? { ...classes.popoverItem, ...classes.dealsLink }
-                        : classes.popoverItem
-                    }
-                  >
-                    {item.value}
-                  </Link>
-                ))}
+                <Box sx={classes.column}>
+                  {firstColumn.map(item => (
+                    <Link
+                      href={item.href}
+                      key={item.value}
+                      style={classes.popoverItem}
+                    >
+                      {item.value}
+                    </Link>
+                  ))}
+                </Box>
+                <Box sx={classes.column}>
+                  {secondColumn.map(item => (
+                    <Link
+                      href={item.href}
+                      key={item.value}
+                      style={
+                        item.value === 'All Deals'
+                          ? { ...classes.popoverItem, ...classes.dealsLink }
+                          : classes.popoverItem
+                      }
+                    >
+                      {item.value}
+                    </Link>
+                  ))}
+                </Box>
               </Box>
             </CustomPopover>
             {links.map(link => (

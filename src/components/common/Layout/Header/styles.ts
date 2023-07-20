@@ -40,18 +40,14 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
         theme.palette.text.secondary,
     },
     popoverWrapper: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      alignItems: 'start',
-      justifyItems: 'start',
-      '&:before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: '50%',
-        borderLeft: `1px solid ${theme.palette.background.paper}`,
-        transform: 'translateX(-50%)',
+      display: 'flex',
+      width: '500px',
+    },
+    column: {
+      display: 'flex',
+      flexDirection: 'column',
+      '&:first-child': {
+        borderRight: `1px solid ${theme.palette.background.paper}`,
       },
     },
     popoverItem: {
