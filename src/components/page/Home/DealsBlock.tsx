@@ -57,7 +57,7 @@ const DealsBlock = () => {
           </Typography>
           <Box sx={classes.list}>
             {REGIONS.map(region => (
-              <Link href={region.href} key={region.id}>
+              <Link href={region.href} key={region.value}>
                 <Typography variant="body1">
                   {region.label}
                   <i className="icon-Caret-right"></i>
