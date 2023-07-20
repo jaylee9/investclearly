@@ -3,5 +3,5 @@ export const PaginationResultConstants = {
   currentPage: 0,
   nextPage: 0,
   prevPage: 0,
-  lastPage: 0
+  lastPage: 0,
 };

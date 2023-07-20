@@ -8,7 +8,6 @@ import { Exemptions } from '../../../constants/enums/exemptions';
 export interface FindAllDealsInterface {
   pageSize?: number;
   page?: number;
-  order?: string;
   orderDirection?: OrderDirectionConstants;
   assetClasses?: AssetClasses[];
   statuses?: DealStatuses[];
@@ -20,5 +19,5 @@ export interface FindAllDealsInterface {
   investmentMaxValue?: number;
   exemptions?: Exemptions[];
   sponsorFeesMin?: number;
-  sponsorFeesMax?: number
-};
+  sponsorFeesMax?: number;
+}

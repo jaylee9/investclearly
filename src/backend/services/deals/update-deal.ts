@@ -7,11 +7,7 @@ export const update = async (id: number, data: DealInterface) => {
   const connection = await getDatabaseConnection();
   await getDealById(id);
 
-  await connection.manager.update(
-    Deal,
-    { id },
-    { ...data }
-  );
+  await connection.manager.update(Deal, { id }, { ...data });
 
   return getDealById(id);
 };

@@ -17,4 +17,4 @@ export interface CreateDealInterface {
   dealLegalName?: string;
   dealSponsor?: string;
   exemption?: string;
-};
+}

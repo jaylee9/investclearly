@@ -1,9 +1,15 @@
-import { SelectQueryBuilder } from 'typeorm';
+import { SelectQueryBuilder, ObjectLiteral } from 'typeorm';
 
-export const pagination = (pageSize: number, page: number, searchQuery:  SelectQueryBuilder<any>) => {
+interface EntityObjectLiteral extends ObjectLiteral {}
+
+export const pagination = <T extends EntityObjectLiteral>(
+  pageSize: number,
+  page: number,
+  searchQuery: SelectQueryBuilder<T>
+): SelectQueryBuilder<T> => {
   if (pageSize && page) {
     const skippedItems = (page - 1) * pageSize;
-    return searchQuery = searchQuery.skip(skippedItems).take(pageSize);
+    return searchQuery.skip(skippedItems).take(pageSize);
   }
   return searchQuery;
-}
+};

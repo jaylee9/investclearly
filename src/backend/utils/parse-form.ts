@@ -4,7 +4,6 @@ import formidable from 'formidable';
 export const parseForm = async (
   request: NextApiRequest
 ): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
-
   const form = formidable({});
 
   return new Promise((resolve, reject) => {

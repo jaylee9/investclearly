@@ -16,11 +16,17 @@ export const config = {
   },
 };
 
-const updateDeal = async (request: NextApiRequest, response: NextApiResponse) => {
+const updateDeal = async (
+  request: NextApiRequest,
+  response: NextApiResponse
+) => {
   await authMiddleware(request, response);
   const result = await parseForm(request);
   const id: number = Number(request.query.id);
-  const updatedDeal = await update(id, result.fields as unknown as DealInterface);
+  const updatedDeal = await update(
+    id,
+    result.fields as unknown as DealInterface
+  );
 
   if (updatedDeal) {
     response.status(200).json(updatedDeal);
@@ -35,7 +41,10 @@ const getDeal = async (request: NextApiRequest, response: NextApiResponse) => {
   response.status(200).json(dealRecord);
 };
 
-const deleteDeal = async (request: NextApiRequest, response: NextApiResponse) => {
+const deleteDeal = async (
+  request: NextApiRequest,
+  response: NextApiResponse
+) => {
   await authMiddleware(request, response);
   const id: number = Number(request.query.id);
   const dealRecord = await getDealById(id);
@@ -46,4 +55,8 @@ const deleteDeal = async (request: NextApiRequest, response: NextApiResponse) =>
   response.status(200).json({ message: DealConstants.dealSuccessfullyDeleted });
 };
 
-export default apiHandler({ PUT: updateDeal, GET: getDeal, DELETE: deleteDeal });
+export default apiHandler({
+  PUT: updateDeal,
+  GET: getDeal,
+  DELETE: deleteDeal,
+});

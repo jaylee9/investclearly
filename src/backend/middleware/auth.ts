@@ -14,19 +14,27 @@ interface AuthenticatedRequest extends NextApiRequest {
   user?: User;
 }
 
-export const authMiddleware = async (request: AuthenticatedRequest, response: NextApiResponse) => {
+export const authMiddleware = async (
+  request: AuthenticatedRequest,
+  response: NextApiResponse
+) => {
   const token = getCookies({ req: request, res: response });
 
   if (!token.accessToken) {
     throw new createHttpError.Unauthorized(AuthConstants.unauthorized);
   }
 
-  const { userId, email } = jwt.verify(token.accessToken, process.env.JWT_SECRET || '') as jwt.JwtPayload;
+  const { userId, email } = jwt.verify(
+    token.accessToken,
+    process.env.JWT_SECRET || ''
+  ) as jwt.JwtPayload;
   const connection = await getDatabaseConnection();
-  const user = await connection.manager.findOne(User, { where: { id: userId, email }, });
+  const user = await connection.manager.findOne(User, {
+    where: { id: userId, email },
+  });
 
   if (!user) {
     throw new createHttpError.Unauthorized(AuthConstants.unauthorized);
   }
   request.user = user;
-}
+};

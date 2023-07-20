@@ -18,7 +18,9 @@ export const config = {
 const create = async (request: NextApiRequest, response: NextApiResponse) => {
   await authMiddleware(request, response);
   const result = await parseForm(request);
-  const newDeal = await createDeal(result.fields as unknown as CreateDealInterface);
+  const newDeal = await createDeal(
+    result.fields as unknown as CreateDealInterface
+  );
 
   if (newDeal) {
     response.status(200).json(newDeal);
