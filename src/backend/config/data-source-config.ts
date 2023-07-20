@@ -4,6 +4,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import * as dotenv from 'dotenv';
 import path from 'path';
 import { User } from '../entities/user.entity';
+import { Deal } from '../entities/deals.entity';
 
 dotenv.config({ path: path.join(__dirname, '../../../.env') });
 
@@ -17,7 +18,7 @@ const config = {
   synchronize: false,
   namingStrategy: new SnakeNamingStrategy(),
   logging: false,
-  entities: [User],
+  entities: [User, Deal],
 };
 
 export const AppDataSource = new DataSource({
