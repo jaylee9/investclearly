@@ -12,7 +12,7 @@ export const buildPaginationInfo = (
     currentPage: +page || PaginationResultConstants.currentPage,
     nextPage:
       +page + 1 > +lastPage
-        ? 1
+        ? +lastPage
         : +page + 1 || PaginationResultConstants.nextPage,
     prevPage:
       +page - 1 < 1 ? 1 : +page - 1 || PaginationResultConstants.prevPage,
