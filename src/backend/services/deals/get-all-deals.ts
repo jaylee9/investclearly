@@ -8,7 +8,7 @@ import { buildPaginationInfo } from '../../utils/pagination/build-pagination-inf
 import { PaginationConstants } from '../../constants/pagination-constants';
 
 export const getAllDeals = async (params: FindAllDealsInterface) => {
-  let {
+  const {
     pageSize = PaginationConstants.defaultPageSize,
     page = PaginationConstants.defaultPage,
     order,
@@ -34,22 +34,22 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
 
   if (assetClasses.length) {
     searchQuery = searchQuery
-      .where('deals.assetClass IN (:...assetClasses)', { assetClasses })
+      .where('deals.assetClass IN (:...assetClasses)', { assetClasses });
   }
 
   if (statuses.length) {
     searchQuery = searchQuery
-      .andWhere('deals.status IN (:...statuses)', { statuses })
+      .andWhere('deals.status IN (:...statuses)', { statuses });
   }
 
   if (regions.length) {
     searchQuery = searchQuery
-      .andWhere('deals.region IN (:...regions)', { regions })
+      .andWhere('deals.region IN (:...regions)', { regions });
   }
 
   if (investmentStructures.length) {
     searchQuery = searchQuery
-      .andWhere('deals.investmentStructure IN (:...investmentStructures)', { investmentStructures })
+      .andWhere('deals.investmentStructure IN (:...investmentStructures)', { investmentStructures });
   }
 
   if (IRRMin && IRRMax) {
@@ -64,7 +64,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
 
   if (exemptions.length) {
     searchQuery = searchQuery
-      .andWhere('deals.exemption IN (:...exemptions)', { exemptions })
+      .andWhere('deals.exemption IN (:...exemptions)', { exemptions });
   }
 
   if (investmentMinValue && investmentMaxValue) {

@@ -4,7 +4,6 @@ import { TPaginationInfo } from './paginate-info.type';
 
 export const buildPaginationInfo = (total: number, page: number, size: number): TPaginationInfo => {
   const lastPage = Math.ceil((total || 1) / size);
-
   return {
     total: total || PaginationResultConstants.total,
     currentPage: +page || PaginationResultConstants.currentPage,

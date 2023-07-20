@@ -14,7 +14,7 @@ export const config = {
   api: {
     bodyParser: false,
   },
-}
+};
 
 const updateDeal = async (request: NextApiRequest, response: NextApiResponse) => {
   await authMiddleware(request, response);
@@ -33,7 +33,7 @@ const getDeal = async (request: NextApiRequest, response: NextApiResponse) => {
   const id: number = Number(request.query.id);
   const dealRecord = await getDealById(id);
   response.status(200).json(dealRecord);
-}
+};
 
 const deleteDeal = async (request: NextApiRequest, response: NextApiResponse) => {
   await authMiddleware(request, response);
@@ -44,6 +44,6 @@ const deleteDeal = async (request: NextApiRequest, response: NextApiResponse) =>
     await deleteDealRecord(id);
   }
   response.status(200).json({ message: DealConstants.dealSuccessfullyDeleted });
-}
+};
 
 export default apiHandler({ PUT: updateDeal, GET: getDeal, DELETE: deleteDeal });

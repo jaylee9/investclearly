@@ -13,7 +13,7 @@ export const config = {
   api: {
     bodyParser: false,
   },
-}
+};
 
 const create = async (request: NextApiRequest, response: NextApiResponse) => {
   await authMiddleware(request, response);

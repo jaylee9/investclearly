@@ -21,4 +21,4 @@ export interface FindAllDealsInterface {
   exemptions?: Exemptions[];
   sponsorFeesMin?: number;
   sponsorFeesMax?: number
-}
+};

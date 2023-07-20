@@ -18,5 +18,5 @@ export enum AssetClasses {
   singleFamily = 'Single Family',
   specialty = 'Specialty',
   storage = 'Storage',
-  mobileHome = 'Mobile Home'
+  mobileHome = 'Mobile Home',
 }
