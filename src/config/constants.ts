@@ -5,11 +5,17 @@ export const STATUSES = [
 ];
 
 export const REGIONS = [
-  { id: 1, label: 'Midwest', value: 'midwest', href: '#' },
-  { id: 2, label: 'Northwest', value: 'northwest', href: '#' },
-  { id: 3, label: 'Northeast', value: 'northeast', href: '#' },
-  { id: 4, label: 'Southeast', value: 'southeast', href: '#' },
-  { id: 5, label: 'Southwest', value: 'southwest', href: '#' },
+  { label: 'Midwest', value: 'midwest', href: '#' },
+  { label: 'Northwest', value: 'northwest', href: '#' },
+  { label: 'Northeast', value: 'northeast', href: '#' },
+  { label: 'Southeast', value: 'southeast', href: '#' },
+  { label: 'Southwest', value: 'southwest', href: '#' },
 ];
 
 export const RATINGS = [5, 4, 3];
+
+export const INVESTMENT_STRUCTURES = [
+  { label: 'Equity', value: 'equity' },
+  { label: 'Debt', value: 'debt' },
+  { label: 'Preferred Equity', value: 'preferred_equity' },
+];

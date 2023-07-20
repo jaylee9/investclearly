@@ -1,13 +1,18 @@
 import CustomAccordion from '@/components/common/Accordion';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
-import { RATINGS, REGIONS, STATUSES } from '@/config/constants';
+import {
+  INVESTMENT_STRUCTURES,
+  RATINGS,
+  REGIONS,
+  STATUSES,
+} from '@/config/constants';
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useDealsFiltersStyles } from './styles';
 import { assetClasses } from '@/components/common/Layout/Header';
 import CustomSlider from '@/components/common/Slider';
 
-interface IRR {
+interface Range {
   from: number;
   to: number;
 }
@@ -17,8 +22,11 @@ interface IFilters {
   asset_classes: string[];
   statuses: string[];
   regions: string[];
-  targetIRR: IRR;
-  actualIRR: IRR;
+  targetIRR: Range;
+  actualIRR: Range;
+  fees: Range;
+  min_investment: Range;
+  investment_structure: string[];
 }
 
 const DealsFilters = () => {
@@ -29,6 +37,7 @@ const DealsFilters = () => {
     asset_classes: [],
     statuses: [],
     regions: [],
+    investment_structure: [],
     targetIRR: {
       from: 2,
       to: 12,
@@ -37,11 +46,31 @@ const DealsFilters = () => {
       from: 2,
       to: 12,
     },
+    fees: {
+      from: 2,
+      to: 12,
+    },
+    min_investment: {
+      from: 5000,
+      to: 25000,
+    },
   });
   const [showAll, setShowAll] = useState({
     asset_classes: false,
     sec_industry: false,
   });
+
+  const handleStringArrayChange = (
+    key: 'asset_classes' | 'statuses' | 'regions' | 'investment_structure',
+    value: string
+  ) => {
+    if (Array.isArray(filters[key])) {
+      const updatedArray = filters[key].includes(value)
+        ? filters[key].filter(item => item !== value)
+        : [...filters[key], value];
+      setFilters({ ...filters, [key]: updatedArray });
+    }
+  };
 
   //rating
   const handleRatingChange = (value: number) => {
@@ -65,44 +94,11 @@ const DealsFilters = () => {
   const assetClassesToShow = showAll.asset_classes
     ? assetClasses
     : assetClasses.slice(0, 8);
-  const handleAssetClassChange = (value: string) => {
-    if (filters.asset_classes.includes(value)) {
-      const asset_classes = filters.asset_classes.filter(
-        item => item !== value
-      );
-      setFilters({ ...filters, asset_classes });
-    } else {
-      const asset_classes = [...filters.asset_classes, value];
-      setFilters({ ...filters, asset_classes });
-    }
-  };
 
-  //statuses
-  const handleStatusesChange = (value: string) => {
-    if (filters.statuses.includes(value)) {
-      const statuses = filters.statuses.filter(item => item !== value);
-      setFilters({ ...filters, statuses });
-    } else {
-      const statuses = [...filters.statuses, value];
-      setFilters({ ...filters, statuses });
-    }
-  };
-
-  //regions
-  const handleRegionsChange = (value: string) => {
-    if (filters.regions.includes(value)) {
-      const regions = filters.regions.filter(item => item !== value);
-      setFilters({ ...filters, regions });
-    } else {
-      const regions = [...filters.regions, value];
-      setFilters({ ...filters, regions });
-    }
-  };
-
-  //target irr
-  const handleIrrChange = (
+  //irr + min investment + fees
+  const handleSliderChange = (
     values: number[],
-    key: 'targetIRR' | 'actualIRR'
+    key: 'targetIRR' | 'actualIRR' | 'fees' | 'min_investment'
   ) => {
     setFilters(prevFilters => ({
       ...prevFilters,
@@ -149,7 +145,9 @@ const DealsFilters = () => {
               <CustomCheckbox
                 customStyles={classes.ratingCheckbox}
                 key={assetClass.value}
-                onChange={() => handleAssetClassChange(assetClass.value)}
+                onChange={() =>
+                  handleStringArrayChange('asset_classes', assetClass.value)
+                }
                 checked={filters.asset_classes.includes(assetClass.value)}
                 label={assetClass.value}
               />
@@ -176,9 +174,31 @@ const DealsFilters = () => {
               <CustomCheckbox
                 customStyles={classes.ratingCheckbox}
                 key={status.value}
-                onChange={() => handleStatusesChange(status.value)}
+                onChange={() =>
+                  handleStringArrayChange('statuses', status.value)
+                }
                 checked={filters.statuses.includes(status.value)}
                 label={status.label}
+              />
+            ))}
+          </Box>
+        </Box>
+      </CustomAccordion>
+      <CustomAccordion label="Investment Structure">
+        <Box sx={classes.accordionContent}>
+          <Box sx={classes.assetClassesWrapper}>
+            {INVESTMENT_STRUCTURES.map(structure => (
+              <CustomCheckbox
+                customStyles={classes.ratingCheckbox}
+                key={structure.value}
+                onChange={() =>
+                  handleStringArrayChange(
+                    'investment_structure',
+                    structure.value
+                  )
+                }
+                checked={filters.investment_structure.includes(structure.value)}
+                label={structure.label}
               />
             ))}
           </Box>
@@ -187,13 +207,15 @@ const DealsFilters = () => {
       <CustomAccordion label="Region">
         <Box sx={classes.accordionContent}>
           <Box sx={classes.assetClassesWrapper}>
-            {REGIONS.map(region => (
+            {INVESTMENT_STRUCTURES.map(structure => (
               <CustomCheckbox
                 customStyles={classes.ratingCheckbox}
-                key={region.value}
-                onChange={() => handleRegionsChange(region.value)}
-                checked={filters.regions.includes(region.value)}
-                label={region.label}
+                key={structure.value}
+                onChange={() =>
+                  handleStringArrayChange('regions', structure.value)
+                }
+                checked={filters.regions.includes(structure.value)}
+                label={structure.label}
               />
             ))}
           </Box>
@@ -206,7 +228,7 @@ const DealsFilters = () => {
               min={2}
               max={12}
               onSubmit={value =>
-                handleIrrChange(value as number[], 'targetIRR')
+                handleSliderChange(value as number[], 'targetIRR')
               }
             />
           </Box>
@@ -219,7 +241,31 @@ const DealsFilters = () => {
               min={2}
               max={12}
               onSubmit={value =>
-                handleIrrChange(value as number[], 'actualIRR')
+                handleSliderChange(value as number[], 'actualIRR')
+              }
+            />
+          </Box>
+        </Box>
+      </CustomAccordion>
+      <CustomAccordion label="Fees, %">
+        <Box sx={classes.accordionContent}>
+          <Box>
+            <CustomSlider
+              min={2}
+              max={12}
+              onSubmit={value => handleSliderChange(value as number[], 'fees')}
+            />
+          </Box>
+        </Box>
+      </CustomAccordion>
+      <CustomAccordion label="Minimum Investment, USD">
+        <Box sx={classes.accordionContent}>
+          <Box>
+            <CustomSlider
+              min={5000}
+              max={25000}
+              onSubmit={value =>
+                handleSliderChange(value as number[], 'min_investment')
               }
             />
           </Box>
