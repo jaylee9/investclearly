@@ -403,6 +403,17 @@ export const useAccordionStyles = () => {
 
 export const useSliderStyles = () => {
   return {
+    root: {
+      color: palette.primary.light,
+      '& .MuiSlider-thumb': {
+        width: '16px',
+        height: '16px',
+      },
+      '& .MuiSlider-rail': {
+        backgroundColor: palette.background.paper,
+        opacity: 1,
+      },
+    },
     inputsWrapper: {
       display: 'flex',
       gap: '12px',
