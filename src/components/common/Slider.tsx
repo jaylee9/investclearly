@@ -8,9 +8,17 @@ interface CustomSliderProps {
   min: number;
   max: number;
   onChange?: (value: number[] | number) => void;
+  isSubmitOption?: boolean;
+  onSubmit?: (value: number[] | number) => void;
 }
 
-const CustomSlider = ({ min, max, onChange }: CustomSliderProps) => {
+const CustomSlider = ({
+  min,
+  max,
+  onChange,
+  isSubmitOption = true,
+  onSubmit,
+}: CustomSliderProps) => {
   const classes = useSliderStyles();
   const [value, setValue] = useState(max ? [min, max] : min);
   const [inputValues, setInputValues] = useState(
@@ -57,6 +65,12 @@ const CustomSlider = ({ min, max, onChange }: CustomSliderProps) => {
     }
   };
 
+  const handleSubmit = () => {
+    if (onSubmit) {
+      onSubmit(value);
+    }
+  };
+
   return (
     <Box>
       <Box sx={classes.inputsWrapper}>
@@ -75,12 +89,15 @@ const CustomSlider = ({ min, max, onChange }: CustomSliderProps) => {
             />
           </>
         )}
-        <Button
-          variant="secondary"
-          customStyles={{ minWidth: '100px !important' }}
-        >
-          OK
-        </Button>
+        {isSubmitOption && (
+          <Button
+            variant="secondary"
+            customStyles={{ minWidth: '100px !important' }}
+            onClick={handleSubmit}
+          >
+            OK
+          </Button>
+        )}
       </Box>
       <Slider
         value={value}
