@@ -2,6 +2,7 @@ import DealCard, { DealCardVariant } from '@/components/common/DealCard';
 import Layout from '@/components/common/Layout';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
 import DealsFilters from '@/components/page/Deals/DealsFilters';
+import BannerBlock from '@/components/page/Home/BannerBlock';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealsPageStyles from '@/pages_styles/dealsStyles';
 import { IDeal } from '@/types/deal';
@@ -119,6 +120,11 @@ const Deals = () => {
           </Box>
         </Box>
       </Box>
+      <BannerBlock
+        title="Can’t find a deal? Let us know!"
+        buttonLabel="Contact Us"
+        buttonHref="/contact"
+      />
     </Layout>
   );
 };

@@ -5,9 +5,9 @@ import DealsBlock from '@/components/page/Home/DealsBlock';
 import HeadBlock from '@/components/page/Home/HeadBlock';
 import NewDealsBlock from '@/components/page/Home/NewDealsBlock';
 import TopRatedSponsorsBlock from '@/components/page/Home/TopRatedSponsorsBlock';
-import WriteReviewBlock from '@/components/page/Home/WriteReviewBlock';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import { Box } from '@mui/material';
+import BannerBlock from '@/components/page/Home/BannerBlock';
 
 const Home = () => {
   const classes = useHomeStyles();
@@ -27,7 +27,13 @@ const Home = () => {
           <TopRatedSponsorsBlock />
           <DealsBlock />
         </Box>
-        <WriteReviewBlock />
+        <BannerBlock
+          title="Investing In a Real Estate Syndication or Fund?
+Share Your Experience With Other Investors"
+          buttonLabel="Write a review"
+          buttonHref="/create_review"
+          isMarginBottom={true}
+        />
       </Box>
     </Layout>
   );

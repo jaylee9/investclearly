@@ -221,7 +221,13 @@ export const useDealsBlockStyles = () => {
   };
 };
 
-export const useWriteReviewBlockStyles = () => {
+interface UseBannerBlockStylesProps {
+  isMarginBottom?: boolean;
+}
+
+export const useBannerBlockStyles = ({
+  isMarginBottom,
+}: UseBannerBlockStylesProps) => {
   return {
     root: {
       display: 'flex',
@@ -229,16 +235,17 @@ export const useWriteReviewBlockStyles = () => {
       alignItems: 'center',
       justifyContent: 'center',
       height: '320px',
-      backgroundImage: 'url(/assets/mainPageBanner.jpg)',
+      backgroundImage: 'url(/assets/writeReviewBanner.jpg)',
       backgroundPosition: 'center',
       backgroundSize: 'cover',
-      marginBottom: '100px',
+      marginBottom: isMarginBottom ? '100px' : '0px',
       width: '100%',
       gap: '24px',
       '& h2': {
         color: theme.palette.common.white,
         textAlign: 'center',
         fontWeight: 600,
+        maxWidth: '800px',
       },
     },
   };
