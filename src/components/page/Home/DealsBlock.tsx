@@ -32,7 +32,7 @@ const DealsBlock = () => {
           </Typography>
           <Box sx={classes.list}>
             {assetClassesArray.map(asset => (
-              <Link href={asset.href} key={asset.id}>
+              <Link href={asset.href} key={asset.value}>
                 <Typography variant="body1">
                   {asset.value}
                   <i className="icon-Caret-right"></i>
