@@ -82,7 +82,13 @@ const CustomSlider = ({ min, max, onChange }: CustomSliderProps) => {
           OK
         </Button>
       </Box>
-      <Slider value={value} onChange={handleChangeSlider} max={max} min={min} />
+      <Slider
+        value={value}
+        onChange={handleChangeSlider}
+        max={max}
+        min={min}
+        sx={classes.root}
+      />
     </Box>
   );
 };
