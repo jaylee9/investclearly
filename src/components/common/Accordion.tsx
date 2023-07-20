@@ -10,7 +10,7 @@ import { useAccordionStyles } from './styles';
 
 interface CustomAccordionProps {
   children: ReactNode;
-  label: string;
+  label: string | ReactNode;
 }
 
 const CustomAccordion = ({ children, label }: CustomAccordionProps) => {

@@ -7,11 +7,18 @@ import { useDealsFiltersStyles } from './styles';
 import { assetClasses } from '@/components/common/Layout/Header';
 import CustomSlider from '@/components/common/Slider';
 
+interface IRR {
+  from: number;
+  to: number;
+}
+
 interface IFilters {
   ratings: number[];
   asset_classes: string[];
   statuses: string[];
   regions: string[];
+  targetIRR: IRR;
+  actualIRR: IRR;
 }
 
 const DealsFilters = () => {
@@ -22,6 +29,14 @@ const DealsFilters = () => {
     asset_classes: [],
     statuses: [],
     regions: [],
+    targetIRR: {
+      from: 2,
+      to: 12,
+    },
+    actualIRR: {
+      from: 2,
+      to: 12,
+    },
   });
   const [showAll, setShowAll] = useState({
     asset_classes: false,
@@ -73,6 +88,7 @@ const DealsFilters = () => {
     }
   };
 
+  //regions
   const handleRegionsChange = (value: string) => {
     if (filters.regions.includes(value)) {
       const regions = filters.regions.filter(item => item !== value);
@@ -82,6 +98,22 @@ const DealsFilters = () => {
       setFilters({ ...filters, regions });
     }
   };
+
+  //target irr
+  const handleIrrChange = (
+    values: number[],
+    key: 'targetIRR' | 'actualIRR'
+  ) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [key]: {
+        from: values[0],
+        to: values[1],
+      },
+    }));
+  };
+
+  console.log(filters);
   return (
     <>
       <CustomAccordion label="Sponsor Rating">
@@ -170,7 +202,26 @@ const DealsFilters = () => {
       <CustomAccordion label="Target IRR, %">
         <Box sx={classes.accordionContent}>
           <Box>
-            <CustomSlider min={2} max={12} />
+            <CustomSlider
+              min={2}
+              max={12}
+              onSubmit={value =>
+                handleIrrChange(value as number[], 'targetIRR')
+              }
+            />
+          </Box>
+        </Box>
+      </CustomAccordion>
+      <CustomAccordion label="Actual IRR, %">
+        <Box sx={classes.accordionContent}>
+          <Box>
+            <CustomSlider
+              min={2}
+              max={12}
+              onSubmit={value =>
+                handleIrrChange(value as number[], 'actualIRR')
+              }
+            />
           </Box>
         </Box>
       </CustomAccordion>
