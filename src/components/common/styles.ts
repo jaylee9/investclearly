@@ -425,3 +425,31 @@ export const useSliderStyles = () => {
     },
   };
 };
+
+export const usePaginationStyles = () => {
+  return {
+    root: {
+      '& .MuiPaginationItem-page.Mui-selected': {
+        color: theme.palette.common.black,
+        backgroundColor: 'transparent',
+        '&:active': {
+          backgroundColor: 'transparent',
+        },
+      },
+      '& .MuiPaginationItem-page': {
+        color: theme.palette.text.secondary,
+      },
+      '& .MuiPaginationItem-root': {
+        '& i': {
+          color: palette.text.secondary,
+          fontSize: '24px',
+        },
+      },
+      '& .MuiPaginationItem-root.Mui-disabled': {
+        '& i': {
+          color: palette.text.disabled,
+        },
+      },
+    },
+  };
+};

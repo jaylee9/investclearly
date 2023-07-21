@@ -7,9 +7,11 @@ interface IDealFilters extends IFilters {
   pageSize: number;
 }
 
-interface GetAllDealsResponse {
+export interface GetAllDealsResponse {
   deals: DealInterface[];
   total: number;
+  currentPage: number;
+  lastPage: number;
 }
 
 export const getAllDeals = async (
