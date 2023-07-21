@@ -15,17 +15,17 @@ interface Range {
   to: number;
 }
 
-interface IFilters {
-  ratings: number[];
-  asset_classes: string[];
-  statuses: string[];
-  regions: string[];
-  investment_structure: string[];
-  targetIRR: Range;
-  actualIRR: Range;
-  fees: Range;
-  min_investment: Range;
-  prefferd_return: Range;
+export interface IFilters {
+  ratings?: number[];
+  asset_classes?: string[];
+  statuses?: string[];
+  regions?: string[];
+  investment_structure?: string[];
+  targetIRR?: Range;
+  actualIRR?: Range;
+  fees?: Range;
+  min_investment?: Range;
+  prefferd_return?: Range;
 }
 
 const DealsFilters = () => {
@@ -67,20 +67,19 @@ const DealsFilters = () => {
     key: 'asset_classes' | 'statuses' | 'regions' | 'investment_structure',
     value: Regions | string
   ) => {
-    if (Array.isArray(filters[key])) {
-      const updatedArray = filters[key].includes(value)
-        ? filters[key].filter(item => item !== value)
-        : [...filters[key], value];
-      setFilters({ ...filters, [key]: updatedArray });
-    }
+    const updatedArray = filters[key]?.includes(value)
+      ? filters[key]?.filter(item => item !== value)
+      : [...(filters[key] || []), value];
+
+    setFilters({ ...filters, [key]: updatedArray });
   };
 
   //rating
   const handleRatingChange = (value: number) => {
-    if (filters.ratings.includes(value)) {
+    if (filters.ratings && filters.ratings.includes(value)) {
       const ratings = filters.ratings.filter(item => item !== value);
       setFilters({ ...filters, ratings });
-    } else {
+    } else if (filters.ratings) {
       const ratings = [...filters.ratings, value];
       setFilters({ ...filters, ratings });
     }
@@ -127,7 +126,7 @@ const DealsFilters = () => {
               customStyles={classes.ratingCheckbox}
               key={rating}
               onChange={() => handleRatingChange(rating)}
-              checked={filters.ratings.includes(rating)}
+              checked={filters.ratings && filters.ratings.includes(rating)}
               label={
                 <Box sx={classes.starsWrapper}>
                   {[...Array(5)].map((_, i) => {
@@ -156,7 +155,10 @@ const DealsFilters = () => {
                 onChange={() =>
                   handleStringArrayChange('asset_classes', assetClass)
                 }
-                checked={filters.asset_classes.includes(assetClass)}
+                checked={
+                  filters.asset_classes &&
+                  filters.asset_classes.includes(assetClass)
+                }
                 label={assetClass}
               />
             ))}
@@ -183,7 +185,7 @@ const DealsFilters = () => {
                 customStyles={classes.ratingCheckbox}
                 key={status}
                 onChange={() => handleStringArrayChange('statuses', status)}
-                checked={filters.statuses.includes(status)}
+                checked={filters.statuses && filters.statuses.includes(status)}
                 label={status}
               />
             ))}
@@ -200,7 +202,10 @@ const DealsFilters = () => {
                 onChange={() =>
                   handleStringArrayChange('investment_structure', structure)
                 }
-                checked={filters.investment_structure.includes(structure)}
+                checked={
+                  filters.investment_structure &&
+                  filters.investment_structure.includes(structure)
+                }
                 label={structure}
               />
             ))}
@@ -215,7 +220,7 @@ const DealsFilters = () => {
                 customStyles={classes.ratingCheckbox}
                 key={region}
                 onChange={() => handleStringArrayChange('regions', region)}
-                checked={filters.regions.includes(region)}
+                checked={filters.regions && filters.regions.includes(region)}
                 label={region}
               />
             ))}
