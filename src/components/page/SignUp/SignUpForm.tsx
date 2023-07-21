@@ -7,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
 import { signUp } from '@/actions/auth';
 
 const validationSchema = z
@@ -55,7 +54,7 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
     }
   };
   const handleGoogleSignUp = () => {
-    signIn('google');
+    console.log('goggle');
   };
   return (
     <Box sx={classes.root}>

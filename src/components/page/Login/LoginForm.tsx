@@ -6,7 +6,6 @@ import Input from '@/components/common/Input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
 import { login } from '@/actions/auth';
 import { useRouter } from 'next/router';
 
@@ -38,7 +37,7 @@ const LoginForm = () => {
     }
   };
   const handleGoogleSignUp = () => {
-    signIn('google');
+    console.log('google');
   };
   return (
     <Box sx={classes.root}>
