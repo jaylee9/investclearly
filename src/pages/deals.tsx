@@ -31,14 +31,12 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
     isSignIn: true,
     isSearch: true,
   });
-  console.log(dealsResponse);
   const { isLoading } = useQuery(
     ['deals', page],
     () => getAllDeals({ page, pageSize: 10 }),
     {
-      keepPreviousData: true,
       onSuccess: data => {
-        setDealsData(data); // setting the state with the fetched data
+        setDealsData(data);
       },
     }
   );
