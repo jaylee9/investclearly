@@ -9,6 +9,7 @@ import { Regions } from '@/backend/constants/enums/regions';
 import { InvestmentStructures } from '@/backend/constants/enums/investment-structures';
 import { DealStatuses } from '@/backend/constants/enums/deal-statuses';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
+import { Exemptions } from '@/backend/constants/enums/exemptions';
 
 interface Range {
   from: number;
@@ -21,6 +22,7 @@ export interface IFilters {
   statuses?: string[];
   regions?: string[];
   investment_structure?: string[];
+  exemptions: string[];
   targetIRR?: Range;
   actualIRR?: Range;
   fees?: Range;
@@ -42,7 +44,12 @@ const DealsFilters = ({ setFilters, filters }: DealsFiltersProps) => {
   });
 
   const handleStringArrayChange = (
-    key: 'asset_classes' | 'statuses' | 'regions' | 'investment_structure',
+    key:
+      | 'asset_classes'
+      | 'statuses'
+      | 'regions'
+      | 'investment_structure'
+      | 'exemptions',
     value: Regions | string
   ) => {
     const updatedArray = filters[key]?.includes(value)
@@ -198,6 +205,26 @@ const DealsFilters = ({ setFilters, filters }: DealsFiltersProps) => {
                 onChange={() => handleStringArrayChange('regions', region)}
                 checked={filters.regions && filters.regions.includes(region)}
                 label={region}
+              />
+            ))}
+          </Box>
+        </Box>
+      </CustomAccordion>
+      <CustomAccordion label="Exemption">
+        <Box sx={classes.accordionContent}>
+          <Box sx={classes.assetClassesWrapper}>
+            {Object.values(Exemptions).map(exemption => (
+              <CustomCheckbox
+                customStyles={classes.ratingCheckbox}
+                key={exemption}
+                onChange={() =>
+                  handleStringArrayChange('exemptions', exemption)
+                }
+                checked={
+                  filters.investment_structure &&
+                  filters.investment_structure.includes(exemption)
+                }
+                label={exemption}
               />
             ))}
           </Box>
