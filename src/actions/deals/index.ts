@@ -27,6 +27,9 @@ export const getAllDeals = async (
   const investmentStructures = filters.investment_structure
     ?.map(structure => `investmentStructures=${structure}`)
     .join('&');
+  const exemptions = filters.exemptions
+    ?.map(exemption => `exemption=${exemption}`)
+    .join('&');
 
   const IRRMin = filters.targetIRR?.from
     ? `IRRMin=${filters.targetIRR.from}`
@@ -59,6 +62,7 @@ export const getAllDeals = async (
     investmentMaxValue,
     sponsorFeesMin,
     sponsorFeesMax,
+    exemptions,
   ];
 
   const url = `deals?${params.filter(Boolean).join('&')}`;
