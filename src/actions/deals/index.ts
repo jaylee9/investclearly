@@ -1,3 +1,4 @@
+import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { IFilters } from '@/components/page/Deals/DealsFilters';
 import api from '@/config/ky';
 
@@ -6,7 +7,14 @@ interface IDealFilters extends IFilters {
   pageSize: number;
 }
 
-export const getAllDeals = async (filters: IDealFilters) => {
+interface GetAllDealsResponse {
+  deals: DealInterface[];
+  total: number;
+}
+
+export const getAllDeals = async (
+  filters: IDealFilters
+): Promise<GetAllDealsResponse> => {
   const assetClasses = filters.asset_classes
     ?.map(ac => `assetClasses=${ac}`)
     .join('&');
@@ -54,7 +62,7 @@ export const getAllDeals = async (filters: IDealFilters) => {
   const url = `deals?${params.filter(Boolean).join('&')}`;
 
   try {
-    const response = await api.get(url).json();
+    const response: GetAllDealsResponse = await api.get(url).json();
     return response;
   } catch (error) {
     console.error('Error fetching deals', error);
