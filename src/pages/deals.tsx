@@ -4,7 +4,7 @@ import Layout from '@/components/common/Layout';
 import Loading from '@/components/common/Loading';
 import CustomPagination from '@/components/common/Pagination';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
-import DealsFilters from '@/components/page/Deals/DealsFilters';
+import DealsFilters, { IFilters } from '@/components/page/Deals/DealsFilters';
 import BannerBlock from '@/components/page/Home/BannerBlock';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealsPageStyles from '@/pages_styles/dealsStyles';
@@ -24,6 +24,33 @@ interface DealsPageProps {
 const Deals = ({ dealsResponse }: DealsPageProps) => {
   const classes = useDealsPageStyles();
   const [dealsData, setDealsData] = useState(dealsResponse);
+  const [filters, setFilters] = useState<IFilters>({
+    ratings: [],
+    asset_classes: [],
+    statuses: [],
+    regions: [],
+    investment_structure: [],
+    targetIRR: {
+      from: 2,
+      to: 12,
+    },
+    actualIRR: {
+      from: 2,
+      to: 12,
+    },
+    fees: {
+      from: 2,
+      to: 12,
+    },
+    min_investment: {
+      from: 5000,
+      to: 25000,
+    },
+    prefferd_return: {
+      from: 5000,
+      to: 25000,
+    },
+  });
   const [page, setPage] = useState(1);
   const headerProps = useHeaderProps({
     type: 'search-dark',
@@ -31,6 +58,7 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
     isSignIn: true,
     isSearch: true,
   });
+
   const { isLoading } = useQuery(
     ['deals', page],
     () => getAllDeals({ page, pageSize: 10 }),
@@ -45,7 +73,7 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
     <Layout {...headerProps}>
       <Box sx={classes.root}>
         <Box sx={classes.leftColumn}>
-          <DealsFilters />
+          <DealsFilters setFilters={setFilters} filters={filters} />
         </Box>
         <Box sx={classes.rightColumn}>
           <Box sx={classes.rightColumnHeader}>
