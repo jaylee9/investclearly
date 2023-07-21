@@ -28,36 +28,14 @@ export interface IFilters {
   prefferd_return?: Range;
 }
 
-const DealsFilters = () => {
+interface DealsFiltersProps {
+  setFilters: React.Dispatch<React.SetStateAction<IFilters>>;
+  filters: IFilters;
+}
+
+const DealsFilters = ({ setFilters, filters }: DealsFiltersProps) => {
   const classes = useDealsFiltersStyles();
 
-  const [filters, setFilters] = useState<IFilters>({
-    ratings: [],
-    asset_classes: [],
-    statuses: [],
-    regions: [],
-    investment_structure: [],
-    targetIRR: {
-      from: 2,
-      to: 12,
-    },
-    actualIRR: {
-      from: 2,
-      to: 12,
-    },
-    fees: {
-      from: 2,
-      to: 12,
-    },
-    min_investment: {
-      from: 5000,
-      to: 25000,
-    },
-    prefferd_return: {
-      from: 5000,
-      to: 25000,
-    },
-  });
   const [showAll, setShowAll] = useState({
     asset_classes: false,
     sec_industry: false,
