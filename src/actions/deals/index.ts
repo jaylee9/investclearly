@@ -1,19 +1,57 @@
 import { IFilters } from '@/components/page/Deals/DealsFilters';
 import api from '@/config/ky';
 
-export const getAllDeals = async (filters: IFilters) => {
+interface IDealFilters extends IFilters {
+  page: number;
+  pageSize: number;
+}
+
+export const getAllDeals = async (filters: IDealFilters) => {
   const assetClasses = filters.asset_classes
-    .map(ac => `assetClasses=${ac}`)
+    ?.map(ac => `assetClasses=${ac}`)
     .join('&');
   const statuses = filters.statuses
-    .map(status => `statuses=${status}`)
+    ?.map(status => `statuses=${status}`)
     .join('&');
-  const regions = filters.regions.map(region => `regions=${region}`).join('&');
+  const regions = filters.regions?.map(region => `regions=${region}`).join('&');
   const investmentStructures = filters.investment_structure
-    .map(structure => `investmentStructures=${structure}`)
+    ?.map(structure => `investmentStructures=${structure}`)
     .join('&');
 
-  const url = `deals?page=1&pageSize=2&orderDirection=ASC&${assetClasses}&${statuses}&${regions}&${investmentStructures}&IRRMin=${filters.targetIRR.from}&IRRMax=${filters.targetIRR.to}&investmentMinValue=${filters.min_investment.from}&investmentMaxValue=${filters.min_investment.to}&sponsorFeesMin=${filters.fees.from}&sponsorFeesMax=${filters.fees.to}`;
+  const IRRMin = filters.targetIRR?.from
+    ? `IRRMin=${filters.targetIRR.from}`
+    : '';
+  const IRRMax = filters.targetIRR?.to ? `IRRMax=${filters.targetIRR.to}` : '';
+  const investmentMinValue = filters.min_investment?.from
+    ? `investmentMinValue=${filters.min_investment.from}`
+    : '';
+  const investmentMaxValue = filters.min_investment?.to
+    ? `investmentMaxValue=${filters.min_investment.to}`
+    : '';
+  const sponsorFeesMin = filters.fees?.from
+    ? `sponsorFeesMin=${filters.fees.from}`
+    : '';
+  const sponsorFeesMax = filters.fees?.to
+    ? `sponsorFeesMax=${filters.fees.to}`
+    : '';
+
+  const params = [
+    `page=${filters.page}`,
+    `pageSize=${filters.pageSize}`,
+    'orderDirection=ASC',
+    assetClasses,
+    statuses,
+    regions,
+    investmentStructures,
+    IRRMin,
+    IRRMax,
+    investmentMinValue,
+    investmentMaxValue,
+    sponsorFeesMin,
+    sponsorFeesMax,
+  ];
+
+  const url = `deals?${params.filter(Boolean).join('&')}`;
 
   try {
     const response = await api.get(url).json();

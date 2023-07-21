@@ -115,8 +115,6 @@ const DealsFilters = () => {
       },
     }));
   };
-
-  console.log(filters);
   return (
     <>
       <CustomAccordion label="Sponsor Rating">
