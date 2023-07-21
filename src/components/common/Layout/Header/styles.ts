@@ -14,6 +14,7 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
       justifyContent: 'space-between',
       alignItems: 'center',
       boxShadow: isShadow ? theme.customShadows.header : 'none',
+      background: type.includes('search') ? theme.palette.common.white : '',
     },
     menu: {
       display: 'flex',

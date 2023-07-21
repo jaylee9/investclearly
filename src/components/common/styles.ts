@@ -214,6 +214,10 @@ export const useDealCardStyles = () => {
     },
     baseDealName: {
       fontWeight: 600,
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      maxWidth: '190px',
     },
     baseDealLocation: {
       color: theme.palette.text.secondary,

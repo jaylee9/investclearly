@@ -1,69 +1,14 @@
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { blueTitleStyles, useNewDealsBlockStyles, viewAllLink } from './styles';
 import DealCard from '@/components/common/DealCard';
 import Link from 'next/link';
-import { IDeal } from '@/types/deal';
+import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 
-const mockData: IDeal[] = [
-  {
-    image:
-      'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    name: 'Lolo Peak Village',
-    location: 'Lolo, Montana',
-    status: 'In development',
-    cost: '28-30',
-    promoted: false,
-    sponsor_name: 'Cloud Investment Ltd',
-    rating: 4.9,
-    rating_amount: 115,
-    min_investment: 5000,
-    asset_class: 'Co-Living',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    name: 'Lolo Peak Village',
-    location: 'Lolo, Montana',
-    status: 'In development',
-    cost: '28-30',
-    promoted: false,
-    sponsor_name: 'Cloud Investment Ltd',
-    rating: 4.9,
-    rating_amount: 115,
-    min_investment: 5000,
-    asset_class: 'Co-Living',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    name: 'Lolo Peak Village',
-    location: 'Lolo, Montana',
-    status: 'In development',
-    cost: '28-30',
-    promoted: false,
-    sponsor_name: 'Cloud Investment Ltd',
-    rating: 4.9,
-    rating_amount: 115,
-    min_investment: 5000,
-    asset_class: 'Co-Living',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    name: 'Lolo Peak Village',
-    location: 'Lolo, Montana',
-    status: 'In development',
-    cost: '28-30',
-    promoted: false,
-    sponsor_name: 'Cloud Investment Ltd',
-    rating: 4.9,
-    rating_amount: 115,
-    min_investment: 5000,
-    asset_class: 'Co-Living',
-  },
-];
+interface NewDealsBlockProps {
+  deals: DealInterface[];
+}
 
-const NewDealsBlock = () => {
+const NewDealsBlock = ({ deals }: NewDealsBlockProps) => {
   const classes = useNewDealsBlockStyles();
   return (
     <Box sx={classes.root}>
@@ -74,10 +19,10 @@ const NewDealsBlock = () => {
         View Active Deals
       </Typography>
       <Box sx={classes.dealCardsWrapper}>
-        {mockData.map((deal, index) => (
-          <Grid item xs={3} key={index}>
+        {deals.map((deal, index) => (
+          <Box key={index} sx={{ width: 'calc(100%/4)', height: '332px' }}>
             <DealCard deal={deal} />
-          </Grid>
+          </Box>
         ))}
       </Box>
       <Link href="/deals">
