@@ -22,7 +22,7 @@ export interface IFilters {
   statuses?: string[];
   regions?: string[];
   investment_structure?: string[];
-  exemptions: string[];
+  exemptions?: string[];
   targetIRR?: Range;
   actualIRR?: Range;
   fees?: Range;

@@ -24,12 +24,13 @@ interface DealsPageProps {
 const Deals = ({ dealsResponse }: DealsPageProps) => {
   const classes = useDealsPageStyles();
   const [dealsData, setDealsData] = useState(dealsResponse);
-  const [filters, setFilters] = useState<IFilters>({
+  const defaultFilters = {
     ratings: [],
     asset_classes: [],
     statuses: [],
     regions: [],
     investment_structure: [],
+    exemptions: [],
     targetIRR: {
       from: 2,
       to: 12,
@@ -50,7 +51,8 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
       from: 5000,
       to: 25000,
     },
-  });
+  };
+  const [filters, setFilters] = useState<IFilters>(defaultFilters);
   const [page, setPage] = useState(1);
   const headerProps = useHeaderProps({
     type: 'search-dark',
@@ -61,7 +63,7 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
 
   const { isLoading } = useQuery(
     ['deals', page],
-    () => getAllDeals({ page, pageSize: 10 }),
+    () => getAllDeals({ page, pageSize: 10, ...filters }),
     {
       onSuccess: data => {
         setDealsData(data);
