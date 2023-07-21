@@ -50,6 +50,18 @@ const useDealsPageStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
+      marginBottom: '16px',
+    },
+    paggination: {
+      display: 'flex',
+      padding: '8px 24px',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      background: palette.common.white,
+      borderRadius: '12px',
+      '& span': {
+        color: palette.text.secondary,
+      },
     },
   };
 };
