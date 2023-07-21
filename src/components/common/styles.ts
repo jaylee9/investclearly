@@ -453,3 +453,11 @@ export const usePaginationStyles = () => {
     },
   };
 };
+
+export const useLoadingStyles = () => {
+  return {
+    root: {
+      color: palette.primary.light,
+    },
+  };
+};

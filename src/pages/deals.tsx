@@ -1,6 +1,7 @@
 import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
 import DealCard, { DealCardVariant } from '@/components/common/DealCard';
 import Layout from '@/components/common/Layout';
+import Loading from '@/components/common/Loading';
 import CustomPagination from '@/components/common/Pagination';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
 import DealsFilters from '@/components/page/Deals/DealsFilters';
@@ -30,6 +31,7 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
     isSignIn: true,
     isSearch: true,
   });
+  console.log(dealsResponse);
   const { isLoading } = useQuery(
     ['deals', page],
     () => getAllDeals({ page, pageSize: 10 }),
@@ -64,15 +66,19 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
               </Box>
             </Box>
           </Box>
-          <Box sx={classes.dealsWrapper}>
-            {dealsData.deals.map(deal => (
-              <DealCard
-                key={deal.id}
-                deal={deal}
-                variant={DealCardVariant.Large}
-              />
-            ))}
-          </Box>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Box sx={classes.dealsWrapper}>
+              {dealsData.deals.map(deal => (
+                <DealCard
+                  key={deal.id}
+                  deal={deal}
+                  variant={DealCardVariant.Large}
+                />
+              ))}
+            </Box>
+          )}
           <Box sx={classes.paggination}>
             <Typography variant="caption">
               Showing {page}-
