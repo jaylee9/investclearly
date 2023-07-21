@@ -8,6 +8,7 @@ import { z } from 'zod';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
 import Link from 'next/link';
 import { signUp } from '@/actions/auth';
+import { useGoogleLogin } from '@react-oauth/google';
 
 const validationSchema = z
   .object({
@@ -53,8 +54,11 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
       setEmail(data.email);
     }
   };
+  const login = useGoogleLogin({
+    onSuccess: codeResponse => console.log(codeResponse),
+  });
   const handleGoogleSignUp = () => {
-    console.log('goggle');
+    login();
   };
   return (
     <Box sx={classes.root}>
