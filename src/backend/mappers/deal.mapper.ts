@@ -2,7 +2,7 @@ import { Deal } from '../entities/deals.entity';
 import { DealInterface } from '../services/deals/interfaces/deal.interface';
 import { sponsorMapper } from './sponsor.mapper';
 
-export const dealMapper = async (deal: Deal): Promise<DealInterface> => {
+export const dealMapper = (deal: Deal): DealInterface => {
   return {
     id: deal.id,
     dealTitle: deal.dealTitle || null,
@@ -23,7 +23,7 @@ export const dealMapper = async (deal: Deal): Promise<DealInterface> => {
     dealLegalName: deal.dealLegalName || null,
     dealSponsor: deal.dealSponsor || null,
     exemption: deal.exemption || null,
-    sponsor: deal.sponsor ? await sponsorMapper(deal.sponsor) : null,
+    sponsor: deal.sponsor ? sponsorMapper(deal.sponsor) : null,
     createdAt: deal.createdAt,
     updatedAt: deal.updatedAt,
   };

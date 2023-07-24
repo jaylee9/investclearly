@@ -3,9 +3,7 @@ import { SponsorInterface } from '../services/sponsors/interfaces/sponsor.interf
 import { dealMapper } from './deal.mapper';
 import { userMapper } from './user.mapper';
 
-export const sponsorMapper = async (
-  sponsor: Sponsor
-): Promise<SponsorInterface> => {
+export const sponsorMapper = (sponsor: Sponsor): SponsorInterface => {
   return {
     id: sponsor.id,
     vanityName: sponsor.vanityName || null,
@@ -35,9 +33,7 @@ export const sponsorMapper = async (
     targetIRR: sponsor.targetIRR || null,
     actualIRR: sponsor.actualIRR || null,
     admin: sponsor.user ? userMapper(sponsor.user) : null,
-    deals: sponsor.deals
-      ? await Promise.all(sponsor.deals.map(deal => dealMapper(deal)))
-      : [],
+    deals: sponsor.deals ? sponsor.deals.map(deal => dealMapper(deal)) : [],
     createdAt: sponsor.createdAt,
     updatedAt: sponsor.updatedAt,
   };
