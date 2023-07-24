@@ -3,7 +3,7 @@ import { CreateDealInterface } from './create-deal.interface';
 
 export interface DealInterface extends CreateDealInterface {
   id: number;
-  sponsor: SponsorInterface | null;
+  sponsor?: SponsorInterface | null;
   createdAt: Date;
   updatedAt: Date;
 }

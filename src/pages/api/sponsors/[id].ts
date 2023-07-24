@@ -7,8 +7,8 @@ import { parseForm } from '../../../backend/utils/parse-form';
 import { SponsorConstants } from '../../../backend/constants/validation/sponsor-constants';
 import { updateSponsorRecord } from '../../../backend/services/sponsors/update-sponsor';
 import { getSponsorById } from '../../../backend/services/sponsors/get-sponsor-by-id';
-import { SponsorInterface } from '../../../backend/services/sponsors/interfaces/sponsor.interface';
 import { deleteSponsorRecord } from '../../../backend/services/sponsors/delete-sponsor';
+import { UpdateSponsorInterface } from '../../../backend/services/sponsors/interfaces/update-sponsor.interface';
 
 export const config = {
   api: {
@@ -25,7 +25,7 @@ const updateSponsor = async (
   const id: number = Number(request.query.id);
   const updatedSponsor = await updateSponsorRecord(
     id,
-    result.fields as unknown as SponsorInterface
+    result.fields as unknown as UpdateSponsorInterface
   );
 
   if (updatedSponsor) {

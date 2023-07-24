@@ -1,11 +1,11 @@
 import { Sponsor } from '../../../backend/entities/sponsors.entity';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { getSponsorById } from './get-sponsor-by-id';
-import { SponsorInterface } from './interfaces/sponsor.interface';
+import { UpdateSponsorInterface } from './interfaces/update-sponsor.interface';
 
 export const updateSponsorRecord = async (
   id: number,
-  data: SponsorInterface
+  data: UpdateSponsorInterface
 ) => {
   const connection = await getDatabaseConnection();
   await getSponsorById(id);
