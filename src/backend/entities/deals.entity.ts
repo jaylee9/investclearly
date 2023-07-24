@@ -4,6 +4,8 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  Relation,
 } from 'typeorm';
 import { DealStatuses } from '../constants/enums/deal-statuses';
 import { AssetClasses } from '../constants/enums/asset-classes';
@@ -11,11 +13,15 @@ import { InvestmentStructures } from '../constants/enums/investment-structures';
 import { HoldPeriods } from '../constants/enums/hold-periods';
 import { Regions } from '../constants/enums/regions';
 import { Exemptions } from '../constants/enums/exemptions';
+import { Sponsor } from './sponsors.entity';
 
 @Entity({ name: 'deals' })
 export class Deal {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
+
+  @Column({ type: 'int', nullable: true })
+  sponsorId: number;
 
   @Column({ type: 'varchar', nullable: true })
   dealTitle: string;
@@ -76,4 +82,7 @@ export class Deal {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => Sponsor, sponsors => sponsors.deals, { lazy: true })
+  sponsor: Relation<Sponsor>;
 }

@@ -21,6 +21,7 @@ export const dealMapper = (deal: Deal) => {
     dealLegalName: deal.dealLegalName || null,
     dealSponsor: deal.dealSponsor || null,
     exemption: deal.exemption || null,
+    sponsor: deal.sponsor || null,
     createdAt: deal.createdAt,
     updatedAt: deal.updatedAt,
   };

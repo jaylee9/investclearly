@@ -7,6 +7,7 @@ export const userMapper = (user: User) => {
     lastName: user.lastName,
     email: user.email,
     profilePicture: user.profilePicture || null,
+    sponsors: user.sponsors || [],
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
   };

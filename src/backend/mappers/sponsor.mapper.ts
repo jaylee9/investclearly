@@ -1,0 +1,36 @@
+import { Sponsor } from '../entities/sponsors.entity';
+
+export const sponsorMapper = (sponsor: Sponsor) => {
+  return {
+    id: sponsor.id,
+    vanityName: sponsor.vanityName || null,
+    legalName: sponsor.legalName || null,
+    userId: sponsor.userId || null,
+    businessAvatar: sponsor.businessAvatar || null,
+    businessEmail: sponsor.businessEmail || null,
+    businessPhone: sponsor.businessPhone || null,
+    sponsorName: sponsor.sponsorName || null,
+    address: sponsor.address || null,
+    website: sponsor.website || null,
+    description: sponsor.description || null,
+    aum: sponsor.aum || null,
+    specialty: sponsor.specialty || null,
+    facebookLink: sponsor.facebookLink || null,
+    linkedInLink: sponsor.linkedInLink || null,
+    twitterLink: sponsor.twitterLink || null,
+    instagramLink: sponsor.instagramLink || null,
+    exemption: sponsor.exemption || null,
+    workForThisCompany: sponsor.workForThisCompany || false,
+    region: sponsor.region || null,
+    cashOnCash: sponsor.cashOnCash || null,
+    fees: sponsor.fees || null,
+    equityMultiple: sponsor.equityMultiple || null,
+    holdPeriod: sponsor.holdPeriod || null,
+    targetIRR: sponsor.targetIRR || null,
+    actualIRR: sponsor.actualIRR || null,
+    admin: sponsor.user || null,
+    deals: sponsor.deals || [],
+    createdAt: sponsor.createdAt,
+    updatedAt: sponsor.updatedAt,
+  };
+};
