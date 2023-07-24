@@ -3,13 +3,12 @@ import createHttpError from 'http-errors';
 import { AuthConstants } from '../../../backend/constants/auth-constants';
 import { apiHandler } from '../../../backend/utils/api-handler';
 import { authMiddleware } from '../../../backend/middleware/auth';
-import { getDealById } from '../../../backend/services/deals/get-deal-by-id';
-import { deleteDealRecord } from '../../../backend/services/deals/delete-deal';
 import { parseForm } from '../../../backend/utils/parse-form';
 import { SponsorConstants } from '../../../backend/constants/validation/sponsor-constants';
 import { updateSponsorRecord } from '../../../backend/services/sponsors/update-sponsor';
 import { getSponsorById } from '../../../backend/services/sponsors/get-sponsor-by-id';
 import { SponsorInterface } from '../../../backend/services/sponsors/interfaces/sponsor.interface';
+import { deleteSponsorRecord } from '../../../backend/services/sponsors/delete-sponsor';
 
 export const config = {
   api: {
@@ -51,10 +50,10 @@ const deleteSponsor = async (
 ) => {
   await authMiddleware(request, response);
   const id: number = Number(request.query.id);
-  const sponsorRecord = await getDealById(id);
+  const sponsorRecord = await getSponsorById(id);
 
   if (sponsorRecord) {
-    await deleteDealRecord(id);
+    await deleteSponsorRecord(id);
   }
   response
     .status(200)

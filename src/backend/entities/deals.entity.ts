@@ -83,6 +83,6 @@ export class Deal {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => Sponsor, sponsors => sponsors.deals, { lazy: true })
+  @ManyToOne(() => Sponsor, sponsors => sponsors.deals)
   sponsor: Relation<Sponsor>;
 }

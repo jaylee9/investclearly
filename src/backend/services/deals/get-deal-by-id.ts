@@ -7,7 +7,10 @@ import { dealMapper } from '../../mappers/deal.mapper';
 export const getDealById = async (id: number) => {
   const connection = await getDatabaseConnection();
 
-  const deal = await connection.manager.findOne(Deal, { where: { id } });
+  const deal = await connection.manager.findOne(Deal, {
+    where: { id },
+    relations: ['sponsor'],
+  });
 
   if (!deal) {
     throw new createHttpError.NotFound(DealConstants.dealNotFound);

@@ -6,6 +6,7 @@ import { buildPaginationInfo } from '../../utils/pagination/build-pagination-inf
 import { PaginationConstants } from '../../constants/pagination-constants';
 import { Sponsor } from '../../../backend/entities/sponsors.entity';
 import { sponsorMapper } from '../../../backend/mappers/sponsor.mapper';
+import { DealStatuses } from '../../../backend/constants/enums/deal-statuses';
 
 export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
   const {
@@ -39,6 +40,12 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
         regionalFocus,
       }
     );
+  }
+
+  if (activelyRaising === true) {
+    searchQuery = searchQuery
+      .leftJoin('sponsors.deals', 'deals')
+      .andWhere('deals.status= :status', { status: DealStatuses.open });
   }
 
   searchQuery = searchQuery.orderBy('sponsors.createdAt', orderDirection);

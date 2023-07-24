@@ -14,6 +14,7 @@ import { Regions } from '../constants/enums/regions';
 import { HoldPeriods } from '../constants/enums/hold-periods';
 import { User } from './user.entity';
 import { Deal } from './deals.entity';
+import { InvestmentStructures } from '../constants/enums/investment-structures';
 
 @Entity({ name: 'sponsors' })
 export class Sponsor {
@@ -55,6 +56,9 @@ export class Sponsor {
 
   @Column({ type: 'enum', enum: AssetClasses, nullable: true })
   specialty: string;
+
+  @Column({ type: 'enum', enum: InvestmentStructures, nullable: true })
+  investmentStructure: string;
 
   @Column({ type: 'varchar', nullable: true })
   facebookLink: string;
@@ -101,9 +105,9 @@ export class Sponsor {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, { onDelete: 'NO ACTION', lazy: true })
+  @ManyToOne(() => User)
   user: Relation<User>;
 
-  @OneToMany(() => Deal, deals => deals.sponsor, { lazy: true })
+  @OneToMany(() => Deal, deals => deals.sponsor)
   deals: Relation<Deal>[];
 }

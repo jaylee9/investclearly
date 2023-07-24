@@ -7,7 +7,10 @@ import { sponsorMapper } from '../../../backend/mappers/sponsor.mapper';
 export const getSponsorById = async (id: number) => {
   const connection = await getDatabaseConnection();
 
-  const sponsor = await connection.manager.findOne(Sponsor, { where: { id } });
+  const sponsor = await connection.manager.findOne(Sponsor, {
+    where: { id },
+    relations: ['user', 'deals'],
+  });
 
   if (!sponsor) {
     throw new createHttpError.NotFound(SponsorConstants.sponsorNotFound);

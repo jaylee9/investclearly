@@ -56,6 +56,6 @@ export class User {
     return bcrypt.compare(attempt, this.password);
   }
 
-  @OneToMany(() => Sponsor, sponsors => sponsors.user, { lazy: true })
+  @OneToMany(() => Sponsor, sponsors => sponsors.user)
   sponsors: Relation<Sponsor[]>;
 }

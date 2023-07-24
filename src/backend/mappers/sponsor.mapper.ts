@@ -1,6 +1,11 @@
 import { Sponsor } from '../entities/sponsors.entity';
+import { SponsorInterface } from '../services/sponsors/interfaces/sponsor.interface';
+import { dealMapper } from './deal.mapper';
+import { userMapper } from './user.mapper';
 
-export const sponsorMapper = (sponsor: Sponsor) => {
+export const sponsorMapper = async (
+  sponsor: Sponsor
+): Promise<SponsorInterface> => {
   return {
     id: sponsor.id,
     vanityName: sponsor.vanityName || null,
@@ -15,6 +20,7 @@ export const sponsorMapper = (sponsor: Sponsor) => {
     description: sponsor.description || null,
     aum: sponsor.aum || null,
     specialty: sponsor.specialty || null,
+    investmentStructure: sponsor.investmentStructure ?? null,
     facebookLink: sponsor.facebookLink || null,
     linkedInLink: sponsor.linkedInLink || null,
     twitterLink: sponsor.twitterLink || null,
@@ -28,8 +34,10 @@ export const sponsorMapper = (sponsor: Sponsor) => {
     holdPeriod: sponsor.holdPeriod || null,
     targetIRR: sponsor.targetIRR || null,
     actualIRR: sponsor.actualIRR || null,
-    admin: sponsor.user || null,
-    deals: sponsor.deals || [],
+    admin: sponsor.user ? userMapper(sponsor.user) : null,
+    deals: sponsor.deals
+      ? await Promise.all(sponsor.deals.map(deal => dealMapper(deal)))
+      : [],
     createdAt: sponsor.createdAt,
     updatedAt: sponsor.updatedAt,
   };
