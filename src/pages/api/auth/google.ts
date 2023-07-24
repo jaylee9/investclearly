@@ -10,8 +10,7 @@ import { GoogleAuthInterface } from '../../../backend/services/auth/interfaces/g
 import { AuthConstants } from '../../../backend/constants/auth-constants';
 
 const googleAuthSchema = Yup.object().shape({
-  email: Yup.string().required(ValidationAuthConstants.emailRequired),
-  sub: Yup.string().required(ValidationAuthConstants.googleSubRequired),
+  token: Yup.string().required(ValidationAuthConstants.tokenRequired),
 });
 
 const googleAuth = async (

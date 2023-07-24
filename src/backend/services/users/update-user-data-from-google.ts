@@ -1,22 +1,19 @@
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { User } from '../../entities/user.entity';
-import { GoogleAuthInterface } from '../auth/interfaces/google-auth.interface';
+import { GoogleDataInterface } from '../auth/interfaces/google-data.interface';
 import { getUserById } from './get-user-by-id';
-import { splitGoogleName } from '../../../backend/utils/split-google-name';
 
 export const updateUserDataFromGoogle = async (
-  googleData: GoogleAuthInterface,
+  googleData: GoogleDataInterface,
   userId: number
 ) => {
   const connection = await getDatabaseConnection();
-  const { name, picture } = googleData;
-
-  const { firstName, lastName } = splitGoogleName(name);
+  const { firstName, lastName } = googleData;
 
   await connection.manager.update(
     User,
     { id: userId },
-    { firstName, lastName, profilePicture: picture }
+    { firstName, lastName }
   );
   return getUserById(userId);
 };
