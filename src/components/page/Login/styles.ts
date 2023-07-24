@@ -34,5 +34,11 @@ export const useLoginFormStyles = () => {
       fontWeight: 600,
       marginBottom: '32px',
     },
+    googleLoginWrapper: {
+      '& iframe': {
+        width: '100% !important',
+        margin: '0 !important',
+      },
+    },
   };
 };

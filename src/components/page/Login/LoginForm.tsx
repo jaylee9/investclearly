@@ -6,13 +6,15 @@ import Input from '@/components/common/Input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
-import { login } from '@/actions/auth';
+import { googleLogin, login } from '@/actions/auth';
 import { useRouter } from 'next/router';
+import { GoogleLogin } from '@react-oauth/google';
 
 const validationSchema = z.object({
   email: z.string().email({ message: 'Email must be a valid email' }),
   password: z
     .string()
+
     .min(8, { message: 'Password must be at least 8 characters long' }),
 });
 
@@ -36,29 +38,23 @@ const LoginForm = () => {
       router.push('/');
     }
   };
-  const handleGoogleSignUp = () => {
-    console.log('google');
+  const handleGoogleLogin = async (token: string) => {
+    await googleLogin({ token });
   };
   return (
     <Box sx={classes.root}>
       <Typography variant="h2" fontWeight={600} marginBottom="40px">
         Log in
       </Typography>
-      <Button
-        variant="auth"
-        customStyles={{ height: '44px' }}
-        startIcon={
-          <div className="icon-Google-icon">
-            <span className="path1" />
-            <span className="path2" />
-            <span className="path3" />
-            <span className="path4" />
-          </div>
-        }
-        onClick={handleGoogleSignUp}
-      >
-        Sign up with Google
-      </Button>
+      <Box sx={classes.googleLoginWrapper}>
+        <GoogleLogin
+          text="signup_with"
+          width="1000"
+          onSuccess={response =>
+            handleGoogleLogin(response.credential as string)
+          }
+        />
+      </Box>
       <Box sx={classes.dividerWrapper}>
         <div className="divider" />
         <Typography variant="body1">or</Typography>
