@@ -9,4 +9,6 @@ export interface FindAllSponsorsInterface {
   activelyRaising?: boolean;
   primaryAssetClasses?: AssetClasses[];
   regionalFocus?: Regions[];
+  search?: string;
+  limit?: number;
 }
