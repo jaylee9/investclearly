@@ -8,7 +8,7 @@ import { getDealById } from '../../../backend/services/deals/get-deal-by-id';
 import { deleteDealRecord } from '../../../backend/services/deals/delete-deal';
 import { DealConstants } from '../../../backend/constants/deal-constants';
 import { parseForm } from '../../../backend/utils/parse-form';
-import { DealInterface } from '../../../backend/services/deals/interfaces/deal.interface';
+import { UpdateDealInterface } from '../../../backend/services/deals/interfaces/update-deal.interface';
 
 export const config = {
   api: {
@@ -25,7 +25,7 @@ const updateDeal = async (
   const id: number = Number(request.query.id);
   const updatedDeal = await update(
     id,
-    result.fields as unknown as DealInterface
+    result.fields as unknown as UpdateDealInterface
   );
 
   if (updatedDeal) {

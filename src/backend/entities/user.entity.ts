@@ -5,8 +5,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  Relation,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { Sponsor } from './sponsors.entity';
 
 @Entity({ name: 'user' })
 export class User {
@@ -52,4 +55,7 @@ export class User {
   public comparePassword(attempt: string): Promise<boolean> {
     return bcrypt.compare(attempt, this.password);
   }
+
+  @OneToMany(() => Sponsor, sponsors => sponsors.user)
+  sponsors: Relation<Sponsor[]>;
 }

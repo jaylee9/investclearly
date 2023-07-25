@@ -1,20 +1,20 @@
 export interface CreateDealInterface {
-  dealTitle?: string;
-  dealAddress?: string;
-  region: string;
-  status: string;
-  assetClass: string;
-  description?: string;
-  minimumInvestment?: number;
-  cashOnCash?: number;
-  investmentStructure: string;
-  fees?: number;
-  targetRaise?: number;
-  equityMultiple?: number;
-  holdPeriod: string;
-  targetIRR?: number;
-  actualIRR?: number;
-  dealLegalName?: string;
-  dealSponsor?: string;
-  exemption?: string;
+  dealTitle?: string | null;
+  dealAddress?: string | null;
+  region: string | null;
+  status: string | null;
+  assetClass: string | null;
+  description?: string | null;
+  minimumInvestment?: number | null;
+  cashOnCash?: number | null;
+  investmentStructure: string | null;
+  fees?: number | null;
+  targetRaise?: number | null;
+  equityMultiple?: number | null;
+  holdPeriod: string | null;
+  targetIRR?: number | null;
+  actualIRR?: number | null;
+  dealLegalName?: string | null;
+  dealSponsor?: string | null;
+  exemption?: string | null;
 }
