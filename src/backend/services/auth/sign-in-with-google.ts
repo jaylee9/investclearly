@@ -15,22 +15,20 @@ export const signInWithGoogle = async (googleToken: GoogleAuthInterface) => {
     googleToken.token
   )) as GoogleDataInterface;
 
-  if (googleUser) {
-    let user = await connection.manager.findOne(User, {
-      where: { googleId: googleUser.googleId },
-    });
+  if (!googleUser) {
+    throw new createHttpError.BadRequest(AuthConstants.invalidGoogleToken);
+  }
 
-    if (user) {
+  const user = await connection.manager.findOne(User, {
+    where: [{ googleId: googleUser.googleId }, { email: googleUser.email }],
+  });
+
+  if (user) {
+    if (user.googleId === googleUser.googleId) {
       const updatedUser = await updateUserDataFromGoogle(googleUser, user.id);
       const { expiresIn, accessToken } = await createToken(user);
       return { expiresIn, accessToken, user: updatedUser };
-    }
-
-    user = await connection.manager.findOne(User, {
-      where: { email: googleUser.email },
-    });
-
-    if (user) {
+    } else {
       throw new createHttpError.BadRequest(
         AuthConstants.userAlreadyExistsGoogleAccountWasNotConnected
       );
@@ -38,7 +36,6 @@ export const signInWithGoogle = async (googleToken: GoogleAuthInterface) => {
   }
 
   const newUser = await createGoogleUser(googleUser);
-
   const { expiresIn, accessToken } = await createToken(newUser);
   return { expiresIn, accessToken, user: newUser };
 };
