@@ -1,3 +1,4 @@
+import { Brackets } from 'typeorm';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { Deal } from '../../entities/deals.entity';
 import { dealMapper } from '../../mappers/deal.mapper';
@@ -23,6 +24,8 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     exemptions = [],
     sponsorFeesMin,
     sponsorFeesMax,
+    search,
+    limit,
   } = params;
 
   const connection = await getDatabaseConnection();
@@ -88,6 +91,31 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
       'deals.fees BETWEEN :sponsorFeesMin AND :sponsorFeesMax',
       { sponsorFeesMin, sponsorFeesMax }
     );
+  }
+
+  if (search) {
+    searchQuery = searchQuery.andWhere(
+      new Brackets(qb => {
+        return qb
+          .where('deals.dealTitle ILIKE :search', { search: `%${search}%` })
+          .orWhere('deals.dealAddress ILIKE :search', {
+            search: `%${search}%`,
+          })
+          .orWhere('deals.dealLegalName ILIKE :search', {
+            search: `%${search}%`,
+          })
+          .orWhere('deals.dealSponsor ILIKE :search', {
+            search: `%${search}%`,
+          })
+          .orWhere('deals.description ILIKE :search', {
+            search: `%${search}%`,
+          });
+      })
+    );
+  }
+
+  if (limit) {
+    searchQuery = searchQuery.limit(limit);
   }
 
   searchQuery = searchQuery.orderBy('deals.createdAt', orderDirection);

@@ -1,3 +1,4 @@
+import { Brackets } from 'typeorm';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { FindAllSponsorsInterface } from './interfaces/get-all-sponsors.interface';
 import { OrderDirectionConstants } from '../../constants/order-direction-constants';
@@ -16,6 +17,8 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     activelyRaising,
     primaryAssetClasses = [],
     regionalFocus = [],
+    search,
+    limit,
   } = params;
 
   const connection = await getDatabaseConnection();
@@ -46,6 +49,28 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     searchQuery = searchQuery
       .leftJoin('sponsors.deals', 'deals')
       .andWhere('deals.status= :status', { status: DealStatuses.open });
+  }
+
+  if (search) {
+    searchQuery = searchQuery.andWhere(
+      new Brackets(qb => {
+        return qb
+          .where('sponsors.vanityName ILIKE :search', { search: `%${search}%` })
+          .orWhere('sponsors.legalName ILIKE :search', {
+            search: `%${search}%`,
+          })
+          .orWhere('sponsors.address ILIKE :search', {
+            search: `%${search}%`,
+          })
+          .orWhere('sponsors.sponsorName ILIKE :search', {
+            search: `%${search}%`,
+          });
+      })
+    );
+  }
+
+  if (limit) {
+    searchQuery = searchQuery.limit(limit);
   }
 
   searchQuery = searchQuery.orderBy('sponsors.createdAt', orderDirection);
