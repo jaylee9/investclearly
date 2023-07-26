@@ -8,7 +8,7 @@ import { z } from 'zod';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
 import Link from 'next/link';
 import { googleLogin, signUp } from '@/actions/auth';
-import { GoogleLogin } from '@react-oauth/google';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 
 const validationSchema = z
   .object({
