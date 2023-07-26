@@ -5,6 +5,9 @@ import Image from 'next/image';
 import { useDealCardStyles } from './styles';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 
+const MOCK_IMAGE_URL =
+  'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
+
 export enum DealCardVariant {
   Base = 'base',
   Large = 'large',
@@ -34,7 +37,7 @@ const DealCard = ({
       boxShadow={theme.customShadows.header}
     >
       <Image
-        src="https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+        src={MOCK_IMAGE_URL}
         alt="deal image"
         width={292}
         height={172}
@@ -61,12 +64,7 @@ const DealCard = ({
     </Box>
   ) : (
     <Box sx={classes.largeRoot}>
-      <Image
-        src="https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-        alt="deal image"
-        width={200}
-        height={170}
-      />
+      <Image src={MOCK_IMAGE_URL} alt="deal image" width={200} height={170} />
       <Box sx={classes.largeContent}>
         <Box sx={classes.largeHeader}>
           <Box sx={classes.largeHeaderLeftColumn}>
