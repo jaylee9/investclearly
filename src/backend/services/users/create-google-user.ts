@@ -1,18 +1,14 @@
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { User } from '../../entities/user.entity';
 import { getUserById } from './get-user-by-id';
-import { GoogleAuthInterface } from '../auth/interfaces/google-auth.interface';
-import { splitGoogleName } from '../../../backend/utils/split-google-name';
+import { GoogleDataInterface } from '../auth/interfaces/google-data.interface';
 
-export const createGoogleUser = async (googleData: GoogleAuthInterface) => {
+export const createGoogleUser = async (googleData: GoogleDataInterface) => {
   const connection = await getDatabaseConnection();
-
-  const { name, email, picture, sub } = googleData;
-  const { firstName, lastName } = splitGoogleName(name);
-
+  const { googleId, email, firstName, lastName, profilePicture } = googleData;
   const user = connection.manager.create(User, {
-    googleId: sub,
-    profilePicture: picture,
+    googleId,
+    profilePicture,
     firstName,
     lastName,
     email,

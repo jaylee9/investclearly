@@ -6,30 +6,36 @@ import { createToken } from './create-token';
 import { createGoogleUser } from '../users/create-google-user';
 import { GoogleAuthInterface } from './interfaces/google-auth.interface';
 import { User } from '../../entities/user.entity';
+import { verifyGoogleUser } from './verify-google-user';
+import { GoogleDataInterface } from './interfaces/google-data.interface';
 
-export const signInWithGoogle = async (googleData: GoogleAuthInterface) => {
+export const signInWithGoogle = async (googleToken: GoogleAuthInterface) => {
   const connection = await getDatabaseConnection();
-  let user = await connection.manager.findOne(User, {
-    where: { googleId: googleData.sub },
+  const googleUser = (await verifyGoogleUser(
+    googleToken.token
+  )) as GoogleDataInterface;
+
+  if (!googleUser) {
+    throw new createHttpError.BadRequest(AuthConstants.invalidGoogleToken);
+  }
+
+  const user = await connection.manager.findOne(User, {
+    where: [{ googleId: googleUser.googleId }, { email: googleUser.email }],
   });
 
   if (user) {
-    const updatedUser = await updateUserDataFromGoogle(googleData, user.id);
-    const { expiresIn, accessToken } = await createToken(user);
-    return { expiresIn, accessToken, user: updatedUser };
+    if (user.googleId === googleUser.googleId) {
+      const updatedUser = await updateUserDataFromGoogle(googleUser, user.id);
+      const { expiresIn, accessToken } = await createToken(user);
+      return { expiresIn, accessToken, user: updatedUser };
+    } else {
+      throw new createHttpError.BadRequest(
+        AuthConstants.userAlreadyExistsGoogleAccountWasNotConnected
+      );
+    }
   }
 
-  user = await connection.manager.findOne(User, {
-    where: { email: googleData.email },
-  });
-  if (user) {
-    throw new createHttpError.BadRequest(
-      AuthConstants.userAlreadyExistsGoogleAccountWasNotConnected
-    );
-  }
-
-  const newUser = await createGoogleUser(googleData);
-
+  const newUser = await createGoogleUser(googleUser);
   const { expiresIn, accessToken } = await createToken(newUser);
   return { expiresIn, accessToken, user: newUser };
 };

@@ -77,3 +77,18 @@ export const resetPassword = async ({
     return { isError: true };
   }
 };
+
+export const googleLogin = async ({
+  token,
+}: {
+  token: string;
+}): Promise<{ isError: boolean }> => {
+  try {
+    await api.post('auth/google', {
+      json: { token },
+    });
+    return { isError: false };
+  } catch (error) {
+    return { isError: true };
+  }
+};
