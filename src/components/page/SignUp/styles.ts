@@ -35,6 +35,12 @@ export const useSignUpFormStyles = () => {
       width: '100%',
       gap: '12px',
     },
+    googleLoginWrapper: {
+      '& iframe': {
+        width: '100% !important',
+        margin: '0 !important',
+      },
+    },
   };
 };
 

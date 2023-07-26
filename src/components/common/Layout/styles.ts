@@ -15,6 +15,7 @@ export const useEntryLayoutStyles = () => {
     root: {
       minHeight: '100vh',
       display: 'flex',
+      background: theme.palette.common.white,
     },
     leftPartWrapper: {
       padding: '24px 0px 24px 24px',

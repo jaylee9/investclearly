@@ -7,8 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
 import Link from 'next/link';
-import { signUp } from '@/actions/auth';
-import { useGoogleLogin } from '@react-oauth/google';
+import { googleLogin, signUp } from '@/actions/auth';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 
 const validationSchema = z
   .object({
@@ -54,32 +54,21 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
       setEmail(data.email);
     }
   };
-  const login = useGoogleLogin({
-    onSuccess: codeResponse => console.log(codeResponse),
-  });
-  const handleGoogleSignUp = () => {
-    login();
+  const handleGoogleSignUp = async (credenitals: CredentialResponse) => {
+    await googleLogin({ token: credenitals.credential as string });
   };
   return (
     <Box sx={classes.root}>
       <Typography variant="h2" fontWeight={600} marginBottom="40px">
         Create an Account
       </Typography>
-      <Button
-        variant="auth"
-        customStyles={{ height: '44px' }}
-        startIcon={
-          <div className="icon-Google-icon">
-            <span className="path1" />
-            <span className="path2" />
-            <span className="path3" />
-            <span className="path4" />
-          </div>
-        }
-        onClick={handleGoogleSignUp}
-      >
-        Sign up with Google
-      </Button>
+      <Box sx={classes.googleLoginWrapper}>
+        <GoogleLogin
+          text="signup_with"
+          width="1000"
+          onSuccess={handleGoogleSignUp}
+        />
+      </Box>
       <Box sx={classes.dividerWrapper}>
         <div className="divider" />
         <Typography variant="body1">or</Typography>
