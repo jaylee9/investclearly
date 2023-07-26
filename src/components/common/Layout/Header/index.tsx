@@ -39,7 +39,9 @@ const Header = ({
   const assetClassesArray = [
     ...Object.keys(AssetClasses).map(key => {
       const value = AssetClasses[key as keyof typeof AssetClasses];
-      const href = value.replace(/[\s']/g, '_').toLowerCase();
+      const href = `deals?asset_class=${value
+        .replace(/[\s']/g, '_')
+        .toLowerCase()}`;
       return { value, href };
     }),
     { value: 'All Deals', href: '/deals' },

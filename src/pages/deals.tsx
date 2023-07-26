@@ -8,9 +8,12 @@ import DealsFilters, { IFilters } from '@/components/page/Deals/DealsFilters';
 import BannerBlock from '@/components/page/Home/BannerBlock';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealsPageStyles from '@/pages_styles/dealsStyles';
-import { Box, Typography } from '@mui/material';
-import { useState } from 'react';
+import { Box, Fade, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+import { differenceWith, isEqual } from 'lodash';
+import { useRouter } from 'next/router';
+import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 
 const sortOptions = [
   { label: 'Relevance', value: 'relevance' },
@@ -24,6 +27,7 @@ interface DealsPageProps {
 const Deals = ({ dealsResponse }: DealsPageProps) => {
   const classes = useDealsPageStyles();
   const [dealsData, setDealsData] = useState(dealsResponse);
+  const router = useRouter();
   const defaultFilters = {
     ratings: [],
     asset_classes: [],
@@ -52,7 +56,15 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
       to: 25000,
     },
   };
-  const [filters, setFilters] = useState<IFilters>(defaultFilters);
+  const assetClassesArray = Object.values(AssetClasses);
+  const asset_classes = assetClassesArray.filter(
+    item =>
+      item.replace(/[\s']/g, '_').toLowerCase() === router.query.asset_class
+  );
+  const formattedFilters = router.query.asset_class
+    ? { ...defaultFilters, asset_classes }
+    : defaultFilters;
+  const [filters, setFilters] = useState<IFilters>(formattedFilters);
   const [page, setPage] = useState(1);
   const headerProps = useHeaderProps({
     type: 'search-dark',
@@ -61,21 +73,66 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
     isSearch: true,
   });
 
-  const { isLoading } = useQuery(
+  const filterDifferences = (filters: IFilters) => {
+    const differences = differenceWith(
+      Object.entries(filters),
+      Object.entries(defaultFilters),
+      ([filterKey, filterValue], [defaultFilterKey, defaultFilterValue]) =>
+        filterKey === defaultFilterKey &&
+        isEqual(filterValue, defaultFilterValue)
+    );
+
+    return Object.fromEntries(differences);
+  };
+
+  const dirtyFilters = filterDifferences(filters);
+  const isDirtyFilters = !!Object.values(dirtyFilters).length;
+
+  const { isLoading, refetch } = useQuery(
     ['deals', page],
-    () => getAllDeals({ page, pageSize: 10, ...filters }),
+    () => getAllDeals({ page, pageSize: 10, ...dirtyFilters }),
     {
       onSuccess: data => {
         setDealsData(data);
       },
+      keepPreviousData: true,
     }
   );
+
+  const handleApplyFilters = () => {
+    refetch();
+  };
+  const handleClearFilters = () => {
+    setFilters(defaultFilters);
+  };
+  useEffect(() => {
+    if (!isDirtyFilters) {
+      refetch();
+    }
+  }, [filters, isDirtyFilters, refetch]);
+
+  const firstItem = (page - 1) * 10 + 1;
+  const lastItem = page * 10 > dealsData.total ? dealsData.total : page * 10;
 
   return (
     <Layout {...headerProps}>
       <Box sx={classes.root}>
         <Box sx={classes.leftColumn}>
-          <DealsFilters setFilters={setFilters} filters={filters} />
+          <Box sx={classes.leftColumnHeader}>
+            <Typography variant="h5">Filters</Typography>
+            {isDirtyFilters && (
+              <Fade in={isDirtyFilters}>
+                <Typography variant="body1" onClick={handleClearFilters}>
+                  Clear filters
+                </Typography>
+              </Fade>
+            )}
+          </Box>
+          <DealsFilters
+            setFilters={setFilters}
+            filters={filters}
+            handleApplyFilters={handleApplyFilters}
+          />
         </Box>
         <Box sx={classes.rightColumn}>
           <Box sx={classes.rightColumnHeader}>
@@ -109,9 +166,7 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
           )}
           <Box sx={classes.paggination}>
             <Typography variant="caption">
-              Showing {page}-
-              {page >= dealsData.lastPage ? dealsData.total : page * 10} of{' '}
-              {dealsData.total} results
+              Showing {firstItem}-{lastItem} of {dealsData.total} results
             </Typography>
             <CustomPagination
               count={dealsData.lastPage}

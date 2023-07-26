@@ -2,23 +2,14 @@ import { Box, Slider, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useSliderStyles } from './styles';
 import Input from './Input';
-import Button from './Button';
 
 interface CustomSliderProps {
   min: number;
   max: number;
   onChange?: (value: number[] | number) => void;
-  isSubmitOption?: boolean;
-  onSubmit?: (value: number[] | number) => void;
 }
 
-const CustomSlider = ({
-  min,
-  max,
-  onChange,
-  isSubmitOption = true,
-  onSubmit,
-}: CustomSliderProps) => {
+const CustomSlider = ({ min, max, onChange }: CustomSliderProps) => {
   const classes = useSliderStyles();
   const [value, setValue] = useState(max ? [min, max] : min);
   const [inputValues, setInputValues] = useState(
@@ -65,12 +56,6 @@ const CustomSlider = ({
     }
   };
 
-  const handleSubmit = () => {
-    if (onSubmit) {
-      onSubmit(value);
-    }
-  };
-
   return (
     <Box>
       <Box sx={classes.inputsWrapper}>
@@ -88,15 +73,6 @@ const CustomSlider = ({
               showClearOption={false}
             />
           </>
-        )}
-        {isSubmitOption && (
-          <Button
-            variant="secondary"
-            customStyles={{ minWidth: '30%' }}
-            onClick={handleSubmit}
-          >
-            OK
-          </Button>
         )}
       </Box>
       <Slider

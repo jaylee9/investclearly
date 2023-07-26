@@ -10,6 +10,7 @@ import { InvestmentStructures } from '@/backend/constants/enums/investment-struc
 import { DealStatuses } from '@/backend/constants/enums/deal-statuses';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import { Exemptions } from '@/backend/constants/enums/exemptions';
+import Button from '@/components/common/Button';
 
 interface Range {
   from: number;
@@ -33,9 +34,14 @@ export interface IFilters {
 interface DealsFiltersProps {
   setFilters: React.Dispatch<React.SetStateAction<IFilters>>;
   filters: IFilters;
+  handleApplyFilters: () => void;
 }
 
-const DealsFilters = ({ setFilters, filters }: DealsFiltersProps) => {
+const DealsFilters = ({
+  setFilters,
+  filters,
+  handleApplyFilters,
+}: DealsFiltersProps) => {
   const classes = useDealsFiltersStyles();
 
   const [showAll, setShowAll] = useState({
@@ -78,6 +84,7 @@ const DealsFilters = ({ setFilters, filters }: DealsFiltersProps) => {
       setShowAll({ ...showAll, asset_classes: true });
     }
   };
+
   const assetClassesToShow = showAll.asset_classes
     ? Object.values(AssetClasses)
     : Object.values(AssetClasses).slice(0, 8);
@@ -101,7 +108,7 @@ const DealsFilters = ({ setFilters, filters }: DealsFiltersProps) => {
     }));
   };
   return (
-    <>
+    <Box>
       <CustomAccordion label="Sponsor Rating">
         <Box sx={classes.accordionContent}>
           {RATINGS.map(rating => (
@@ -233,13 +240,7 @@ const DealsFilters = ({ setFilters, filters }: DealsFiltersProps) => {
       <CustomAccordion label="Target IRR, %">
         <Box sx={classes.accordionContent}>
           <Box>
-            <CustomSlider
-              min={2}
-              max={12}
-              onSubmit={value =>
-                handleSliderChange(value as number[], 'targetIRR')
-              }
-            />
+            <CustomSlider min={2} max={12} />
           </Box>
         </Box>
       </CustomAccordion>
@@ -249,7 +250,7 @@ const DealsFilters = ({ setFilters, filters }: DealsFiltersProps) => {
             <CustomSlider
               min={2}
               max={12}
-              onSubmit={value =>
+              onChange={value =>
                 handleSliderChange(value as number[], 'actualIRR')
               }
             />
@@ -262,7 +263,7 @@ const DealsFilters = ({ setFilters, filters }: DealsFiltersProps) => {
             <CustomSlider
               min={2}
               max={12}
-              onSubmit={value => handleSliderChange(value as number[], 'fees')}
+              onChange={value => handleSliderChange(value as number[], 'fees')}
             />
           </Box>
         </Box>
@@ -273,7 +274,7 @@ const DealsFilters = ({ setFilters, filters }: DealsFiltersProps) => {
             <CustomSlider
               min={5000}
               max={25000}
-              onSubmit={value =>
+              onChange={value =>
                 handleSliderChange(value as number[], 'min_investment')
               }
             />
@@ -286,14 +287,17 @@ const DealsFilters = ({ setFilters, filters }: DealsFiltersProps) => {
             <CustomSlider
               min={5000}
               max={25000}
-              onSubmit={value =>
+              onChange={value =>
                 handleSliderChange(value as number[], 'preffered_return')
               }
             />
           </Box>
         </Box>
       </CustomAccordion>
-    </>
+      <Box sx={classes.buttonWrapper}>
+        <Button onClick={handleApplyFilters}>Apply filters</Button>
+      </Box>
+    </Box>
   );
 };
 
