@@ -13,11 +13,25 @@ const useDealsPageStyles = () => {
       background: palette.common.white,
       borderRadius: '12px',
       boxShadow: customShadows.header,
-      paddingBottom: '24px',
       '& .MuiPaper-root': {
         '&:first-child': {
           borderRadius: '100px 100px 0px 0px !important',
         },
+      },
+    },
+    leftColumnHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '24px 16px 16px',
+      borderBottom: `1px solid ${palette.background.paper}`,
+      '& h5': {
+        fontWeight: 600,
+      },
+      '& p': {
+        fontWeight: 600,
+        color: palette.primary.light,
+        cursor: 'pointer',
       },
     },
     rightColumn: {
