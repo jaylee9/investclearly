@@ -54,8 +54,8 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
       setEmail(data.email);
     }
   };
-  const handleGoogleSignUp = async (token: string) => {
-    await googleLogin({ token });
+  const handleGoogleSignUp = async (credenitals: CredentialResponse) => {
+    await googleLogin({ token: credenitals.credential as string });
   };
   return (
     <Box sx={classes.root}>
@@ -66,9 +66,7 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
         <GoogleLogin
           text="signup_with"
           width="1000"
-          onSuccess={response =>
-            handleGoogleSignUp(response.credential as string)
-          }
+          onSuccess={handleGoogleSignUp}
         />
       </Box>
       <Box sx={classes.dividerWrapper}>

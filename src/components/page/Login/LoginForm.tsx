@@ -8,7 +8,7 @@ import { z } from 'zod';
 import Link from 'next/link';
 import { googleLogin, login } from '@/actions/auth';
 import { useRouter } from 'next/router';
-import { GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 
 const validationSchema = z.object({
   email: z.string().email({ message: 'Email must be a valid email' }),
@@ -38,8 +38,8 @@ const LoginForm = () => {
       router.push('/');
     }
   };
-  const handleGoogleLogin = async (token: string) => {
-    await googleLogin({ token });
+  const handleGoogleLogin = async (credenitals: CredentialResponse) => {
+    await googleLogin({ token: credenitals.credential as string });
   };
   return (
     <Box sx={classes.root}>
@@ -48,11 +48,9 @@ const LoginForm = () => {
       </Typography>
       <Box sx={classes.googleLoginWrapper}>
         <GoogleLogin
+          width="1000px"
           text="signup_with"
-          width="1000"
-          onSuccess={response =>
-            handleGoogleLogin(response.credential as string)
-          }
+          onSuccess={handleGoogleLogin}
         />
       </Box>
       <Box sx={classes.dividerWrapper}>
