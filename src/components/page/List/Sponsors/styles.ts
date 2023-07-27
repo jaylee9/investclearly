@@ -14,6 +14,17 @@ export const useSponsorComponentStyles = () => {
       display: 'flex',
       justifyContent: 'space-between',
     },
+    selectWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      '& p': {
+        color: palette.text.secondary,
+      },
+    },
+    selectContent: {
+      width: '200px',
+    },
   };
 };
 

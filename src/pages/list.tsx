@@ -1,4 +1,5 @@
 import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
+import { GetAllSponsorsResponse, getAllSponsors } from '@/actions/sponsors';
 import CustomTabs from '@/components/common/CustomTabs';
 import Layout from '@/components/common/Layout';
 import DealsComponent from '@/components/page/List/Deals';
@@ -10,9 +11,10 @@ import { SyntheticEvent } from 'react';
 
 interface ListPageProps {
   dealsResponse: GetAllDealsResponse;
+  sponsorsResponse: GetAllSponsorsResponse;
 }
 
-const List = ({ dealsResponse }: ListPageProps) => {
+const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
   const router = useRouter();
   const headerProps = useHeaderProps({
     type: 'search-dark',
@@ -31,7 +33,7 @@ const List = ({ dealsResponse }: ListPageProps) => {
       value: 'sponsors',
       label: 'Sponsors',
       count: dealsResponse.total,
-      content: <SponsorsComponent />,
+      content: <SponsorsComponent sponsorsResponse={sponsorsResponse} />,
     },
   ];
   const handleChange = (
@@ -60,6 +62,7 @@ const List = ({ dealsResponse }: ListPageProps) => {
 
 export const getServerSideProps = async () => {
   const dealsResponse = await getAllDeals({ page: 1, pageSize: 10 });
+  const sponsorsResponse = await getAllSponsors({ page: 1, pageSize: 10 });
   if (!dealsResponse) {
     return {
       notFound: true,
@@ -68,6 +71,7 @@ export const getServerSideProps = async () => {
   return {
     props: {
       dealsResponse,
+      sponsorsResponse,
     },
   };
 };
