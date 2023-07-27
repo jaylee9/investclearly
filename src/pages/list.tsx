@@ -12,7 +12,7 @@ interface ListPageProps {
   dealsResponse: GetAllDealsResponse;
 }
 
-const Deals = ({ dealsResponse }: ListPageProps) => {
+const List = ({ dealsResponse }: ListPageProps) => {
   const router = useRouter();
   const headerProps = useHeaderProps({
     type: 'search-dark',
@@ -72,4 +72,4 @@ export const getServerSideProps = async () => {
   };
 };
 
-export default Deals;
+export default List;
