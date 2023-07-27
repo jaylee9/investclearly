@@ -5,7 +5,7 @@ import CustomPagination from '@/components/common/Pagination';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
 import DealsFilters, { IFilters } from './DealsFilters';
 import BannerBlock from '@/components/page/Home/BannerBlock';
-import { Box, Fade, Typography } from '@mui/material';
+import { Box, Fade, SelectChangeEvent, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { differenceWith, isEqual } from 'lodash';
@@ -15,8 +15,8 @@ import { useDealsComponentStyles } from './styles';
 import ColumnsComponent from '../ColumnsComponent';
 
 const sortOptions = [
-  { label: 'Relevance', value: 'relevance' },
-  { label: 'Investment', value: 'investment' },
+  { label: 'Newest Deals', value: 'DESC' },
+  { label: 'Oldest Deals', value: 'ASC' },
 ];
 
 interface DealsComponentProps {
@@ -25,8 +25,12 @@ interface DealsComponentProps {
 
 const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
   const classes = useDealsComponentStyles();
-  const [dealsData, setDealsData] = useState(dealsResponse);
   const router = useRouter();
+  const [dealsData, setDealsData] = useState(dealsResponse);
+  const [orderDirection, setOrderDirection] = useState<'DESC' | 'ASC'>('DESC');
+  const handleChangeSelect = (e: SelectChangeEvent<unknown>) => {
+    setOrderDirection(e.target.value as 'DESC' | 'ASC');
+  };
   const defaultFilters = {
     ratings: [],
     asset_classes: [],
@@ -82,8 +86,8 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
   const isDirtyFilters = !!Object.values(dirtyFilters).length;
 
   const { isLoading, refetch } = useQuery(
-    ['deals', page],
-    () => getAllDeals({ page, pageSize: 10, ...dirtyFilters }),
+    ['deals', page, orderDirection],
+    () => getAllDeals({ page, pageSize: 10, orderDirection, ...dirtyFilters }),
     {
       onSuccess: data => {
         setDealsData(data);
@@ -140,8 +144,9 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
               <Box sx={classes.selectContent}>
                 <CustomSelect
                   options={sortOptions}
-                  placeholder="Search"
                   variant={SelectVariant.Dark}
+                  onChange={handleChangeSelect}
+                  value={orderDirection}
                 />
               </Box>
             </Box>
