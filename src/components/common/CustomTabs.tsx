@@ -19,9 +19,10 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
   value,
   tabs,
   customStyles,
-  ...other
+  ...props
 }) => {
   const classes = useTabsStyles();
+  const activeTab = tabs.find(tab => value === tab.value);
   return (
     <>
       <Tabs
@@ -29,7 +30,7 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
         aria-label="custom tabs"
         sx={classes.root}
         style={customStyles}
-        {...other}
+        {...props}
       >
         {tabs.map(tab => (
           <Tab
@@ -47,9 +48,7 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
           />
         ))}
       </Tabs>
-      {tabs.map(
-        tab => value === tab.value && <Box key={tab.value}>{tab.content}</Box>
-      )}
+      {activeTab && <Box key={activeTab.value}>{activeTab.content}</Box>}
     </>
   );
 };
