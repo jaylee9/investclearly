@@ -4,9 +4,7 @@ import Layout from '@/components/common/Layout';
 import Loading from '@/components/common/Loading';
 import CustomPagination from '@/components/common/Pagination';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
-import DealsFilters, {
-  IFilters,
-} from '@/components/page/List/Deals/DealsFilters';
+import DealsFilters, { IFilters } from './DealsFilters';
 import BannerBlock from '@/components/page/Home/BannerBlock';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealsPageStyles from '@/pages_styles/dealsStyles';
@@ -26,7 +24,7 @@ interface DealsPageProps {
   dealsResponse: GetAllDealsResponse;
 }
 
-const Deals = ({ dealsResponse }: DealsPageProps) => {
+const DealsComponent = ({ dealsResponse }: DealsPageProps) => {
   const classes = useDealsPageStyles();
   const [dealsData, setDealsData] = useState(dealsResponse);
   const router = useRouter();
@@ -187,18 +185,4 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
   );
 };
 
-export const getServerSideProps = async () => {
-  const dealsResponse = await getAllDeals({ page: 1, pageSize: 10 });
-  if (!dealsResponse) {
-    return {
-      notFound: true,
-    };
-  }
-  return {
-    props: {
-      dealsResponse,
-    },
-  };
-};
-
-export default Deals;
+export default DealsComponent;
