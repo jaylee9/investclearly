@@ -32,5 +32,9 @@ export const useDealsFiltersStyles = () => {
         fontSize: '24px',
       },
     },
+    buttonWrapper: {
+      padding: '12px 16px',
+      textAlign: 'end',
+    },
   };
 };

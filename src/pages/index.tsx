@@ -8,8 +8,14 @@ import TopRatedSponsorsBlock from '@/components/page/Home/TopRatedSponsorsBlock'
 import useHeaderProps from '@/hooks/useHeaderProps';
 import { Box } from '@mui/material';
 import BannerBlock from '@/components/page/Home/BannerBlock';
+import { getAllDeals } from '@/actions/deals';
+import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 
-const Home = () => {
+interface HomeProps {
+  deals: DealInterface[];
+}
+
+const Home = ({ deals }: HomeProps) => {
   const classes = useHomeStyles();
   const headerProps = useHeaderProps({
     type: 'light',
@@ -23,7 +29,7 @@ const Home = () => {
       <HeadBlock />
       <Box sx={classes.root}>
         <Box sx={classes.content}>
-          <NewDealsBlock />
+          <NewDealsBlock deals={deals} />
           <TopRatedSponsorsBlock />
           <DealsBlock />
         </Box>
@@ -37,6 +43,20 @@ Share Your Experience With Other Investors"
       </Box>
     </Layout>
   );
+};
+
+export const getServerSideProps = async () => {
+  const dealsResponse = await getAllDeals({ page: 1, pageSize: 4 });
+  if (!dealsResponse) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: {
+      deals: dealsResponse.deals,
+    },
+  };
 };
 
 export default Home;

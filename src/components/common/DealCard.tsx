@@ -2,8 +2,11 @@ import { Box, Typography } from '@mui/material';
 import { BoxProps } from '@mui/material';
 import theme from '@/config/theme';
 import Image from 'next/image';
-import { IDeal } from '@/types/deal';
 import { useDealCardStyles } from './styles';
+import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
+
+const MOCK_IMAGE_URL =
+  'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
 
 export enum DealCardVariant {
   Base = 'base',
@@ -12,7 +15,7 @@ export enum DealCardVariant {
 
 interface DealCardProps extends BoxProps {
   variant?: DealCardVariant;
-  deal: IDeal;
+  deal: DealInterface;
 }
 
 const DealCard = ({
@@ -23,14 +26,18 @@ const DealCard = ({
   const classes = useDealCardStyles();
   return variant === DealCardVariant.Base ? (
     <Box
-      sx={{ ...props.sx, background: theme.palette.common.white }}
+      sx={{
+        ...props.sx,
+        background: theme.palette.common.white,
+        height: '100%',
+      }}
       display="flex"
       flexDirection="column"
       borderRadius="0px 0px 12px 12px"
       boxShadow={theme.customShadows.header}
     >
       <Image
-        src={deal.image}
+        src={MOCK_IMAGE_URL}
         alt="deal image"
         width={292}
         height={172}
@@ -38,10 +45,10 @@ const DealCard = ({
       />
       <Box sx={classes.baseDealCardContent}>
         <Typography variant="h5" sx={classes.baseDealName}>
-          {deal.name}
+          {deal.dealTitle}
         </Typography>
         <Typography variant="body1" sx={classes.baseDealLocation}>
-          {deal.location}
+          {deal.region}
         </Typography>
         <Typography
           variant="body1"
@@ -51,31 +58,31 @@ const DealCard = ({
           <i className="icon-Status"></i> {deal.status}
         </Typography>
         <Typography variant="body1" sx={classes.baseDealDetail}>
-          <i className="icon-Investment"></i> {deal.cost}% IRR
+          <i className="icon-Investment"></i> {deal.targetIRR}% IRR
         </Typography>
       </Box>
     </Box>
   ) : (
     <Box sx={classes.largeRoot}>
-      <Image src={deal.image} alt="deal image" width={200} height={170} />
+      <Image src={MOCK_IMAGE_URL} alt="deal image" width={200} height={170} />
       <Box sx={classes.largeContent}>
         <Box sx={classes.largeHeader}>
           <Box sx={classes.largeHeaderLeftColumn}>
-            {deal.promoted && (
+            {/* {deal.promoted && (
               <Typography variant="caption" sx={classes.promoted}>
                 Promoted
               </Typography>
-            )}
+            )} */}
             <Typography variant="h5" fontWeight={600}>
-              {deal.name}
+              {deal.dealTitle}
             </Typography>
             <Box sx={classes.sponsorInfo}>
-              <Typography variant="caption">{deal.sponsor_name}</Typography>
-              <Typography variant="caption" sx={classes.sponsorRating}>
+              <Typography variant="caption">{deal.dealSponsor}</Typography>
+              {/* <Typography variant="caption" sx={classes.sponsorRating}>
                 <i className="icon-Star"></i>
                 <span>{deal.rating}</span>
                 <span>({deal.rating_amount})</span>
-              </Typography>
+              </Typography> */}
             </Box>
           </Box>
           <div>
@@ -86,7 +93,7 @@ const DealCard = ({
           <Box sx={classes.sponsorPropertiesColumn}>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Location"></i>
-              {deal.location}
+              {deal.region}
             </Typography>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Status"></i>
@@ -96,11 +103,11 @@ const DealCard = ({
           <Box sx={classes.sponsorPropertiesColumn}>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Investment"></i>
-              Min investment ${deal.min_investment}
+              Min investment ${deal.minimumInvestment}
             </Typography>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Asset-class"></i>
-              {deal.asset_class}
+              {deal.assetClass}
             </Typography>
           </Box>
         </Box>

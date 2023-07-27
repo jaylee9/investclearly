@@ -1,84 +1,71 @@
+import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
 import DealCard, { DealCardVariant } from '@/components/common/DealCard';
 import Layout from '@/components/common/Layout';
+import Loading from '@/components/common/Loading';
+import CustomPagination from '@/components/common/Pagination';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
-import DealsFilters from '@/components/page/Deals/DealsFilters';
+import DealsFilters, { IFilters } from '@/components/page/Deals/DealsFilters';
 import BannerBlock from '@/components/page/Home/BannerBlock';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealsPageStyles from '@/pages_styles/dealsStyles';
-import { IDeal } from '@/types/deal';
-import { Box, Typography } from '@mui/material';
-
-const mockData: IDeal[] = [
-  {
-    id: 1,
-    image:
-      'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    name: 'Lolo Peak Village',
-    location: 'Lolo, Montana',
-    status: 'In development',
-    cost: '28-30',
-    promoted: true,
-    sponsor_name: 'Cloud Investment Ltd',
-    rating: 4.9,
-    rating_amount: 115,
-    min_investment: 5000,
-    asset_class: 'Co-Living',
-  },
-  {
-    id: 2,
-    image:
-      'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    name: 'Lolo Peak Village',
-    location: 'Lolo, Montana',
-    status: 'In development',
-    cost: '28-30',
-    promoted: false,
-    sponsor_name: 'Cloud Investment Ltd',
-    rating: 4.9,
-    rating_amount: 115,
-    min_investment: 5000,
-    asset_class: 'Co-Living',
-  },
-  {
-    id: 3,
-    image:
-      'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    name: 'Lolo Peak Village',
-    location: 'Lolo, Montana',
-    status: 'In development',
-    cost: '28-30',
-    promoted: false,
-    sponsor_name: 'Cloud Investment Ltd',
-    rating: 4.9,
-    rating_amount: 115,
-    min_investment: 5000,
-    asset_class: 'Co-Living',
-  },
-  {
-    id: 4,
-    image:
-      'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    name: 'Lolo Peak Village',
-    location: 'Lolo, Montana',
-    status: 'In development',
-    cost: '28-30',
-    promoted: false,
-    sponsor_name: 'Cloud Investment Ltd',
-    rating: 4.9,
-    rating_amount: 115,
-    min_investment: 5000,
-    asset_class: 'Co-Living',
-  },
-];
+import { Box, Fade, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import { differenceWith, isEqual } from 'lodash';
+import { useRouter } from 'next/router';
+import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 
 const sortOptions = [
   { label: 'Relevance', value: 'relevance' },
   { label: 'Investment', value: 'investment' },
 ];
 
-const Deals = () => {
-  const classes = useDealsPageStyles();
+interface DealsPageProps {
+  dealsResponse: GetAllDealsResponse;
+}
 
+const Deals = ({ dealsResponse }: DealsPageProps) => {
+  const classes = useDealsPageStyles();
+  const [dealsData, setDealsData] = useState(dealsResponse);
+  const router = useRouter();
+  const defaultFilters = {
+    ratings: [],
+    asset_classes: [],
+    statuses: [],
+    regions: [],
+    investment_structure: [],
+    exemptions: [],
+    targetIRR: {
+      from: 2,
+      to: 12,
+    },
+    actualIRR: {
+      from: 2,
+      to: 12,
+    },
+    fees: {
+      from: 2,
+      to: 12,
+    },
+    min_investment: {
+      from: 5000,
+      to: 25000,
+    },
+    prefferd_return: {
+      from: 5000,
+      to: 25000,
+    },
+  };
+  const assetClassesArray = Object.values(AssetClasses);
+  const asset_classes = assetClassesArray.filter(
+    item =>
+      item.replace(/[\s']/g, '_').toLowerCase() === router.query.asset_class
+  );
+  const formattedFilters = router.query.asset_class
+    ? { ...defaultFilters, asset_classes }
+    : defaultFilters;
+  const [filters, setFilters] = useState<IFilters>(formattedFilters);
+  const [page, setPage] = useState(1);
   const headerProps = useHeaderProps({
     type: 'search-dark',
     isLinks: true,
@@ -86,16 +73,71 @@ const Deals = () => {
     isSearch: true,
   });
 
+  const filterDifferences = (filters: IFilters) => {
+    const differences = differenceWith(
+      Object.entries(filters),
+      Object.entries(defaultFilters),
+      ([filterKey, filterValue], [defaultFilterKey, defaultFilterValue]) =>
+        filterKey === defaultFilterKey &&
+        isEqual(filterValue, defaultFilterValue)
+    );
+
+    return Object.fromEntries(differences);
+  };
+
+  const dirtyFilters = filterDifferences(filters);
+  const isDirtyFilters = !!Object.values(dirtyFilters).length;
+
+  const { isLoading, refetch } = useQuery(
+    ['deals', page],
+    () => getAllDeals({ page, pageSize: 10, ...dirtyFilters }),
+    {
+      onSuccess: data => {
+        setDealsData(data);
+      },
+      keepPreviousData: true,
+    }
+  );
+
+  const handleApplyFilters = () => {
+    refetch();
+  };
+  const handleClearFilters = () => {
+    setFilters(defaultFilters);
+  };
+  useEffect(() => {
+    if (!isDirtyFilters) {
+      refetch();
+    }
+  }, [filters, isDirtyFilters, refetch]);
+
+  const firstItem = (page - 1) * 10 + 1;
+  const lastItem = page * 10 > dealsData.total ? dealsData.total : page * 10;
+
   return (
     <Layout {...headerProps}>
       <Box sx={classes.root}>
         <Box sx={classes.leftColumn}>
-          <DealsFilters />
+          <Box sx={classes.leftColumnHeader}>
+            <Typography variant="h5">Filters</Typography>
+            {isDirtyFilters && (
+              <Fade in={isDirtyFilters}>
+                <Typography variant="body1" onClick={handleClearFilters}>
+                  Clear filters
+                </Typography>
+              </Fade>
+            )}
+          </Box>
+          <DealsFilters
+            setFilters={setFilters}
+            filters={filters}
+            handleApplyFilters={handleApplyFilters}
+          />
         </Box>
         <Box sx={classes.rightColumn}>
           <Box sx={classes.rightColumnHeader}>
             <Typography variant="body1">
-              <span style={{ fontWeight: 600 }}>{mockData.length} Deals</span>{' '}
+              <span style={{ fontWeight: 600 }}>{dealsData.total} Deals</span>{' '}
               found for Invest
             </Typography>
             <Box sx={classes.selectWrapper}>
@@ -109,14 +151,28 @@ const Deals = () => {
               </Box>
             </Box>
           </Box>
-          <Box sx={classes.dealsWrapper}>
-            {mockData.map(deal => (
-              <DealCard
-                key={deal.id}
-                deal={deal}
-                variant={DealCardVariant.Large}
-              />
-            ))}
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Box sx={classes.dealsWrapper}>
+              {dealsData.deals.map(deal => (
+                <DealCard
+                  key={deal.id}
+                  deal={deal}
+                  variant={DealCardVariant.Large}
+                />
+              ))}
+            </Box>
+          )}
+          <Box sx={classes.paggination}>
+            <Typography variant="caption">
+              Showing {firstItem}-{lastItem} of {dealsData.total} results
+            </Typography>
+            <CustomPagination
+              count={dealsData.lastPage}
+              page={page}
+              onChange={(event, value) => setPage(value)}
+            />
           </Box>
         </Box>
       </Box>
@@ -127,6 +183,20 @@ const Deals = () => {
       />
     </Layout>
   );
+};
+
+export const getServerSideProps = async () => {
+  const dealsResponse = await getAllDeals({ page: 1, pageSize: 10 });
+  if (!dealsResponse) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: {
+      dealsResponse,
+    },
+  };
 };
 
 export default Deals;

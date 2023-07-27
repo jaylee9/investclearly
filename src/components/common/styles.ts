@@ -214,6 +214,10 @@ export const useDealCardStyles = () => {
     },
     baseDealName: {
       fontWeight: 600,
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      maxWidth: '190px',
     },
     baseDealLocation: {
       color: theme.palette.text.secondary,
@@ -418,6 +422,42 @@ export const useSliderStyles = () => {
       display: 'flex',
       gap: '12px',
       alignItems: 'center',
+    },
+  };
+};
+
+export const usePaginationStyles = () => {
+  return {
+    root: {
+      '& .MuiPaginationItem-page.Mui-selected': {
+        color: theme.palette.common.black,
+        backgroundColor: 'transparent',
+        '&:active': {
+          backgroundColor: 'transparent',
+        },
+      },
+      '& .MuiPaginationItem-page': {
+        color: theme.palette.text.secondary,
+      },
+      '& .MuiPaginationItem-root': {
+        '& i': {
+          color: palette.text.secondary,
+          fontSize: '24px',
+        },
+      },
+      '& .MuiPaginationItem-root.Mui-disabled': {
+        '& i': {
+          color: palette.text.disabled,
+        },
+      },
+    },
+  };
+};
+
+export const useLoadingStyles = () => {
+  return {
+    root: {
+      color: palette.primary.light,
     },
   };
 };
