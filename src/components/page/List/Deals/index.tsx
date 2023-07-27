@@ -86,7 +86,7 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
   const isDirtyFilters = !!Object.values(dirtyFilters).length;
 
   const { isLoading, refetch } = useQuery(
-    ['deals', page],
+    ['deals', page, orderDirection],
     () => getAllDeals({ page, pageSize: 10, orderDirection, ...dirtyFilters }),
     {
       onSuccess: data => {
@@ -107,9 +107,6 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
       refetch();
     }
   }, [filters, isDirtyFilters, refetch]);
-  useEffect(() => {
-    refetch();
-  }, [orderDirection, refetch]);
 
   const firstItem = (page - 1) * 10 + 1;
   const lastItem = page * 10 > dealsData.total ? dealsData.total : page * 10;
