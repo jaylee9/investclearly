@@ -3,25 +3,21 @@ import CustomCheckbox from '@/components/common/CustomCheckbox';
 import { RATINGS } from '@/config/constants';
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
-import { useDealsFiltersStyles } from './styles';
-import CustomSlider from '@/components/common/Slider';
+import { useSponsorsFiltersStyles } from './styles';
 import { Regions } from '@/backend/constants/enums/regions';
-import { InvestmentStructures } from '@/backend/constants/enums/investment-structures';
-import { DealStatuses } from '@/backend/constants/enums/deal-statuses';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
-import { Exemptions } from '@/backend/constants/enums/exemptions';
 import Button from '@/components/common/Button';
 
-export interface IFilters {
+export interface ISponsorFilters {
   ratings?: number[];
   primaryAssetClasses?: string[];
   regionalFocus?: string[];
   activelyRaising?: boolean;
 }
 
-interface DealsFiltersProps {
-  setFilters: React.Dispatch<React.SetStateAction<IFilters>>;
-  filters: IFilters;
+interface SponsorsFiltersProps {
+  setFilters: React.Dispatch<React.SetStateAction<ISponsorFilters>>;
+  filters: ISponsorFilters;
   handleApplyFilters: () => void;
 }
 
@@ -29,8 +25,8 @@ const SponsorsFilters = ({
   setFilters,
   filters,
   handleApplyFilters,
-}: DealsFiltersProps) => {
-  const classes = useDealsFiltersStyles();
+}: SponsorsFiltersProps) => {
+  const classes = useSponsorsFiltersStyles();
 
   const [showAll, setShowAll] = useState({
     asset_classes: false,
@@ -129,23 +125,6 @@ const SponsorsFilters = ({
           </Typography>
         </Box>
       </CustomAccordion>
-      <CustomAccordion label="Investment Structure">
-        <Box sx={classes.accordionContent}>
-          <Box sx={classes.assetClassesWrapper}>
-            {Object.values(InvestmentStructures).map(structure => (
-              <CustomCheckbox
-                customStyles={classes.ratingCheckbox}
-                key={structure}
-                onChange={() =>
-                  handleStringArrayChange('investment_structure', structure)
-                }
-                checked={filters.investment_structure?.includes(structure)}
-                label={structure}
-              />
-            ))}
-          </Box>
-        </Box>
-      </CustomAccordion>
       <CustomAccordion label="Region">
         <Box sx={classes.accordionContent}>
           <Box sx={classes.assetClassesWrapper}>
@@ -153,85 +132,13 @@ const SponsorsFilters = ({
               <CustomCheckbox
                 customStyles={classes.ratingCheckbox}
                 key={region}
-                onChange={() => handleStringArrayChange('regions', region)}
-                checked={filters.regions?.includes(region)}
+                onChange={() =>
+                  handleStringArrayChange('regionalFocus', region)
+                }
+                checked={filters.regionalFocus?.includes(region)}
                 label={region}
               />
             ))}
-          </Box>
-        </Box>
-      </CustomAccordion>
-      <CustomAccordion label="Exemption">
-        <Box sx={classes.accordionContent}>
-          <Box sx={classes.assetClassesWrapper}>
-            {Object.values(Exemptions).map(exemption => (
-              <CustomCheckbox
-                customStyles={classes.ratingCheckbox}
-                key={exemption}
-                onChange={() =>
-                  handleStringArrayChange('exemptions', exemption)
-                }
-                checked={filters.investment_structure?.includes(exemption)}
-                label={exemption}
-              />
-            ))}
-          </Box>
-        </Box>
-      </CustomAccordion>
-      <CustomAccordion label="Target IRR, %">
-        <Box sx={classes.accordionContent}>
-          <Box>
-            <CustomSlider min={2} max={12} />
-          </Box>
-        </Box>
-      </CustomAccordion>
-      <CustomAccordion label="Actual IRR, %">
-        <Box sx={classes.accordionContent}>
-          <Box>
-            <CustomSlider
-              min={2}
-              max={12}
-              onChange={value =>
-                handleSliderChange(value as number[], 'actualIRR')
-              }
-            />
-          </Box>
-        </Box>
-      </CustomAccordion>
-      <CustomAccordion label="Fees, %">
-        <Box sx={classes.accordionContent}>
-          <Box>
-            <CustomSlider
-              min={2}
-              max={12}
-              onChange={value => handleSliderChange(value as number[], 'fees')}
-            />
-          </Box>
-        </Box>
-      </CustomAccordion>
-      <CustomAccordion label="Minimum Investment, USD">
-        <Box sx={classes.accordionContent}>
-          <Box>
-            <CustomSlider
-              min={5000}
-              max={25000}
-              onChange={value =>
-                handleSliderChange(value as number[], 'min_investment')
-              }
-            />
-          </Box>
-        </Box>
-      </CustomAccordion>
-      <CustomAccordion label="Preffered Return, USD">
-        <Box sx={classes.accordionContent}>
-          <Box>
-            <CustomSlider
-              min={5000}
-              max={25000}
-              onChange={value =>
-                handleSliderChange(value as number[], 'preffered_return')
-              }
-            />
           </Box>
         </Box>
       </CustomAccordion>
