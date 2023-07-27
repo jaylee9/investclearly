@@ -67,7 +67,7 @@ const DealsFilters = ({
 
   //rating
   const handleRatingChange = (value: number) => {
-    if (filters.ratings && filters.ratings.includes(value)) {
+    if (filters.ratings?.includes(value)) {
       const ratings = filters.ratings.filter(item => item !== value);
       setFilters({ ...filters, ratings });
     } else if (filters.ratings) {
@@ -172,7 +172,7 @@ const DealsFilters = ({
                 customStyles={classes.ratingCheckbox}
                 key={status}
                 onChange={() => handleStringArrayChange('statuses', status)}
-                checked={filters.statuses && filters.statuses.includes(status)}
+                checked={filters.statuses?.includes(status)}
                 label={status}
               />
             ))}
@@ -189,10 +189,7 @@ const DealsFilters = ({
                 onChange={() =>
                   handleStringArrayChange('investment_structure', structure)
                 }
-                checked={
-                  filters.investment_structure &&
-                  filters.investment_structure.includes(structure)
-                }
+                checked={filters.investment_structure?.includes(structure)}
                 label={structure}
               />
             ))}
@@ -207,7 +204,7 @@ const DealsFilters = ({
                 customStyles={classes.ratingCheckbox}
                 key={region}
                 onChange={() => handleStringArrayChange('regions', region)}
-                checked={filters.regions && filters.regions.includes(region)}
+                checked={filters.regions?.includes(region)}
                 label={region}
               />
             ))}
@@ -224,10 +221,7 @@ const DealsFilters = ({
                 onChange={() =>
                   handleStringArrayChange('exemptions', exemption)
                 }
-                checked={
-                  filters.investment_structure &&
-                  filters.investment_structure.includes(exemption)
-                }
+                checked={filters.investment_structure?.includes(exemption)}
                 label={exemption}
               />
             ))}
