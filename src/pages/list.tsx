@@ -32,7 +32,7 @@ const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
     {
       value: 'sponsors',
       label: 'Sponsors',
-      count: dealsResponse.total,
+      count: sponsorsResponse.total,
       content: <SponsorsComponent sponsorsResponse={sponsorsResponse} />,
     },
   ];
