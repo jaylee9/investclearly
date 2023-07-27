@@ -20,11 +20,11 @@ const sortOptions = [
   { label: 'Investment', value: 'investment' },
 ];
 
-interface DealsPageProps {
+interface DealsComponentProps {
   dealsResponse: GetAllDealsResponse;
 }
 
-const DealsComponent = ({ dealsResponse }: DealsPageProps) => {
+const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
   const classes = useDealsPageStyles();
   const [dealsData, setDealsData] = useState(dealsResponse);
   const router = useRouter();
