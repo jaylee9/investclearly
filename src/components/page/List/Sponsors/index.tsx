@@ -12,6 +12,7 @@ import Loading from '@/components/common/Loading';
 import SponsorCard, {
   SponsorCardVariant,
 } from '@/components/common/SponsorCard';
+import CustomPagination from '@/components/common/Pagination';
 
 const sortOptions = [
   { label: 'Newest Sponsors', value: 'DESC' },
@@ -39,7 +40,6 @@ const SponsorsComponent = ({ sponsorsResponse }: SponsorsComponentProps) => {
   const handleChangeSelect = (value: 'DESC' | 'ASC') => {
     setOrderDirection(value);
   };
-  console.log(dirtyFilters);
   const { isLoading, refetch } = useQuery(
     ['sponsors', page, orderDirection],
     () =>
@@ -57,6 +57,9 @@ const SponsorsComponent = ({ sponsorsResponse }: SponsorsComponentProps) => {
   const handleClearFilters = () => {
     setFilters(defaultFilters);
   };
+  const firstItem = (page - 1) * 10 + 1;
+  const lastItem =
+    page * 10 > sponsorsData.total ? sponsorsData.total : page * 10;
   return (
     <ColumnsComponent
       leftColumnHeader={
@@ -127,7 +130,18 @@ const SponsorsComponent = ({ sponsorsResponse }: SponsorsComponentProps) => {
           </Box>
         )
       }
-      paginationComponent={<Box>Pagination</Box>}
+      paginationComponent={
+        <>
+          <Typography variant="caption">
+            Showing {firstItem}-{lastItem} of {sponsorsData.total} results
+          </Typography>
+          <CustomPagination
+            count={sponsorsData.lastPage}
+            page={page}
+            onChange={(event, value) => setPage(value)}
+          />
+        </>
+      }
     />
   );
 };
