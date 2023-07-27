@@ -5,7 +5,7 @@ import CustomPagination from '@/components/common/Pagination';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
 import DealsFilters, { IFilters } from './DealsFilters';
 import BannerBlock from '@/components/page/Home/BannerBlock';
-import { Box, Fade, Typography } from '@mui/material';
+import { Box, Fade, SelectChangeEvent, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { differenceWith, isEqual } from 'lodash';
@@ -28,8 +28,8 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
   const router = useRouter();
   const [dealsData, setDealsData] = useState(dealsResponse);
   const [orderDirection, setOrderDirection] = useState<'DESC' | 'ASC'>('DESC');
-  const handleChangeSelect = (value: 'DESC' | 'ASC') => {
-    setOrderDirection(value);
+  const handleChangeSelect = (e: SelectChangeEvent<unknown>) => {
+    setOrderDirection(e.target.value as 'DESC' | 'ASC');
   };
   const defaultFilters = {
     ratings: [],
@@ -148,9 +148,7 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
                 <CustomSelect
                   options={sortOptions}
                   variant={SelectVariant.Dark}
-                  onChange={e =>
-                    handleChangeSelect(e.target.value as 'DESC' | 'ASC')
-                  }
+                  onChange={handleChangeSelect}
                   value={orderDirection}
                 />
               </Box>
