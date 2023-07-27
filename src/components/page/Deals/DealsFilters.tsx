@@ -116,7 +116,7 @@ const DealsFilters = ({
               customStyles={classes.ratingCheckbox}
               key={rating}
               onChange={() => handleRatingChange(rating)}
-              checked={filters.ratings && filters.ratings.includes(rating)}
+              checked={filters.ratings?.includes(rating)}
               label={
                 <Box sx={classes.starsWrapper}>
                   {[...Array(5)].map((_, i) => {
@@ -145,10 +145,7 @@ const DealsFilters = ({
                 onChange={() =>
                   handleStringArrayChange('asset_classes', assetClass)
                 }
-                checked={
-                  filters.asset_classes &&
-                  filters.asset_classes.includes(assetClass)
-                }
+                checked={filters.asset_classes?.includes(assetClass)}
                 label={assetClass}
               />
             ))}
