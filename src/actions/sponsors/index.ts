@@ -1,39 +1,31 @@
-import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
-import { IFilters } from '@/components/page/List/Deals/DealsFilters';
+import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
+import { ISponsorFilters } from '@/components/page/List/Sponsors/SponsorsFilters';
 import api from '@/config/ky';
 import queryString from 'query-string';
 
-interface IDealFilters extends IFilters {
+interface ISponsorActionFilters extends ISponsorFilters {
   page: number;
   pageSize: number;
   orderDirection?: 'DESC' | 'ASC';
 }
 
-export interface GetAllDealsResponse {
-  deals: DealInterface[];
+export interface GetAllSponsorsResponse {
+  sponsors: SponsorInterface[];
   total: number;
   currentPage: number;
   lastPage: number;
 }
 
 export const getAllDeals = async (
-  filters: IDealFilters
-): Promise<GetAllDealsResponse> => {
+  filters: ISponsorActionFilters
+): Promise<GetAllSponsorsResponse> => {
   const parameters = {
     page: filters.page,
     pageSize: filters.pageSize,
     orderDirection: filters.orderDirection || 'DESC',
-    assetClasses: filters.asset_classes,
-    statuses: filters.statuses,
-    regions: filters.regions,
-    investmentStructures: filters.investment_structure,
-    exemption: filters.exemptions,
-    IRRMin: filters.targetIRR?.from,
-    IRRMax: filters.targetIRR?.to,
-    investmentMinValue: filters.min_investment?.from,
-    investmentMaxValue: filters.min_investment?.to,
-    sponsorFeesMin: filters.fees?.from,
-    sponsorFeesMax: filters.fees?.to,
+    primaryAssetClasses: filters.primaryAssetClasses,
+    regionalFocus: filters.regionalFocus,
+    activelyRaising: filters.activelyRaising,
   };
 
   const stringifiedParameters = queryString.stringify(parameters, {
@@ -42,10 +34,10 @@ export const getAllDeals = async (
     skipEmptyString: true,
   });
 
-  const url = `deals?${stringifiedParameters}`;
+  const url = `sponsors?${stringifiedParameters}`;
 
   try {
-    const response: GetAllDealsResponse = await api.get(url).json();
+    const response: GetAllSponsorsResponse = await api.get(url).json();
     return response;
   } catch (error) {
     console.error('Error fetching deals', error);
