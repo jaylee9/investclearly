@@ -8,11 +8,11 @@ import BannerBlock from '@/components/page/Home/BannerBlock';
 import { Box, Fade, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import { differenceWith, isEqual } from 'lodash';
 import { useRouter } from 'next/router';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import { useDealsComponentStyles } from './styles';
 import ColumnsComponent from '../ColumnsComponent';
+import filterDifferences from '@/helpers/filterDifferences';
 
 const sortOptions = [
   { label: 'Newest Deals', value: 'DESC' },
@@ -70,19 +70,7 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
   const [filters, setFilters] = useState<IFilters>(formattedFilters);
   const [page, setPage] = useState(1);
 
-  const filterDifferences = (filters: IFilters) => {
-    const differences = differenceWith(
-      Object.entries(filters),
-      Object.entries(defaultFilters),
-      ([filterKey, filterValue], [defaultFilterKey, defaultFilterValue]) =>
-        filterKey === defaultFilterKey &&
-        isEqual(filterValue, defaultFilterValue)
-    );
-
-    return Object.fromEntries(differences);
-  };
-
-  const dirtyFilters = filterDifferences(filters);
+  const dirtyFilters = filterDifferences(filters, defaultFilters);
   const isDirtyFilters = !!Object.values(dirtyFilters).length;
 
   const { isLoading, refetch } = useQuery(
