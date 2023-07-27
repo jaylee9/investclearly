@@ -15,8 +15,8 @@ import { useDealsComponentStyles } from './styles';
 import ColumnsComponent from '../ColumnsComponent';
 
 const sortOptions = [
-  { label: 'Relevance', value: 'relevance' },
-  { label: 'Investment', value: 'investment' },
+  { label: 'Newest Deals', value: 'DESC' },
+  { label: 'Oldest Deals', value: 'ASC' },
 ];
 
 interface DealsComponentProps {
@@ -25,8 +25,12 @@ interface DealsComponentProps {
 
 const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
   const classes = useDealsComponentStyles();
-  const [dealsData, setDealsData] = useState(dealsResponse);
   const router = useRouter();
+  const [dealsData, setDealsData] = useState(dealsResponse);
+  const [orderDirection, setOrderDirection] = useState<'DESC' | 'ASC'>('DESC');
+  const handleChangeSelect = (value: 'DESC' | 'ASC') => {
+    setOrderDirection(value);
+  };
   const defaultFilters = {
     ratings: [],
     asset_classes: [],
@@ -83,7 +87,7 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
 
   const { isLoading, refetch } = useQuery(
     ['deals', page],
-    () => getAllDeals({ page, pageSize: 10, ...dirtyFilters }),
+    () => getAllDeals({ page, pageSize: 10, orderDirection, ...dirtyFilters }),
     {
       onSuccess: data => {
         setDealsData(data);
@@ -103,6 +107,9 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
       refetch();
     }
   }, [filters, isDirtyFilters, refetch]);
+  useEffect(() => {
+    refetch();
+  }, [orderDirection, refetch]);
 
   const firstItem = (page - 1) * 10 + 1;
   const lastItem = page * 10 > dealsData.total ? dealsData.total : page * 10;
@@ -140,8 +147,11 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
               <Box sx={classes.selectContent}>
                 <CustomSelect
                   options={sortOptions}
-                  placeholder="Search"
                   variant={SelectVariant.Dark}
+                  onChange={e =>
+                    handleChangeSelect(e.target.value as 'DESC' | 'ASC')
+                  }
+                  value={orderDirection}
                 />
               </Box>
             </Box>

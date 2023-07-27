@@ -6,6 +6,7 @@ import queryString from 'query-string';
 interface IDealFilters extends IFilters {
   page: number;
   pageSize: number;
+  orderDirection?: 'DESC' | 'ASC';
 }
 
 export interface GetAllDealsResponse {
@@ -21,7 +22,7 @@ export const getAllDeals = async (
   const parameters = {
     page: filters.page,
     pageSize: filters.pageSize,
-    orderDirection: 'ASC',
+    orderDirection: filters.orderDirection || 'DESC',
     assetClasses: filters.asset_classes,
     statuses: filters.statuses,
     regions: filters.regions,
