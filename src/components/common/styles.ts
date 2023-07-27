@@ -461,3 +461,42 @@ export const useLoadingStyles = () => {
     },
   };
 };
+
+export const useTabsStyles = () => {
+  return {
+    root: {
+      '& .MuiTabs-indicator': {
+        backgroundColor: palette.primary.light,
+      },
+    },
+    tab: {
+      '&.MuiTab-root': {
+        '&.Mui-selected': {
+          '& p': {
+            color: palette.primary.light,
+          },
+          '& .MuiTypography-caption': {
+            background: palette.primary.light,
+            color: palette.common.white,
+          },
+        },
+        '& p': {
+          fontWeight: 600,
+          color: palette.text.secondary,
+        },
+        '& .MuiTypography-caption': {
+          background: palette.background.paper,
+          borderRadius: '20px',
+          padding: '0px 6px',
+          color: palette.text.secondary,
+        },
+      },
+    },
+    label: {
+      textTransform: 'none !important',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+    },
+  };
+};

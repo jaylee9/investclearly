@@ -1,5 +1,5 @@
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
-import { IFilters } from '@/components/page/Deals/DealsFilters';
+import { IFilters } from '@/components/page/List/Deals/DealsFilters';
 import api from '@/config/ky';
 import queryString from 'query-string';
 

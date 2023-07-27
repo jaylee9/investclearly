@@ -39,12 +39,12 @@ const Header = ({
   const assetClassesArray = [
     ...Object.keys(AssetClasses).map(key => {
       const value = AssetClasses[key as keyof typeof AssetClasses];
-      const href = `deals?asset_class=${value
+      const href = `/list?type=deals?asset_class=${value
         .replace(/[\s']/g, '_')
         .toLowerCase()}`;
       return { value, href };
     }),
-    { value: 'All Deals', href: '/deals' },
+    { value: 'All Deals', href: '/list?type=deals' },
   ];
   const columnLength = Math.ceil(assetClassesArray.length / 2);
   const firstColumn = assetClassesArray.slice(0, columnLength);

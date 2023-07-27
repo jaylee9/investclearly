@@ -1,31 +1,30 @@
 import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
 import DealCard, { DealCardVariant } from '@/components/common/DealCard';
-import Layout from '@/components/common/Layout';
 import Loading from '@/components/common/Loading';
 import CustomPagination from '@/components/common/Pagination';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
-import DealsFilters, { IFilters } from '@/components/page/Deals/DealsFilters';
+import DealsFilters, { IFilters } from './DealsFilters';
 import BannerBlock from '@/components/page/Home/BannerBlock';
-import useHeaderProps from '@/hooks/useHeaderProps';
-import useDealsPageStyles from '@/pages_styles/dealsStyles';
 import { Box, Fade, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { differenceWith, isEqual } from 'lodash';
 import { useRouter } from 'next/router';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
+import { useDealsComponentStyles } from './styles';
+import ColumnsComponent from '../ColumnsComponent';
 
 const sortOptions = [
   { label: 'Relevance', value: 'relevance' },
   { label: 'Investment', value: 'investment' },
 ];
 
-interface DealsPageProps {
+interface DealsComponentProps {
   dealsResponse: GetAllDealsResponse;
 }
 
-const Deals = ({ dealsResponse }: DealsPageProps) => {
-  const classes = useDealsPageStyles();
+const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
+  const classes = useDealsComponentStyles();
   const [dealsData, setDealsData] = useState(dealsResponse);
   const router = useRouter();
   const defaultFilters = {
@@ -66,12 +65,6 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
     : defaultFilters;
   const [filters, setFilters] = useState<IFilters>(formattedFilters);
   const [page, setPage] = useState(1);
-  const headerProps = useHeaderProps({
-    type: 'search-dark',
-    isLinks: true,
-    isSignIn: true,
-    isSearch: true,
-  });
 
   const filterDifferences = (filters: IFilters) => {
     const differences = differenceWith(
@@ -115,10 +108,10 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
   const lastItem = page * 10 > dealsData.total ? dealsData.total : page * 10;
 
   return (
-    <Layout {...headerProps}>
-      <Box sx={classes.root}>
-        <Box sx={classes.leftColumn}>
-          <Box sx={classes.leftColumnHeader}>
+    <>
+      <ColumnsComponent
+        leftColumnHeader={
+          <>
             <Typography variant="h5">Filters</Typography>
             {isDirtyFilters && (
               <Fade in={isDirtyFilters}>
@@ -127,15 +120,17 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
                 </Typography>
               </Fade>
             )}
-          </Box>
+          </>
+        }
+        leftColumnContent={
           <DealsFilters
             setFilters={setFilters}
             filters={filters}
             handleApplyFilters={handleApplyFilters}
           />
-        </Box>
-        <Box sx={classes.rightColumn}>
-          <Box sx={classes.rightColumnHeader}>
+        }
+        rightColumnHeader={
+          <>
             <Typography variant="body1">
               <span style={{ fontWeight: 600 }}>{dealsData.total} Deals</span>{' '}
               found for Invest
@@ -150,8 +145,10 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
                 />
               </Box>
             </Box>
-          </Box>
-          {isLoading ? (
+          </>
+        }
+        rightColumnContent={
+          isLoading ? (
             <Loading />
           ) : (
             <Box sx={classes.dealsWrapper}>
@@ -163,8 +160,10 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
                 />
               ))}
             </Box>
-          )}
-          <Box sx={classes.paggination}>
+          )
+        }
+        paginationComponent={
+          <>
             <Typography variant="caption">
               Showing {firstItem}-{lastItem} of {dealsData.total} results
             </Typography>
@@ -173,30 +172,16 @@ const Deals = ({ dealsResponse }: DealsPageProps) => {
               page={page}
               onChange={(event, value) => setPage(value)}
             />
-          </Box>
-        </Box>
-      </Box>
+          </>
+        }
+      />
       <BannerBlock
         title="Can’t find a deal? Let us know!"
         buttonLabel="Contact Us"
         buttonHref="/contact"
       />
-    </Layout>
+    </>
   );
 };
 
-export const getServerSideProps = async () => {
-  const dealsResponse = await getAllDeals({ page: 1, pageSize: 10 });
-  if (!dealsResponse) {
-    return {
-      notFound: true,
-    };
-  }
-  return {
-    props: {
-      dealsResponse,
-    },
-  };
-};
-
-export default Deals;
+export default DealsComponent;
