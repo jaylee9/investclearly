@@ -6,7 +6,12 @@ import CustomCheckbox from '@/components/common/CustomCheckbox';
 import { useSponsorComponentStyles } from './styles';
 import filterDifferences from '@/helpers/filterDifferences';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
-import { GetAllSponsorsResponse } from '@/actions/sponsors';
+import { GetAllSponsorsResponse, getAllSponsors } from '@/actions/sponsors';
+import { useQuery } from 'react-query';
+import Loading from '@/components/common/Loading';
+import SponsorCard, {
+  SponsorCardVariant,
+} from '@/components/common/SponsorCard';
 
 const sortOptions = [
   { label: 'Newest Sponsors', value: 'DESC' },
@@ -28,13 +33,26 @@ const SponsorsComponent = ({ sponsorsResponse }: SponsorsComponentProps) => {
   const [sponsorsData, setSponsorsData] = useState(sponsorsResponse);
   const [filters, setFilters] = useState<ISponsorFilters>(defaultFilters);
   const [orderDirection, setOrderDirection] = useState<'DESC' | 'ASC'>('DESC');
+  const [page, setPage] = useState(1);
   const dirtyFilters = filterDifferences(filters, defaultFilters);
   const isDirtyFilters = !!Object.values(dirtyFilters).length;
   const handleChangeSelect = (value: 'DESC' | 'ASC') => {
     setOrderDirection(value);
   };
+  console.log(dirtyFilters);
+  const { isLoading, refetch } = useQuery(
+    ['sponsors', page, orderDirection],
+    () =>
+      getAllSponsors({ page, pageSize: 10, orderDirection, ...dirtyFilters }),
+    {
+      onSuccess: data => {
+        setSponsorsData(data);
+      },
+      keepPreviousData: true,
+    }
+  );
   const handleApplyFilters = () => {
-    console.log('apply');
+    refetch();
   };
   const handleClearFilters = () => {
     setFilters(defaultFilters);
@@ -94,7 +112,21 @@ const SponsorsComponent = ({ sponsorsResponse }: SponsorsComponentProps) => {
           </Box>
         </>
       }
-      rightColumnContent={<Box>Here will be list</Box>}
+      rightColumnContent={
+        isLoading ? (
+          <Loading />
+        ) : (
+          <Box sx={classes.sponsorsWrapper}>
+            {sponsorsData.sponsors.map(sponsor => (
+              <SponsorCard
+                key={sponsor.id}
+                sponsor={sponsor}
+                variant={SponsorCardVariant.Large}
+              />
+            ))}
+          </Box>
+        )
+      }
       paginationComponent={<Box>Pagination</Box>}
     />
   );

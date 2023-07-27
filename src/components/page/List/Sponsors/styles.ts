@@ -25,6 +25,12 @@ export const useSponsorComponentStyles = () => {
     selectContent: {
       width: '200px',
     },
+    sponsorsWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+      marginBottom: '16px',
+    },
   };
 };
 
