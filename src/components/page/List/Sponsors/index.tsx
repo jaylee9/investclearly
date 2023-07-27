@@ -1,7 +1,7 @@
 import { Box, Fade, Typography } from '@mui/material';
 import ColumnsComponent from '../ColumnsComponent';
 import SponsorsFilters, { ISponsorFilters } from './SponsorsFilters';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
 import { useSponsorComponentStyles } from './styles';
 import filterDifferences from '@/helpers/filterDifferences';
@@ -33,10 +33,15 @@ const SponsorsComponent = ({ sponsorsResponse }: SponsorsComponentProps) => {
   };
   const [sponsorsData, setSponsorsData] = useState(sponsorsResponse);
   const [filters, setFilters] = useState<ISponsorFilters>(defaultFilters);
+  const [appliedFilters, setAppliedFilters] =
+    useState<ISponsorFilters>(defaultFilters);
   const [orderDirection, setOrderDirection] = useState<'DESC' | 'ASC'>('DESC');
   const [page, setPage] = useState(1);
-  const dirtyFilters = filterDifferences(filters, defaultFilters);
+  const dirtyFilters = filterDifferences(filters, appliedFilters);
   const isDirtyFilters = !!Object.values(dirtyFilters).length;
+
+  const changedFilters = filterDifferences(filters, defaultFilters);
+  const isChangedFilters = !!Object.values(changedFilters).length;
   const handleChangeSelect = (value: 'DESC' | 'ASC') => {
     setOrderDirection(value);
   };
@@ -52,11 +57,19 @@ const SponsorsComponent = ({ sponsorsResponse }: SponsorsComponentProps) => {
     }
   );
   const handleApplyFilters = () => {
+    setAppliedFilters(filters);
     refetch();
   };
+
   const handleClearFilters = () => {
     setFilters(defaultFilters);
+    setAppliedFilters(defaultFilters);
   };
+
+  useEffect(() => {
+    refetch();
+  }, [appliedFilters, refetch]);
+
   const firstItem = (page - 1) * 10 + 1;
   const lastItem =
     page * 10 > sponsorsData.total ? sponsorsData.total : page * 10;
@@ -66,8 +79,8 @@ const SponsorsComponent = ({ sponsorsResponse }: SponsorsComponentProps) => {
         <Box sx={classes.filtersHeaderWrapper}>
           <Box sx={classes.filtersHeaderTitleWrapper}>
             <Typography variant="h5">Filters</Typography>
-            {isDirtyFilters && (
-              <Fade in={isDirtyFilters}>
+            {isChangedFilters && (
+              <Fade in={isChangedFilters}>
                 <Typography variant="body1" onClick={handleClearFilters}>
                   Clear filters
                 </Typography>
@@ -90,6 +103,7 @@ const SponsorsComponent = ({ sponsorsResponse }: SponsorsComponentProps) => {
           filters={filters}
           setFilters={setFilters}
           handleApplyFilters={handleApplyFilters}
+          disabledApplyFilters={!isChangedFilters}
         />
       }
       rightColumnHeader={

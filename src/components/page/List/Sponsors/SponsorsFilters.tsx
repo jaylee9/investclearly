@@ -19,12 +19,14 @@ interface SponsorsFiltersProps {
   setFilters: React.Dispatch<React.SetStateAction<ISponsorFilters>>;
   filters: ISponsorFilters;
   handleApplyFilters: () => void;
+  disabledApplyFilters: boolean;
 }
 
 const SponsorsFilters = ({
   setFilters,
   filters,
   handleApplyFilters,
+  disabledApplyFilters,
 }: SponsorsFiltersProps) => {
   const classes = useSponsorsFiltersStyles();
 
@@ -143,7 +145,9 @@ const SponsorsFilters = ({
         </Box>
       </CustomAccordion>
       <Box sx={classes.buttonWrapper}>
-        <Button onClick={handleApplyFilters}>Apply filters</Button>
+        <Button onClick={handleApplyFilters} disabled={disabledApplyFilters}>
+          Apply filters
+        </Button>
       </Box>
     </Box>
   );

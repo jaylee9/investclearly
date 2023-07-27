@@ -68,10 +68,16 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
     ? { ...defaultFilters, asset_classes }
     : defaultFilters;
   const [filters, setFilters] = useState<IFilters>(formattedFilters);
+  const [appliedFilters, setAppliedFilters] =
+    useState<IFilters>(formattedFilters);
+
   const [page, setPage] = useState(1);
 
-  const dirtyFilters = filterDifferences(filters, defaultFilters);
+  const dirtyFilters = filterDifferences(filters, appliedFilters);
   const isDirtyFilters = !!Object.values(dirtyFilters).length;
+
+  const changedFilters = filterDifferences(filters, defaultFilters);
+  const isChangedFilters = !!Object.values(changedFilters).length;
 
   const { isLoading, refetch } = useQuery(
     ['deals', page, orderDirection],
@@ -85,16 +91,18 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
   );
 
   const handleApplyFilters = () => {
+    setAppliedFilters(filters);
     refetch();
   };
+
   const handleClearFilters = () => {
     setFilters(defaultFilters);
+    setAppliedFilters(defaultFilters);
   };
+
   useEffect(() => {
-    if (!isDirtyFilters) {
-      refetch();
-    }
-  }, [filters, isDirtyFilters, refetch]);
+    refetch();
+  }, [appliedFilters, refetch]);
 
   const firstItem = (page - 1) * 10 + 1;
   const lastItem = page * 10 > dealsData.total ? dealsData.total : page * 10;
@@ -105,8 +113,8 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
         leftColumnHeader={
           <>
             <Typography variant="h5">Filters</Typography>
-            {isDirtyFilters && (
-              <Fade in={isDirtyFilters}>
+            {isChangedFilters && (
+              <Fade in={isChangedFilters}>
                 <Typography variant="body1" onClick={handleClearFilters}>
                   Clear filters
                 </Typography>
@@ -119,6 +127,7 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
             setFilters={setFilters}
             filters={filters}
             handleApplyFilters={handleApplyFilters}
+            disabledApplyFilters={!isDirtyFilters}
           />
         }
         rightColumnHeader={
