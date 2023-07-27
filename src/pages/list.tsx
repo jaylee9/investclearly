@@ -2,6 +2,7 @@ import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
 import CustomTabs from '@/components/common/CustomTabs';
 import Layout from '@/components/common/Layout';
 import DealsComponent from '@/components/page/List/Deals';
+import SponsorsComponent from '@/components/page/List/Sponsors';
 import theme from '@/config/theme';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import { useRouter } from 'next/router';
@@ -30,7 +31,7 @@ const Deals = ({ dealsResponse }: ListPageProps) => {
       value: 'sponsors',
       label: 'Sponsors',
       count: dealsResponse.total,
-      content: <div>123</div>,
+      content: <SponsorsComponent />,
     },
   ];
   const handleChange = (
