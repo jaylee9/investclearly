@@ -103,7 +103,7 @@ const SponsorsComponent = ({ sponsorsResponse }: SponsorsComponentProps) => {
           filters={filters}
           setFilters={setFilters}
           handleApplyFilters={handleApplyFilters}
-          disabledApplyFilters={!isChangedFilters}
+          disabledApplyFilters={!isDirtyFilters}
         />
       }
       rightColumnHeader={
