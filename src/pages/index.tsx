@@ -10,12 +10,15 @@ import { Box } from '@mui/material';
 import BannerBlock from '@/components/page/Home/BannerBlock';
 import { getAllDeals } from '@/actions/deals';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
+import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
+import { getAllSponsors } from '@/actions/sponsors';
 
 interface HomeProps {
   deals: DealInterface[];
+  sponsors: SponsorInterface[];
 }
 
-const Home = ({ deals }: HomeProps) => {
+const Home = ({ deals, sponsors }: HomeProps) => {
   const classes = useHomeStyles();
   const headerProps = useHeaderProps({
     type: 'light',
@@ -30,7 +33,7 @@ const Home = ({ deals }: HomeProps) => {
       <Box sx={classes.root}>
         <Box sx={classes.content}>
           <NewDealsBlock deals={deals} />
-          <TopRatedSponsorsBlock />
+          <TopRatedSponsorsBlock sponsors={sponsors} />
           <DealsBlock />
         </Box>
         <BannerBlock
@@ -47,7 +50,8 @@ Share Your Experience With Other Investors"
 
 export const getServerSideProps = async () => {
   const dealsResponse = await getAllDeals({ page: 1, pageSize: 4 });
-  if (!dealsResponse) {
+  const sponsorsResponse = await getAllSponsors({ page: 1, pageSize: 4 });
+  if (!dealsResponse || !sponsorsResponse) {
     return {
       notFound: true,
     };
@@ -55,6 +59,7 @@ export const getServerSideProps = async () => {
   return {
     props: {
       deals: dealsResponse.deals,
+      sponsors: sponsorsResponse.sponsors,
     },
   };
 };

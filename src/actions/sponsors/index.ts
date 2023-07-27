@@ -16,7 +16,7 @@ export interface GetAllSponsorsResponse {
   lastPage: number;
 }
 
-export const getAllDeals = async (
+export const getAllSponsors = async (
   filters: ISponsorActionFilters
 ): Promise<GetAllSponsorsResponse> => {
   const parameters = {
