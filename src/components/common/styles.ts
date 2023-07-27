@@ -500,3 +500,27 @@ export const useTabsStyles = () => {
     },
   };
 };
+
+export const useSponsorCardStyles = () => {
+  return {
+    baseWrapper: {
+      padding: '16px 20px',
+      borderRadius: '12px',
+      boxShadow: theme.customShadows.header,
+      border: `1px solid ${theme.palette.background.paper}`,
+    },
+    baseImage: {
+      borderRadius: '100px',
+      marginBottom: '12px',
+    },
+    baseRating: {
+      color: theme.palette.secondary.main,
+      '& i': {
+        fontSize: '16px',
+      },
+      '& span': {
+        color: theme.palette.text.secondary,
+      },
+    },
+  };
+};
