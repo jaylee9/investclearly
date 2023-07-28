@@ -1,5 +1,6 @@
 import { Deal } from '../entities/deals.entity';
 import { DealInterface } from '../services/deals/interfaces/deal.interface';
+import { attachmentMapper } from './attachment.mapper';
 import { sponsorMapper } from './sponsor.mapper';
 
 export const dealMapper = (deal: Deal): DealInterface => {
@@ -24,6 +25,9 @@ export const dealMapper = (deal: Deal): DealInterface => {
     dealSponsor: deal.dealSponsor || null,
     exemption: deal.exemption || null,
     sponsor: deal.sponsor ? sponsorMapper(deal.sponsor) : null,
+    attachments: deal.attachments
+      ? deal.attachments.map(attachment => attachmentMapper(attachment))
+      : [],
     createdAt: deal.createdAt,
     updatedAt: deal.updatedAt,
   };

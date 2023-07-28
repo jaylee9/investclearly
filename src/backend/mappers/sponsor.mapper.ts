@@ -1,5 +1,6 @@
 import { Sponsor } from '../entities/sponsors.entity';
 import { SponsorInterface } from '../services/sponsors/interfaces/sponsor.interface';
+import { buildFullImagePath } from '../utils/build-full-image-path';
 import { dealMapper } from './deal.mapper';
 import { userMapper } from './user.mapper';
 
@@ -9,7 +10,9 @@ export const sponsorMapper = (sponsor: Sponsor): SponsorInterface => {
     vanityName: sponsor.vanityName || null,
     legalName: sponsor.legalName || null,
     userId: sponsor.userId || null,
-    businessAvatar: sponsor.businessAvatar || null,
+    businessAvatar: sponsor.businessAvatar
+      ? buildFullImagePath(sponsor.businessAvatar)
+      : null,
     businessEmail: sponsor.businessEmail || null,
     businessPhone: sponsor.businessPhone || null,
     sponsorName: sponsor.sponsorName || null,
