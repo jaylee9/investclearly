@@ -1,29 +1,33 @@
-import { NextApiRequest } from 'next';
-import formidable from 'formidable';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { Request, Response } from 'express';
+import multer from 'multer';
+
+interface FilesRequest extends NextApiRequest {
+  files?: Express.Multer.File[];
+}
 
 export const parseForm = async (
-  request: NextApiRequest
-): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
-  const form = formidable({});
+  request: FilesRequest,
+  response: NextApiResponse
+): Promise<{ fields: unknown; files: Express.Multer.File[] }> => {
+  const storage = multer.memoryStorage();
+  const upload = multer({ storage });
 
   return new Promise((resolve, reject) => {
-    form.parse(request, (err, fields, files) => {
-      if (err) {
-        reject(err);
-        return;
-      } else {
-        const fieldsAsStrings: { [key: string]: string } = {};
-
-        for (const key in fields) {
-          const value = fields[key];
-          if (Array.isArray(value)) {
-            fieldsAsStrings[key] = value[0];
-          } else {
-            fieldsAsStrings[key] = value as string;
-          }
+    upload.any()(
+      request as unknown as Request,
+      response as unknown as Response,
+      err => {
+        if (err) {
+          reject(err);
+          return;
         }
-        resolve({ fields: fieldsAsStrings, files });
+
+        const fields = request.body;
+        const files = request.files || [];
+
+        resolve({ fields, files });
       }
-    });
+    );
   });
 };
