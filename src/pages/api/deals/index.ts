@@ -8,9 +8,6 @@ import { FindAllDealsInterface } from '../../../backend/services/deals/interface
 import createHttpError from 'http-errors';
 import { parseForm } from '../../../backend/utils/parse-form';
 import { CreateDealInterface } from '../../../backend/services/deals/interfaces/create-deal.interface';
-import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
-import { createAttachment } from '../../../backend/services/attachments/create-attachment';
-import { uploadFile } from '../../../backend/services/files/upload-file';
 
 export const config = {
   api: {
@@ -21,16 +18,12 @@ export const config = {
 const create = async (request: NextApiRequest, response: NextApiResponse) => {
   await authMiddleware(request, response);
   const { fields, files } = await parseForm(request, response);
-  const newDeal = await createDeal(fields as unknown as CreateDealInterface);
+  const newDeal = await createDeal(
+    fields as unknown as CreateDealInterface,
+    files
+  );
 
   if (newDeal) {
-    if (files.length) {
-      for (const file of files) {
-        const fileUrl = await uploadFile(file, TargetTypesConstants.deals);
-        await createAttachment(fileUrl, newDeal.id, TargetTypesConstants.deals);
-      }
-    }
-
     response.status(200).json(newDeal);
   } else {
     throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);

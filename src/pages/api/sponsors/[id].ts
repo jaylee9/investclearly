@@ -9,9 +9,6 @@ import { updateSponsorRecord } from '../../../backend/services/sponsors/update-s
 import { getSponsorById } from '../../../backend/services/sponsors/get-sponsor-by-id';
 import { deleteSponsorRecord } from '../../../backend/services/sponsors/delete-sponsor';
 import { UpdateSponsorInterface } from '../../../backend/services/sponsors/interfaces/update-sponsor.interface';
-import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
-import { uploadFile } from '../../../backend/services/files/upload-file';
-import { deleteFile } from '../../../backend/services/files/delete-file';
 
 export const config = {
   api: {
@@ -27,27 +24,13 @@ const updateSponsor = async (
   const { fields, files } = await parseForm(request, response);
   const id: number = Number(request.query.id);
 
-  let updatedSponsor = await updateSponsorRecord(
+  const updatedSponsor = await updateSponsorRecord(
     id,
-    fields as unknown as UpdateSponsorInterface
+    fields as unknown as UpdateSponsorInterface,
+    files
   );
 
   if (updatedSponsor) {
-    if (files.length) {
-      if (updatedSponsor.businessAvatar) {
-        await deleteFile(updatedSponsor.businessAvatar);
-      }
-
-      const fileUrl = await uploadFile(
-        files[0],
-        TargetTypesConstants.sponsorAvatars
-      );
-      const fields = { businessAvatar: fileUrl };
-      updatedSponsor = await updateSponsorRecord(
-        updatedSponsor.id,
-        fields as UpdateSponsorInterface
-      );
-    }
     response.status(200).json(updatedSponsor);
   } else {
     throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);
