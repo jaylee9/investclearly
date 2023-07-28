@@ -9,6 +9,12 @@ import { deleteDealRecord } from '../../../backend/services/deals/delete-deal';
 import { DealConstants } from '../../../backend/constants/deal-constants';
 import { parseForm } from '../../../backend/utils/parse-form';
 import { UpdateDealInterface } from '../../../backend/services/deals/interfaces/update-deal.interface';
+import { uploadFile } from '../../../backend/services/files/upload-file';
+import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
+import { createAttachment } from '../../../backend/services/attachments/create-attachment';
+import { getAttachments } from '@/backend/services/attachments/get-attachments';
+import { deleteFile } from '@/backend/services/files/delete-file';
+import { deleteAttachment } from '@/backend/services/attachments/delete-attachments';
 
 export const config = {
   api: {
@@ -21,14 +27,40 @@ const updateDeal = async (
   response: NextApiResponse
 ) => {
   await authMiddleware(request, response);
-  const result = await parseForm(request);
+  const { fields, files } = await parseForm(request, response);
+
+  const { attachmentsIdsToDelete, ...updateDealData } =
+    fields as unknown as UpdateDealInterface;
+
   const id: number = Number(request.query.id);
-  const updatedDeal = await update(
-    id,
-    result.fields as unknown as UpdateDealInterface
-  );
+
+  const updatedDeal = await update(id, updateDealData);
 
   if (updatedDeal) {
+    if (files.length) {
+      for (const file of files) {
+        const fileUrl = await uploadFile(file, TargetTypesConstants.deals);
+        await createAttachment(
+          fileUrl,
+          updatedDeal.id,
+          TargetTypesConstants.deals
+        );
+      }
+    }
+
+    if (attachmentsIdsToDelete && attachmentsIdsToDelete.length !== 0) {
+      const attachments = await getAttachments(
+        updatedDeal.id,
+        TargetTypesConstants.deals,
+        attachmentsIdsToDelete
+      );
+
+      for (const attachment of attachments) {
+        await deleteFile(attachment.path);
+        await deleteAttachment(attachment.id);
+      }
+    }
+
     response.status(200).json(updatedDeal);
   } else {
     throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);
