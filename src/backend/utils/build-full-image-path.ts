@@ -1,6 +1,6 @@
-import * as dotenv from 'dotenv';
-import path from 'path';
-dotenv.config({ path: path.join(__dirname, '../../../.env') });
+import { loadEnvConfig } from '../config/load-env-config';
+
+loadEnvConfig();
 
 export const buildFullImagePath = (fileName: string): string => {
   if (fileName.startsWith('https://')) {

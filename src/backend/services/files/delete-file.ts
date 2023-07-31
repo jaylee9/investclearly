@@ -1,20 +1,11 @@
-import aws from 'aws-sdk';
 import createHttpError from 'http-errors';
-import * as dotenv from 'dotenv';
-import path from 'path';
-dotenv.config({ path: path.join(__dirname, '../../../../.env') });
+import { loadEnvConfig } from '../../config/load-env-config';
+import { s3, bucketName } from '../../config/aws-s3-config';
 
-const s3 = new aws.S3({
-  region: process.env.AWS_REGION,
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  signatureVersion: 'v4',
-});
+loadEnvConfig();
 
 export const deleteFile = async (fileName: string) => {
   try {
-    const bucketName = process.env.AWS_PUBLIC_BUCKET_NAME;
-
     if (!bucketName) {
       throw new createHttpError.BadRequest();
     }

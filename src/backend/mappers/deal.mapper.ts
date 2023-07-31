@@ -25,9 +25,7 @@ export const dealMapper = (deal: Deal): DealInterface => {
     dealSponsor: deal.dealSponsor || null,
     exemption: deal.exemption || null,
     sponsor: deal.sponsor ? sponsorMapper(deal.sponsor) : null,
-    attachments: deal.attachments
-      ? deal.attachments.map(attachment => attachmentMapper(attachment))
-      : [],
+    attachments: deal.attachments ? deal.attachments.map(attachmentMapper) : [],
     createdAt: deal.createdAt,
     updatedAt: deal.updatedAt,
   };

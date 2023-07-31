@@ -133,7 +133,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   const paginationData = await buildPaginationInfo(count, page, pageSize);
 
   return {
-    deals: await Promise.all(deals.map(deal => dealMapper(deal))),
+    deals: await Promise.all(deals.map(dealMapper)),
     ...paginationData,
   };
 };

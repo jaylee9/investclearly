@@ -1,14 +1,13 @@
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import * as dotenv from 'dotenv';
-import path from 'path';
 import { User } from '../entities/user.entity';
 import { Deal } from '../entities/deals.entity';
 import { Sponsor } from '../entities/sponsors.entity';
 import { Attachment } from '../entities/attachments.entity';
+import { loadEnvConfig } from './load-env-config';
 
-dotenv.config({ path: path.join(__dirname, '../../../.env') });
+loadEnvConfig();
 
 const config = {
   type: 'postgres',

@@ -1,6 +1,6 @@
-import * as dotenv from 'dotenv';
-import path from 'path';
-dotenv.config({ path: path.join(__dirname, '../../../.env') });
+import { loadEnvConfig } from './load-env-config';
+
+loadEnvConfig();
 
 export const MailConfig = {
   sendgridApiKey: process.env.SENDGRID_API_KEY || '',

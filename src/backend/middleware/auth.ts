@@ -1,14 +1,13 @@
 import { getCookies } from 'cookies-next';
-import * as dotenv from 'dotenv';
 import createHttpError from 'http-errors';
 import * as jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
-import path from 'path';
 import { getDatabaseConnection } from '../config/data-source-config';
 import { AuthConstants } from '../constants/auth-constants';
 import { User } from '../entities/user.entity';
+import { loadEnvConfig } from '../config/load-env-config';
 
-dotenv.config({ path: path.join(__dirname, '../../../.env') });
+loadEnvConfig();
 
 interface AuthenticatedRequest extends NextApiRequest {
   user?: User;
