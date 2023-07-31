@@ -35,12 +35,14 @@ interface DealsFiltersProps {
   setFilters: React.Dispatch<React.SetStateAction<IFilters>>;
   filters: IFilters;
   handleApplyFilters: () => void;
+  disabledApplyFilters: boolean;
 }
 
 const DealsFilters = ({
   setFilters,
   filters,
   handleApplyFilters,
+  disabledApplyFilters,
 }: DealsFiltersProps) => {
   const classes = useDealsFiltersStyles();
 
@@ -286,7 +288,9 @@ const DealsFilters = ({
         </Box>
       </CustomAccordion>
       <Box sx={classes.buttonWrapper}>
-        <Button onClick={handleApplyFilters}>Apply filters</Button>
+        <Button onClick={handleApplyFilters} disabled={disabledApplyFilters}>
+          Apply filters
+        </Button>
       </Box>
     </Box>
   );

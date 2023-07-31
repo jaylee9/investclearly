@@ -5,7 +5,8 @@ import {
   viewAllLink,
 } from './styles';
 import Link from 'next/link';
-import Image from 'next/image';
+import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
+import SponsorCard from '@/components/common/SponsorCard';
 
 const blockInformation = [
   {
@@ -20,42 +21,11 @@ const blockInformation = [
   },
 ];
 
-const sponsors = [
-  {
-    image:
-      'https://img.freepik.com/free-vector/corporate-business-fintech-logo-abstract-design-template-real-estate-charts-diagram-logotype-concept_126523-637.jpg?w=1380&t=st=1689086397~exp=1689086997~hmac=4a9510a550e70a9eab5ca26a9c712fd7655f90479852c8d0d55d6d78bee227e9',
-    name: 'Cloud Investment Ltd',
-    location: 'Phoenix, AZ',
-    rating: 4.9,
-    amountRatings: 115,
-  },
-  {
-    image:
-      'https://img.freepik.com/free-vector/corporate-business-fintech-logo-abstract-design-template-real-estate-charts-diagram-logotype-concept_126523-637.jpg?w=1380&t=st=1689086397~exp=1689086997~hmac=4a9510a550e70a9eab5ca26a9c712fd7655f90479852c8d0d55d6d78bee227e9',
-    name: 'Sky Capital LLC',
-    location: 'Los Angeles, CA',
-    rating: 4.7,
-    amountRatings: 95,
-  },
-  {
-    image:
-      'https://img.freepik.com/free-vector/corporate-business-fintech-logo-abstract-design-template-real-estate-charts-diagram-logotype-concept_126523-637.jpg?w=1380&t=st=1689086397~exp=1689086997~hmac=4a9510a550e70a9eab5ca26a9c712fd7655f90479852c8d0d55d6d78bee227e9',
-    name: 'Rainbow Finances',
-    location: 'Denver, CO',
-    rating: 4.5,
-    amountRatings: 80,
-  },
-  {
-    image:
-      'https://img.freepik.com/free-vector/corporate-business-fintech-logo-abstract-design-template-real-estate-charts-diagram-logotype-concept_126523-637.jpg?w=1380&t=st=1689086397~exp=1689086997~hmac=4a9510a550e70a9eab5ca26a9c712fd7655f90479852c8d0d55d6d78bee227e9',
-    name: 'Green Leaf Investments',
-    location: 'Chicago, IL',
-    rating: 4.8,
-    amountRatings: 110,
-  },
-];
+interface TopRatedSponsorsBlockProps {
+  sponsors: SponsorInterface[];
+}
 
-const TopRatedSponsorsBlock = () => {
+const TopRatedSponsorsBlock = ({ sponsors }: TopRatedSponsorsBlockProps) => {
   const classes = useTopRatedSponsorsBlockStyles();
   return (
     <Box sx={classes.root}>
@@ -83,7 +53,7 @@ const TopRatedSponsorsBlock = () => {
                 </Box>
               ))}
             </Box>
-            <Link href="/sponsors">
+            <Link href="/list?type=sponsors">
               <Typography variant="body1" sx={viewAllLink} padding="0px 24px">
                 View all sponsors
               </Typography>
@@ -95,23 +65,7 @@ const TopRatedSponsorsBlock = () => {
             <Grid container spacing={2}>
               {sponsors.map((item, index) => (
                 <Grid item xs={6} key={index}>
-                  <Box sx={classes.sponsorWrapper}>
-                    <Image
-                      src={item.image}
-                      width={72}
-                      height={72}
-                      alt="sponsor image"
-                      style={classes.sponsorImage}
-                    />
-                    <Typography variant="h5" fontWeight={600}>
-                      {item.name}
-                    </Typography>
-                    <Typography variant="body1">{item.location}</Typography>
-                    <Typography variant="body1" sx={classes.sponsorRating}>
-                      <i className="icon-Star"></i> {item.rating}
-                      <span> ({item.amountRatings})</span>
-                    </Typography>
-                  </Box>
+                  <SponsorCard sponsor={item} />
                 </Grid>
               ))}
             </Grid>

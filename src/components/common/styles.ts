@@ -500,3 +500,105 @@ export const useTabsStyles = () => {
     },
   };
 };
+
+export const useSponsorCardStyles = () => {
+  return {
+    baseWrapper: {
+      padding: '16px 20px',
+      borderRadius: '12px',
+      boxShadow: theme.customShadows.header,
+      border: `1px solid ${theme.palette.background.paper}`,
+    },
+    baseImage: {
+      borderRadius: '100px',
+      marginBottom: '12px',
+    },
+    baseRating: {
+      color: theme.palette.secondary.main,
+      '& i': {
+        fontSize: '16px',
+      },
+      '& span': {
+        color: theme.palette.text.secondary,
+      },
+    },
+    largeRoot: {
+      display: 'flex',
+      borderRadius: '0px 12px 12px 0px',
+      width: '100%',
+      background: palette.common.white,
+      gap: '16px',
+      alignItems: 'stretch',
+      padding: '24px',
+    },
+    largeContent: {
+      boxSizing: 'border-box',
+      width: '100%',
+    },
+    largeHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginBottom: '12px',
+      '& i': {
+        fontSize: '24px',
+        color: palette.text.secondary,
+        cursor: 'pointer',
+      },
+    },
+    largeHeaderLeftColumn: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '4px',
+    },
+    activelyRaising: {
+      padding: '4px 12px',
+      color: palette.common.white,
+      borderRadius: '12px',
+      background: palette.secondary.main,
+      fontWeight: 600,
+      height: '24px',
+      display: 'flex',
+      alignItems: 'center',
+      width: 'fit-content',
+    },
+    sponsorInfo: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      color: palette.text.secondary,
+    },
+    sponsorRating: {
+      display: 'flex',
+      gap: '4px',
+      alignItems: 'center',
+      '& .icon-Star': {
+        fontSize: '12px',
+        color: palette.secondary.main,
+      },
+      color: palette.secondary.main,
+      '& span': {
+        '&:last-child': {
+          color: palette.text.secondary,
+        },
+      },
+    },
+    sponsorProperties: {
+      display: 'flex',
+    },
+    sponsorPropertiesColumn: {
+      width: '50%',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px',
+    },
+    sponsorProperty: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      '& i': {
+        fontSize: '24px',
+        color: palette.primary.light,
+      },
+    },
+  };
+};
