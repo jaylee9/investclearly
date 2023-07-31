@@ -19,7 +19,7 @@ interface SponsorCardProps extends BoxProps {
 
 const SponsorCard = ({
   variant = SponsorCardVariant.Base,
-  sponsor, //   ...props
+  sponsor,
 }: SponsorCardProps) => {
   const classes = useSponsorCardStyles();
   return variant === SponsorCardVariant.Base ? (
