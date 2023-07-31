@@ -7,6 +7,7 @@ import { useSponsorsFiltersStyles } from './styles';
 import { Regions } from '@/backend/constants/enums/regions';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import Button from '@/components/common/Button';
+import theme from '@/config/theme';
 
 export interface ISponsorFilters {
   ratings?: number[];
@@ -83,7 +84,10 @@ const SponsorsFilters = ({
               label={
                 <Box sx={classes.starsWrapper}>
                   {[...Array(5)].map((_, i) => {
-                    const iconColor = i < rating ? '#F58F29' : '#DBE4F2';
+                    const iconColor =
+                      i < rating
+                        ? theme.palette.secondary.main
+                        : theme.palette.background.paper;
                     return (
                       <i
                         key={i}
