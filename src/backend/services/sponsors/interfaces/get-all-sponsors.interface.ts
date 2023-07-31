@@ -7,8 +7,8 @@ export interface FindAllSponsorsInterface {
   page?: number;
   orderDirection?: OrderDirectionConstants;
   activelyRaising?: boolean;
-  primaryAssetClasses?: AssetClasses[];
-  regionalFocus?: Regions[];
+  primaryAssetClasses?: AssetClasses[] | AssetClasses;
+  regionalFocus?: Regions[] | Regions;
   search?: string;
   limit?: number;
 }
