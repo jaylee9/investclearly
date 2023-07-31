@@ -7,6 +7,7 @@ import {
   ManyToOne,
   Relation,
 } from 'typeorm';
+import { PolymorphicParent } from 'typeorm-polymorphic';
 import { DealStatuses } from '../constants/enums/deal-statuses';
 import { AssetClasses } from '../constants/enums/asset-classes';
 import { InvestmentStructures } from '../constants/enums/investment-structures';
@@ -14,6 +15,7 @@ import { HoldPeriods } from '../constants/enums/hold-periods';
 import { Regions } from '../constants/enums/regions';
 import { Exemptions } from '../constants/enums/exemptions';
 import { Sponsor } from './sponsors.entity';
+import { Attachment } from './attachments.entity';
 
 @Entity({ name: 'deals' })
 export class Deal {
@@ -85,4 +87,7 @@ export class Deal {
 
   @ManyToOne(() => Sponsor, sponsors => sponsors.deals)
   sponsor: Relation<Sponsor>;
+
+  @PolymorphicParent(() => Attachment, { eager: false, cascade: true })
+  attachments: Relation<Attachment[]>;
 }

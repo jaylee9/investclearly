@@ -21,11 +21,12 @@ const updateDeal = async (
   response: NextApiResponse
 ) => {
   await authMiddleware(request, response);
-  const result = await parseForm(request);
+  const { fields, files } = await parseForm(request, response);
   const id: number = Number(request.query.id);
   const updatedDeal = await update(
     id,
-    result.fields as unknown as UpdateDealInterface
+    fields as unknown as UpdateDealInterface,
+    files
   );
 
   if (updatedDeal) {

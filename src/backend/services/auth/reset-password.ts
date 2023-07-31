@@ -1,15 +1,14 @@
 import * as jwt from 'jsonwebtoken';
 import moment from 'moment';
 import * as bcrypt from 'bcryptjs';
-import * as dotenv from 'dotenv';
 import createHttpError from 'http-errors';
-import path from 'path';
 import { AuthConstants } from '../../constants/auth-constants';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { User } from '../../entities/user.entity';
 import { DecodedTokenInterface } from './interfaces/decoded-token.interface';
+import { loadEnvConfig } from '../../config/load-env-config';
 
-dotenv.config({ path: path.join(__dirname, '../../../.env') });
+loadEnvConfig();
 
 export const resetUserPassword = async (
   resetPasswordToken: string,

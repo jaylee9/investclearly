@@ -7,6 +7,7 @@ import { OrderDirectionConstants } from '../../constants/order-direction-constan
 import { pagination } from '../../utils/pagination/pagination';
 import { buildPaginationInfo } from '../../utils/pagination/build-pagination-info';
 import { PaginationConstants } from '../../constants/pagination-constants';
+import { Attachment } from '../../../backend/entities/attachments.entity';
 
 export const getAllDeals = async (params: FindAllDealsInterface) => {
   const {
@@ -32,7 +33,14 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   let searchQuery = connection.manager
     .createQueryBuilder()
     .select('deals')
-    .from(Deal, 'deals');
+    .from(Deal, 'deals')
+    .leftJoinAndMapMany(
+      'deals.attachments',
+      Attachment,
+      'attachments',
+      'attachments.entityId = deals.id AND attachments.entityType = :entityType',
+      { entityType: 'deals' }
+    );
 
   if (assetClasses.length) {
     searchQuery = searchQuery.where('deals.assetClass IN (:...assetClasses)', {
@@ -125,7 +133,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   const paginationData = await buildPaginationInfo(count, page, pageSize);
 
   return {
-    deals: await Promise.all(deals.map(deal => dealMapper(deal))),
+    deals: await Promise.all(deals.map(dealMapper)),
     ...paginationData,
   };
 };

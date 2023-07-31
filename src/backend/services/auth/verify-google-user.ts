@@ -1,7 +1,7 @@
 import { LoginTicket, OAuth2Client } from 'google-auth-library';
-import * as dotenv from 'dotenv';
-import path from 'path';
-dotenv.config({ path: path.join(__dirname, '../../../../.env') });
+import { loadEnvConfig } from '../../config/load-env-config';
+
+loadEnvConfig();
 
 export const verifyGoogleUser = async (token: string) => {
   const clientID = process.env.GOOGLE_CLIENT_ID;

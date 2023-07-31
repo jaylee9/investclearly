@@ -57,5 +57,5 @@ export class User {
   }
 
   @OneToMany(() => Sponsor, sponsors => sponsors.user)
-  sponsors: Relation<Sponsor[]>;
+  sponsors: Relation<Sponsor>[];
 }

@@ -80,9 +80,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
   const paginationData = await buildPaginationInfo(count, page, pageSize);
 
   return {
-    sponsors: await Promise.all(
-      sponsors.map(sponsor => sponsorMapper(sponsor))
-    ),
+    sponsors: await Promise.all(sponsors.map(sponsorMapper)),
     ...paginationData,
   };
 };

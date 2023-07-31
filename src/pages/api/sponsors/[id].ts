@@ -21,11 +21,13 @@ const updateSponsor = async (
   response: NextApiResponse
 ) => {
   await authMiddleware(request, response);
-  const result = await parseForm(request);
+  const { fields, files } = await parseForm(request, response);
   const id: number = Number(request.query.id);
+
   const updatedSponsor = await updateSponsorRecord(
     id,
-    result.fields as unknown as UpdateSponsorInterface
+    fields as unknown as UpdateSponsorInterface,
+    files
   );
 
   if (updatedSponsor) {

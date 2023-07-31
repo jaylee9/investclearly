@@ -20,9 +20,10 @@ const createSponsor = async (
   response: NextApiResponse
 ) => {
   await authMiddleware(request, response);
-  const result = await parseForm(request);
+  const { fields, files } = await parseForm(request, response);
   const newSponsor = await createSponsorRecord(
-    result.fields as unknown as CreateSponsorInterface
+    fields as unknown as CreateSponsorInterface,
+    files
   );
 
   if (newSponsor) {
