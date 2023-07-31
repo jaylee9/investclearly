@@ -6,10 +6,6 @@ loadEnvConfig();
 
 export const deleteFile = async (fileName: string) => {
   try {
-    if (!bucketName) {
-      throw new createHttpError.BadRequest();
-    }
-
     const deleteParams = {
       Bucket: bucketName,
       Key: fileName,
