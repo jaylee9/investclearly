@@ -8,6 +8,7 @@ import { UpdateDealInterface } from './interfaces/update-deal.interface';
 import { getAttachments } from '../attachments/get-attachments';
 import { deleteFile } from '../files/delete-file';
 import { deleteAttachment } from '../attachments/delete-attachments';
+import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
 
 export const update = async (
   id: number,
@@ -16,6 +17,10 @@ export const update = async (
 ) => {
   const connection = await getDatabaseConnection();
   const { attachmentsIdsToDelete, ...updateDealData } = fields;
+
+  const transformedData = transformObjectKeysToArrays({
+    attachmentsIdsToDelete,
+  });
 
   await getDealById(id);
   await connection.manager.update(Deal, { id }, updateDealData);
@@ -27,11 +32,11 @@ export const update = async (
     }
   }
 
-  if (attachmentsIdsToDelete && attachmentsIdsToDelete.length !== 0) {
+  if (transformedData.attachmentsIdsToDelete.length !== 0) {
     const attachments = await getAttachments(
       id,
       TargetTypesConstants.deals,
-      attachmentsIdsToDelete
+      transformedData.attachmentsIdsToDelete
     );
     for (const attachment of attachments) {
       await deleteFile(attachment.path);
