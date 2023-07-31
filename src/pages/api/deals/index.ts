@@ -8,6 +8,7 @@ import { FindAllDealsInterface } from '../../../backend/services/deals/interface
 import createHttpError from 'http-errors';
 import { parseForm } from '../../../backend/utils/parse-form';
 import { CreateDealInterface } from '../../../backend/services/deals/interfaces/create-deal.interface';
+import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
 
 export const config = {
   api: {
@@ -32,7 +33,24 @@ const create = async (request: NextApiRequest, response: NextApiResponse) => {
 
 const getDeals = async (request: NextApiRequest, response: NextApiResponse) => {
   const params: FindAllDealsInterface = request.query;
-  const deals = await getAllDeals(params);
+  const {
+    assetClasses,
+    statuses,
+    regions,
+    investmentStructures,
+    exemptions,
+    ...getDealsData
+  } = params;
+
+  const transformedData = transformObjectKeysToArrays({
+    assetClasses,
+    statuses,
+    regions,
+    investmentStructures,
+    exemptions,
+  });
+
+  const deals = await getAllDeals({ ...getDealsData, ...transformedData });
   response.status(200).json(deals);
 };
 
