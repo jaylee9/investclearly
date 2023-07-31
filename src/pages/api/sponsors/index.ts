@@ -8,6 +8,7 @@ import { CreateSponsorInterface } from '../../../backend/services/sponsors/inter
 import { FindAllSponsorsInterface } from '../../../backend/services/sponsors/interfaces/get-all-sponsors.interface';
 import { createSponsorRecord } from '../../../backend/services/sponsors/create-sponsor';
 import { getAllSponsors } from '../../../backend/services/sponsors/get-all-sponsors';
+import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
 
 export const config = {
   api: {
@@ -38,7 +39,17 @@ const getSponsors = async (
   response: NextApiResponse
 ) => {
   const params: FindAllSponsorsInterface = request.query;
-  const sponsors = await getAllSponsors(params);
+  const { primaryAssetClasses, regionalFocus, ...getSponsorsData } = params;
+
+  const transformedData = transformObjectKeysToArrays({
+    primaryAssetClasses,
+    regionalFocus,
+  });
+
+  const sponsors = await getAllSponsors({
+    ...getSponsorsData,
+    ...transformedData,
+  });
   response.status(200).json(sponsors);
 };
 

@@ -18,7 +18,7 @@ export interface UpdateDealInterface {
   dealLegalName?: string;
   dealSponsor?: string;
   exemption?: string;
-  attachmentsIdsToDelete?: number[];
+  attachmentsIdsToDelete?: number[] | number;
   createdAt: Date;
   updatedAt: Date;
 }
