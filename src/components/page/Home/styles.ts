@@ -103,6 +103,21 @@ export const useGlobalSearchStyles = () => {
       color: theme.palette.text.secondary,
     },
     dealTypes: { display: 'flex', alignItems: 'center', gap: '4px' },
+    sponsorRating: {
+      display: 'flex',
+      gap: '4px',
+      alignItems: 'center',
+      '& .icon-Star': {
+        fontSize: '12px',
+        color: theme.palette.secondary.main,
+      },
+      color: theme.palette.secondary.main,
+      '& span': {
+        '&:last-child': {
+          color: theme.palette.text.secondary,
+        },
+      },
+    },
   };
 };
 

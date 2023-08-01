@@ -6,6 +6,7 @@ import DealsComponent from '@/components/page/List/Deals';
 import SponsorsComponent from '@/components/page/List/Sponsors';
 import theme from '@/config/theme';
 import useHeaderProps from '@/hooks/useHeaderProps';
+import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { SyntheticEvent } from 'react';
 
@@ -60,9 +61,22 @@ const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
   );
 };
 
-export const getServerSideProps = async () => {
-  const dealsResponse = await getAllDeals({ page: 1, pageSize: 10 });
-  const sponsorsResponse = await getAllSponsors({ page: 1, pageSize: 10 });
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const {
+    query: { search },
+  } = context;
+  const dealsResponse = await getAllDeals({
+    page: 1,
+    pageSize: 10,
+    search: (search as string) || '',
+  });
+  const sponsorsResponse = await getAllSponsors({
+    page: 1,
+    pageSize: 10,
+    search: (search as string) || '',
+  });
   if (!dealsResponse) {
     return {
       notFound: true,

@@ -13,6 +13,7 @@ import SponsorCard, {
   SponsorCardVariant,
 } from '@/components/common/SponsorCard';
 import CustomPagination from '@/components/common/Pagination';
+import { useRouter } from 'next/router';
 
 const sortOptions = [
   { label: 'Newest Sponsors', value: 'DESC' },
@@ -25,6 +26,7 @@ interface SponsorsComponentProps {
 
 const SponsorsComponent = ({ sponsorsResponse }: SponsorsComponentProps) => {
   const classes = useSponsorComponentStyles();
+  const router = useRouter();
   const defaultFilters = {
     ratings: [],
     primaryAssetClasses: [],
@@ -48,7 +50,13 @@ const SponsorsComponent = ({ sponsorsResponse }: SponsorsComponentProps) => {
   const { isLoading, refetch } = useQuery(
     ['sponsors', page, orderDirection],
     () =>
-      getAllSponsors({ page, pageSize: 10, orderDirection, ...dirtyFilters }),
+      getAllSponsors({
+        page,
+        pageSize: 10,
+        orderDirection,
+        search: (router.query.search as string) || '',
+        ...dirtyFilters,
+      }),
     {
       onSuccess: data => {
         setSponsorsData(data);

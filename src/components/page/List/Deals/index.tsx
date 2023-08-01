@@ -81,7 +81,14 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
 
   const { isLoading, refetch } = useQuery(
     ['deals', page, orderDirection],
-    () => getAllDeals({ page, pageSize: 10, orderDirection, ...dirtyFilters }),
+    () =>
+      getAllDeals({
+        page,
+        pageSize: 10,
+        orderDirection,
+        search: (router.query.search as string) || '',
+        ...dirtyFilters,
+      }),
     {
       onSuccess: data => {
         setDealsData(data);

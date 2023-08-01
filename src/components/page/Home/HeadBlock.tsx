@@ -1,8 +1,13 @@
 import { useHeadBlockStyles } from './styles';
 import { Box, Typography } from '@mui/material';
 import GlobalSearch from './GlobalSearch';
+import { GlobalSearchResponse } from '@/actions/common';
 
-const HeadBlock = () => {
+interface HeadBlockProps {
+  searchResponse: GlobalSearchResponse;
+}
+
+const HeadBlock = ({ searchResponse }: HeadBlockProps) => {
   const classes = useHeadBlockStyles();
   return (
     <Box sx={classes.root}>
@@ -16,7 +21,7 @@ const HeadBlock = () => {
           confidence.
         </Typography>
       </Box>
-      <GlobalSearch />
+      <GlobalSearch searchResponse={searchResponse} />
     </Box>
   );
 };
