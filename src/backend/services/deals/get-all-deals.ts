@@ -8,6 +8,7 @@ import { pagination } from '../../utils/pagination/pagination';
 import { buildPaginationInfo } from '../../utils/pagination/build-pagination-info';
 import { PaginationConstants } from '../../constants/pagination-constants';
 import { Attachment } from '../../../backend/entities/attachments.entity';
+import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
 
 export const getAllDeals = async (params: FindAllDealsInterface) => {
   const {
@@ -39,7 +40,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
       Attachment,
       'attachments',
       'attachments.entityId = deals.id AND attachments.entityType = :entityType',
-      { entityType: 'deals' }
+      { entityType: TargetTypesConstants.deals }
     );
 
   if (assetClasses.length) {
