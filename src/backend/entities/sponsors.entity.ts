@@ -99,6 +99,10 @@ export class Sponsor {
   @Column({ type: 'int', nullable: true })
   fees: number;
 
+  activelyRaising: boolean;
+
+  dealscount: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
