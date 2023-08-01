@@ -45,11 +45,11 @@ const SponsorCard = ({
       <Box sx={classes.largeContent}>
         <Box sx={classes.largeHeader}>
           <Box sx={classes.largeHeaderLeftColumn}>
-            {/* {sponsor.activelyRaising && (
+            {sponsor.activelyRising && (
               <Typography variant="caption" sx={classes.activelyRaising}>
                 activelyRaising
               </Typography>
-            )} */}
+            )}
             <Typography variant="h5" fontWeight={600}>
               {sponsor.legalName}
             </Typography>
@@ -79,7 +79,7 @@ const SponsorCard = ({
           <Box sx={classes.sponsorPropertiesColumn}>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Investment"></i>
-              {sponsor.deals?.length} deals
+              {sponsor.dealsCount} deals
             </Typography>
           </Box>
         </Box>
