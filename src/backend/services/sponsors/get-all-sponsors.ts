@@ -22,10 +22,24 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
   } = params;
 
   const connection = await getDatabaseConnection();
-  let searchQuery = connection.manager
+
+  const activelyRaisingQuery = connection.manager
     .createQueryBuilder()
-    .select('sponsors')
-    .from(Sponsor, 'sponsors');
+    .select('sponsors.id', 'sponsorId')
+    .addSelect('COUNT(deals.id) > 0', 'activelyRaising')
+    .addSelect('COUNT(deals.id) AS dealscount')
+    .from(Sponsor, 'sponsors')
+    .leftJoin('sponsors.deals', 'deals', 'deals.status = :status', {
+      status: DealStatuses.open,
+    })
+    .groupBy('sponsors.id');
+
+  let searchQuery = connection.manager
+    .createQueryBuilder(Sponsor, 'sponsors')
+    .leftJoin('sponsors.deals', 'deals', 'deals.status = :status', {
+      status: DealStatuses.open,
+    })
+    .groupBy('sponsors.id, deals.id');
 
   if (primaryAssetClasses.length) {
     searchQuery = searchQuery.where(
@@ -77,10 +91,27 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
   searchQuery = pagination(pageSize, page, searchQuery);
 
   const [sponsors, count] = await searchQuery.getManyAndCount();
+  const activelyRaisingData = await activelyRaisingQuery.getRawMany();
+
+  const activelyRaisingMap = activelyRaisingData.reduce((map, item) => {
+    map[item.sponsorId] = {
+      activelyRaising: item.activelyRaising,
+      dealscount: parseInt(item.dealscount),
+    };
+    return map;
+  }, {});
+
+  const sponsorsWithActivelyRaisingAndDealsCount = sponsors.map(sponsor => ({
+    ...sponsor,
+    activelyRaising: activelyRaisingMap[sponsor.id]?.activelyRaising || false,
+    dealscount: activelyRaisingMap[sponsor.id]?.dealscount || 0,
+  }));
   const paginationData = await buildPaginationInfo(count, page, pageSize);
 
   return {
-    sponsors: await Promise.all(sponsors.map(sponsorMapper)),
+    sponsors: await Promise.all(
+      sponsorsWithActivelyRaisingAndDealsCount.map(sponsorMapper)
+    ),
     ...paginationData,
   };
 };
