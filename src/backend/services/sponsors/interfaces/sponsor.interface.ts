@@ -6,6 +6,8 @@ export interface SponsorInterface extends CreateSponsorInterface {
   id: number;
   admin?: UserInterface | null;
   deals?: DealInterface[] | [];
+  activelyRaising: boolean;
+  dealsCount: number;
   createdAt: Date;
   updatedAt: Date;
 }
