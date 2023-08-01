@@ -6,7 +6,7 @@ export interface FindAllSponsorsInterface {
   pageSize?: number;
   page?: number;
   orderDirection?: OrderDirectionConstants;
-  activelyRaising?: boolean;
+  activelyRising?: boolean;
   primaryAssetClasses?: AssetClasses[] | AssetClasses;
   regionalFocus?: Regions[] | Regions;
   search?: string;

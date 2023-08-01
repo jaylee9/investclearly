@@ -14,7 +14,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     pageSize = PaginationConstants.defaultPageSize,
     page = PaginationConstants.defaultPage,
     orderDirection = OrderDirectionConstants.DESC,
-    activelyRaising,
+    activelyRising,
     primaryAssetClasses = [],
     regionalFocus = [],
     search,
@@ -22,10 +22,24 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
   } = params;
 
   const connection = await getDatabaseConnection();
-  let searchQuery = connection.manager
+
+  const activelyRisingQuery = connection.manager
     .createQueryBuilder()
-    .select('sponsors')
-    .from(Sponsor, 'sponsors');
+    .select('sponsors.id', 'sponsorId')
+    .addSelect('COUNT(deals.id) > 0', 'activelyRising')
+    .addSelect('COUNT(deals.id) AS dealscount')
+    .from(Sponsor, 'sponsors')
+    .leftJoin('sponsors.deals', 'deals', 'deals.status = :status', {
+      status: DealStatuses.open,
+    })
+    .groupBy('sponsors.id');
+
+  let searchQuery = connection.manager
+    .createQueryBuilder(Sponsor, 'sponsors')
+    .leftJoin('sponsors.deals', 'deals', 'deals.status = :status', {
+      status: DealStatuses.open,
+    })
+    .groupBy('sponsors.id, deals.id');
 
   if (primaryAssetClasses.length) {
     searchQuery = searchQuery.where(
@@ -45,7 +59,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     );
   }
 
-  if (activelyRaising === true) {
+  if (activelyRising === true) {
     searchQuery = searchQuery
       .leftJoin('sponsors.deals', 'deals')
       .andWhere('deals.status= :status', { status: DealStatuses.open });
@@ -77,10 +91,27 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
   searchQuery = pagination(pageSize, page, searchQuery);
 
   const [sponsors, count] = await searchQuery.getManyAndCount();
+  const activelyRisingData = await activelyRisingQuery.getRawMany();
+
+  const activelyRisingMap = activelyRisingData.reduce((map, item) => {
+    map[item.sponsorId] = {
+      activelyRising: item.activelyRising,
+      dealscount: parseInt(item.dealscount),
+    };
+    return map;
+  }, {});
+
+  const sponsorsWithActivelyRisingAndDealsCount = sponsors.map(sponsor => ({
+    ...sponsor,
+    activelyRising: activelyRisingMap[sponsor.id]?.activelyRising || false,
+    dealscount: activelyRisingMap[sponsor.id]?.dealscount || 0,
+  }));
   const paginationData = await buildPaginationInfo(count, page, pageSize);
 
   return {
-    sponsors: await Promise.all(sponsors.map(sponsorMapper)),
+    sponsors: await Promise.all(
+      sponsorsWithActivelyRisingAndDealsCount.map(sponsorMapper)
+    ),
     ...paginationData,
   };
 };
