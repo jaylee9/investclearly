@@ -99,7 +99,7 @@ export class Sponsor {
   @Column({ type: 'int', nullable: true })
   fees: number;
 
-  activelyRaising: boolean;
+  activelyRising: boolean;
 
   dealscount: number;
 
