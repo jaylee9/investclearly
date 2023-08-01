@@ -7,6 +7,7 @@ interface ISponsorActionFilters extends ISponsorFilters {
   page: number;
   pageSize: number;
   orderDirection?: 'DESC' | 'ASC';
+  search?: string;
 }
 
 export interface GetAllSponsorsResponse {
@@ -26,6 +27,7 @@ export const getAllSponsors = async (
     primaryAssetClasses: filters.primaryAssetClasses,
     regionalFocus: filters.regionalFocus,
     activelyRaising: filters.activelyRaising,
+    search: filters.search,
   };
 
   const stringifiedParameters = queryString.stringify(parameters, {

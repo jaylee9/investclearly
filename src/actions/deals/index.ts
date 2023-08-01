@@ -7,6 +7,7 @@ interface IDealFilters extends IFilters {
   page: number;
   pageSize: number;
   orderDirection?: 'DESC' | 'ASC';
+  search?: string;
 }
 
 export interface GetAllDealsResponse {
@@ -34,6 +35,7 @@ export const getAllDeals = async (
     investmentMaxValue: filters.min_investment?.to,
     sponsorFeesMin: filters.fees?.from,
     sponsorFeesMax: filters.fees?.to,
+    search: filters.search,
   };
 
   const stringifiedParameters = queryString.stringify(parameters, {

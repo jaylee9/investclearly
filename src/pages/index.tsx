@@ -12,13 +12,15 @@ import { getAllDeals } from '@/actions/deals';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import { getAllSponsors } from '@/actions/sponsors';
+import { GlobalSearchResponse, globalSearch } from '@/actions/common';
 
 interface HomeProps {
   deals: DealInterface[];
   sponsors: SponsorInterface[];
+  searchResponse: GlobalSearchResponse;
 }
 
-const Home = ({ deals, sponsors }: HomeProps) => {
+const Home = ({ deals, sponsors, searchResponse }: HomeProps) => {
   const classes = useHomeStyles();
   const headerProps = useHeaderProps({
     type: 'light',
@@ -29,7 +31,7 @@ const Home = ({ deals, sponsors }: HomeProps) => {
   });
   return (
     <Layout {...headerProps}>
-      <HeadBlock />
+      <HeadBlock searchResponse={searchResponse} />
       <Box sx={classes.root}>
         <Box sx={classes.content}>
           <NewDealsBlock deals={deals} />
@@ -51,6 +53,7 @@ Share Your Experience With Other Investors"
 export const getServerSideProps = async () => {
   const dealsResponse = await getAllDeals({ page: 1, pageSize: 4 });
   const sponsorsResponse = await getAllSponsors({ page: 1, pageSize: 4 });
+  const searchResponse = await globalSearch({ search: '' });
   if (!dealsResponse || !sponsorsResponse) {
     return {
       notFound: true,
@@ -60,6 +63,7 @@ export const getServerSideProps = async () => {
     props: {
       deals: dealsResponse.deals,
       sponsors: sponsorsResponse.sponsors,
+      searchResponse,
     },
   };
 };
