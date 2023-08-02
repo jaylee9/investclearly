@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { GlobalSearchResponse, globalSearch } from '@/actions/common';
 import { useQuery } from 'react-query';
+import { debounce } from 'lodash';
 
 const MOCK_IMAGE_URL =
   'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
@@ -41,11 +42,13 @@ const GlobalSearch = ({
     setIsOpenGlobalSearch(false);
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setGlobalSearchValue(e.target.value);
-  };
+  const handleChange = debounce(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setGlobalSearchValue(e.target.value);
+    },
+    500
+  );
+
   useQuery(
     ['globalSearch', globalSearchValue],
     () => globalSearch({ search: globalSearchValue }),
@@ -80,7 +83,6 @@ const GlobalSearch = ({
             </Button>
           }
           onChange={handleChange}
-          value={globalSearchValue}
         />
       )}
       {variant === GlobalSearchVariant.BASE && (
@@ -90,7 +92,6 @@ const GlobalSearch = ({
           placeholder="Search"
           variant="filled"
           onChange={handleChange}
-          value={globalSearchValue}
         />
       )}
       {isOpenGlobalSearch && (
@@ -106,7 +107,7 @@ const GlobalSearch = ({
                     href={`/list?type=deals&search=${globalSearchValue}`}
                     onClick={() => {
                       if (onChangeSearch) {
-                        onChangeSearch(debouncedValue);
+                        onChangeSearch(globalSearchValue);
                       }
                     }}
                   >
