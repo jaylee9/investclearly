@@ -7,22 +7,34 @@ import useOnClickOutside from '@/hooks/useOnClickOutside';
 import Link from 'next/link';
 import Image from 'next/image';
 import { GlobalSearchResponse, globalSearch } from '@/actions/common';
-import { debounce } from 'lodash';
 import { useQuery } from 'react-query';
+import { debounce } from 'lodash';
+import Loading from '@/components/common/Loading';
 
 const MOCK_IMAGE_URL =
   'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
 
+export enum GlobalSearchVariant {
+  BASE = 'base',
+  LARGE = 'lg',
+}
 interface GlobalSearchProps {
-  searchResponse: GlobalSearchResponse;
+  searchResponse?: GlobalSearchResponse;
+  variant?: GlobalSearchVariant;
+  onChangeSearch?: (value: string) => void;
 }
 
-const GlobalSearch = ({ searchResponse }: GlobalSearchProps) => {
+const GlobalSearch = ({
+  searchResponse,
+  variant = GlobalSearchVariant.LARGE,
+  onChangeSearch,
+}: GlobalSearchProps) => {
   const classes = useGlobalSearchStyles();
   const [isOpenGlobalSearch, setIsOpenGlobalSearch] = useState(false);
   const [globalSearchValue, setGlobalSearchValue] = useState('');
-  const [debouncedValue, setDebouncedValue] = useState(globalSearchValue);
-  const [data, setData] = useState<GlobalSearchResponse>(searchResponse);
+  const [data, setData] = useState<GlobalSearchResponse>(
+    searchResponse as GlobalSearchResponse
+  );
   const ref = useRef(null);
   const handleOpen = () => {
     setIsOpenGlobalSearch(true);
@@ -31,61 +43,79 @@ const GlobalSearch = ({ searchResponse }: GlobalSearchProps) => {
     setIsOpenGlobalSearch(false);
   };
 
-  const debouncedSearch = debounce((value: string) => {
-    setDebouncedValue(value);
-  }, 500);
+  const handleChange = debounce(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setGlobalSearchValue(e.target.value);
+    },
+    500
+  );
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setGlobalSearchValue(e.target.value);
-    debouncedSearch(e.target.value);
+  const handleShowAllLinkClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsOpenGlobalSearch(false);
+    if (onChangeSearch) {
+      onChangeSearch(globalSearchValue);
+    }
   };
-  useQuery(
-    ['globalSearch', debouncedValue],
-    () => globalSearch({ search: debouncedValue }),
+
+  const { isLoading } = useQuery(
+    ['globalSearch', globalSearchValue],
+    () => globalSearch({ search: globalSearchValue }),
     {
       onSuccess: response => {
         setData(response as GlobalSearchResponse);
       },
-      keepPreviousData: true,
     }
   );
   useOnClickOutside(ref, handleClose);
   return (
-    <Box ref={ref} onClick={handleOpen}>
-      <Input
-        variant="filled"
-        isFilledWhite
-        isSearch
-        showClearOption={false}
-        placeholder="Deals, Sponsors, and Asset Class"
-        customStyles={classes.searchInput}
-        height="large"
-        endComponent={
-          <Button
-            customStyles={{
-              boxSizing: 'border-box',
-              padding: '12px 40px !important',
-              height: '48px !important',
-            }}
-          >
-            Search
-          </Button>
-        }
-        onChange={handleChange}
-        value={globalSearchValue}
-      />
+    <Box ref={ref} onClick={handleOpen} sx={classes.root}>
+      {variant === GlobalSearchVariant.LARGE && (
+        <Input
+          variant="filled"
+          isFilledWhite
+          isSearch
+          showClearOption={false}
+          placeholder="Deals, Sponsors, and Asset Class"
+          customStyles={classes.searchInput}
+          height="large"
+          endComponent={
+            <Button
+              customStyles={{
+                boxSizing: 'border-box',
+                padding: '12px 40px !important',
+                height: '48px !important',
+              }}
+            >
+              Search
+            </Button>
+          }
+          onChange={handleChange}
+        />
+      )}
+      {variant === GlobalSearchVariant.BASE && (
+        <Input
+          isSearch
+          showClearOption
+          placeholder="Search"
+          variant="filled"
+          onChange={handleChange}
+        />
+      )}
       {isOpenGlobalSearch && (
         <Fade in={isOpenGlobalSearch}>
           <Box sx={classes.searchContent}>
-            {!!data.deals.length && (
+            {isLoading && <Loading />}
+            {!!data?.deals?.length && !isLoading && (
               <Box sx={classes.block}>
                 <Box sx={classes.blockTitleWrapper}>
                   <Typography variant="caption" sx={classes.blockTitle}>
                     Deals
                   </Typography>
-                  <Link href={`/list?type=deals&search=${debouncedValue}`}>
+                  <Link
+                    href={`/list?type=deals&search=${globalSearchValue}`}
+                    onClick={handleShowAllLinkClick}
+                  >
                     <Typography variant="body1" sx={classes.showAllLink}>
                       Show all
                     </Typography>
@@ -144,13 +174,16 @@ const GlobalSearch = ({ searchResponse }: GlobalSearchProps) => {
                 </Box>
               </Box>
             )}
-            {!!data.sponsors.length && (
+            {!!data?.sponsors?.length && !isLoading && (
               <Box sx={classes.block}>
                 <Box sx={classes.blockTitleWrapper}>
                   <Typography variant="caption" sx={classes.blockTitle}>
                     Sponsors
                   </Typography>
-                  <Link href={`/list?type=sponsors&search=${debouncedValue}`}>
+                  <Link
+                    href={`/list?type=sponsors&search=${globalSearchValue}`}
+                    onClick={handleShowAllLinkClick}
+                  >
                     <Typography variant="body1" sx={classes.showAllLink}>
                       Show all
                     </Typography>
@@ -194,11 +227,11 @@ const GlobalSearch = ({ searchResponse }: GlobalSearchProps) => {
                 </Box>
               </Box>
             )}
-            {debouncedValue && (
-              <Fade in={Boolean(debouncedValue)}>
-                <Link href={`/list?type=deals&search=${debouncedValue}`}>
+            {globalSearchValue && !isLoading && (
+              <Fade in={Boolean(globalSearchValue)}>
+                <Link href={`/list?type=deals&search=${globalSearchValue}`}>
                   <Typography sx={classes.showAllLink} variant="body1">
-                    Show all results for {debouncedValue}
+                    Show all results for {globalSearchValue}
                   </Typography>
                 </Link>
               </Fade>

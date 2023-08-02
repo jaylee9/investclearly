@@ -4,11 +4,13 @@ import getStyles from './styles';
 import { Box } from '@mui/material';
 import Link from 'next/link';
 import Button from '@/components/common/Button';
-import Input from '@/components/common/Input';
 import CustomPopover from '@/components/common/Popover';
 import { TLinks } from '@/types/common';
 import { HeaderProps } from '@/hooks/useHeaderProps';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
+import GlobalSearch, {
+  GlobalSearchVariant,
+} from '@/components/page/Home/GlobalSearch';
 
 const links: TLinks = [
   { href: '/review', label: 'Write a Review' },
@@ -24,15 +26,16 @@ const Header = ({
   isSignIn,
   type,
   isShadow,
+  onChangeSearch,
 }: HeaderProps) => {
-  const [searchValue, setSearchValue] = useState('');
   const [isArrowRotated, setIsArrowRotated] = useState(false);
   const classes = getStyles({ type, isShadow });
-  const handleChangeSearch = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setSearchValue(e.target.value);
+  const handleChangeSearch = (value: string) => {
+    if (onChangeSearch) {
+      onChangeSearch(value);
+    }
   };
+
   const handleArrowClick = () => {
     setIsArrowRotated(!isArrowRotated);
   };
@@ -55,12 +58,9 @@ const Header = ({
       <Box sx={classes.leftSideWrapper}>
         <Logo variant={logoVariant} />
         {isSearch && (
-          <Input
-            variant="filled"
-            isSearch
-            placeholder="Search"
-            onChange={e => handleChangeSearch(e)}
-            value={searchValue}
+          <GlobalSearch
+            variant={GlobalSearchVariant.BASE}
+            onChangeSearch={handleChangeSearch}
           />
         )}
         {title && title}

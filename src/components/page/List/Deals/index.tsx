@@ -21,9 +21,13 @@ const sortOptions = [
 
 interface DealsComponentProps {
   dealsResponse: GetAllDealsResponse;
+  searchValue: string;
 }
 
-const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
+const DealsComponent = ({
+  dealsResponse,
+  searchValue,
+}: DealsComponentProps) => {
   const classes = useDealsComponentStyles();
   const router = useRouter();
   const [dealsData, setDealsData] = useState(dealsResponse);
@@ -80,13 +84,13 @@ const DealsComponent = ({ dealsResponse }: DealsComponentProps) => {
   const isChangedFilters = !!Object.values(changedFilters).length;
 
   const { isLoading, refetch } = useQuery(
-    ['deals', page, orderDirection],
+    ['deals', page, orderDirection, searchValue],
     () =>
       getAllDeals({
         page,
         pageSize: 10,
         orderDirection,
-        search: (router.query.search as string) || '',
+        search: searchValue,
         ...dirtyFilters,
       }),
     {
