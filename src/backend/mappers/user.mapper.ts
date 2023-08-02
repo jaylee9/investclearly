@@ -1,9 +1,9 @@
 import { User } from '../entities/user.entity';
-import { UserInterface } from '../services/users/interfaces/user.interface';
+import { PublicUserInterface } from '../services/users/interfaces/public-user.interface';
 import { buildFullImagePath } from '../utils/build-full-image-path';
 import { reviewMapper } from './review.mapper';
 
-export const userMapper = (user: User): UserInterface => {
+export const userMapper = (user: User): PublicUserInterface => {
   return {
     id: user.id,
     firstName: user.firstName,
