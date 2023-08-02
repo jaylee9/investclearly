@@ -2,7 +2,7 @@ import { ReviewStatuses } from '../../../../backend/constants/enums/review-statu
 
 export interface ModerateReviewInterface {
   status: ReviewStatuses;
-  reason: string;
+  reason?: string;
   unpublishReviewMessage?: string | null;
   rejectReviewMessage?: string | null;
 }

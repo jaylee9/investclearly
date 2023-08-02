@@ -1,4 +1,5 @@
 export interface CreateReviewInterface {
+  reviewerId: number;
   sponsorId: number;
   dealId?: number;
   title: string;

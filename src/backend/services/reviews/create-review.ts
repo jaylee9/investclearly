@@ -8,12 +8,16 @@ import { CreateReviewInterface } from './interfaces/create-review.interface';
 import { getReviewById } from './get-review-by-id';
 
 export const createReview = async (
+  userId: number,
   data: CreateReviewInterface,
   files: Express.Multer.File[]
 ) => {
   const connection = await getDatabaseConnection();
 
-  const review = connection.manager.create(Review, data) as ReviewInterface;
+  const review = connection.manager.create(Review, {
+    ...data,
+    reviewerId: userId,
+  }) as ReviewInterface;
   await connection.manager.save(review);
   const reviewRecord = await getReviewById(review.id);
 
@@ -23,10 +27,16 @@ export const createReview = async (
       await createAttachment(
         fileUrl,
         reviewRecord.id,
-        TargetTypesConstants.deals
+        TargetTypesConstants.reviewProofs
       );
     }
+
+    await connection.manager.update(
+      Review,
+      { id: review.id },
+      { isVerified: true }
+    );
   }
 
-  return reviewRecord;
+  return getReviewById(review.id);
 };

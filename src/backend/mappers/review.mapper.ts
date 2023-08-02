@@ -10,6 +10,7 @@ export const reviewMapper = (review: Review): ReviewInterface => {
     id: review.id,
     title: review.title,
     sponsorId: review.sponsorId,
+    reviewerId: review.reviewerId,
     preInvestmentCommunicationRating:
       review.preInvestmentCommunicationRating || 0,
     preInvestmentCommunicationComment:
@@ -32,6 +33,8 @@ export const reviewMapper = (review: Review): ReviewInterface => {
     attachments: review.attachments
       ? review.attachments.map(attachmentMapper)
       : [],
+    status: review.status,
+    isVerified: review.isVerified,
     createdAt: review.createdAt,
     updatedAt: review.updatedAt,
   };

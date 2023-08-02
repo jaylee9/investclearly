@@ -22,7 +22,7 @@ export const getReviewById = async (id: number) => {
       'attachments.entityId = reviews.id AND attachments.entityType = :entityType',
       { entityType: TargetTypesConstants.reviewProofs }
     )
-    .where('deals.id = :id', { id })
+    .where('reviews.id = :id', { id })
     .getOne();
 
   if (!review) {

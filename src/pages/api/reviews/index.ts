@@ -18,13 +18,15 @@ export const config = {
 const create = async (request: NextApiRequest, response: NextApiResponse) => {
   await authMiddleware(request, response);
   const { fields, files } = await parseForm(request, response);
-  const reviewDeal = await createReview(
+  const userId = request.user.id;
+  const review = await createReview(
+    userId,
     fields as unknown as CreateReviewInterface,
     files
   );
 
-  if (reviewDeal) {
-    response.status(200).json(reviewDeal);
+  if (review) {
+    response.status(200).json(review);
   } else {
     throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);
   }

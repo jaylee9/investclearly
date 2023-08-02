@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import createHttpError from 'http-errors';
-import { AuthConstants } from '../../../backend/constants/auth-constants';
-import { apiHandler } from '../../../backend/utils/api-handler';
-import { authMiddleware } from '../../../backend/middleware/auth';
-import { getReviewById } from '../../../backend/services/reviews/get-review-by-id';
-import { ModerateReviewInterface } from '../../../backend/services/reviews/interfaces/moderate-review.interface';
-import { moderate } from '../../../backend/services/reviews/moderate-review';
+import { AuthConstants } from '../../../../backend/constants/auth-constants';
+import { apiHandler } from '../../../../backend/utils/api-handler';
+import { authMiddleware } from '../../../../backend/middleware/auth';
+import { getReviewById } from '../../../../backend/services/reviews/get-review-by-id';
+import { ModerateReviewInterface } from '../../../../backend/services/reviews/interfaces/moderate-review.interface';
+import { moderate } from '../../../../backend/services/reviews/moderate-review';
 
 const moderateReview = async (
   request: NextApiRequest,

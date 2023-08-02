@@ -15,7 +15,7 @@ export const getAllReviews = async (params: FindAllReviewsInterface) => {
     pageSize = PaginationConstants.defaultPageSize,
     page = PaginationConstants.defaultPage,
     orderDirection = OrderDirectionConstants.DESC,
-    statuses = [],
+    status,
     userId,
     search,
   } = params;
@@ -36,9 +36,9 @@ export const getAllReviews = async (params: FindAllReviewsInterface) => {
       { entityType: TargetTypesConstants.reviewProofs }
     );
 
-  if (statuses.length) {
-    searchQuery = searchQuery.andWhere('reviews.status IN (:...statuses)', {
-      statuses,
+  if (status) {
+    searchQuery = searchQuery.andWhere('reviews.status = :status', {
+      status,
     });
   }
 

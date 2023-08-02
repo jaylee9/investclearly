@@ -5,7 +5,7 @@ export interface FindAllReviewsInterface {
   pageSize?: number;
   page?: number;
   orderDirection?: OrderDirectionConstants;
-  statuses?: ReviewStatuses[] | ReviewStatuses;
+  status?: ReviewStatuses;
   userId?: number;
   search?: string;
 }

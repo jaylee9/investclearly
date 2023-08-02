@@ -10,6 +10,8 @@ export interface ReviewInterface extends CreateReviewInterface {
   deal?: DealInterface | null;
   reviewer: UserInterface;
   attachments: AttachmentInterface[];
+  status: string;
+  isVerified: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

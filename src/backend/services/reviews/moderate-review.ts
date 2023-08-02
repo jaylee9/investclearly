@@ -16,10 +16,13 @@ export const moderate = async (
   const { status, reason, unpublishReviewMessage, rejectReviewMessage } =
     reviewData;
   const reviewRecord = await getReviewById(id);
-
   if (status === ReviewStatuses.published) {
     const isVerified = reviewRecord.attachments.length !== 0;
-    await connection.manager.update(Review, { id }, { status, isVerified });
+    await connection.manager.update(
+      Review,
+      { id },
+      { status: ReviewStatuses.published, isVerified }
+    );
 
     if (isVerified) {
       await sendReviewPublishedEmail(reviewRecord);
@@ -29,6 +32,7 @@ export const moderate = async (
   }
 
   if (
+    reason &&
     status === ReviewStatuses.rejected &&
     (unpublishReviewMessage || rejectReviewMessage)
   ) {
