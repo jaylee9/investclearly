@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { GlobalSearchResponse, globalSearch } from '@/actions/common';
 import { useQuery } from 'react-query';
 import { debounce } from 'lodash';
+import Loading from '@/components/common/Loading';
 
 const MOCK_IMAGE_URL =
   'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
@@ -57,14 +58,14 @@ const GlobalSearch = ({
     }
   };
 
-  useQuery(
+  const { isLoading } = useQuery(
     ['globalSearch', globalSearchValue],
     () => globalSearch({ search: globalSearchValue }),
     {
       onSuccess: response => {
         setData(response as GlobalSearchResponse);
       },
-      keepPreviousData: true,
+      // keepPreviousData: true,
     }
   );
   useOnClickOutside(ref, handleClose);
@@ -105,7 +106,8 @@ const GlobalSearch = ({
       {isOpenGlobalSearch && (
         <Fade in={isOpenGlobalSearch}>
           <Box sx={classes.searchContent}>
-            {!!data?.deals?.length && (
+            {isLoading && <Loading />}
+            {!!data?.deals?.length && !isLoading && (
               <Box sx={classes.block}>
                 <Box sx={classes.blockTitleWrapper}>
                   <Typography variant="caption" sx={classes.blockTitle}>
@@ -173,7 +175,7 @@ const GlobalSearch = ({
                 </Box>
               </Box>
             )}
-            {!!data?.sponsors?.length && (
+            {!!data?.sponsors?.length && !isLoading && (
               <Box sx={classes.block}>
                 <Box sx={classes.blockTitleWrapper}>
                   <Typography variant="caption" sx={classes.blockTitle}>
@@ -226,7 +228,7 @@ const GlobalSearch = ({
                 </Box>
               </Box>
             )}
-            {globalSearchValue && (
+            {globalSearchValue && !isLoading && (
               <Fade in={Boolean(globalSearchValue)}>
                 <Link href={`/list?type=deals&search=${globalSearchValue}`}>
                   <Typography sx={classes.showAllLink} variant="body1">
