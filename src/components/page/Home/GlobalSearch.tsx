@@ -65,7 +65,6 @@ const GlobalSearch = ({
       onSuccess: response => {
         setData(response as GlobalSearchResponse);
       },
-      // keepPreviousData: true,
     }
   );
   useOnClickOutside(ref, handleClose);
