@@ -67,6 +67,9 @@ const GlobalSearch = ({
       },
     }
   );
+  const handleClearInput = () => {
+    setGlobalSearchValue('');
+  };
   useOnClickOutside(ref, handleClose);
   return (
     <Box ref={ref} onClick={handleOpen} sx={classes.root}>
@@ -100,6 +103,7 @@ const GlobalSearch = ({
           placeholder="Search"
           variant="filled"
           onChange={handleChange}
+          onClear={handleClearInput}
         />
       )}
       {isOpenGlobalSearch && (
