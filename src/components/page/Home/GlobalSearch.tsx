@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import { useGlobalSearchStyles } from './styles';
@@ -7,7 +7,6 @@ import useOnClickOutside from '@/hooks/useOnClickOutside';
 import Link from 'next/link';
 import Image from 'next/image';
 import { GlobalSearchResponse, globalSearch } from '@/actions/common';
-import { debounce } from 'lodash';
 import { useQuery } from 'react-query';
 
 const MOCK_IMAGE_URL =
@@ -31,7 +30,6 @@ const GlobalSearch = ({
   const classes = useGlobalSearchStyles();
   const [isOpenGlobalSearch, setIsOpenGlobalSearch] = useState(false);
   const [globalSearchValue, setGlobalSearchValue] = useState('');
-  const [debouncedValue, setDebouncedValue] = useState(globalSearchValue);
   const [data, setData] = useState<GlobalSearchResponse>(
     searchResponse as GlobalSearchResponse
   );
@@ -43,20 +41,14 @@ const GlobalSearch = ({
     setIsOpenGlobalSearch(false);
   };
 
-  const debouncedSearch = useCallback(
-    debounce((value: string) => setDebouncedValue(value), 500),
-    []
-  );
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setGlobalSearchValue(e.target.value);
-    debouncedSearch(e.target.value);
   };
   useQuery(
-    ['globalSearch', debouncedValue],
-    () => globalSearch({ search: debouncedValue }),
+    ['globalSearch', globalSearchValue],
+    () => globalSearch({ search: globalSearchValue }),
     {
       onSuccess: response => {
         setData(response as GlobalSearchResponse);
@@ -111,7 +103,7 @@ const GlobalSearch = ({
                     Deals
                   </Typography>
                   <Link
-                    href={`/list?type=deals&search=${debouncedValue}`}
+                    href={`/list?type=deals&search=${globalSearchValue}`}
                     onClick={() => {
                       if (onChangeSearch) {
                         onChangeSearch(debouncedValue);
@@ -183,10 +175,10 @@ const GlobalSearch = ({
                     Sponsors
                   </Typography>
                   <Link
-                    href={`/list?type=sponsors&search=${debouncedValue}`}
+                    href={`/list?type=sponsors&search=${globalSearchValue}`}
                     onClick={() => {
                       if (onChangeSearch) {
-                        onChangeSearch(debouncedValue);
+                        onChangeSearch(globalSearchValue);
                       }
                     }}
                   >
@@ -233,11 +225,11 @@ const GlobalSearch = ({
                 </Box>
               </Box>
             )}
-            {debouncedValue && (
-              <Fade in={Boolean(debouncedValue)}>
-                <Link href={`/list?type=deals&search=${debouncedValue}`}>
+            {globalSearchValue && (
+              <Fade in={Boolean(globalSearchValue)}>
+                <Link href={`/list?type=deals&search=${globalSearchValue}`}>
                   <Typography sx={classes.showAllLink} variant="body1">
-                    Show all results for {debouncedValue}
+                    Show all results for {globalSearchValue}
                   </Typography>
                 </Link>
               </Fade>
