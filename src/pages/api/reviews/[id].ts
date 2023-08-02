@@ -6,7 +6,7 @@ import { authMiddleware } from '../../../backend/middleware/auth';
 import { parseForm } from '../../../backend/utils/parse-form';
 import { ReviewConstants } from '../../../backend/constants/review-constants';
 import { update } from '../../../backend/services/reviews/update-review';
-import { UpdateReviewInterface } from '../../../backend/services/reviews/interfaces/update-review.interface';
+import { UploadReviewProofsInterface } from '../../../backend/services/reviews/interfaces/upload-review-proofs.interface';
 import { getReviewById } from '../../../backend/services/reviews/get-review-by-id';
 import { deleteReviewRecord } from '../../../backend/services/reviews/delete-review';
 
@@ -16,7 +16,7 @@ export const config = {
   },
 };
 
-const updateReview = async (
+const uploadReviewProofs = async (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
@@ -25,7 +25,7 @@ const updateReview = async (
   const id: number = Number(request.query.id);
   const updatedReview = await update(
     id,
-    fields as unknown as UpdateReviewInterface,
+    fields as unknown as UploadReviewProofsInterface,
     files
   );
 
@@ -34,15 +34,6 @@ const updateReview = async (
   } else {
     throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);
   }
-};
-
-const getReview = async (
-  request: NextApiRequest,
-  response: NextApiResponse
-) => {
-  const id: number = Number(request.query.id);
-  const reviewRecord = await getReviewById(id);
-  response.status(200).json(reviewRecord);
 };
 
 const deleteReview = async (
@@ -62,7 +53,6 @@ const deleteReview = async (
 };
 
 export default apiHandler({
-  PUT: updateReview,
-  GET: getReview,
+  PUT: uploadReviewProofs,
   DELETE: deleteReview,
 });
