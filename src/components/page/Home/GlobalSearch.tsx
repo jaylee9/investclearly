@@ -229,7 +229,10 @@ const GlobalSearch = ({
             )}
             {globalSearchValue && !isLoading && (
               <Fade in={Boolean(globalSearchValue)}>
-                <Link href={`/list?type=deals&search=${globalSearchValue}`}>
+                <Link
+                  href={`/list?type=deals&search=${globalSearchValue}`}
+                  onClick={handleShowAllLinkClick}
+                >
                   <Typography sx={classes.showAllLink} variant="body1">
                     Show all results for {globalSearchValue}
                   </Typography>
