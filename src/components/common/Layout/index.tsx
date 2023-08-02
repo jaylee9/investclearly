@@ -29,6 +29,7 @@ const Layout = ({
   title,
   type,
   content,
+  onChangeSearch,
 }: LayoutProps) => {
   const defaultStyles = useDefaultLayoutStyles();
   const entryStyles = useEntryLayoutStyles();
@@ -48,6 +49,7 @@ const Layout = ({
               title={title}
               type={type}
               content={content}
+              onChangeSearch={onChangeSearch}
             />
             {children}
           </Box>

@@ -46,6 +46,9 @@ export const useHeadBlockStyles = () => {
 
 export const useGlobalSearchStyles = () => {
   return {
+    root: {
+      position: 'relative',
+    },
     searchInput: {
       width: '736px',
       boxShadow: theme.customShadows.header,
@@ -69,8 +72,13 @@ export const useGlobalSearchStyles = () => {
       boxShadow: theme.customShadows.base,
       padding: '8px 24px',
       boxSizing: 'border-box',
-      position: 'relative',
+      position: 'absolute',
       zIndex: 10,
+      '&::-webkit-scrollbar': {
+        display: 'none',
+      },
+      msOverflowStyle: 'none',
+      scrollbarWidth: 'none',
     },
     showAllLink: {
       fontWeight: 600,

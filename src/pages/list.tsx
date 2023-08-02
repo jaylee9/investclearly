@@ -8,7 +8,7 @@ import theme from '@/config/theme';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useState } from 'react';
 
 interface ListPageProps {
   dealsResponse: GetAllDealsResponse;
@@ -17,18 +17,30 @@ interface ListPageProps {
 
 const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
   const router = useRouter();
+  const [searchValue, setSearchValue] = useState(
+    (router.query.search as string) || ''
+  );
+  const handleChangeSearch = (value: string) => {
+    setSearchValue(value);
+  };
   const headerProps = useHeaderProps({
     type: 'search-dark',
     isLinks: true,
     isSignIn: true,
     isSearch: true,
+    onChangeSearch: handleChangeSearch,
   });
   const tabs = [
     {
       value: 'deals',
       label: 'Deals',
       count: dealsResponse.total,
-      content: <DealsComponent dealsResponse={dealsResponse} />,
+      content: (
+        <DealsComponent
+          dealsResponse={dealsResponse}
+          searchValue={searchValue}
+        />
+      ),
     },
     {
       value: 'sponsors',
