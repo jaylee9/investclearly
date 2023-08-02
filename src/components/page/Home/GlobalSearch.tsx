@@ -49,6 +49,14 @@ const GlobalSearch = ({
     500
   );
 
+  const handleShowAllLinkClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsOpenGlobalSearch(false);
+    if (onChangeSearch) {
+      onChangeSearch(globalSearchValue);
+    }
+  };
+
   useQuery(
     ['globalSearch', globalSearchValue],
     () => globalSearch({ search: globalSearchValue }),
@@ -97,7 +105,7 @@ const GlobalSearch = ({
       {isOpenGlobalSearch && (
         <Fade in={isOpenGlobalSearch}>
           <Box sx={classes.searchContent}>
-            {!!data.deals.length && (
+            {!!data?.deals?.length && (
               <Box sx={classes.block}>
                 <Box sx={classes.blockTitleWrapper}>
                   <Typography variant="caption" sx={classes.blockTitle}>
@@ -105,11 +113,7 @@ const GlobalSearch = ({
                   </Typography>
                   <Link
                     href={`/list?type=deals&search=${globalSearchValue}`}
-                    onClick={() => {
-                      if (onChangeSearch) {
-                        onChangeSearch(globalSearchValue);
-                      }
-                    }}
+                    onClick={handleShowAllLinkClick}
                   >
                     <Typography variant="body1" sx={classes.showAllLink}>
                       Show all
@@ -169,7 +173,7 @@ const GlobalSearch = ({
                 </Box>
               </Box>
             )}
-            {!!data.sponsors.length && (
+            {!!data?.sponsors?.length && (
               <Box sx={classes.block}>
                 <Box sx={classes.blockTitleWrapper}>
                   <Typography variant="caption" sx={classes.blockTitle}>
@@ -177,11 +181,7 @@ const GlobalSearch = ({
                   </Typography>
                   <Link
                     href={`/list?type=sponsors&search=${globalSearchValue}`}
-                    onClick={() => {
-                      if (onChangeSearch) {
-                        onChangeSearch(globalSearchValue);
-                      }
-                    }}
+                    onClick={handleShowAllLinkClick}
                   >
                     <Typography variant="body1" sx={classes.showAllLink}>
                       Show all

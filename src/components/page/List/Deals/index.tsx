@@ -84,7 +84,7 @@ const DealsComponent = ({
   const isChangedFilters = !!Object.values(changedFilters).length;
 
   const { isLoading, refetch } = useQuery(
-    ['deals', page, orderDirection],
+    ['deals', page, orderDirection, searchValue],
     () =>
       getAllDeals({
         page,

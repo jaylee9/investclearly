@@ -47,7 +47,7 @@ const SponsorCard = ({
           <Box sx={classes.largeHeaderLeftColumn}>
             {sponsor.activelyRising && (
               <Typography variant="caption" sx={classes.activelyRaising}>
-                activelyRaising
+                Actively Rising
               </Typography>
             )}
             <Typography variant="h5" fontWeight={600}>

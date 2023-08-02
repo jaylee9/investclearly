@@ -46,7 +46,12 @@ const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
       value: 'sponsors',
       label: 'Sponsors',
       count: sponsorsResponse.total,
-      content: <SponsorsComponent sponsorsResponse={sponsorsResponse} />,
+      content: (
+        <SponsorsComponent
+          sponsorsResponse={sponsorsResponse}
+          searchValue={searchValue}
+        />
+      ),
     },
   ];
   const handleChange = (
