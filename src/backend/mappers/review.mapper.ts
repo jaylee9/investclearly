@@ -11,6 +11,7 @@ export const reviewMapper = (review: Review): ReviewInterface => {
     title: review.title,
     sponsorId: review.sponsorId,
     reviewerId: review.reviewerId,
+    dealId: review.dealId,
     preInvestmentCommunicationRating:
       review.preInvestmentCommunicationRating || 0,
     preInvestmentCommunicationComment:
@@ -27,9 +28,9 @@ export const reviewMapper = (review: Review): ReviewInterface => {
       review.alignmentOfExpectationsComment || null,
     overallRating: review.overallRating,
     overallComment: review.overallComment,
-    sponsor: sponsorMapper(review.sponsor),
+    sponsor: review.sponsor ? sponsorMapper(review.sponsor) : null,
     deal: review.deal ? dealMapper(review.deal) : null,
-    reviewer: userMapper(review.reviewer),
+    reviewer: review.reviewer ? userMapper(review.reviewer) : null,
     attachments: review.attachments
       ? review.attachments.map(attachmentMapper)
       : [],

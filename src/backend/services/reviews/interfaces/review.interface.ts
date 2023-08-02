@@ -6,9 +6,9 @@ import { CreateReviewInterface } from './create-review.interface';
 
 export interface ReviewInterface extends CreateReviewInterface {
   id: number;
-  sponsor: SponsorInterface;
+  sponsor?: SponsorInterface | null;
   deal?: DealInterface | null;
-  reviewer: UserInterface;
+  reviewer?: UserInterface | null;
   attachments: AttachmentInterface[];
   status: string;
   isVerified: boolean;

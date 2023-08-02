@@ -9,7 +9,7 @@ export const getSponsorById = async (id: number) => {
 
   const sponsor = await connection.manager.findOne(Sponsor, {
     where: { id },
-    relations: ['user', 'deals'],
+    relations: ['user', 'deals', 'reviews'],
   });
 
   if (!sponsor) {

@@ -13,6 +13,7 @@ export const getDealById = async (id: number) => {
     .select('deals')
     .from(Deal, 'deals')
     .leftJoinAndSelect('deals.sponsor', 'sponsor')
+    .leftJoinAndSelect('deals.reviews', 'reviews')
     .leftJoinAndMapMany(
       'deals.attachments',
       Attachment,
