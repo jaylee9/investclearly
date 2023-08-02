@@ -44,7 +44,7 @@ const GlobalSearch = ({
   };
 
   const debouncedSearch = useCallback(
-    () => debounce((value: string) => setDebouncedValue(value), 500),
+    debounce((value: string) => setDebouncedValue(value), 500),
     []
   );
 
