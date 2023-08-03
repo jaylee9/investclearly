@@ -10,22 +10,24 @@ export const sendReviewUnpublishedEmail = async (
 ) => {
   sgMail.setApiKey(MailConfig.sendgridApiKey);
 
-  const mailData: MailDataRequired = {
-    to: { email: reviewRecord.reviewer.email },
-    from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },
-    templateId: TemplatesIds.reviewUnpublishedEmail,
-    dynamicTemplateData: {
-      frontendUrl: MailConfig.frontendUrl,
-      averageRating: reviewRecord.overallRating,
-      publishedAt: reviewRecord.updatedAt,
-      sponsorVanityName: reviewRecord.sponsor.vanityName,
-      sponsorBusinessAvatar: reviewRecord.sponsor.businessAvatar,
-      reviewTittle: reviewRecord.title,
-      overallComment: reviewRecord.overallComment,
-      reason,
-      unpublishReviewMessage,
-    },
-  };
+  if (reviewRecord.reviewer && reviewRecord.sponsor) {
+    const mailData: MailDataRequired = {
+      to: { email: reviewRecord.reviewer.email },
+      from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },
+      templateId: TemplatesIds.reviewUnpublishedEmail,
+      dynamicTemplateData: {
+        frontendUrl: MailConfig.frontendUrl,
+        averageRating: reviewRecord.overallRating,
+        publishedAt: reviewRecord.updatedAt,
+        sponsorVanityName: reviewRecord.sponsor.vanityName,
+        sponsorBusinessAvatar: reviewRecord.sponsor.businessAvatar,
+        reviewTittle: reviewRecord.title,
+        overallComment: reviewRecord.overallComment,
+        reason,
+        unpublishReviewMessage,
+      },
+    };
 
-  return sgMail.send(mailData);
+    return sgMail.send(mailData);
+  }
 };

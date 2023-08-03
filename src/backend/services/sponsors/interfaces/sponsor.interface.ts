@@ -9,7 +9,7 @@ export interface SponsorInterface extends CreateSponsorInterface {
   deals?: DealInterface[];
   reviews?: ReviewInterface[];
   activelyRising: boolean;
-  dealsCount: number;
+  dealsCount?: number | 0;
   createdAt: Date;
   updatedAt: Date;
 }

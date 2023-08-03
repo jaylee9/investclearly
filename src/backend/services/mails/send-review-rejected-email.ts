@@ -10,22 +10,24 @@ export const sendReviewRejectedEmail = async (
 ) => {
   sgMail.setApiKey(MailConfig.sendgridApiKey);
 
-  const mailData: MailDataRequired = {
-    to: { email: reviewRecord.reviewer.email },
-    from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },
-    templateId: TemplatesIds.reviewRejectedEmail,
-    dynamicTemplateData: {
-      frontendUrl: MailConfig.frontendUrl,
-      averageRating: reviewRecord.overallRating,
-      publishedAt: reviewRecord.updatedAt,
-      sponsorVanityName: reviewRecord.sponsor.vanityName,
-      sponsorBusinessAvatar: reviewRecord.sponsor.businessAvatar,
-      reviewTittle: reviewRecord.title,
-      overallComment: reviewRecord.overallComment,
-      reason,
-      rejectReviewMessage,
-    },
-  };
+  if (reviewRecord.reviewer && reviewRecord.sponsor) {
+    const mailData: MailDataRequired = {
+      to: { email: reviewRecord.reviewer.email },
+      from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },
+      templateId: TemplatesIds.reviewRejectedEmail,
+      dynamicTemplateData: {
+        frontendUrl: MailConfig.frontendUrl,
+        averageRating: reviewRecord.overallRating,
+        publishedAt: reviewRecord.updatedAt,
+        sponsorVanityName: reviewRecord.sponsor.vanityName,
+        sponsorBusinessAvatar: reviewRecord.sponsor.businessAvatar,
+        reviewTittle: reviewRecord.title,
+        overallComment: reviewRecord.overallComment,
+        reason,
+        rejectReviewMessage,
+      },
+    };
 
-  return sgMail.send(mailData);
+    return sgMail.send(mailData);
+  }
 };

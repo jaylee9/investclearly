@@ -4,12 +4,12 @@ import { uploadFile } from '../files/upload-file';
 import { createAttachment } from '../attachments/create-attachment';
 import { Review } from '../../../backend/entities/reviews.entity';
 import { ReviewInterface } from './interfaces/review.interface';
-import { CreateReviewInterface } from './interfaces/create-review.interface';
 import { getReviewById } from './get-review-by-id';
+import { DeepPartial } from 'typeorm';
 
 export const createReview = async (
   userId: number,
-  data: CreateReviewInterface,
+  data: DeepPartial<Review>,
   files: Express.Multer.File[]
 ) => {
   const connection = await getDatabaseConnection();
@@ -17,7 +17,7 @@ export const createReview = async (
   const review = connection.manager.create(Review, {
     ...data,
     reviewerId: userId,
-  }) as ReviewInterface;
+  }) as unknown as ReviewInterface;
   await connection.manager.save(review);
   const reviewRecord = await getReviewById(review.id);
 
