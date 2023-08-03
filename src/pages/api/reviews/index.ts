@@ -5,9 +5,10 @@ import { apiHandler } from '../../../backend/utils/api-handler';
 import { authMiddleware } from '../../../backend/middleware/auth';
 import { parseForm } from '../../../backend/utils/parse-form';
 import { createReview } from '../../../backend/services/reviews/create-review';
-import { CreateReviewInterface } from '../../../backend/services/reviews/interfaces/create-review.interface';
 import { FindAllReviewsInterface } from '../../../backend/services/reviews/interfaces/get-all-reviews.interface';
 import { getAllReviews } from '../../../backend/services/reviews/get-all-reviews';
+import { DeepPartial } from 'typeorm';
+import { Review } from '@/backend/entities/reviews.entity';
 
 export const config = {
   api: {
@@ -16,12 +17,15 @@ export const config = {
 };
 
 const create = async (request: NextApiRequest, response: NextApiResponse) => {
-  await authMiddleware(request, response);
-  const { fields, files } = await parseForm(request, response);
-  const userId = request.user.id;
+  const { request: authRequest, user } = await authMiddleware(
+    request,
+    response
+  );
+  const { fields, files } = await parseForm(authRequest, response);
+  const userId = user?.id;
   const review = await createReview(
-    userId,
-    fields as unknown as CreateReviewInterface,
+    userId!,
+    fields as unknown as DeepPartial<Review>,
     files
   );
 

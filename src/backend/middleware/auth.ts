@@ -9,14 +9,15 @@ import { loadEnvConfig } from '../config/load-env-config';
 
 loadEnvConfig();
 
-interface AuthenticatedRequest extends NextApiRequest {
+interface AuthenticatedRequestWrapper {
+  request: NextApiRequest;
   user?: User;
 }
 
 export const authMiddleware = async (
-  request: AuthenticatedRequest,
+  request: NextApiRequest,
   response: NextApiResponse
-) => {
+): Promise<AuthenticatedRequestWrapper> => {
   const token = getCookies({ req: request, res: response });
 
   if (!token.accessToken) {
@@ -35,5 +36,6 @@ export const authMiddleware = async (
   if (!user) {
     throw new createHttpError.Unauthorized(AuthConstants.unauthorized);
   }
-  request.user = user;
+
+  return { request, user };
 };
