@@ -2,6 +2,7 @@ import { Sponsor } from '../entities/sponsors.entity';
 import { SponsorInterface } from '../services/sponsors/interfaces/sponsor.interface';
 import { buildFullImagePath } from '../utils/build-full-image-path';
 import { dealMapper } from './deal.mapper';
+import { reviewMapper } from './review.mapper';
 import { userMapper } from './user.mapper';
 
 export const sponsorMapper = (sponsor: Sponsor): SponsorInterface => {
@@ -39,6 +40,7 @@ export const sponsorMapper = (sponsor: Sponsor): SponsorInterface => {
     deals: sponsor.deals ? sponsor.deals.map(dealMapper) : [],
     activelyRising: sponsor.activelyRising || false,
     dealsCount: sponsor.dealscount || 0,
+    reviews: sponsor.reviews ? sponsor.reviews.map(reviewMapper) : [],
     createdAt: sponsor.createdAt,
     updatedAt: sponsor.updatedAt,
   };

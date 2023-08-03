@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Sponsor } from './sponsors.entity';
+import { Review } from './reviews.entity';
 
 @Entity({ name: 'user' })
 export class User {
@@ -58,4 +59,7 @@ export class User {
 
   @OneToMany(() => Sponsor, sponsors => sponsors.user)
   sponsors: Relation<Sponsor>[];
+
+  @OneToMany(() => Review, reviews => reviews.reviewer)
+  reviews: Relation<Review>[];
 }

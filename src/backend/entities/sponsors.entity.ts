@@ -15,6 +15,7 @@ import { HoldPeriods } from '../constants/enums/hold-periods';
 import { User } from './user.entity';
 import { Deal } from './deals.entity';
 import { InvestmentStructures } from '../constants/enums/investment-structures';
+import { Review } from './reviews.entity';
 
 @Entity({ name: 'sponsors' })
 export class Sponsor {
@@ -114,4 +115,7 @@ export class Sponsor {
 
   @OneToMany(() => Deal, deals => deals.sponsor)
   deals: Relation<Deal>[];
+
+  @OneToMany(() => Review, reviews => reviews.sponsor)
+  reviews: Relation<Review>[];
 }

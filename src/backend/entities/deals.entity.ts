@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   Relation,
+  OneToMany,
 } from 'typeorm';
 import { PolymorphicParent } from 'typeorm-polymorphic';
 import { DealStatuses } from '../constants/enums/deal-statuses';
@@ -16,6 +17,7 @@ import { Regions } from '../constants/enums/regions';
 import { Exemptions } from '../constants/enums/exemptions';
 import { Sponsor } from './sponsors.entity';
 import { Attachment } from './attachments.entity';
+import { Review } from './reviews.entity';
 
 @Entity({ name: 'deals' })
 export class Deal {
@@ -87,6 +89,9 @@ export class Deal {
 
   @ManyToOne(() => Sponsor, sponsors => sponsors.deals)
   sponsor: Relation<Sponsor>;
+
+  @OneToMany(() => Review, reviews => reviews.deal)
+  reviews: Relation<Review>[];
 
   @PolymorphicParent(() => Attachment, { eager: false, cascade: true })
   attachments: Relation<Attachment[]>;
