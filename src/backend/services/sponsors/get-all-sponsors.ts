@@ -8,6 +8,8 @@ import { PaginationConstants } from '../../constants/pagination-constants';
 import { Sponsor } from '../../../backend/entities/sponsors.entity';
 import { sponsorMapper } from '../../../backend/mappers/sponsor.mapper';
 import { DealStatuses } from '../../../backend/constants/enums/deal-statuses';
+import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
+import { ReviewConstants } from '../../../backend/constants/review-constants';
 
 export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
   const {
@@ -19,26 +21,34 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     regionalFocus = [],
     search,
     limit,
+    minRating = ReviewConstants.minAndMaxRatings.minRating,
+    maxRating = ReviewConstants.minAndMaxRatings.maxRating,
   } = params;
 
   const connection = await getDatabaseConnection();
 
   const activelyRisingQuery = connection.manager
     .createQueryBuilder()
-    .select('sponsors.id', 'sponsorId')
-    .addSelect('COUNT(deals.id) > 0', 'activelyRising')
-    .addSelect('COUNT(deals.id) AS dealscount')
+    .select([
+      'sponsors.id AS sponsorId',
+      'AVG(reviews.overallRating) AS avgOverallRating',
+    ])
+    .addSelect('COUNT(openDeals.id) > 0', 'activelyRising')
+    .addSelect('COUNT(DISTINCT deals.id) AS dealsCount')
+    .addSelect('COUNT(DISTINCT reviews.id) AS reviewsCount')
     .from(Sponsor, 'sponsors')
-    .leftJoin('sponsors.deals', 'deals', 'deals.status = :status', {
+    .leftJoin('sponsors.deals', 'openDeals', 'openDeals.status = :status', {
       status: DealStatuses.open,
+    })
+    .leftJoin('sponsors.deals', 'deals')
+    .leftJoin('sponsors.reviews', 'reviews', 'reviews.status = :reviewStatus', {
+      reviewStatus: ReviewStatuses.published,
     })
     .groupBy('sponsors.id');
 
   let searchQuery = connection.manager
     .createQueryBuilder(Sponsor, 'sponsors')
-    .leftJoin('sponsors.deals', 'deals', 'deals.status = :status', {
-      status: DealStatuses.open,
-    })
+    .leftJoin('sponsors.deals', 'deals')
     .groupBy('sponsors.id, deals.id');
 
   if (primaryAssetClasses.length) {
@@ -60,9 +70,9 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
   }
 
   if (activelyRising === true) {
-    searchQuery = searchQuery
-      .leftJoin('sponsors.deals', 'deals')
-      .andWhere('deals.status= :status', { status: DealStatuses.open });
+    searchQuery = searchQuery.andWhere('deals.status= :status', {
+      status: DealStatuses.open,
+    });
   }
 
   if (search) {
@@ -90,27 +100,44 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
   searchQuery = searchQuery.orderBy('sponsors.createdAt', orderDirection);
   searchQuery = pagination(pageSize, page, searchQuery);
 
-  const [sponsors, count] = await searchQuery.getManyAndCount();
+  const sponsors = await searchQuery.getMany();
   const activelyRisingData = await activelyRisingQuery.getRawMany();
 
   const activelyRisingMap = activelyRisingData.reduce((map, item) => {
-    map[item.sponsorId] = {
+    map[item.sponsorid] = {
       activelyRising: item.activelyRising,
-      dealscount: parseInt(item.dealscount),
+      dealsCount: parseInt(item.dealscount),
+      reviewsCount: parseInt(item.reviewscount),
+      avgTotalRating:
+        item.avgoverallrating !== null ? parseFloat(item.avgoverallrating) : 0,
     };
     return map;
   }, {});
 
-  const sponsorsWithActivelyRisingAndDealsCount = sponsors.map(sponsor => ({
-    ...sponsor,
-    activelyRising: activelyRisingMap[sponsor.id]?.activelyRising || false,
-    dealscount: activelyRisingMap[sponsor.id]?.dealscount || 0,
-  }));
-  const paginationData = await buildPaginationInfo(count, page, pageSize);
+  const sponsorsWithActivelyRisingAndCounters = sponsors
+    .filter(sponsor => {
+      const avgTotalRating = parseFloat(
+        activelyRisingMap[sponsor.id]?.avgTotalRating
+      );
+      return avgTotalRating >= minRating && avgTotalRating <= maxRating;
+    })
+    .map(sponsor => ({
+      ...sponsor,
+      activelyRising: activelyRisingMap[sponsor.id]?.activelyRising || false,
+      dealsCount: activelyRisingMap[sponsor.id]?.dealsCount || 0,
+      reviewsCount: activelyRisingMap[sponsor.id]?.reviewsCount || 0,
+      avgTotalRating: activelyRisingMap[sponsor.id]?.avgTotalRating || null,
+    }));
+
+  const paginationData = await buildPaginationInfo(
+    sponsorsWithActivelyRisingAndCounters.length,
+    page,
+    pageSize
+  );
 
   return {
     sponsors: await Promise.all(
-      sponsorsWithActivelyRisingAndDealsCount.map(sponsorMapper)
+      sponsorsWithActivelyRisingAndCounters.map(sponsorMapper)
     ),
     ...paginationData,
   };
