@@ -8,6 +8,8 @@ export interface DealInterface extends CreateDealInterface {
   sponsor?: SponsorInterface | null;
   attachments: AttachmentInterface[];
   reviews?: ReviewInterface[];
+  reviewsCount?: number | 0;
+  avgTotalRating?: number | 0;
   createdAt: Date;
   updatedAt: Date;
 }
