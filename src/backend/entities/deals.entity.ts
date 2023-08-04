@@ -81,6 +81,10 @@ export class Deal {
   @Column({ type: 'enum', enum: Exemptions, nullable: true })
   exemption: string;
 
+  reviewsCount: number;
+
+  avgTotalRating: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
