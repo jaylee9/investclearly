@@ -9,6 +9,8 @@ import { buildPaginationInfo } from '../../utils/pagination/build-pagination-inf
 import { PaginationConstants } from '../../constants/pagination-constants';
 import { Attachment } from '../../../backend/entities/attachments.entity';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
+import { ReviewConstants } from '../../../backend/constants/review-constants';
+import { ReviewStatuses } from '@/backend/constants/enums/review-statuses';
 
 export const getAllDeals = async (params: FindAllDealsInterface) => {
   const {
@@ -28,9 +30,25 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     sponsorFeesMax,
     search,
     limit,
+    minRating = ReviewConstants.minAndMaxRatings.minRating,
+    maxRating = ReviewConstants.minAndMaxRatings.maxRating,
+    sponsorId,
   } = params;
 
   const connection = await getDatabaseConnection();
+  const averageRatingQuery = connection.manager
+    .createQueryBuilder()
+    .select([
+      'deals.id AS dealId',
+      'AVG(reviews.overallRating) AS avgOverallRating',
+    ])
+    .addSelect('COUNT(DISTINCT reviews.id) AS reviewsCount')
+    .from(Deal, 'deals')
+    .leftJoin('deals.reviews', 'reviews', 'reviews.status = :reviewStatus', {
+      reviewStatus: ReviewStatuses.published,
+    })
+    .groupBy('deals.id');
+
   let searchQuery = connection.manager
     .createQueryBuilder()
     .select('deals')
@@ -102,6 +120,12 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     );
   }
 
+  if (sponsorId) {
+    searchQuery = searchQuery.andWhere('deals.sponsorId = :sponsorId', {
+      sponsorId,
+    });
+  }
+
   if (search) {
     searchQuery = searchQuery.andWhere(
       new Brackets(qb => {
@@ -130,11 +154,39 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   searchQuery = searchQuery.orderBy('deals.createdAt', orderDirection);
   searchQuery = pagination(pageSize, page, searchQuery);
 
-  const [deals, count] = await searchQuery.getManyAndCount();
-  const paginationData = await buildPaginationInfo(count, page, pageSize);
+  const averageRatingData = await averageRatingQuery.getRawMany();
+  const deals = await searchQuery.getMany();
+
+  const activelyRisingMap = averageRatingData.reduce((map, item) => {
+    map[item.dealid] = {
+      reviewsCount: parseInt(item.reviewscount),
+      avgTotalRating:
+        item.avgoverallrating !== null ? parseFloat(item.avgoverallrating) : 0,
+    };
+    return map;
+  }, {});
+
+  const dealsWithCounters = deals
+    .filter(deal => {
+      const avgTotalRating = parseFloat(
+        activelyRisingMap[deal.id]?.avgTotalRating
+      );
+      return avgTotalRating >= minRating && avgTotalRating <= maxRating;
+    })
+    .map(deal => ({
+      ...deal,
+      reviewsCount: activelyRisingMap[deal.id]?.reviewsCount || 0,
+      avgTotalRating: activelyRisingMap[deal.id]?.avgTotalRating || null,
+    }));
+
+  const paginationData = await buildPaginationInfo(
+    dealsWithCounters.length,
+    page,
+    pageSize
+  );
 
   return {
-    deals: await Promise.all(deals.map(dealMapper)),
+    deals: await Promise.all(dealsWithCounters.map(dealMapper)),
     ...paginationData,
   };
 };
