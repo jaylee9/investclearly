@@ -183,7 +183,7 @@ const DealsComponent = ({
 
       filterValues.forEach(value => {
         formattedFilters.push({
-          label: value,
+          label: key === 'ratings' ? `${value} stars` : value,
           key: key as FilterArrayKeys,
           type: 'array',
         });
@@ -204,6 +204,7 @@ const DealsComponent = ({
 
     return formattedFilters;
   };
+
   const handleFilterRemove = (
     value: string,
     key: FilterArrayKeys | FilterLabelKeys,
@@ -213,8 +214,10 @@ const DealsComponent = ({
       const arrayKey = key as FilterArrayKeys;
       setAppliedFilters(prevAppliedFilters => ({
         ...prevAppliedFilters,
-        [arrayKey]: (prevAppliedFilters[arrayKey] as string[]).filter(
-          item => item !== value
+        [arrayKey]: (prevAppliedFilters[arrayKey] as string[]).filter(item =>
+          arrayKey === 'ratings'
+            ? Number(item) !== Number(value.replace(' stars', ''))
+            : item !== value
         ),
       }));
       setFilters(prevFilters => ({
