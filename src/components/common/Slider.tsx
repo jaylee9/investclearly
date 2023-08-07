@@ -1,15 +1,16 @@
-import { Box, Slider, Typography } from '@mui/material';
+import { Box, Slider, SliderProps, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useSliderStyles } from './styles';
 import Input from './Input';
 
-interface CustomSliderProps {
+interface CustomSliderProps
+  extends Omit<SliderProps, 'min' | 'max' | 'onChange'> {
   min: number;
   max: number;
   onChange?: (value: number[] | number) => void;
 }
 
-const CustomSlider = ({ min, max, onChange }: CustomSliderProps) => {
+const CustomSlider = ({ min, max, onChange, ...props }: CustomSliderProps) => {
   const classes = useSliderStyles();
   const [value, setValue] = useState(max ? [min, max] : min);
   const [inputValues, setInputValues] = useState(
@@ -60,7 +61,7 @@ const CustomSlider = ({ min, max, onChange }: CustomSliderProps) => {
     <Box>
       <Box sx={classes.inputsWrapper}>
         <Input
-          value={inputValues[0]}
+          value={Array.isArray(props.value) ? props?.value[0] : inputValues[0]}
           onChange={e => handleInputChange(0, e.target.value)}
           showClearOption={false}
         />
@@ -68,7 +69,9 @@ const CustomSlider = ({ min, max, onChange }: CustomSliderProps) => {
           <>
             <Typography variant="body1">-</Typography>
             <Input
-              value={inputValues[1]}
+              value={
+                Array.isArray(props.value) ? props?.value[1] : inputValues[1]
+              }
               onChange={e => handleInputChange(1, e.target.value)}
               showClearOption={false}
             />
@@ -81,6 +84,7 @@ const CustomSlider = ({ min, max, onChange }: CustomSliderProps) => {
         max={max}
         min={min}
         sx={classes.root}
+        {...props}
       />
     </Box>
   );

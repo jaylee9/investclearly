@@ -58,6 +58,19 @@ export const useDealsComponentStyles = () => {
       gap: '16px',
       marginBottom: '16px',
     },
+    appliedFilter: {
+      display: 'flex',
+      gap: '4px',
+      alignItems: 'center',
+      padding: '4px 12px',
+      borderRadius: '14px',
+      border: `1px solid ${palette.background.paper}`,
+      '& .icon-Cross': {
+        fontSize: '16px',
+        color: palette.text.disabled,
+        cursor: 'pointer',
+      },
+    },
   };
 };
 
@@ -100,14 +113,21 @@ export const useColumnsComponentStyles = () => {
     rightColumnHeader: {
       background: palette.common.white,
       padding: '12px 24px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
       borderRadius: '12px',
       '& p': {
         color: palette.text.secondary,
       },
       marginBottom: '16px',
+    },
+    rightColumnHeaderTitle: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    rightColumnHeaderContent: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '4px',
     },
     paggination: {
       display: 'flex',

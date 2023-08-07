@@ -22,11 +22,40 @@ const sortOptions = [
 interface DealsComponentProps {
   dealsResponse: GetAllDealsResponse;
   searchValue: string;
+  setDealsCount: (value: number) => void;
+}
+
+type FilterArrayKeys =
+  | 'ratings'
+  | 'asset_classes'
+  | 'statuses'
+  | 'regions'
+  | 'investment_structure'
+  | 'exemptions';
+
+type FilterLabelKeys =
+  | 'actualIRR'
+  | 'fees'
+  | 'prefferd_return'
+  | 'min_investment';
+
+const filtersLabels: Record<FilterLabelKeys, string> = {
+  actualIRR: 'Actual IRR, %',
+  fees: 'Fees, %',
+  prefferd_return: 'Preffered return, USD',
+  min_investment: 'Min investment, USD',
+};
+
+interface AppliedFilter {
+  label: string;
+  key: FilterLabelKeys | FilterArrayKeys;
+  type: 'array' | 'range';
 }
 
 const DealsComponent = ({
   dealsResponse,
   searchValue,
+  setDealsCount,
 }: DealsComponentProps) => {
   const classes = useDealsComponentStyles();
   const router = useRouter();
@@ -35,6 +64,9 @@ const DealsComponent = ({
   const handleChangeSelect = (e: SelectChangeEvent<unknown>) => {
     setOrderDirection(e.target.value as 'DESC' | 'ASC');
   };
+  useEffect(() => {
+    setDealsCount(dealsData.total);
+  }, [dealsData, setDealsCount]);
   const defaultFilters = {
     ratings: [],
     asset_classes: [],
@@ -74,7 +106,6 @@ const DealsComponent = ({
   const [filters, setFilters] = useState<IFilters>(formattedFilters);
   const [appliedFilters, setAppliedFilters] =
     useState<IFilters>(formattedFilters);
-
   const [page, setPage] = useState(1);
 
   const dirtyFilters = filterDifferences(filters, appliedFilters);
@@ -82,6 +113,11 @@ const DealsComponent = ({
 
   const changedFilters = filterDifferences(filters, defaultFilters);
   const isChangedFilters = !!Object.values(changedFilters).length;
+
+  const changedFiltersAfterApply = filterDifferences(
+    appliedFilters,
+    defaultFilters
+  );
 
   const { isLoading, refetch } = useQuery(
     ['deals', page, orderDirection, searchValue],
@@ -118,9 +154,89 @@ const DealsComponent = ({
   const firstItem = (page - 1) * 10 + 1;
   const lastItem = page * 10 > dealsData.total ? dealsData.total : page * 10;
 
+  const formatFilters = (filters: IFilters) => {
+    const formattedFilters: AppliedFilter[] = [];
+    const arrayFilters: string[] = [];
+    const rangeFilters: string[] = [];
+
+    for (const key in filters) {
+      if (filters.hasOwnProperty(key)) {
+        const filterKey = key as keyof IFilters;
+        const value = filters[filterKey];
+
+        if (Array.isArray(value)) {
+          arrayFilters.push(key);
+        } else if (
+          value &&
+          typeof value === 'object' &&
+          'from' in value &&
+          'to' in value
+        ) {
+          rangeFilters.push(key);
+        }
+      }
+    }
+
+    arrayFilters.forEach(key => {
+      const filterKey = key as keyof IFilters;
+      const filterValues = filters[filterKey] as string[]; // Assuming the arrays contain strings
+
+      filterValues.forEach(value => {
+        formattedFilters.push({
+          label: value,
+          key: key as FilterArrayKeys,
+          type: 'array',
+        });
+      });
+    });
+
+    rangeFilters.forEach(key => {
+      const filterKey = key as FilterLabelKeys;
+      const value = filters[filterKey];
+      if (value) {
+        formattedFilters.push({
+          label: `${filtersLabels[filterKey]}: ${value.from}-${value.to}`,
+          key: key as FilterLabelKeys,
+          type: 'range',
+        });
+      }
+    });
+
+    return formattedFilters;
+  };
+  const handleFilterRemove = (
+    value: string,
+    key: FilterArrayKeys | FilterLabelKeys,
+    type: 'array' | 'range'
+  ) => {
+    if (type === 'array') {
+      const arrayKey = key as FilterArrayKeys;
+      setAppliedFilters(prevAppliedFilters => ({
+        ...prevAppliedFilters,
+        [arrayKey]: (prevAppliedFilters[arrayKey] as string[]).filter(
+          item => item !== value
+        ),
+      }));
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        [arrayKey]: (prevFilters[arrayKey] as string[]).filter(
+          item => item !== value
+        ),
+      }));
+    } else if (type === 'range') {
+      const rangeKey = key as FilterLabelKeys;
+      setAppliedFilters({
+        ...appliedFilters,
+        [rangeKey]: defaultFilters[rangeKey],
+      });
+      setFilters({ ...filters, [rangeKey]: defaultFilters[rangeKey] });
+    }
+  };
+  const formattedAppliedFilters = formatFilters(changedFiltersAfterApply);
   return (
     <>
       <ColumnsComponent
+        count={dealsData.total}
         leftColumnHeader={
           <>
             <Typography variant="h5">Filters</Typography>
@@ -141,7 +257,7 @@ const DealsComponent = ({
             disabledApplyFilters={!isDirtyFilters}
           />
         }
-        rightColumnHeader={
+        rightColumnHeaderTitle={
           <>
             <Typography variant="body1">
               <span style={{ fontWeight: 600 }}>{dealsData.total} Deals</span>{' '}
@@ -158,6 +274,21 @@ const DealsComponent = ({
                 />
               </Box>
             </Box>
+          </>
+        }
+        rightColumnHeaderContent={
+          <>
+            {formattedAppliedFilters.map((filter, index) => (
+              <Box sx={classes.appliedFilter} key={index}>
+                <Typography variant="caption">{filter.label}</Typography>
+                <span
+                  className="icon-Cross"
+                  onClick={() =>
+                    handleFilterRemove(filter.label, filter.key, filter.type)
+                  }
+                />
+              </Box>
+            ))}
           </>
         }
         rightColumnContent={

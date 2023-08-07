@@ -223,7 +223,7 @@ const DealsFilters = ({
                 onChange={() =>
                   handleStringArrayChange('exemptions', exemption)
                 }
-                checked={filters.investment_structure?.includes(exemption)}
+                checked={filters.exemptions?.includes(exemption)}
                 label={exemption}
               />
             ))}
@@ -246,6 +246,12 @@ const DealsFilters = ({
               onChange={value =>
                 handleSliderChange(value as number[], 'actualIRR')
               }
+              value={
+                [
+                  filters.actualIRR?.from as number,
+                  filters.actualIRR?.to as number,
+                ] || [2, 12]
+              }
             />
           </Box>
         </Box>
@@ -257,6 +263,11 @@ const DealsFilters = ({
               min={2}
               max={12}
               onChange={value => handleSliderChange(value as number[], 'fees')}
+              value={
+                [filters.fees?.from as number, filters.fees?.to as number] || [
+                  2, 12,
+                ]
+              }
             />
           </Box>
         </Box>
@@ -270,6 +281,12 @@ const DealsFilters = ({
               onChange={value =>
                 handleSliderChange(value as number[], 'min_investment')
               }
+              value={
+                [
+                  filters.min_investment?.from as number,
+                  filters.min_investment?.to as number,
+                ] || [5000, 25000]
+              }
             />
           </Box>
         </Box>
@@ -282,6 +299,12 @@ const DealsFilters = ({
               max={25000}
               onChange={value =>
                 handleSliderChange(value as number[], 'preffered_return')
+              }
+              value={
+                [
+                  filters.prefferd_return?.from as number,
+                  filters.prefferd_return?.to as number,
+                ] || [5000, 25000]
               }
             />
           </Box>

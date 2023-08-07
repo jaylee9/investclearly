@@ -85,6 +85,7 @@ const SponsorsComponent = ({
     page * 10 > sponsorsData.total ? sponsorsData.total : page * 10;
   return (
     <ColumnsComponent
+      count={sponsorsData.total}
       leftColumnHeader={
         <Box sx={classes.filtersHeaderWrapper}>
           <Box sx={classes.filtersHeaderTitleWrapper}>
@@ -116,7 +117,7 @@ const SponsorsComponent = ({
           disabledApplyFilters={!isDirtyFilters}
         />
       }
-      rightColumnHeader={
+      rightColumnHeaderTitle={
         <>
           <Typography variant="body1">
             <span style={{ fontWeight: 600 }}>
@@ -139,6 +140,7 @@ const SponsorsComponent = ({
           </Box>
         </>
       }
+      rightColumnHeaderContent={<></>}
       rightColumnContent={
         isLoading ? (
           <Loading />

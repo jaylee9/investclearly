@@ -20,6 +20,7 @@ const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
   const [searchValue, setSearchValue] = useState(
     (router.query.search as string) || ''
   );
+  const [dealsCount, setDealsCount] = useState(dealsResponse.total);
   const handleChangeSearch = (value: string) => {
     setSearchValue(value);
   };
@@ -34,11 +35,12 @@ const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
     {
       value: 'deals',
       label: 'Deals',
-      count: dealsResponse.total,
+      count: dealsCount,
       content: (
         <DealsComponent
           dealsResponse={dealsResponse}
           searchValue={searchValue}
+          setDealsCount={setDealsCount}
         />
       ),
     },
