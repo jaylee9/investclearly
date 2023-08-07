@@ -1,5 +1,5 @@
 import { Box, Slider, SliderProps, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSliderStyles } from './styles';
 import Input from './Input';
 
@@ -12,71 +12,49 @@ interface CustomSliderProps
 
 const CustomSlider = ({ min, max, onChange, ...props }: CustomSliderProps) => {
   const classes = useSliderStyles();
-  const [value, setValue] = useState(max ? [min, max] : min);
-  const [inputValues, setInputValues] = useState(
-    max ? [String(min), String(max)] : [String(min)]
-  );
+  const [value, setValue] = useState<number[]>(props.value as number[]);
 
   const handleChangeSlider = (event: Event, newValue: number | number[]) => {
-    setValue(newValue);
-    setInputValues(
-      Array.isArray(newValue) ? newValue.map(String) : [String(newValue)]
-    );
+    setValue(newValue as number[]);
     if (onChange) {
       onChange(newValue);
     }
   };
 
   const handleInputChange = (index: number, inputValue: string) => {
-    const newInputValues = [...inputValues];
-    newInputValues[index] = inputValue;
-    setInputValues(newInputValues);
-
-    const newValue = newInputValues.map(Number);
-    if (Array.isArray(newValue)) {
-      if (
-        newValue[0] >= min &&
-        newValue[0] <= max &&
-        newValue[1] <= max &&
-        newValue[1] >= min
-      ) {
-        setValue(newValue);
-        if (onChange) {
-          onChange(newValue);
-        }
-      } else {
-        setValue([min, max]);
-      }
-    } else {
-      if (newValue[0] >= min && newValue[0] <= max) {
-        setValue(newValue[0]);
-        if (onChange) {
-          onChange(newValue[0]);
-        }
+    const newValue = [...value];
+    newValue[index] = Number(inputValue);
+    setValue(newValue);
+    if (
+      newValue[0] >= min &&
+      newValue[0] <= max &&
+      newValue[1] >= min &&
+      newValue[1] <= max
+    ) {
+      if (onChange) {
+        onChange(newValue);
       }
     }
   };
+
+  useEffect(() => {
+    setValue(props.value as number[]);
+  }, [props.value]);
 
   return (
     <Box>
       <Box sx={classes.inputsWrapper}>
         <Input
-          value={Array.isArray(props.value) ? props?.value[0] : inputValues[0]}
+          value={Array.isArray(value) ? String(value[0]) : ''}
           onChange={e => handleInputChange(0, e.target.value)}
           showClearOption={false}
         />
-        {max && (
-          <>
-            <Typography variant="body1">-</Typography>
-            <Input
-              value={
-                Array.isArray(props.value) ? props?.value[1] : inputValues[1]
-              }
-              onChange={e => handleInputChange(1, e.target.value)}
-              showClearOption={false}
-            />
-          </>
-        )}
+        <Typography variant="body1">-</Typography>
+        <Input
+          value={Array.isArray(value) ? String(value[1]) : ''}
+          onChange={e => handleInputChange(1, e.target.value)}
+          showClearOption={false}
+        />
       </Box>
       <Slider
         value={value}
