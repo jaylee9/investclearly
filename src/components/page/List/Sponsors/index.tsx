@@ -22,6 +22,7 @@ const sortOptions = [
 interface SponsorsComponentProps {
   sponsorsResponse: GetAllSponsorsResponse;
   searchValue: string;
+  setSponsorsCount: (value: number) => void;
 }
 
 type FilterArrayKeys = 'ratings' | 'primaryAssetClasses' | 'regionalFocus';
@@ -38,6 +39,7 @@ interface AppliedFilter {
 const SponsorsComponent = ({
   sponsorsResponse,
   searchValue,
+  setSponsorsCount,
 }: SponsorsComponentProps) => {
   const classes = useSponsorComponentStyles();
   const defaultFilters = {
@@ -52,6 +54,11 @@ const SponsorsComponent = ({
     useState<ISponsorFilters>(defaultFilters);
   const [orderDirection, setOrderDirection] = useState<'DESC' | 'ASC'>('DESC');
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setSponsorsCount(sponsorsData.total);
+  }, [sponsorsData, setSponsorsCount]);
+
   const dirtyFilters = filterDifferences(filters, appliedFilters);
   const isDirtyFilters = !!Object.values(dirtyFilters).length;
 
