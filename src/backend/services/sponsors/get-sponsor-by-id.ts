@@ -23,18 +23,18 @@ export const getSponsorById = async (id: number) => {
     where: { sponsorId: sponsor.id },
   });
 
-  sponsor.reviewsCount = await connection.manager.count(Review, {
+  const publishedReviewsCount = await connection.manager.count(Review, {
     where: { sponsorId: sponsor.id, status: ReviewStatuses.published },
   });
 
+  sponsor.reviewsCount = publishedReviewsCount;
+
   if (sponsor.reviews && sponsor.reviews.length > 0) {
     let totalRating = 0;
-    let publishedReviewsCount = 0;
 
     sponsor.reviews.forEach(review => {
       if (review.status === ReviewStatuses.published) {
         totalRating += review.overallRating;
-        publishedReviewsCount++;
       }
     });
 

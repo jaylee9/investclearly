@@ -10,7 +10,7 @@ import { PaginationConstants } from '../../constants/pagination-constants';
 import { Attachment } from '../../../backend/entities/attachments.entity';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
 import { ReviewConstants } from '../../../backend/constants/review-constants';
-import { ReviewStatuses } from '@/backend/constants/enums/review-statuses';
+import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
 
 export const getAllDeals = async (params: FindAllDealsInterface) => {
   const {
@@ -39,10 +39,10 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   const averageRatingQuery = connection.manager
     .createQueryBuilder()
     .select([
-      'deals.id AS dealId',
-      'AVG(reviews.overallRating) AS avgOverallRating',
+      'deals.id AS deal_id',
+      'AVG(reviews.overallRating) AS avg_overall_rating',
     ])
-    .addSelect('COUNT(DISTINCT reviews.id) AS reviewsCount')
+    .addSelect('COUNT(DISTINCT reviews.id) AS reviews_count')
     .from(Deal, 'deals')
     .leftJoin('deals.reviews', 'reviews', 'reviews.status = :reviewStatus', {
       reviewStatus: ReviewStatuses.published,
@@ -59,7 +59,18 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
       'attachments',
       'attachments.entityId = deals.id AND attachments.entityType = :entityType',
       { entityType: TargetTypesConstants.deals }
-    );
+    )
+    .leftJoin('deals.reviews', 'reviews', 'reviews.status = :reviewStatus', {
+      reviewStatus: ReviewStatuses.published,
+    })
+    .andHaving(
+      'AVG(COALESCE(reviews.overallRating, 0)) BETWEEN :minRating AND :maxRating',
+      {
+        minRating,
+        maxRating,
+      }
+    )
+    .groupBy('deals.id, attachments.id');
 
   if (assetClasses.length) {
     searchQuery = searchQuery.where('deals.assetClass IN (:...assetClasses)', {
@@ -158,26 +169,21 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   const deals = await searchQuery.getMany();
 
   const activelyRisingMap = averageRatingData.reduce((map, item) => {
-    map[item.dealid] = {
-      reviewsCount: parseInt(item.reviewscount),
+    map[item.deal_id] = {
+      reviewsCount: parseInt(item.reviews_count),
       avgTotalRating:
-        item.avgoverallrating !== null ? parseFloat(item.avgoverallrating) : 0,
+        item.avg_overall_rating !== null
+          ? parseFloat(item.avg_overall_rating)
+          : 0,
     };
     return map;
   }, {});
 
-  const dealsWithCounters = deals
-    .filter(deal => {
-      const avgTotalRating = parseFloat(
-        activelyRisingMap[deal.id]?.avgTotalRating
-      );
-      return avgTotalRating >= minRating && avgTotalRating <= maxRating;
-    })
-    .map(deal => ({
-      ...deal,
-      reviewsCount: activelyRisingMap[deal.id]?.reviewsCount || 0,
-      avgTotalRating: activelyRisingMap[deal.id]?.avgTotalRating || null,
-    }));
+  const dealsWithCounters = deals.map(deal => ({
+    ...deal,
+    reviewsCount: activelyRisingMap[deal.id]?.reviewsCount || 0,
+    avgTotalRating: activelyRisingMap[deal.id]?.avgTotalRating || 0,
+  }));
 
   const paginationData = await buildPaginationInfo(
     dealsWithCounters.length,
