@@ -246,12 +246,10 @@ const DealsFilters = ({
               onChange={value =>
                 handleSliderChange(value as number[], 'actualIRR')
               }
-              value={
-                [
-                  filters.actualIRR?.from as number,
-                  filters.actualIRR?.to as number,
-                ] || [2, 12]
-              }
+              value={[
+                filters.actualIRR?.from as number,
+                filters.actualIRR?.to as number,
+              ]}
             />
           </Box>
         </Box>
@@ -263,11 +261,7 @@ const DealsFilters = ({
               min={2}
               max={12}
               onChange={value => handleSliderChange(value as number[], 'fees')}
-              value={
-                [filters.fees?.from as number, filters.fees?.to as number] || [
-                  2, 12,
-                ]
-              }
+              value={[filters.fees?.from as number, filters.fees?.to as number]}
             />
           </Box>
         </Box>
@@ -281,12 +275,10 @@ const DealsFilters = ({
               onChange={value =>
                 handleSliderChange(value as number[], 'min_investment')
               }
-              value={
-                [
-                  filters.min_investment?.from as number,
-                  filters.min_investment?.to as number,
-                ] || [5000, 25000]
-              }
+              value={[
+                filters.min_investment?.from as number,
+                filters.min_investment?.to as number,
+              ]}
             />
           </Box>
         </Box>
@@ -300,12 +292,10 @@ const DealsFilters = ({
               onChange={value =>
                 handleSliderChange(value as number[], 'preffered_return')
               }
-              value={
-                [
-                  filters.prefferd_return?.from as number,
-                  filters.prefferd_return?.to as number,
-                ] || [5000, 25000]
-              }
+              value={[
+                filters.prefferd_return?.from as number,
+                filters.prefferd_return?.to as number,
+              ]}
             />
           </Box>
         </Box>
