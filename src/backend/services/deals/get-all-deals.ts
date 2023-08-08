@@ -36,7 +36,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   } = params;
 
   const connection = await getDatabaseConnection();
-  const averageRatingQuery = connection.manager
+  let averageRatingQuery = connection.manager
     .createQueryBuilder()
     .select([
       'deals.id AS deal_id',
@@ -53,8 +53,18 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
         minRating,
         maxRating,
       }
-    )
-    .groupBy('deals.id');
+    );
+
+  if (sponsorId) {
+    averageRatingQuery = averageRatingQuery.andWhere(
+      'deals.sponsorId = :sponsorId',
+      {
+        sponsorId,
+      }
+    );
+  }
+
+  averageRatingQuery = averageRatingQuery.groupBy('deals.id');
 
   let searchQuery = connection.manager
     .createQueryBuilder()

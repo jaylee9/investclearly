@@ -4,7 +4,6 @@ import { getDatabaseConnection } from '../../config/data-source-config';
 import { SponsorConstants } from '../../../backend/constants/validation/sponsor-constants';
 import { Sponsor } from '../../../backend/entities/sponsors.entity';
 import { sponsorMapper } from '../../../backend/mappers/sponsor.mapper';
-import { Deal } from '../../../backend/entities/deals.entity';
 import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
 
 export const getSponsorById = async (id: number) => {
@@ -19,9 +18,7 @@ export const getSponsorById = async (id: number) => {
     throw new createHttpError.NotFound(SponsorConstants.sponsorNotFound);
   }
 
-  sponsor.dealsCount = await connection.manager.count(Deal, {
-    where: { sponsorId: sponsor.id },
-  });
+  sponsor.dealsCount = sponsor.deals.length;
 
   const publishedReviews = _.filter(sponsor.reviews, {
     status: ReviewStatuses.published,
