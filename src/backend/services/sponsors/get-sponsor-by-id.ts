@@ -1,10 +1,10 @@
 import createHttpError from 'http-errors';
+import _ from 'lodash';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { SponsorConstants } from '../../../backend/constants/validation/sponsor-constants';
 import { Sponsor } from '../../../backend/entities/sponsors.entity';
 import { sponsorMapper } from '../../../backend/mappers/sponsor.mapper';
 import { Deal } from '../../../backend/entities/deals.entity';
-import { Review } from '../../../backend/entities/reviews.entity';
 import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
 
 export const getSponsorById = async (id: number) => {
@@ -23,29 +23,15 @@ export const getSponsorById = async (id: number) => {
     where: { sponsorId: sponsor.id },
   });
 
-  const publishedReviewsCount = await connection.manager.count(Review, {
-    where: { sponsorId: sponsor.id, status: ReviewStatuses.published },
+  const publishedReviews = _.filter(sponsor.reviews, {
+    status: ReviewStatuses.published,
   });
+  const publishedReviewsCount = publishedReviews.length;
+  const totalRating = _.sumBy(publishedReviews, 'overallRating');
 
   sponsor.reviewsCount = publishedReviewsCount;
-
-  if (sponsor.reviews && sponsor.reviews.length > 0) {
-    let totalRating = 0;
-
-    sponsor.reviews.forEach(review => {
-      if (review.status === ReviewStatuses.published) {
-        totalRating += review.overallRating;
-      }
-    });
-
-    if (publishedReviewsCount > 0) {
-      sponsor.avgTotalRating = totalRating / publishedReviewsCount;
-    } else {
-      sponsor.avgTotalRating = 0;
-    }
-  } else {
-    sponsor.avgTotalRating = 0;
-  }
+  sponsor.avgTotalRating =
+    publishedReviewsCount > 0 ? totalRating / publishedReviewsCount : 0;
 
   return sponsorMapper(sponsor);
 };

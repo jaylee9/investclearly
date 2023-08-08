@@ -31,7 +31,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     .createQueryBuilder()
     .select([
       'sponsors.id AS sponsor_id',
-      'AVG(reviews.overallRating) AS avg_overall_rating',
+      'AVG(COALESCE(reviews.overallRating, 0)) AS avg_overall_rating',
     ])
     .addSelect('COUNT(openDeals.id) > 0', 'actively_rising')
     .addSelect('COUNT(DISTINCT deals.id) AS deals_count')
@@ -44,6 +44,13 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     .leftJoin('sponsors.reviews', 'reviews', 'reviews.status = :reviewStatus', {
       reviewStatus: ReviewStatuses.published,
     })
+    .andHaving(
+      'AVG(COALESCE(reviews.overallRating, 0)) BETWEEN :minRating AND :maxRating',
+      {
+        minRating,
+        maxRating,
+      }
+    )
     .groupBy('sponsors.id');
 
   let searchQuery = connection.manager
@@ -116,20 +123,17 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
       activelyRising: item.actively_rising,
       dealsCount: parseInt(item.deals_count),
       reviewsCount: parseInt(item.reviews_count),
-      avgTotalRating:
-        item.avg_overall_rating !== null
-          ? parseFloat(item.avg_overall_rating)
-          : 0,
+      avgTotalRating: parseFloat(item.avg_overall_rating),
     };
     return map;
   }, {});
 
   const sponsorsWithActivelyRisingAndCounters = sponsors.map(sponsor => ({
     ...sponsor,
-    activelyRising: activelyRisingMap[sponsor.id]?.activelyRising || false,
-    dealsCount: activelyRisingMap[sponsor.id]?.dealsCount || 0,
-    reviewsCount: activelyRisingMap[sponsor.id]?.reviewsCount || 0,
-    avgTotalRating: activelyRisingMap[sponsor.id]?.avgTotalRating || null,
+    activelyRising: activelyRisingMap[sponsor.id]?.activelyRising,
+    dealsCount: activelyRisingMap[sponsor.id]?.dealsCount,
+    reviewsCount: activelyRisingMap[sponsor.id]?.reviewsCount,
+    avgTotalRating: activelyRisingMap[sponsor.id]?.avgTotalRating,
   }));
 
   const paginationData = await buildPaginationInfo(

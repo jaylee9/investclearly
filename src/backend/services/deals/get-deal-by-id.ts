@@ -1,4 +1,5 @@
 import createHttpError from 'http-errors';
+import _ from 'lodash';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { Deal } from '../../entities/deals.entity';
 import { DealConstants } from '../../constants/deal-constants';
@@ -38,25 +39,14 @@ export const getDealById = async (id: number) => {
     where: { dealId: deal.id, status: ReviewStatuses.published },
   });
 
-  if (deal.sponsor.reviews && deal.sponsor.reviews.length > 0) {
-    let totalRating = 0;
-    let publishedReviewsCount = 0;
+  const publishedReviews = _.filter(deal.sponsor.reviews, {
+    status: ReviewStatuses.published,
+  });
+  const publishedReviewsCount = publishedReviews.length;
+  const totalRating = _.sumBy(publishedReviews, 'overallRating');
 
-    deal.sponsor.reviews.forEach(review => {
-      if (review.status === ReviewStatuses.published) {
-        totalRating += review.overallRating;
-        publishedReviewsCount++;
-      }
-    });
-
-    if (publishedReviewsCount > 0) {
-      deal.sponsor.avgTotalRating = totalRating / publishedReviewsCount;
-    } else {
-      deal.sponsor.avgTotalRating = 0;
-    }
-  } else {
-    deal.sponsor.avgTotalRating = 0;
-  }
+  deal.sponsor.avgTotalRating =
+    publishedReviewsCount > 0 ? totalRating / publishedReviewsCount : 0;
 
   return dealMapper(deal);
 };

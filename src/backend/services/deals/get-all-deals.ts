@@ -40,13 +40,20 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     .createQueryBuilder()
     .select([
       'deals.id AS deal_id',
-      'AVG(reviews.overallRating) AS avg_overall_rating',
+      'AVG(COALESCE(reviews.overallRating, 0)) AS avg_overall_rating',
     ])
     .addSelect('COUNT(DISTINCT reviews.id) AS reviews_count')
     .from(Deal, 'deals')
     .leftJoin('deals.reviews', 'reviews', 'reviews.status = :reviewStatus', {
       reviewStatus: ReviewStatuses.published,
     })
+    .andHaving(
+      'AVG(COALESCE(reviews.overallRating, 0)) BETWEEN :minRating AND :maxRating',
+      {
+        minRating,
+        maxRating,
+      }
+    )
     .groupBy('deals.id');
 
   let searchQuery = connection.manager
@@ -171,18 +178,15 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   const activelyRisingMap = averageRatingData.reduce((map, item) => {
     map[item.deal_id] = {
       reviewsCount: parseInt(item.reviews_count),
-      avgTotalRating:
-        item.avg_overall_rating !== null
-          ? parseFloat(item.avg_overall_rating)
-          : 0,
+      avgTotalRating: parseFloat(item.avg_overall_rating),
     };
     return map;
   }, {});
 
   const dealsWithCounters = deals.map(deal => ({
     ...deal,
-    reviewsCount: activelyRisingMap[deal.id]?.reviewsCount || 0,
-    avgTotalRating: activelyRisingMap[deal.id]?.avgTotalRating || 0,
+    reviewsCount: activelyRisingMap[deal.id]?.reviewsCount,
+    avgTotalRating: activelyRisingMap[deal.id]?.avgTotalRating,
   }));
 
   const paginationData = await buildPaginationInfo(
