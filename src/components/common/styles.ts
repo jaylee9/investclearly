@@ -602,3 +602,73 @@ export const useSponsorCardStyles = () => {
     },
   };
 };
+
+export const useYesNoButtonStyles = () => {
+  return {
+    root: {
+      display: 'flex',
+      gap: '12px',
+    },
+    block: {
+      padding: '12px 12px 24px 24px',
+      border: `1px solid ${palette.background.paper}`,
+      cursor: 'pointer',
+      borderRadius: '8px',
+      width: '240px',
+      transition: 'border 0.3s ease-in-out',
+    },
+    header: {
+      display: 'flex',
+      width: '100%',
+      justifyContent: 'end',
+    },
+    activeBlock: {
+      border: `1px solid ${palette.primary.light}`,
+    },
+    radioButton: {
+      width: '20px',
+      height: '20px',
+      border: `1px solid ${palette.text.disabled}`,
+      borderRadius: '100px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transition: 'border 0.3s ease-in-out, background 0.3s ease-in-out',
+    },
+    activeRadioButton: {
+      border: `1px solid ${palette.primary.light}`,
+      background: palette.primary.light,
+      '& .icon-Check': {
+        color: palette.common.white,
+        fontSize: '20px',
+      },
+    },
+    mainContent: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyBetween: 'center',
+      flexDirection: 'column',
+      gap: '12px',
+      '& p': {
+        fontWeight: 600,
+        color: palette.common.black,
+      },
+    },
+    icon: {
+      width: '32px',
+      height: '32px',
+      fontSize: '28px',
+      borderRadius: '100px',
+      background: 'rgba(113,124,137,0.2)',
+      color: palette.text.secondary,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transition: 'color 0.3s ease-in-out, background 0.3s ease-in-out',
+    },
+    activeIcon: {
+      color: palette.primary.light,
+      background: 'rgba(79,127,248,0.2)',
+    },
+  };
+};
