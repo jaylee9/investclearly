@@ -102,7 +102,11 @@ export class Sponsor {
 
   activelyRising: boolean;
 
-  dealscount: number;
+  dealsCount: number;
+
+  reviewsCount: number;
+
+  avgTotalRating: number;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -9,6 +9,8 @@ export interface FindAllSponsorsInterface {
   activelyRising?: boolean;
   primaryAssetClasses?: AssetClasses[] | AssetClasses;
   regionalFocus?: Regions[] | Regions;
+  minRating?: number;
+  maxRating?: number;
   search?: string;
   limit?: number;
 }

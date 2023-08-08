@@ -10,6 +10,8 @@ export interface SponsorInterface extends CreateSponsorInterface {
   reviews?: ReviewInterface[];
   activelyRising: boolean;
   dealsCount?: number | 0;
+  reviewsCount?: number | 0;
+  avgTotalRating?: number | 0;
   createdAt: Date;
   updatedAt: Date;
 }

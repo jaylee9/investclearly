@@ -20,6 +20,9 @@ export interface FindAllDealsInterface {
   exemptions?: Exemptions[] | Exemptions;
   sponsorFeesMin?: number;
   sponsorFeesMax?: number;
+  minRating?: number;
+  maxRating?: number;
+  sponsorId?: number;
   search?: string;
   limit?: number;
 }

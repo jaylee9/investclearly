@@ -28,6 +28,8 @@ export const dealMapper = (deal: Deal): DealInterface => {
     sponsor: deal.sponsor ? sponsorMapper(deal.sponsor) : null,
     attachments: deal.attachments ? deal.attachments.map(attachmentMapper) : [],
     reviews: deal.reviews ? deal.reviews.map(reviewMapper) : [],
+    reviewsCount: deal.reviewsCount || 0,
+    avgTotalRating: deal.avgTotalRating || 0,
     createdAt: deal.createdAt,
     updatedAt: deal.updatedAt,
   };
