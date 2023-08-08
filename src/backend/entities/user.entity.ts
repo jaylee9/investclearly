@@ -38,6 +38,33 @@ export class User {
   @Column({ type: 'varchar', unique: true, nullable: true })
   googleId: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  address: string;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  totalInvestedAmountVisibility: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  yourDealsVisibility: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  weeklyDigestEmail: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  reviewWasPublishedAfterModerationEmail: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  reviewWasDeclinedAfterModerationEmail: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  newDealMathingYourInvestmentPreferencesEmail: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  newDealFromTheSponsorYouSavedEmail: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  newReviewHasBeenSharedToSponsorEmail: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
