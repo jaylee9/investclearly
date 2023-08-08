@@ -5,7 +5,7 @@ import { useState } from 'react';
 import ConfirmEmail from '@/components/page/SignUp/ConfirmEmail';
 
 const SignUp = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('123');
   return (
     <Layout variant={LayoutVariant.Entry}>
       <Box>
