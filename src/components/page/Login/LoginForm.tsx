@@ -48,7 +48,7 @@ const LoginForm = () => {
       </Typography>
       <Box sx={classes.googleLoginWrapper}>
         <GoogleLogin
-          width="1000px"
+          width={500}
           text="signup_with"
           onSuccess={handleGoogleLogin}
         />
