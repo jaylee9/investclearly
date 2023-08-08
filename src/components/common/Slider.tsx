@@ -7,7 +7,7 @@ interface CustomSliderProps
   extends Omit<SliderProps, 'min' | 'max' | 'onChange'> {
   min: number;
   max: number;
-  onChange?: (value: number[] | number) => void;
+  onChange: (value: number[] | number) => void;
 }
 
 const CustomSlider = ({ min, max, onChange, ...props }: CustomSliderProps) => {
@@ -16,9 +16,7 @@ const CustomSlider = ({ min, max, onChange, ...props }: CustomSliderProps) => {
 
   const handleChangeSlider = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number[]);
-    if (onChange) {
-      onChange(newValue);
-    }
+    onChange(newValue);
   };
 
   const handleInputChange = (index: number, inputValue: string) => {
@@ -31,9 +29,7 @@ const CustomSlider = ({ min, max, onChange, ...props }: CustomSliderProps) => {
       newValue[1] >= min &&
       newValue[1] <= max
     ) {
-      if (onChange) {
-        onChange(newValue);
-      }
+      onChange(newValue);
     }
   };
 
