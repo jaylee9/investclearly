@@ -233,7 +233,13 @@ const DealsFilters = ({
       <CustomAccordion label="Target IRR, %">
         <Box sx={classes.accordionContent}>
           <Box>
-            <CustomSlider min={2} max={12} />
+            <CustomSlider
+              min={2}
+              max={12}
+              onChange={value =>
+                handleSliderChange(value as number[], 'targetIRR')
+              }
+            />
           </Box>
         </Box>
       </CustomAccordion>
