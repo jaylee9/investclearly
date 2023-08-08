@@ -6,16 +6,20 @@ interface ColumnsComponentProps {
   leftColumnContent: ReactNode;
   leftColumnHeader: ReactNode;
   rightColumnContent: ReactNode;
-  rightColumnHeader: ReactNode;
+  rightColumnHeaderTitle: ReactNode;
+  rightColumnHeaderContent: ReactNode;
   paginationComponent: ReactNode;
+  count: number;
 }
 
 const ColumnsComponent = ({
   leftColumnContent,
   leftColumnHeader,
-  rightColumnHeader,
+  rightColumnHeaderTitle,
+  rightColumnHeaderContent,
   rightColumnContent,
   paginationComponent,
+  count,
 }: ColumnsComponentProps) => {
   const classes = useColumnsComponentStyles();
   return (
@@ -25,9 +29,16 @@ const ColumnsComponent = ({
         {leftColumnContent}
       </Box>
       <Box sx={classes.rightColumn}>
-        <Box sx={classes.rightColumnHeader}>{rightColumnHeader}</Box>
+        <Box sx={classes.rightColumnHeader}>
+          <Box sx={classes.rightColumnHeaderTitle}>
+            {rightColumnHeaderTitle}
+          </Box>
+          <Box sx={classes.rightColumnHeaderContent}>
+            {rightColumnHeaderContent}
+          </Box>
+        </Box>
         {rightColumnContent}
-        <Box sx={classes.paggination}>{paginationComponent}</Box>
+        {!!count && <Box sx={classes.paggination}> {paginationComponent}</Box>}
       </Box>
     </Box>
   );

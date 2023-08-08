@@ -31,6 +31,19 @@ export const useSponsorComponentStyles = () => {
       gap: '16px',
       marginBottom: '16px',
     },
+    appliedFilter: {
+      display: 'flex',
+      gap: '4px',
+      alignItems: 'center',
+      padding: '4px 12px',
+      borderRadius: '14px',
+      border: `1px solid ${palette.background.paper}`,
+      '& .icon-Cross': {
+        fontSize: '16px',
+        color: palette.text.disabled,
+        cursor: 'pointer',
+      },
+    },
   };
 };
 

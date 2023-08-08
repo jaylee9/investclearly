@@ -22,11 +22,24 @@ const sortOptions = [
 interface SponsorsComponentProps {
   sponsorsResponse: GetAllSponsorsResponse;
   searchValue: string;
+  setSponsorsCount: (value: number) => void;
+}
+
+type FilterArrayKeys = 'ratings' | 'primaryAssetClasses' | 'regionalFocus';
+type FilterCheckedKeys = 'activelyRaising';
+const filtersLabels = {
+  activelyRaising: 'Actively raising sponsors',
+};
+interface AppliedFilter {
+  label: string;
+  key: FilterCheckedKeys | FilterArrayKeys;
+  type: 'array' | 'check';
 }
 
 const SponsorsComponent = ({
   sponsorsResponse,
   searchValue,
+  setSponsorsCount,
 }: SponsorsComponentProps) => {
   const classes = useSponsorComponentStyles();
   const defaultFilters = {
@@ -41,6 +54,11 @@ const SponsorsComponent = ({
     useState<ISponsorFilters>(defaultFilters);
   const [orderDirection, setOrderDirection] = useState<'DESC' | 'ASC'>('DESC');
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setSponsorsCount(sponsorsData.total);
+  }, [sponsorsData, setSponsorsCount]);
+
   const dirtyFilters = filterDifferences(filters, appliedFilters);
   const isDirtyFilters = !!Object.values(dirtyFilters).length;
 
@@ -49,6 +67,88 @@ const SponsorsComponent = ({
   const handleChangeSelect = (value: 'DESC' | 'ASC') => {
     setOrderDirection(value);
   };
+  const changedFiltersAfterApply = filterDifferences(
+    appliedFilters,
+    defaultFilters
+  );
+  const formatFilters = (filters: ISponsorFilters) => {
+    const formattedFilters: AppliedFilter[] = [];
+    const arrayFilters: string[] = [];
+    const checkedFilters: string[] = [];
+
+    for (const key in filters) {
+      if (filters.hasOwnProperty(key)) {
+        const filterKey = key as keyof ISponsorFilters;
+        const value = filters[filterKey];
+
+        if (Array.isArray(value)) {
+          arrayFilters.push(key);
+        } else {
+          checkedFilters.push(key);
+        }
+      }
+    }
+
+    arrayFilters.forEach(key => {
+      const filterKey = key as keyof ISponsorFilters;
+      const filterValues = filters[filterKey] as string[];
+
+      filterValues.forEach(value => {
+        formattedFilters.push({
+          label: key === 'ratings' ? `${value} stars` : value,
+          key: key as FilterArrayKeys,
+          type: 'array',
+        });
+      });
+    });
+
+    checkedFilters.forEach(key => {
+      const filterKey = key as FilterCheckedKeys;
+      const value = filters[filterKey];
+      if (value) {
+        formattedFilters.push({
+          label: filtersLabels[filterKey],
+          key: key as FilterCheckedKeys,
+          type: 'check',
+        });
+      }
+    });
+
+    return formattedFilters;
+  };
+  const handleFilterRemove = (
+    value: string,
+    key: FilterArrayKeys | FilterCheckedKeys,
+    type: 'array' | 'check'
+  ) => {
+    if (type === 'array') {
+      const arrayKey = key as FilterArrayKeys;
+      setAppliedFilters(prevAppliedFilters => ({
+        ...prevAppliedFilters,
+        [arrayKey]: (prevAppliedFilters[arrayKey] as string[]).filter(item =>
+          arrayKey === 'ratings'
+            ? Number(item) !== Number(value.replace(' stars', ''))
+            : item !== value
+        ),
+      }));
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        [arrayKey]: (prevFilters[arrayKey] as string[]).filter(item =>
+          arrayKey === 'ratings'
+            ? Number(item) !== Number(value.replace(' stars', ''))
+            : item !== value
+        ),
+      }));
+    } else if (type === 'check') {
+      const checkedKey = key as FilterCheckedKeys;
+      setAppliedFilters({
+        ...appliedFilters,
+        [checkedKey]: defaultFilters[checkedKey],
+      });
+      setFilters({ ...filters, [checkedKey]: defaultFilters[checkedKey] });
+    }
+  };
+  const formattedAppliedFilters = formatFilters(changedFiltersAfterApply);
   const { isLoading, refetch } = useQuery(
     ['sponsors', page, orderDirection, searchValue],
     () =>
@@ -85,6 +185,7 @@ const SponsorsComponent = ({
     page * 10 > sponsorsData.total ? sponsorsData.total : page * 10;
   return (
     <ColumnsComponent
+      count={sponsorsData.total}
       leftColumnHeader={
         <Box sx={classes.filtersHeaderWrapper}>
           <Box sx={classes.filtersHeaderTitleWrapper}>
@@ -116,7 +217,7 @@ const SponsorsComponent = ({
           disabledApplyFilters={!isDirtyFilters}
         />
       }
-      rightColumnHeader={
+      rightColumnHeaderTitle={
         <>
           <Typography variant="body1">
             <span style={{ fontWeight: 600 }}>
@@ -137,6 +238,21 @@ const SponsorsComponent = ({
               />
             </Box>
           </Box>
+        </>
+      }
+      rightColumnHeaderContent={
+        <>
+          {formattedAppliedFilters.map((filter, index) => (
+            <Box sx={classes.appliedFilter} key={index}>
+              <Typography variant="caption">{filter.label}</Typography>
+              <span
+                className="icon-Cross"
+                onClick={() =>
+                  handleFilterRemove(filter.label, filter.key, filter.type)
+                }
+              />
+            </Box>
+          ))}
         </>
       }
       rightColumnContent={

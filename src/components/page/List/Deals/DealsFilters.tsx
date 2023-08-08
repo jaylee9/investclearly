@@ -223,7 +223,7 @@ const DealsFilters = ({
                 onChange={() =>
                   handleStringArrayChange('exemptions', exemption)
                 }
-                checked={filters.investment_structure?.includes(exemption)}
+                checked={filters.exemptions?.includes(exemption)}
                 label={exemption}
               />
             ))}
@@ -233,7 +233,13 @@ const DealsFilters = ({
       <CustomAccordion label="Target IRR, %">
         <Box sx={classes.accordionContent}>
           <Box>
-            <CustomSlider min={2} max={12} />
+            <CustomSlider
+              min={2}
+              max={12}
+              onChange={value =>
+                handleSliderChange(value as number[], 'targetIRR')
+              }
+            />
           </Box>
         </Box>
       </CustomAccordion>
@@ -246,6 +252,10 @@ const DealsFilters = ({
               onChange={value =>
                 handleSliderChange(value as number[], 'actualIRR')
               }
+              value={[
+                filters.actualIRR?.from as number,
+                filters.actualIRR?.to as number,
+              ]}
             />
           </Box>
         </Box>
@@ -257,6 +267,7 @@ const DealsFilters = ({
               min={2}
               max={12}
               onChange={value => handleSliderChange(value as number[], 'fees')}
+              value={[filters.fees?.from as number, filters.fees?.to as number]}
             />
           </Box>
         </Box>
@@ -270,6 +281,10 @@ const DealsFilters = ({
               onChange={value =>
                 handleSliderChange(value as number[], 'min_investment')
               }
+              value={[
+                filters.min_investment?.from as number,
+                filters.min_investment?.to as number,
+              ]}
             />
           </Box>
         </Box>
@@ -283,6 +298,10 @@ const DealsFilters = ({
               onChange={value =>
                 handleSliderChange(value as number[], 'preffered_return')
               }
+              value={[
+                filters.prefferd_return?.from as number,
+                filters.prefferd_return?.to as number,
+              ]}
             />
           </Box>
         </Box>
