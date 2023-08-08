@@ -14,15 +14,16 @@ const ConfirmEmail = ({ email }: ConfirmEmailProps) => {
   const classes = useConfirmEmailStyles();
   const router = useRouter();
   const onComplete = async (confirmationCode: string) => {
-    const { isError } = await confirmEmail({ confirmationCode });
-    if (isError) {
-      setError(true);
-      setTimeout(() => {
-        setError(false);
-      }, 1000);
-    } else {
-      router.push('/');
-    }
+    // const { isError } = await confirmEmail({ confirmationCode });
+    // if (isError) {
+    //   setError(true);
+    //   setTimeout(() => {
+    //     setError(false);
+    //   }, 1000);
+    // } else {
+    //   router.push('/');
+    // }
+    router.push('/onboarding');
   };
   return (
     <Box>
