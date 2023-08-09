@@ -1,16 +1,19 @@
 import { Box, Typography } from '@mui/material';
-import { useAccreditedInvestorStepStyles } from './styles';
+import { useWorthStepStyles } from './styles';
 import YesNoButtons from '@/components/common/YesNoButtons';
 import { useState } from 'react';
 import Button from '@/components/common/Button';
 import { useRouter } from 'next/router';
 
 const WorthStep = () => {
-  const classes = useAccreditedInvestorStepStyles();
+  const classes = useWorthStepStyles();
   const router = useRouter();
   const [worth, setWorth] = useState<'yes' | 'no'>(
-    (localStorage.getItem('accredited') as 'yes' | 'no') || 'yes'
+    (localStorage.getItem('worth') as 'yes' | 'no') || 'yes'
   );
+  const handleBackClick = () => {
+    router.push('/onboarding?step=1');
+  };
   const handleStepClick = (type: 'skip' | 'next') => {
     if (type === 'next') {
       localStorage.setItem('worth', worth);
@@ -50,10 +53,17 @@ const WorthStep = () => {
         />
       </Box>
       <Box sx={classes.footer}>
-        <Button variant="secondary" onClick={() => handleStepClick('skip')}>
-          Skip
-        </Button>
-        <Button onClick={() => handleStepClick('next')}>Next</Button>
+        <Box>
+          <Button variant="tertiary" onClick={handleBackClick}>
+            Back
+          </Button>
+        </Box>
+        <Box>
+          <Button variant="secondary" onClick={() => handleStepClick('skip')}>
+            Skip
+          </Button>
+          <Button onClick={() => handleStepClick('next')}>Next</Button>
+        </Box>
       </Box>
     </Box>
   );
