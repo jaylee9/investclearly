@@ -1,10 +1,12 @@
-import { ReviewInterface } from '../../reviews/interfaces/review.interface';
-import { UserInterface } from './user.interface';
-import { AssetClasses } from '../../../../backend/constants/enums/asset-classes';
 import { Regions } from '../../../../backend/constants/enums/regions';
+import { AssetClasses } from '../../../../backend/constants/enums/asset-classes';
+import { IncomeAndNetWorth } from '../../../../backend/constants/enums/income-and-worth';
+import { InvestorStatuses } from '../../../../backend/constants/enums/investor-statuses';
 
-export interface PublicUserInterface extends UserInterface {
-  reviews?: ReviewInterface[] | null;
+export interface UpdateProfileSettingsInterface {
+  firstName: string;
+  lastName: string;
+  profilePicture?: string;
   address?: string;
   totalInvestedAmountVisibility: boolean;
   yourDealsVisibility: boolean;
@@ -14,10 +16,10 @@ export interface PublicUserInterface extends UserInterface {
   newDealMathingYourInvestmentPreferencesEmail: boolean;
   newDealFromTheSponsorYouSavedEmail: boolean;
   newReviewHasBeenSharedToSponsorEmail: boolean;
-  investorStatus: string;
-  incomeAndNetWorth: string;
-  assetClasses: AssetClasses[];
-  regions: Regions[];
+  investorStatus?: InvestorStatuses;
+  incomeAndNetWorth?: IncomeAndNetWorth;
+  assetClasses: AssetClasses[] | AssetClasses;
+  regions: Regions[] | Regions;
   minimumInvestmentMin: number;
   minimumInvestmentMax: number;
   holdPeriodMin: number;
