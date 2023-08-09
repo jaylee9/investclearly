@@ -15,6 +15,7 @@ export enum LayoutVariant {
 interface LayoutProps extends HeaderProps {
   children: ReactNode;
   variant?: LayoutVariant;
+  isEntrySpacing?: boolean;
 }
 
 const Layout = ({
@@ -30,9 +31,10 @@ const Layout = ({
   type,
   content,
   onChangeSearch,
+  isEntrySpacing = false,
 }: LayoutProps) => {
   const defaultStyles = useDefaultLayoutStyles();
-  const entryStyles = useEntryLayoutStyles();
+  const entryStyles = useEntryLayoutStyles(isEntrySpacing);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

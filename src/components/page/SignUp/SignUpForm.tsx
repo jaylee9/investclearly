@@ -65,7 +65,7 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
       <Box sx={classes.googleLoginWrapper}>
         <GoogleLogin
           text="signup_with"
-          width="1000"
+          width={500}
           onSuccess={handleGoogleSignUp}
         />
       </Box>
