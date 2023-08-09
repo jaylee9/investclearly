@@ -108,10 +108,6 @@ export class User {
     this.email = this.email.toLowerCase();
   }
 
-  public comparePassword(attempt: string): Promise<boolean> {
-    return bcrypt.compare(attempt, this.password);
-  }
-
   @OneToMany(() => Sponsor, sponsors => sponsors.user)
   sponsors: Relation<Sponsor>[];
 

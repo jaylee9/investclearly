@@ -6,11 +6,10 @@ import { User } from '../../entities/user.entity';
 import { getUserById } from '../users/get-user-by-id';
 
 export const addPasswordToGoogleAccount = async (
-  userId: number,
-  password: string,
-  googleId: string,
+  user: User,
   newPassword: string
 ) => {
+  const { googleId, password } = user;
   const connection = await getDatabaseConnection();
 
   if (!googleId && password) {
@@ -20,11 +19,11 @@ export const addPasswordToGoogleAccount = async (
   const hashedPassword = await bcrypt.hash(newPassword, 10);
   await connection.manager.update(
     User,
-    { id: userId },
+    { id: user.id },
     {
       password: hashedPassword,
     }
   );
 
-  return getUserById(userId);
+  return getUserById(user.id);
 };
