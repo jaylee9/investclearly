@@ -47,7 +47,7 @@ export const useEntryLayoutStyles = (isEntrySpacing: boolean) => {
       flexdirection: 'column',
       justifyContent: isEntrySpacing ? 'normal' : 'center',
       paddingTop: '135px',
-      padding: isEntrySpacing ? '135px 65px 0px' : '135px 0px',
+      padding: isEntrySpacing ? '135px 65px 0px' : '125px 0px',
     },
   };
 };
