@@ -21,7 +21,7 @@ const ConfirmEmail = ({ email }: ConfirmEmailProps) => {
         setError(false);
       }, 1000);
     } else {
-      router.push('/');
+      router.push('/onboarding?step=1');
     }
   };
   return (
