@@ -34,8 +34,8 @@ const Home = ({ deals, sponsors, searchResponse }: HomeProps) => {
       <HeadBlock searchResponse={searchResponse} />
       <Box sx={classes.root}>
         <Box sx={classes.content}>
-          <NewDealsBlock deals={deals} />
           <TopRatedSponsorsBlock sponsors={sponsors} />
+          <NewDealsBlock deals={deals} />
           <DealsBlock />
         </Box>
         <BannerBlock

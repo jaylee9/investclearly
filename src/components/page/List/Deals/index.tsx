@@ -119,16 +119,25 @@ const DealsComponent = ({
     defaultFilters
   );
 
-  const { isLoading, refetch } = useQuery(
-    ['deals', page, orderDirection, searchValue],
-    () =>
-      getAllDeals({
+  const payload = Object.entries(changedFilters).length
+    ? {
+        page,
+        pageSize: 10,
+        orderDirection,
+        search: searchValue,
+        ...changedFilters,
+      }
+    : {
         page,
         pageSize: 10,
         orderDirection,
         search: searchValue,
         ...dirtyFilters,
-      }),
+      };
+
+  const { isLoading, refetch } = useQuery(
+    ['deals', page, orderDirection, searchValue],
+    () => getAllDeals(payload),
     {
       onSuccess: data => {
         setDealsData(data);
