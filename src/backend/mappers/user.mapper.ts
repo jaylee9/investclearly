@@ -12,6 +12,7 @@ export const userMapper = (user: User): PublicUserInterface => {
     profilePicture: user.profilePicture
       ? buildFullImagePath(user.profilePicture)
       : null,
+    googleId: user.googleId,
     address: user.address,
     totalInvestedAmountVisibility: user.totalInvestedAmountVisibility,
     yourDealsVisibility: user.yourDealsVisibility,
