@@ -20,14 +20,24 @@ export interface GetAllSponsorsResponse {
 export const getAllSponsors = async (
   filters: ISponsorActionFilters
 ): Promise<GetAllSponsorsResponse> => {
+  const ratings = filters.ratings || [];
+  let minRating: number | undefined;
+  let maxRating: number | undefined;
+
+  if (ratings.length > 0) {
+    minRating = Math.min(...ratings);
+    maxRating = Math.max(...ratings);
+  }
   const parameters = {
     page: filters.page,
     pageSize: filters.pageSize,
     orderDirection: filters.orderDirection || 'DESC',
     primaryAssetClasses: filters.primaryAssetClasses,
     regionalFocus: filters.regionalFocus,
-    activelyRaising: filters.activelyRaising,
+    activelyRising: filters.activelyRising,
     search: filters.search,
+    minRating,
+    maxRating,
   };
 
   const stringifiedParameters = queryString.stringify(parameters, {

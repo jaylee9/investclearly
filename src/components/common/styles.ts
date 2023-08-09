@@ -550,7 +550,7 @@ export const useSponsorCardStyles = () => {
       flexDirection: 'column',
       gap: '4px',
     },
-    activelyRaising: {
+    activelyRising: {
       padding: '4px 12px',
       color: palette.common.white,
       borderRadius: '12px',
