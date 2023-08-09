@@ -6,9 +6,26 @@ export const useAccreditedInvestorStepStyles = () => {
       '& h4': {
         fontWeight: 600,
       },
-      '& p': {
-        color: theme.palette.text.secondary,
-      },
+      height: '94%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    },
+    subTitle: {
+      color: theme.palette.text.secondary,
+      marginBottom: '40px',
+    },
+    footer: {
+      display: 'flex',
+      justifyContent: 'end',
+      gap: '8px',
+    },
+    list: {
+      marginBottom: '16px',
+      maxWidth: '700px',
+    },
+    bold: {
+      fontWeight: 600,
     },
   };
 };

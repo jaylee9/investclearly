@@ -10,7 +10,7 @@ export const useDefaultLayoutStyles = () => {
   };
 };
 
-export const useEntryLayoutStyles = () => {
+export const useEntryLayoutStyles = (isEntrySpacing: boolean) => {
   return {
     root: {
       minHeight: '100vh',
@@ -45,8 +45,9 @@ export const useEntryLayoutStyles = () => {
       width: '65%',
       display: 'flex',
       flexdirection: 'column',
-      justifyContent: 'center',
+      justifyContent: isEntrySpacing ? 'normal' : 'center',
       paddingTop: '135px',
+      padding: isEntrySpacing ? '135px 65px 0px' : '0px',
     },
   };
 };
