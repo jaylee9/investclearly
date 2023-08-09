@@ -12,6 +12,27 @@ export const userMapper = (user: User): PublicUserInterface => {
     profilePicture: user.profilePicture
       ? buildFullImagePath(user.profilePicture)
       : null,
+    address: user.address,
+    totalInvestedAmountVisibility: user.totalInvestedAmountVisibility,
+    yourDealsVisibility: user.yourDealsVisibility,
+    weeklyDigestEmail: user.weeklyDigestEmail,
+    reviewWasPublishedAfterModerationEmail:
+      user.reviewWasPublishedAfterModerationEmail,
+    reviewWasDeclinedAfterModerationEmail:
+      user.reviewWasDeclinedAfterModerationEmail,
+    newDealMathingYourInvestmentPreferencesEmail:
+      user.newDealMathingYourInvestmentPreferencesEmail,
+    newDealFromTheSponsorYouSavedEmail: user.newDealFromTheSponsorYouSavedEmail,
+    newReviewHasBeenSharedToSponsorEmail:
+      user.newReviewHasBeenSharedToSponsorEmail,
+    investorStatus: user.investorStatus,
+    incomeAndNetWorth: user.incomeAndNetWorth,
+    assetClasses: user.assetClasses,
+    regions: user.regions,
+    minimumInvestmentMin: user.minimumInvestmentMin,
+    minimumInvestmentMax: user.minimumInvestmentMax,
+    holdPeriodMin: user.holdPeriodMin,
+    holdPeriodMax: user.holdPeriodMax,
     reviews: user.reviews ? user.reviews.map(reviewMapper) : [],
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
