@@ -4,6 +4,8 @@ import { AuthConstants } from '../../../backend/constants/auth-constants';
 import { apiHandler } from '../../../backend/utils/api-handler';
 import { authMiddleware } from '../../../backend/middleware/auth';
 import { parseForm } from '../../../backend/utils/parse-form';
+import { UpdateProfileSettingsInterface } from '../../../backend/services/users/interfaces/update-profile-settings.interface';
+import { updateProfileSettings } from '../../../backend/services/users/update-profile-settings';
 
 export const config = {
   api: {
@@ -15,13 +17,16 @@ const updateProfile = async (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
-  await authMiddleware(request, response);
-  const { fields, files } = await parseForm(request, response);
-  const id: number = Number(request.query.id);
+  const { request: authRequest, user } = await authMiddleware(
+    request,
+    response
+  );
+  const userId = user?.id;
+  const { fields, files } = await parseForm(authRequest, response);
 
   const updatedUser = await updateProfileSettings(
-    id,
-    fields as unknown as UpdateProfileSettings,
+    userId!,
+    fields as unknown as UpdateProfileSettingsInterface,
     files
   );
 
