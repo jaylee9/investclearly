@@ -672,3 +672,31 @@ export const useYesNoButtonStyles = () => {
     },
   };
 };
+
+export const useMultiButtonsStyles = () => {
+  return {
+    root: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      maxWidth: '600px',
+      gap: '8px',
+    },
+    multiButton: {
+      padding: '4px 16px',
+      borderRadius: '24px',
+      border: `1px solid ${palette.background.paper}`,
+      cursor: 'pointer',
+      transition: 'background 0.3s ease, color 0.3s ease, border 0.3s ease',
+    },
+    activeMultiButton: {
+      color: palette.common.white,
+      background: palette.primary.light,
+      border: `1px solid ${palette.primary.light}`,
+      transition: 'background 0.3s ease, color 0.3s ease, border 0.3s ease',
+    },
+    label: {
+      fontWeight: 600,
+      marginBottom: '8px',
+    },
+  };
+};

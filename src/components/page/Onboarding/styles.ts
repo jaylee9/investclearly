@@ -52,3 +52,35 @@ export const useWorthStepStyles = () => {
     },
   };
 };
+
+export const useInvestmentPreferencesStepStyles = () => {
+  return {
+    root: {
+      '& h4': {
+        fontWeight: 600,
+      },
+      height: '94%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      paddingBottom: '12px',
+    },
+    subTitle: {
+      color: theme.palette.text.secondary,
+      marginBottom: '40px',
+    },
+    footer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '32px',
+    },
+    actionButtons: {
+      display: 'flex',
+      gap: '8px',
+    },
+  };
+};
