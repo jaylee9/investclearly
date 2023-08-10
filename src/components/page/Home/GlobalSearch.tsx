@@ -10,6 +10,7 @@ import { GlobalSearchResponse, globalSearch } from '@/actions/common';
 import { useQuery } from 'react-query';
 import { debounce } from 'lodash';
 import Loading from '@/components/common/Loading';
+import { useRouter } from 'next/router';
 
 const MOCK_IMAGE_URL =
   'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
@@ -30,7 +31,10 @@ const GlobalSearch = ({
   onChangeSearch,
 }: GlobalSearchProps) => {
   const classes = useGlobalSearchStyles();
+  const router = useRouter();
+  const { search } = router.query;
   const [isOpenGlobalSearch, setIsOpenGlobalSearch] = useState(false);
+  const [value, setValue] = useState(search || '');
   const [globalSearchValue, setGlobalSearchValue] = useState('');
   const [data, setData] = useState<GlobalSearchResponse>(
     searchResponse as GlobalSearchResponse
@@ -49,6 +53,13 @@ const GlobalSearch = ({
     },
     500
   );
+
+  const handleChangeValue = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    handleChange(e);
+    setValue(e.target.value);
+  };
 
   const handleShowAllLinkClick = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -70,6 +81,9 @@ const GlobalSearch = ({
   const handleClearInput = () => {
     setGlobalSearchValue('');
   };
+  const searchLink = `/list?type=${
+    data?.deals?.length ? 'deals' : 'sponsors'
+  }&search=${globalSearchValue}`;
   useOnClickOutside(ref, handleClose);
   return (
     <Box ref={ref} onClick={handleOpen} sx={classes.root}>
@@ -83,15 +97,17 @@ const GlobalSearch = ({
           customStyles={classes.searchInput}
           height="large"
           endComponent={
-            <Button
-              customStyles={{
-                boxSizing: 'border-box',
-                padding: '12px 40px !important',
-                height: '48px !important',
-              }}
-            >
-              Search
-            </Button>
+            <Link href={searchLink}>
+              <Button
+                customStyles={{
+                  boxSizing: 'border-box',
+                  padding: '12px 40px !important',
+                  height: '48px !important',
+                }}
+              >
+                Search
+              </Button>
+            </Link>
           }
           onChange={handleChange}
         />
@@ -102,8 +118,9 @@ const GlobalSearch = ({
           showClearOption
           placeholder="Search"
           variant="filled"
-          onChange={handleChange}
+          onChange={handleChangeValue}
           onClear={handleClearInput}
+          value={value}
         />
       )}
       {isOpenGlobalSearch && (

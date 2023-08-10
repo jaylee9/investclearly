@@ -13,7 +13,7 @@ export interface ISponsorFilters {
   ratings?: number[];
   primaryAssetClasses?: string[];
   regionalFocus?: string[];
-  activelyRaising?: boolean;
+  activelyRising?: boolean;
 }
 
 interface SponsorsFiltersProps {

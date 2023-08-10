@@ -36,7 +36,8 @@ const SponsorCard = ({
       </Typography>
       <Typography variant="body1">{sponsor.region}</Typography>
       <Typography variant="body1" sx={classes.baseRating}>
-        <i className="icon-Star"></i> 5<span> (110)</span>
+        <i className="icon-Star"></i> {sponsor.avgTotalRating}
+        <span> ({sponsor.reviewsCount})</span>
       </Typography>
     </Box>
   ) : (
@@ -46,7 +47,7 @@ const SponsorCard = ({
         <Box sx={classes.largeHeader}>
           <Box sx={classes.largeHeaderLeftColumn}>
             {sponsor.activelyRising && (
-              <Typography variant="caption" sx={classes.activelyRaising}>
+              <Typography variant="caption" sx={classes.activelyRising}>
                 Actively Rising
               </Typography>
             )}
@@ -54,11 +55,11 @@ const SponsorCard = ({
               {sponsor.legalName}
             </Typography>
             <Box sx={classes.sponsorInfo}>
-              {/* <Typography variant="caption" sx={classes.sponsorRating}>
+              <Typography variant="caption" sx={classes.sponsorRating}>
                 <i className="icon-Star"></i>
-                <span>{sponsor.rating}</span>
-                <span>({sponsor.rating_amount})</span>
-              </Typography> */}
+                <span>{sponsor.avgTotalRating}</span>
+                <span>({sponsor.reviewsCount})</span>
+              </Typography>
             </Box>
           </Box>
           <div>

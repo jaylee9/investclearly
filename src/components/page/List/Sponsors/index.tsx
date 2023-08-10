@@ -26,9 +26,9 @@ interface SponsorsComponentProps {
 }
 
 type FilterArrayKeys = 'ratings' | 'primaryAssetClasses' | 'regionalFocus';
-type FilterCheckedKeys = 'activelyRaising';
+type FilterCheckedKeys = 'activelyRising';
 const filtersLabels = {
-  activelyRaising: 'Actively raising sponsors',
+  activelyRising: 'Actively rising sponsors',
 };
 interface AppliedFilter {
   label: string;
@@ -46,7 +46,7 @@ const SponsorsComponent = ({
     ratings: [],
     primaryAssetClasses: [],
     regionalFocus: [],
-    activelyRaising: false,
+    activelyRising: false,
   };
   const [sponsorsData, setSponsorsData] = useState(sponsorsResponse);
   const [filters, setFilters] = useState<ISponsorFilters>(defaultFilters);
@@ -149,16 +149,25 @@ const SponsorsComponent = ({
     }
   };
   const formattedAppliedFilters = formatFilters(changedFiltersAfterApply);
-  const { isLoading, refetch } = useQuery(
-    ['sponsors', page, orderDirection, searchValue],
-    () =>
-      getAllSponsors({
+
+  const payload = Object.entries(changedFilters).length
+    ? {
+        page,
+        pageSize: 10,
+        orderDirection,
+        search: searchValue,
+        ...changedFilters,
+      }
+    : {
         page,
         pageSize: 10,
         orderDirection,
         search: searchValue,
         ...dirtyFilters,
-      }),
+      };
+  const { isLoading, refetch } = useQuery(
+    ['sponsors', page, orderDirection, searchValue],
+    () => getAllSponsors(payload),
     {
       onSuccess: data => {
         setSponsorsData(data);
@@ -201,9 +210,9 @@ const SponsorsComponent = ({
           <Box>
             <CustomCheckbox
               onChange={e =>
-                setFilters({ ...filters, activelyRaising: e.target.checked })
+                setFilters({ ...filters, activelyRising: e.target.checked })
               }
-              checked={filters.activelyRaising}
+              checked={filters.activelyRising}
               label="Actively rising"
             />
           </Box>
