@@ -64,3 +64,13 @@ export const getAllDeals = async (
     throw error;
   }
 };
+
+export const getDeal = async ({ id }: { id: string }) => {
+  try {
+    const response: DealInterface = await api.get(`deals/${id}`).json();
+    return response;
+  } catch (error) {
+    console.error('Error fetching deal', error);
+    throw error;
+  }
+};

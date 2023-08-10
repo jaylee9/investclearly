@@ -4,6 +4,7 @@ import theme from '@/config/theme';
 import Image from 'next/image';
 import { useDealCardStyles } from './styles';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
+import Link from 'next/link';
 
 const MOCK_IMAGE_URL =
   'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
@@ -73,9 +74,11 @@ const DealCard = ({
                 Promoted
               </Typography>
             )} */}
-            <Typography variant="h5" fontWeight={600}>
-              {deal.dealTitle}
-            </Typography>
+            <Link href={`/deals/${deal.id}`}>
+              <Typography variant="h5" fontWeight={600}>
+                {deal.dealTitle}
+              </Typography>
+            </Link>
             <Box sx={classes.sponsorInfo}>
               <Typography variant="caption">{deal.dealSponsor}</Typography>
               {/* <Typography variant="caption" sx={classes.sponsorRating}>
