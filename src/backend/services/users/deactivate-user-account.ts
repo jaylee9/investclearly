@@ -3,7 +3,7 @@ import * as bcrypt from 'bcryptjs';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { User } from '../../entities/user.entity';
 import { deleteFile } from '../files/delete-file';
-import { DeleteUserConstants } from '@/backend/constants/delete-user-constants';
+import { DeleteUserConstants } from '../../../backend/constants/delete-user-constants';
 
 export const deactivateUserAccount = async (user: User) => {
   const connection = await getDatabaseConnection();
