@@ -6,14 +6,21 @@ import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 
 const DealsBlock = () => {
   const classes = useDealsBlockStyles();
-  const regionArray = Object.values(Regions).map(value => ({
-    value: value,
-    href: value.replace(/\s+/g, '_').toLowerCase(),
-  }));
+  const regionArray = Object.values(Regions).map(value => {
+    const href = `/list?type=deals&regions=${value
+      .replace(/[\s']/g, '_')
+      .toLowerCase()}`;
+    return {
+      value,
+      href,
+    };
+  });
   const assetClassesArray = [
     ...Object.keys(AssetClasses).map(key => {
       const value = AssetClasses[key as keyof typeof AssetClasses];
-      const href = value.replace(/[\s']/g, '_').toLowerCase();
+      const href = `/list?type=deals&asset_class=${value
+        .replace(/[\s']/g, '_')
+        .toLowerCase()}`;
       return { value, href };
     }),
   ];

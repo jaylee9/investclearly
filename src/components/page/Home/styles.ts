@@ -126,6 +126,12 @@ export const useGlobalSearchStyles = () => {
         },
       },
     },
+    noResults: {
+      color: theme.palette.text.secondary,
+    },
+    baseSearchInput: {
+      marginBottom: '8px',
+    },
   };
 };
 

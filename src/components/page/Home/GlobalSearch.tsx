@@ -35,7 +35,9 @@ const GlobalSearch = ({
   const { search } = router.query;
   const [isOpenGlobalSearch, setIsOpenGlobalSearch] = useState(false);
   const [value, setValue] = useState(search || '');
-  const [globalSearchValue, setGlobalSearchValue] = useState('');
+  const [globalSearchValue, setGlobalSearchValue] = useState(
+    (search as string) || ''
+  );
   const [data, setData] = useState<GlobalSearchResponse>(
     searchResponse as GlobalSearchResponse
   );
@@ -121,6 +123,7 @@ const GlobalSearch = ({
           onChange={handleChangeValue}
           onClear={handleClearInput}
           value={value}
+          customStyles={classes.baseSearchInput}
         />
       )}
       {isOpenGlobalSearch && (
@@ -232,8 +235,8 @@ const GlobalSearch = ({
                           sx={classes.sponsorRating}
                         >
                           <i className="icon-Star"></i>
-                          <span>4.9</span>
-                          <span>(115)</span>
+                          <span>{sponsor.avgTotalRating}</span>
+                          <span>({sponsor.reviewsCount})</span>
                         </Typography>
                         <Typography
                           variant="caption"
@@ -248,17 +251,24 @@ const GlobalSearch = ({
                 </Box>
               </Box>
             )}
-            {globalSearchValue && !isLoading && (
-              <Fade in={Boolean(globalSearchValue)}>
-                <Link
-                  href={`/list?type=deals&search=${globalSearchValue}`}
-                  onClick={handleShowAllLinkClick}
-                >
-                  <Typography sx={classes.showAllLink} variant="body1">
-                    Show all results for {globalSearchValue}
-                  </Typography>
-                </Link>
-              </Fade>
+            {globalSearchValue &&
+              !isLoading &&
+              (!!data.deals.length || !!data.sponsors.length) && (
+                <Fade in={Boolean(globalSearchValue)}>
+                  <Link
+                    href={`/list?type=deals&search=${globalSearchValue}`}
+                    onClick={handleShowAllLinkClick}
+                  >
+                    <Typography sx={classes.showAllLink} variant="body1">
+                      Show all results for {globalSearchValue}
+                    </Typography>
+                  </Link>
+                </Fade>
+              )}
+            {!data?.deals.length && !data?.sponsors.length && (
+              <Typography variant="caption" sx={classes.noResults}>
+                No results found
+              </Typography>
             )}
           </Box>
         </Fade>
