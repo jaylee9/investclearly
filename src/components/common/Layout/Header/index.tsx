@@ -11,7 +11,7 @@ import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import GlobalSearch, {
   GlobalSearchVariant,
 } from '@/components/page/Home/GlobalSearch';
-import createFilterHref from '@/helpers/createFilterHref';
+import escapeStringForHttpParams from '@/helpers/escapeStringForHttpParams';
 
 const links: TLinks = [
   { href: '/review', label: 'Write a Review' },
@@ -43,7 +43,7 @@ const Header = ({
   const assetClassesArray = [
     ...Object.keys(AssetClasses).map(key => {
       const value = AssetClasses[key as keyof typeof AssetClasses];
-      const linkValue = createFilterHref(value);
+      const linkValue = escapeStringForHttpParams(value);
       const href = `/list?type=deals&asset_class=${linkValue}`;
       return { value, href };
     }),

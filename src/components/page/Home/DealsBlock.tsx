@@ -3,12 +3,12 @@ import Link from 'next/link';
 import { blueTitleStyles, useDealsBlockStyles } from './styles';
 import { Regions } from '@/backend/constants/enums/regions';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
-import createFilterHref from '@/helpers/createFilterHref';
+import escapeStringForHttpParams from '@/helpers/escapeStringForHttpParams';
 
 const DealsBlock = () => {
   const classes = useDealsBlockStyles();
   const regionArray = Object.values(Regions).map(value => {
-    const linkValue = createFilterHref(value);
+    const linkValue = escapeStringForHttpParams(value);
     const href = `/list?type=deals&regions=${linkValue}`;
     return {
       value,
@@ -18,7 +18,7 @@ const DealsBlock = () => {
   const assetClassesArray = [
     ...Object.keys(AssetClasses).map(key => {
       const value = AssetClasses[key as keyof typeof AssetClasses];
-      const linkValue = createFilterHref(value);
+      const linkValue = escapeStringForHttpParams(value);
       const href = `/list?type=deals&asset_class=${linkValue}`;
       return { value, href };
     }),
