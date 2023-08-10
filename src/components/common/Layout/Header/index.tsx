@@ -90,6 +90,7 @@ const Header = ({
                       href={item.href}
                       key={item.value}
                       style={classes.popoverItem}
+                      onClick={() => setIsArrowRotated(false)}
                     >
                       {item.value}
                     </Link>
@@ -100,6 +101,7 @@ const Header = ({
                     <Link
                       href={item.href}
                       key={item.value}
+                      onClick={() => setIsArrowRotated(false)}
                       style={
                         item.value === 'All Deals'
                           ? { ...classes.popoverItem, ...classes.dealsLink }
