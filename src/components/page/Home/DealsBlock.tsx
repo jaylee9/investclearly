@@ -3,13 +3,13 @@ import Link from 'next/link';
 import { blueTitleStyles, useDealsBlockStyles } from './styles';
 import { Regions } from '@/backend/constants/enums/regions';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
+import createFilterHref from '@/helpers/createFilterHref';
 
 const DealsBlock = () => {
   const classes = useDealsBlockStyles();
   const regionArray = Object.values(Regions).map(value => {
-    const href = `/list?type=deals&regions=${value
-      .replace(/[\s']/g, '_')
-      .toLowerCase()}`;
+    const linkValue = createFilterHref(value);
+    const href = `/list?type=deals&regions=${linkValue}`;
     return {
       value,
       href,
@@ -18,9 +18,8 @@ const DealsBlock = () => {
   const assetClassesArray = [
     ...Object.keys(AssetClasses).map(key => {
       const value = AssetClasses[key as keyof typeof AssetClasses];
-      const href = `/list?type=deals&asset_class=${value
-        .replace(/[\s']/g, '_')
-        .toLowerCase()}`;
+      const linkValue = createFilterHref(value);
+      const href = `/list?type=deals&asset_class=${linkValue}`;
       return { value, href };
     }),
   ];
