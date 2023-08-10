@@ -13,6 +13,7 @@ import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import { useDealsComponentStyles } from './styles';
 import ColumnsComponent from '../ColumnsComponent';
 import filterDifferences from '@/helpers/filterDifferences';
+import { Regions } from '@/backend/constants/enums/regions';
 
 const sortOptions = [
   { label: 'Newest Deals', value: 'DESC' },
@@ -96,13 +97,16 @@ const DealsComponent = ({
     },
   };
   const assetClassesArray = Object.values(AssetClasses);
+  const regionsArray = Object.values(Regions);
   const asset_classes = assetClassesArray.filter(
     item =>
       item.replace(/[\s']/g, '_').toLowerCase() === router.query.asset_class
   );
-  const formattedFilters = router.query.asset_class
-    ? { ...defaultFilters, asset_classes }
-    : defaultFilters;
+  const regions = regionsArray.filter(
+    item => item.replace(/[\s']/g, '_').toLowerCase() === router.query.regions
+  );
+  const formattedFilters = { ...defaultFilters, asset_classes, regions };
+  defaultFilters;
   const [filters, setFilters] = useState<IFilters>(formattedFilters);
   const [appliedFilters, setAppliedFilters] =
     useState<IFilters>(formattedFilters);

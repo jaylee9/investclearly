@@ -11,6 +11,7 @@ import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import GlobalSearch, {
   GlobalSearchVariant,
 } from '@/components/page/Home/GlobalSearch';
+import escapeStringForHttpParams from '@/helpers/escapeStringForHttpParams';
 
 const links: TLinks = [
   { href: '/review', label: 'Write a Review' },
@@ -42,9 +43,8 @@ const Header = ({
   const assetClassesArray = [
     ...Object.keys(AssetClasses).map(key => {
       const value = AssetClasses[key as keyof typeof AssetClasses];
-      const href = `/list?type=deals?asset_class=${value
-        .replace(/[\s']/g, '_')
-        .toLowerCase()}`;
+      const linkValue = escapeStringForHttpParams(value);
+      const href = `/list?type=deals&asset_class=${linkValue}`;
       return { value, href };
     }),
     { value: 'All Deals', href: '/list?type=deals' },
@@ -90,6 +90,7 @@ const Header = ({
                       href={item.href}
                       key={item.value}
                       style={classes.popoverItem}
+                      onClick={() => setIsArrowRotated(false)}
                     >
                       {item.value}
                     </Link>
@@ -100,6 +101,7 @@ const Header = ({
                     <Link
                       href={item.href}
                       key={item.value}
+                      onClick={() => setIsArrowRotated(false)}
                       style={
                         item.value === 'All Deals'
                           ? { ...classes.popoverItem, ...classes.dealsLink }
