@@ -12,7 +12,11 @@ export const sendReviewRejectedEmail = async (
 ) => {
   sgMail.setApiKey(MailConfig.sendgridApiKey);
 
-  if (reviewRecord.reviewer && reviewRecord.sponsor) {
+  if (
+    reviewRecord.reviewer &&
+    reviewRecord.sponsor &&
+    reviewRecord.reviewer.reviewWasDeclinedAfterModerationEmail
+  ) {
     const mailData: MailDataRequired = {
       to: { email: reviewRecord.reviewer.email },
       from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },

@@ -22,6 +22,7 @@ export const AuthConstants = {
   unauthorized: 'Unauthorized',
   verifyAccountFirst: 'Please verify account first',
   invalidGoogleToken: 'Invalid google token',
+  emailSuccessfullyChanged: 'Email successfully changed',
   minForRandomSixDigitNumber: 100000,
   maxForRandomSixDigitNumber: 900000,
 };

@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import createHttpError from 'http-errors';
+import { DeepPartial } from 'typeorm';
 import { AuthConstants } from '../../../backend/constants/auth-constants';
 import { apiHandler } from '../../../backend/utils/api-handler';
 import { authMiddleware } from '../../../backend/middleware/auth';
@@ -7,8 +8,7 @@ import { parseForm } from '../../../backend/utils/parse-form';
 import { createReview } from '../../../backend/services/reviews/create-review';
 import { FindAllReviewsInterface } from '../../../backend/services/reviews/interfaces/get-all-reviews.interface';
 import { getAllReviews } from '../../../backend/services/reviews/get-all-reviews';
-import { DeepPartial } from 'typeorm';
-import { Review } from '@/backend/entities/reviews.entity';
+import { Review } from '../../../backend/entities/reviews.entity';
 
 export const config = {
   api: {

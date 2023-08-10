@@ -11,6 +11,10 @@ import {
 import * as bcrypt from 'bcryptjs';
 import { Sponsor } from './sponsors.entity';
 import { Review } from './reviews.entity';
+import { AssetClasses } from '../constants/enums/asset-classes';
+import { Regions } from '../constants/enums/regions';
+import { InvestorStatuses } from '../constants/enums/investor-statuses';
+import { IncomeAndNetWorth } from '../constants/enums/income-and-worth';
 
 @Entity({ name: 'user' })
 export class User {
@@ -38,6 +42,57 @@ export class User {
   @Column({ type: 'varchar', unique: true, nullable: true })
   googleId: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  address: string;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  totalInvestedAmountVisibility: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  yourDealsVisibility: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  weeklyDigestEmail: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  reviewWasPublishedAfterModerationEmail: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  reviewWasDeclinedAfterModerationEmail: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  newDealMathingYourInvestmentPreferencesEmail: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  newDealFromTheSponsorYouSavedEmail: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  newReviewHasBeenSharedToSponsorEmail: boolean;
+
+  @Column({ type: 'enum', enum: InvestorStatuses, nullable: true })
+  investorStatus: string;
+
+  @Column({ type: 'enum', enum: IncomeAndNetWorth, nullable: true })
+  incomeAndNetWorth: string;
+
+  @Column({ type: 'enum', array: true, enum: AssetClasses, nullable: true })
+  assetClasses: AssetClasses[];
+
+  @Column({ type: 'enum', array: true, enum: Regions, nullable: true })
+  regions: Regions[];
+
+  @Column({ type: 'int', nullable: true })
+  minimumInvestmentMin: number;
+
+  @Column({ type: 'int', nullable: true })
+  minimumInvestmentMax: number;
+
+  @Column({ type: 'int', nullable: true })
+  holdPeriodMin: number;
+
+  @Column({ type: 'int', nullable: true })
+  holdPeriodMax: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -51,10 +106,6 @@ export class User {
     }
 
     this.email = this.email.toLowerCase();
-  }
-
-  public comparePassword(attempt: string): Promise<boolean> {
-    return bcrypt.compare(attempt, this.password);
   }
 
   @OneToMany(() => Sponsor, sponsors => sponsors.user)
