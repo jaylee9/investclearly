@@ -22,8 +22,9 @@ const deactivateAccount = async (
   );
   if (user) {
     const token = getCookies({ req: request, res: response });
-    await deactivateUserAccount(user);
     validateRequest({ token: token.accessToken }, signOutSchema);
+
+    await deactivateUserAccount(user);
     deleteCookie('accessToken', { req: authRequest, res: response });
     response
       .status(200)
