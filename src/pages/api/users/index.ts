@@ -6,7 +6,7 @@ import { authMiddleware } from '../../../backend/middleware/auth';
 import { validateRequest } from '../../../backend/utils/yup';
 import { ValidationAuthConstants } from '../../../backend/constants/validation/auth-constants';
 import { deactivateUserAccount } from '../../../backend/services/users/deactivate-user-account';
-import { UserConstants } from '@/backend/constants/users-constants';
+import { UserConstants } from '../../../backend/constants/users-constants';
 
 const signOutSchema = Yup.object().shape({
   token: Yup.string().required(ValidationAuthConstants.tokenRequired),

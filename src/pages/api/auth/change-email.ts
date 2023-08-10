@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { apiHandler } from '../../../backend/utils/api-handler';
 import { AuthConstants } from '../../../backend/constants/auth-constants';
 import { authMiddleware } from '../../../backend/middleware/auth';
-import { ChangeEmailInterface } from '@/backend/services/auth/interfaces/change-email.interface';
-import { changeUserEmail } from '@/backend/services/auth/change-user-email';
+import { ChangeEmailInterface } from '../../../backend/services/auth/interfaces/change-email.interface';
+import { changeUserEmail } from '../../../backend/services/auth/change-user-email';
 
 const changeEmail = async (
   request: NextApiRequest,
