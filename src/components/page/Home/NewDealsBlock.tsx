@@ -25,7 +25,7 @@ const NewDealsBlock = ({ deals }: NewDealsBlockProps) => {
           </Box>
         ))}
       </Box>
-      <Link href="/deals">
+      <Link href="/list?type=deals">
         <Typography variant="body1" sx={viewAllLink}>
           View all deals
         </Typography>
