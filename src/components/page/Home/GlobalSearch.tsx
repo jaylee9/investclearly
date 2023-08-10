@@ -34,7 +34,7 @@ const GlobalSearch = ({
   const router = useRouter();
   const { search } = router.query;
   const [isOpenGlobalSearch, setIsOpenGlobalSearch] = useState(false);
-  const [value, setValue] = useState(search);
+  const [value, setValue] = useState(search || '');
   const [globalSearchValue, setGlobalSearchValue] = useState('');
   const [data, setData] = useState<GlobalSearchResponse>(
     searchResponse as GlobalSearchResponse
@@ -81,6 +81,9 @@ const GlobalSearch = ({
   const handleClearInput = () => {
     setGlobalSearchValue('');
   };
+  const searchLink = `/list?type=${
+    data?.deals?.length ? 'deals' : 'sponsors'
+  }&search=${globalSearchValue}`;
   useOnClickOutside(ref, handleClose);
   return (
     <Box ref={ref} onClick={handleOpen} sx={classes.root}>
@@ -94,15 +97,17 @@ const GlobalSearch = ({
           customStyles={classes.searchInput}
           height="large"
           endComponent={
-            <Button
-              customStyles={{
-                boxSizing: 'border-box',
-                padding: '12px 40px !important',
-                height: '48px !important',
-              }}
-            >
-              Search
-            </Button>
+            <Link href={searchLink}>
+              <Button
+                customStyles={{
+                  boxSizing: 'border-box',
+                  padding: '12px 40px !important',
+                  height: '48px !important',
+                }}
+              >
+                Search
+              </Button>
+            </Link>
           }
           onChange={handleChange}
         />
