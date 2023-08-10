@@ -4,21 +4,30 @@ const useDealPageStyles = () => {
   const { palette } = theme;
   return {
     root: {
-      padding: '32px 48px',
+      padding: '0px 48px',
       display: 'flex',
       gap: '16px',
     },
+    imageWrapper: {
+      marginBottom: '40px',
+      padding: '0px 48px',
+      '& img': {
+        width: '100%',
+        objectFit: 'cover',
+      },
+    },
     leftColumn: {
-      width: '70%',
+      width: '80%',
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
     },
     rightColumn: {
-      width: '30%',
+      width: '20%',
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
+      marginTop: '32px',
     },
     info: {
       width: '100%',
@@ -109,6 +118,64 @@ const useDealPageStyles = () => {
       },
       '& p': {
         fontWeight: 500,
+      },
+    },
+    textWithButton: {
+      padding: '24px 28px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+      background: palette.primary.contrastText,
+      borderRadius: '12px',
+      border: `1px solid ${palette.background.paper}`,
+      '& p': {
+        fontWeight: 600,
+      },
+    },
+    sponsor: {
+      padding: '24px 28px',
+      display: 'flex',
+      gap: '16px',
+      background: palette.common.white,
+      borderRadius: '12px',
+      '& img': {
+        borderRadius: '12px',
+      },
+      '& h5': {
+        fontWeight: 600,
+        marginBottom: '4px',
+      },
+    },
+    sponsorInfo: {
+      padding: '24px 28px',
+      background: palette.common.white,
+      borderRadius: '12px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '20px',
+      '& span': {
+        color: palette.text.disabled,
+      },
+      '& p': {
+        fontWeight: 500,
+      },
+    },
+    sponsorInfoRow: {
+      display: 'flex',
+      gap: '16px',
+    },
+    sponsorRating: {
+      color: palette.secondary.main,
+      display: 'flex',
+      alignItems: 'center',
+      gap: '4px',
+      fontWeight: 600,
+      '& .icon-Star': {
+        fontSize: '16px',
+      },
+      '& span': {
+        fontWeight: 400,
+        color: palette.text.secondary,
       },
     },
   };
