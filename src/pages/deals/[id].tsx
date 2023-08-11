@@ -4,6 +4,7 @@ import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.in
 import Button from '@/components/common/Button';
 import CustomTabs from '@/components/common/CustomTabs';
 import Layout from '@/components/common/Layout';
+import ReviewCard from '@/components/common/ReviewCard';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealPageStyles from '@/pages_styles/dealPageStyles';
 import { Box, Typography } from '@mui/material';
@@ -29,6 +30,7 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('overview');
   const overviewRef = useRef<HTMLDivElement>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
+  const [reviewsData] = useState(reviews);
 
   const tabs = [
     {
@@ -167,7 +169,23 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                 </Box>
               </Box>
             </Box>
-            <Box ref={reviewsRef}></Box>
+            <Box ref={reviewsRef} sx={classes.reviewsWrapper}>
+              <Box sx={classes.reviewsWrapperHeader}>
+                <Box sx={classes.reviewsWrapperTitle}>
+                  <Typography variant="h3">Reviews</Typography>
+                  <Typography variant="body1">{reviewsData?.length}</Typography>
+                </Box>
+                <Button>Write a review</Button>
+              </Box>
+              <Box sx={classes.reviewsContent}>
+                {reviewsData.map(review => (
+                  <ReviewCard review={review} key={review.id} />
+                ))}
+              </Box>
+              <Typography variant="body1" sx={classes.showMoreReviews}>
+                Show more reviews <i className="icon-Caret-down"></i>
+              </Typography>
+            </Box>
           </Box>
           <Box sx={classes.rightColumn}>
             <Box>

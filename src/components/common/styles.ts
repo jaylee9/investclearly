@@ -1,7 +1,7 @@
 import theme from '@/config/theme';
 import { SelectVariant } from './Select';
 
-const { palette, typography } = theme;
+const { palette, typography, customShadows } = theme;
 
 interface UseInputStylesProps {
   variant: 'filled' | 'outlined';
@@ -697,6 +697,87 @@ export const useMultiButtonsStyles = () => {
     label: {
       fontWeight: 600,
       marginBottom: '8px',
+    },
+  };
+};
+
+export const useReviewCardStyles = () => {
+  return {
+    root: {
+      padding: '24px 28px',
+      border: `1px solid ${palette.background.paper}`,
+      borderRadius: '8px',
+      boxShadow: customShadows.base,
+    },
+    reviewHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginBottom: '20px',
+    },
+    reviewHeaderInfo: {
+      display: 'flex',
+      gap: '12px',
+    },
+    reviewerAvatar: {
+      width: '48px',
+      height: '48px',
+      borderRadius: '100px',
+      background: palette.common.black,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      '& p': {
+        color: palette.common.white,
+        fontWeight: 500,
+      },
+    },
+    reviewHeaderMainInfo: {
+      '& h5': {
+        fontWeight: 600,
+      },
+      '& span': {
+        color: palette.text.disabled,
+      },
+    },
+    defaultIndicatior: {
+      display: 'flex',
+      gap: '6px',
+      alignItems: 'center',
+      padding: '0px 12px',
+      borderRadius: '16px',
+      height: '26px',
+      '& i': {
+        fontSize: '16px',
+      },
+    },
+    verifiedIndicator: {
+      background: palette.success.contrastText,
+      color: palette.success.main,
+    },
+    unverifiedIndicator: {
+      background: palette.error.contrastText,
+      color: palette.error.main,
+    },
+    ratingWrapper: {
+      display: 'flex',
+      gap: '4px',
+      alignItems: 'center',
+      marginBottom: '4px',
+      '& p': {
+        fontWeight: 600,
+        color: palette.secondary.main,
+      },
+    },
+    fullComment: {
+      color: palette.text.secondary,
+      maxHeight: '80px',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      marginBottom: '16px',
+    },
+    readFullLink: {
+      fontWeight: 600,
+      color: palette.primary.light,
     },
   };
 };

@@ -177,6 +177,50 @@ const useDealPageStyles = () => {
         color: palette.text.secondary,
       },
     },
+    reviewsWrapper: {
+      padding: '40px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+      background: palette.common.white,
+      borderRadius: '12px',
+    },
+    reviewsWrapperHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    reviewsWrapperTitle: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      '& h3': {
+        fontWeight: 600,
+      },
+      '& p': {
+        padding: '2px 8px',
+        background: palette.background.default,
+        borderRadius: '20px',
+        color: palette.text.secondary,
+      },
+    },
+    reviewsContent: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px',
+      marginBottom: '16px',
+    },
+    showMoreReviews: {
+      cursor: 'pointer',
+      color: palette.primary.light,
+      display: 'flex',
+      alignItems: 'center',
+      fontWeight: 600,
+      gap: '8px',
+      '& i': {
+        fontSize: '24px',
+      },
+    },
   };
 };
 
