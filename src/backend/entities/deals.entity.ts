@@ -12,12 +12,13 @@ import { PolymorphicParent } from 'typeorm-polymorphic';
 import { DealStatuses } from '../constants/enums/deal-statuses';
 import { AssetClasses } from '../constants/enums/asset-classes';
 import { InvestmentStructures } from '../constants/enums/investment-structures';
-import { HoldPeriods } from '../constants/enums/hold-periods';
 import { Regions } from '../constants/enums/regions';
 import { Exemptions } from '../constants/enums/exemptions';
 import { Sponsor } from './sponsors.entity';
 import { Attachment } from './attachments.entity';
 import { Review } from './reviews.entity';
+import { SecIndustries } from '../constants/enums/sec-industries';
+import { Regulations } from '../constants/enums/regulations';
 
 @Entity({ name: 'deals' })
 export class Deal {
@@ -33,8 +34,8 @@ export class Deal {
   @Column({ type: 'varchar', nullable: true })
   dealAddress: string;
 
-  @Column({ type: 'enum', enum: Regions, nullable: true })
-  region: string;
+  @Column({ type: 'enum', array: true, enum: Regions, nullable: true })
+  regions: Regions[];
 
   @Column({ type: 'enum', enum: DealStatuses, nullable: true })
   status: string;
@@ -51,8 +52,13 @@ export class Deal {
   @Column({ type: 'int', nullable: true })
   cashOnCash: number;
 
-  @Column({ type: 'enum', enum: InvestmentStructures, nullable: true })
-  investmentStructure: string;
+  @Column({
+    type: 'enum',
+    array: true,
+    enum: InvestmentStructures,
+    nullable: true,
+  })
+  investmentStructures: InvestmentStructures[];
 
   @Column({ type: 'int', nullable: true })
   fees: number;
@@ -63,8 +69,8 @@ export class Deal {
   @Column({ type: 'int', nullable: true })
   equityMultiple: number;
 
-  @Column({ type: 'enum', enum: HoldPeriods, nullable: true })
-  holdPeriod: string;
+  @Column({ type: 'int', nullable: true })
+  holdPeriod: number;
 
   @Column({ type: 'int', nullable: true })
   targetIRR: number;
@@ -80,6 +86,15 @@ export class Deal {
 
   @Column({ type: 'enum', enum: Exemptions, nullable: true })
   exemption: string;
+
+  @Column({ type: 'enum', enum: SecIndustries, nullable: true })
+  secIndustry: string;
+
+  @Column({ type: 'date', nullable: true })
+  closeDate: Date;
+
+  @Column({ type: 'enum', enum: Regulations, nullable: true })
+  regulation: string;
 
   reviewsCount: number;
 
