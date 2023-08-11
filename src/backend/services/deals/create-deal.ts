@@ -6,15 +6,26 @@ import { getDealById } from './get-deal-by-id';
 import { CreateDealInterface } from './interfaces/create-deal.interface';
 import { DealInterface } from './interfaces/deal.interface';
 import { createAttachment } from '../attachments/create-attachment';
+import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
 
 export const createDeal = async (
   data: CreateDealInterface,
   files: Express.Multer.File[]
 ) => {
   const connection = await getDatabaseConnection();
+  const { investmentStructures, regions, ...createDealData } = data;
 
-  const deal = connection.manager.create(Deal, data) as DealInterface;
+  const transformedData = transformObjectKeysToArrays({
+    investmentStructures,
+    regions,
+  });
+
+  const deal = connection.manager.create(Deal, {
+    ...transformedData,
+    ...createDealData,
+  }) as DealInterface;
   await connection.manager.save(deal);
+
   const dealRecord = await getDealById(deal.id);
 
   if (files.length) {

@@ -16,14 +16,29 @@ export const update = async (
   files: Express.Multer.File[]
 ) => {
   const connection = await getDatabaseConnection();
-  const { attachmentsIdsToDelete, ...updateDealData } = fields;
+  const {
+    attachmentsIdsToDelete,
+    investmentStructures,
+    regions,
+    ...updateDealData
+  } = fields;
 
   const transformedData = transformObjectKeysToArrays({
     attachmentsIdsToDelete,
+    investmentStructures,
+    regions,
   });
 
   await getDealById(id);
-  await connection.manager.update(Deal, { id }, updateDealData);
+  await connection.manager.update(
+    Deal,
+    { id },
+    {
+      ...updateDealData,
+      investmentStructures: transformedData.transformedData,
+      regions: transformedData.regions,
+    }
+  );
 
   if (files.length) {
     for (const file of files) {

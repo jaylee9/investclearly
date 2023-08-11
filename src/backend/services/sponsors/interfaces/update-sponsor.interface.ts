@@ -11,21 +11,23 @@ export interface UpdateSponsorInterface {
   website?: string;
   description?: string;
   aum?: number;
-  specialty?: string;
-  investmentStructure?: string;
+  specialties?: string;
+  investmentStructures?: string;
   facebookLink?: string;
   linkedInLink?: string;
   twitterLink?: string;
   instagramLink?: string;
-  exemption?: string;
+  exemptions?: string;
   workForThisCompany?: boolean;
-  region?: string;
+  regions?: string;
   cashOnCash?: number;
   equityMultiple?: number;
-  holdPeriod?: string;
+  holdPeriod?: number;
   targetIRR?: number;
   actualIRR?: number;
   fees?: number;
+  regulations?: string;
+  interests?: string;
   createdAt: Date;
   updatedAt: Date;
 }

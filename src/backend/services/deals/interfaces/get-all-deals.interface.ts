@@ -4,6 +4,7 @@ import { Regions } from '../../../constants/enums/regions';
 import { DealStatuses } from '../../../constants/enums/deal-statuses';
 import { InvestmentStructures } from '../../../constants/enums/investment-structures';
 import { Exemptions } from '../../../constants/enums/exemptions';
+import { Regulations } from '../../../../backend/constants/enums/regulations';
 
 export interface FindAllDealsInterface {
   pageSize?: number;
@@ -13,8 +14,10 @@ export interface FindAllDealsInterface {
   statuses?: DealStatuses[] | DealStatuses;
   regions?: Regions[] | Regions;
   investmentStructures?: InvestmentStructures[] | InvestmentStructures;
-  IRRMin?: number;
-  IRRMax?: number;
+  targetIRRMin?: number;
+  targetIRRMax?: number;
+  actualIRRMin?: number;
+  actualIRRMax?: number;
   investmentMinValue?: number;
   investmentMaxValue?: number;
   exemptions?: Exemptions[] | Exemptions;
@@ -23,6 +26,7 @@ export interface FindAllDealsInterface {
   minRating?: number;
   maxRating?: number;
   sponsorId?: number;
+  regulations?: Regulations[] | Regulations;
   search?: string;
   limit?: number;
 }

@@ -21,8 +21,10 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     statuses = [],
     regions = [],
     investmentStructures = [],
-    IRRMin,
-    IRRMax,
+    targetIRRMin,
+    targetIRRMax,
+    actualIRRMin,
+    actualIRRMax,
     investmentMinValue,
     investmentMaxValue,
     exemptions = [],
@@ -33,6 +35,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     minRating = ReviewConstants.minAndMaxRatings.minRating,
     maxRating = ReviewConstants.minAndMaxRatings.maxRating,
     sponsorId,
+    regulations = [],
   } = params;
 
   const connection = await getDatabaseConnection();
@@ -102,22 +105,29 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   }
 
   if (regions.length) {
-    searchQuery = searchQuery.andWhere('deals.region IN (:...regions)', {
+    searchQuery = searchQuery.andWhere('deals.regions && :regions', {
       regions,
     });
   }
 
   if (investmentStructures.length) {
     searchQuery = searchQuery.andWhere(
-      'deals.investmentStructure IN (:...investmentStructures)',
+      'deals.investmentStructures && :investmentStructures',
       { investmentStructures }
     );
   }
 
-  if (IRRMin && IRRMax) {
+  if (targetIRRMin && targetIRRMax) {
     searchQuery = searchQuery.andWhere(
-      'deals.targetIRR BETWEEN :IRRMin AND :IRRMax',
-      { IRRMin, IRRMax }
+      'deals.targetIRR BETWEEN :targetIRRMin AND :targetIRRMax',
+      { targetIRRMin, targetIRRMax }
+    );
+  }
+
+  if (actualIRRMin && actualIRRMax) {
+    searchQuery = searchQuery.andWhere(
+      'deals.actualIRR BETWEEN :actualIRRMin AND :actualIRRMax',
+      { actualIRRMin, actualIRRMax }
     );
   }
 
@@ -132,6 +142,15 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     searchQuery = searchQuery.andWhere('deals.exemption IN (:...exemptions)', {
       exemptions,
     });
+  }
+
+  if (regulations.length) {
+    searchQuery = searchQuery.andWhere(
+      'deals.regulation IN (:...regulations)',
+      {
+        regulations,
+      }
+    );
   }
 
   if (investmentMinValue && investmentMaxValue) {
@@ -180,6 +199,8 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   }
 
   searchQuery = searchQuery.orderBy('deals.createdAt', orderDirection);
+  const amountDeals = (await searchQuery.getMany()).length;
+
   searchQuery = pagination(pageSize, page, searchQuery);
 
   const averageRatingData = await averageRatingQuery.getRawMany();
@@ -199,11 +220,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     avgTotalRating: activelyRisingMap[deal.id]?.avgTotalRating,
   }));
 
-  const paginationData = await buildPaginationInfo(
-    dealsWithCounters.length,
-    page,
-    pageSize
-  );
+  const paginationData = await buildPaginationInfo(amountDeals, page, pageSize);
 
   return {
     deals: await Promise.all(dealsWithCounters.map(dealMapper)),

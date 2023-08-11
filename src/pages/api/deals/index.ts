@@ -12,6 +12,7 @@ const getDeals = async (request: NextApiRequest, response: NextApiResponse) => {
     regions,
     investmentStructures,
     exemptions,
+    regulations,
     ...getDealsData
   } = params;
 
@@ -21,6 +22,7 @@ const getDeals = async (request: NextApiRequest, response: NextApiResponse) => {
     regions,
     investmentStructures,
     exemptions,
+    regulations,
   });
 
   const deals = await getAllDeals({ ...getDealsData, ...transformedData });
