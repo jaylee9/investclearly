@@ -4,7 +4,7 @@ const useDealPageStyles = () => {
   const { palette } = theme;
   return {
     root: {
-      padding: '0px 48px',
+      padding: '0px 48px 32px',
       display: 'flex',
       gap: '16px',
     },
@@ -17,17 +17,16 @@ const useDealPageStyles = () => {
       },
     },
     leftColumn: {
-      width: '80%',
+      width: '78%',
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
     },
     rightColumn: {
-      width: '20%',
+      width: '22%',
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
-      marginTop: '32px',
     },
     info: {
       width: '100%',
