@@ -34,7 +34,11 @@ const SponsorCard = ({
       <Typography variant="h5" fontWeight={600}>
         {sponsor.legalName}
       </Typography>
-      <Typography variant="body1">{sponsor.region}</Typography>
+      <Typography variant="body1">
+        {Array.isArray(sponsor.regions)
+          ? sponsor.regions.join(', ')
+          : sponsor.regions}
+      </Typography>
       <Typography variant="body1" sx={classes.baseRating}>
         <i className="icon-Star"></i> {sponsor.avgTotalRating}
         <span> ({sponsor.reviewsCount})</span>
@@ -70,11 +74,15 @@ const SponsorCard = ({
           <Box sx={classes.sponsorPropertiesColumn}>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Location"></i>
-              {sponsor.region}
+              {Array.isArray(sponsor.regions)
+                ? sponsor.regions.join(', ')
+                : sponsor.regions}
             </Typography>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Status"></i>
-              {sponsor.specialty}
+              {Array.isArray(sponsor.specialties)
+                ? sponsor.specialties.join(', ')
+                : sponsor.specialties}
             </Typography>
           </Box>
           <Box sx={classes.sponsorPropertiesColumn}>

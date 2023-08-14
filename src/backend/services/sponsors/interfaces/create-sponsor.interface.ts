@@ -10,19 +10,21 @@ export interface CreateSponsorInterface {
   website?: string | null;
   description?: string | null;
   aum?: number | null;
-  specialty?: string | null;
-  investmentStructure?: string | null;
+  specialties?: string | string[];
+  investmentStructures?: string | string[];
   facebookLink?: string | null;
   linkedInLink?: string | null;
   twitterLink?: string | null;
   instagramLink?: string | null;
-  exemption?: string | null;
+  exemptions?: string | string[];
   workForThisCompany?: boolean | null;
-  region?: string | null;
+  regions?: string | string[];
   cashOnCash?: number | null;
   equityMultiple?: number | null;
-  holdPeriod?: string | null;
+  holdPeriod?: number | null;
   targetIRR?: number | null;
   actualIRR?: number | null;
   fees?: number | null;
+  regulations?: string | string[];
+  interests?: string | string[];
 }

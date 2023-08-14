@@ -9,26 +9,39 @@ import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses
 export const getSponsorById = async (id: number) => {
   const connection = await getDatabaseConnection();
 
-  const sponsor = await connection.manager.findOne(Sponsor, {
-    where: { id, reviews: { status: ReviewStatuses.published } },
-    relations: ['user', 'deals', 'reviews'],
-  });
+  const sponsor = await connection.manager
+    .createQueryBuilder(Sponsor, 'sponsor')
+    .where('sponsor.id = :id', { id })
+    .leftJoinAndSelect('sponsor.user', 'user')
+    .leftJoinAndSelect('sponsor.deals', 'deals')
+    .leftJoinAndSelect(
+      'sponsor.reviews',
+      'reviews',
+      'reviews.status = :reviewStatus'
+    )
+    .leftJoinAndSelect('reviews.reviewer', 'reviewer')
+    .setParameter('reviewStatus', ReviewStatuses.published)
+    .getOne();
 
   if (!sponsor) {
     throw new createHttpError.NotFound(SponsorConstants.sponsorNotFound);
   }
 
-  sponsor.dealsCount = sponsor.deals.length;
+  if (sponsor.deals?.length) {
+    sponsor.dealsCount = sponsor.deals.length;
+  }
 
-  const publishedReviews = _.filter(sponsor.reviews, {
-    status: ReviewStatuses.published,
-  });
-  const publishedReviewsCount = publishedReviews.length;
-  const totalRating = _.sumBy(publishedReviews, 'overallRating');
+  if (sponsor.reviews?.length) {
+    const publishedReviews = _.filter(sponsor.reviews, {
+      status: ReviewStatuses.published,
+    });
+    const publishedReviewsCount = publishedReviews.length;
+    const totalRating = _.sumBy(publishedReviews, 'overallRating');
 
-  sponsor.reviewsCount = publishedReviewsCount;
-  sponsor.avgTotalRating =
-    publishedReviewsCount > 0 ? totalRating / publishedReviewsCount : 0;
+    sponsor.reviewsCount = publishedReviewsCount;
+    sponsor.avgTotalRating =
+      publishedReviewsCount > 0 ? totalRating / publishedReviewsCount : 0;
+  }
 
   return sponsorMapper(sponsor);
 };

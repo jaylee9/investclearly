@@ -49,7 +49,7 @@ const DealCard = ({
           {deal.dealTitle}
         </Typography>
         <Typography variant="body1" sx={classes.baseDealLocation}>
-          {deal.region}
+          {Array.isArray(deal.regions) ? deal.regions.join(', ') : deal.regions}
         </Typography>
         <Typography
           variant="body1"
@@ -81,11 +81,11 @@ const DealCard = ({
             </Link>
             <Box sx={classes.sponsorInfo}>
               <Typography variant="caption">{deal.dealSponsor}</Typography>
-              {/* <Typography variant="caption" sx={classes.sponsorRating}>
+              <Typography variant="caption" sx={classes.sponsorRating}>
                 <i className="icon-Star"></i>
-                <span>{deal.rating}</span>
-                <span>({deal.rating_amount})</span>
-              </Typography> */}
+                <span>{deal.avgTotalRating}</span>
+                <span>({deal.reviewsCount})</span>
+              </Typography>
             </Box>
           </Box>
           <div>
@@ -96,7 +96,9 @@ const DealCard = ({
           <Box sx={classes.sponsorPropertiesColumn}>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Location"></i>
-              {deal.region}
+              {Array.isArray(deal.regions)
+                ? deal.regions.join(', ')
+                : deal.regions}
             </Typography>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Status"></i>

@@ -21,7 +21,7 @@ export const createReview = async (
   await connection.manager.save(review);
   const reviewRecord = await getReviewById(review.id);
 
-  if (files.length) {
+  if (files?.length) {
     for (const file of files) {
       const fileUrl = await uploadFile(file, TargetTypesConstants.reviewProofs);
       await createAttachment(

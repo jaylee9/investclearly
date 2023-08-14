@@ -66,25 +66,22 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     )
     .groupBy('sponsors.id, deals.id');
 
-  if (primaryAssetClasses.length) {
+  if (primaryAssetClasses?.length) {
     searchQuery = searchQuery.where(
-      'sponsors.specialty IN (:...primaryAssetClasses)',
+      'sponsors.specialties && :primaryAssetClasses',
       {
         primaryAssetClasses,
       }
     );
   }
 
-  if (regionalFocus.length) {
-    searchQuery = searchQuery.andWhere(
-      'sponsors.region IN (:...regionalFocus)',
-      {
-        regionalFocus,
-      }
-    );
+  if (regionalFocus?.length) {
+    searchQuery = searchQuery.andWhere('sponsors.regions && :regionalFocus', {
+      regionalFocus,
+    });
   }
 
-  if (activelyRising === true) {
+  if (activelyRising === 'true') {
     searchQuery = searchQuery.andWhere('deals.status= :status', {
       status: DealStatuses.open,
     });
@@ -113,6 +110,8 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
   }
 
   searchQuery = searchQuery.orderBy('sponsors.createdAt', orderDirection);
+  const amountSponsors = (await searchQuery.getMany()).length;
+
   searchQuery = pagination(pageSize, page, searchQuery);
 
   const sponsors = await searchQuery.getMany();
@@ -137,7 +136,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
   }));
 
   const paginationData = await buildPaginationInfo(
-    sponsorsWithActivelyRisingAndCounters.length,
+    amountSponsors,
     page,
     pageSize
   );

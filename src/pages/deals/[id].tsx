@@ -149,19 +149,23 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                     </Box>
                     <Box>
                       <Typography variant="caption">Regulation</Typography>
-                      {/* mock data, add after back-end implementation */}
-                      <Typography variant="body1">D</Typography>
+                      <Typography variant="body1">{deal.regulation}</Typography>
                     </Box>
                     <Box>
                       <Typography variant="caption">Region</Typography>
-                      <Typography variant="body1">{deal.region}</Typography>
+                      <Typography variant="body1">
+                        {Array.isArray(deal.regions)
+                          ? deal.regions.join(', ')
+                          : deal.regions}
+                      </Typography>
                     </Box>
                   </Box>
                   <Box sx={classes.overviewDetailsColumn}>
                     <Box>
                       <Typography variant="caption">SEC Industry</Typography>
-                      {/* mock data, add after back-end implementation */}
-                      <Typography variant="body1">Industry 1</Typography>
+                      <Typography variant="body1">
+                        {deal.secIndustry}
+                      </Typography>
                     </Box>
                     <Box>
                       <Typography variant="caption">Exemption</Typography>
@@ -253,7 +257,9 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                     <Box>
                       <Typography variant="caption">Investment Type</Typography>
                       <Typography variant="body1">
-                        {deal.sponsor.investmentStructure}
+                        {Array.isArray(deal.sponsor.investmentStructures)
+                          ? deal.sponsor.investmentStructures.join(', ')
+                          : deal.sponsor.investmentStructures}
                       </Typography>
                     </Box>
                     <Box>

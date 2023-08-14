@@ -103,8 +103,8 @@ const SponsorsFilters = ({
         </Box>
       </CustomAccordion>
       <CustomAccordion label="Asset Class">
-        <Box sx={classes.accordionContent}>
-          <Box sx={classes.assetClassesWrapper}>
+        <Box>
+          <Box sx={classes.accordionContent}>
             {assetClassesToShow.map(assetClass => (
               <CustomCheckbox
                 customStyles={classes.ratingCheckbox}
@@ -133,19 +133,15 @@ const SponsorsFilters = ({
       </CustomAccordion>
       <CustomAccordion label="Region">
         <Box sx={classes.accordionContent}>
-          <Box sx={classes.assetClassesWrapper}>
-            {Object.values(Regions).map(region => (
-              <CustomCheckbox
-                customStyles={classes.ratingCheckbox}
-                key={region}
-                onChange={() =>
-                  handleStringArrayChange('regionalFocus', region)
-                }
-                checked={filters.regionalFocus?.includes(region)}
-                label={region}
-              />
-            ))}
-          </Box>
+          {Object.values(Regions).map(region => (
+            <CustomCheckbox
+              customStyles={classes.ratingCheckbox}
+              key={region}
+              onChange={() => handleStringArrayChange('regionalFocus', region)}
+              checked={filters.regionalFocus?.includes(region)}
+              label={region}
+            />
+          ))}
         </Box>
       </CustomAccordion>
       <Box sx={classes.buttonWrapper}>

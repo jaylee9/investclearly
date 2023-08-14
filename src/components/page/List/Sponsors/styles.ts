@@ -49,10 +49,6 @@ export const useSponsorComponentStyles = () => {
 
 export const useSponsorsFiltersStyles = () => {
   return {
-    accordionContent: {
-      display: 'flex',
-      flexDirection: 'column',
-    },
     starsWrapper: {
       display: 'flex',
       gap: '4px',
@@ -60,7 +56,7 @@ export const useSponsorsFiltersStyles = () => {
     ratingCheckbox: {
       padding: '4px 0px',
     },
-    assetClassesWrapper: {
+    accordionContent: {
       display: 'flex',
       flexDirection: 'column',
       gap: '4px',

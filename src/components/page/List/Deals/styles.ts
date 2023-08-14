@@ -3,10 +3,6 @@ import theme from '@/config/theme';
 const { palette, customShadows } = theme;
 export const useDealsFiltersStyles = () => {
   return {
-    accordionContent: {
-      display: 'flex',
-      flexDirection: 'column',
-    },
     starsWrapper: {
       display: 'flex',
       gap: '4px',
@@ -14,7 +10,7 @@ export const useDealsFiltersStyles = () => {
     ratingCheckbox: {
       padding: '4px 0px',
     },
-    assetClassesWrapper: {
+    accordionContent: {
       display: 'flex',
       flexDirection: 'column',
       gap: '4px',
