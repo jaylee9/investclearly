@@ -11,6 +11,7 @@ import { DealStatuses } from '@/backend/constants/enums/deal-statuses';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import { Exemptions } from '@/backend/constants/enums/exemptions';
 import Button from '@/components/common/Button';
+import { Regulations } from '@/backend/constants/enums/regulations';
 
 interface Range {
   from: number;
@@ -24,6 +25,7 @@ export interface IFilters {
   regions?: string[];
   investment_structure?: string[];
   exemptions?: string[];
+  regulations?: string[];
   targetIRR?: Range;
   actualIRR?: Range;
   fees?: Range;
@@ -57,7 +59,8 @@ const DealsFilters = ({
       | 'statuses'
       | 'regions'
       | 'investment_structure'
-      | 'exemptions',
+      | 'exemptions'
+      | 'regulations',
     value: Regions | string
   ) => {
     const updatedArray = filters[key]?.includes(value)
@@ -230,6 +233,23 @@ const DealsFilters = ({
           </Box>
         </Box>
       </CustomAccordion>
+      <CustomAccordion label="Regulation">
+        <Box sx={classes.accordionContent}>
+          <Box sx={classes.assetClassesWrapper}>
+            {Object.values(Regulations).map(regulation => (
+              <CustomCheckbox
+                customStyles={classes.ratingCheckbox}
+                key={regulation}
+                onChange={() =>
+                  handleStringArrayChange('regulations', regulation)
+                }
+                checked={filters.regulations?.includes(regulation)}
+                label={regulation}
+              />
+            ))}
+          </Box>
+        </Box>
+      </CustomAccordion>
       <CustomAccordion label="Target IRR, %">
         <Box sx={classes.accordionContent}>
           <Box>
@@ -239,6 +259,10 @@ const DealsFilters = ({
               onChange={value =>
                 handleSliderChange(value as number[], 'targetIRR')
               }
+              value={[
+                filters.targetIRR?.from as number,
+                filters.targetIRR?.to as number,
+              ]}
             />
           </Box>
         </Box>

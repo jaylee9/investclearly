@@ -38,10 +38,12 @@ type FilterLabelKeys =
   | 'actualIRR'
   | 'fees'
   | 'prefferd_return'
-  | 'min_investment';
+  | 'min_investment'
+  | 'targetIRR';
 
 const filtersLabels: Record<FilterLabelKeys, string> = {
   actualIRR: 'Actual IRR, %',
+  targetIRR: 'Target IRR, %',
   fees: 'Fees, %',
   prefferd_return: 'Preffered return, USD',
   min_investment: 'Min investment, USD',
@@ -73,6 +75,7 @@ const DealsComponent = ({
     asset_classes: [],
     statuses: [],
     regions: [],
+    regulations: [],
     investment_structure: [],
     exemptions: [],
     targetIRR: {
