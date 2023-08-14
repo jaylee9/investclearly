@@ -167,7 +167,9 @@ const GlobalSearch = ({
                           sx={classes.blockListItemDefaultText}
                           marginBottom={6}
                         >
-                          {deal.region}
+                          {Array.isArray(deal.regions)
+                            ? deal.regions.join(', ')
+                            : deal.regions}
                         </Typography>
                         <Box sx={classes.dealTypes}>
                           <Typography
@@ -243,7 +245,9 @@ const GlobalSearch = ({
                           sx={classes.blockListItemDefaultText}
                           marginBottom={6}
                         >
-                          {sponsor.region}
+                          {Array.isArray(sponsor.regions)
+                            ? sponsor.regions.join(', ')
+                            : sponsor.regions}
                         </Typography>
                       </Box>
                     </Box>
