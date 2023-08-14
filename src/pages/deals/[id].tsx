@@ -253,7 +253,9 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                     <Box>
                       <Typography variant="caption">Investment Type</Typography>
                       <Typography variant="body1">
-                        {deal.sponsor.investmentStructure}
+                        {Array.isArray(deal.sponsor.investmentStructures)
+                          ? deal.sponsor.investmentStructures.join(', ')
+                          : deal.sponsor.investmentStructures}
                       </Typography>
                     </Box>
                     <Box>
