@@ -37,7 +37,7 @@ export const getDealById = async (id: number) => {
     deal.reviewsCount = deal.reviews.length;
   }
 
-  if (deal.sponsor && deal.sponsor.reviews?.length) {
+  if (deal.sponsor?.reviews?.length) {
     const publishedReviews = _.filter(deal.sponsor.reviews, {
       status: ReviewStatuses.published,
     });
