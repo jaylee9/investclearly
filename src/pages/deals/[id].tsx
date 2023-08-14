@@ -154,7 +154,11 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                     </Box>
                     <Box>
                       <Typography variant="caption">Region</Typography>
-                      <Typography variant="body1">{deal.region}</Typography>
+                      <Typography variant="body1">
+                        {Array.isArray(deal.regions)
+                          ? deal.regions.join(', ')
+                          : deal.regions}
+                      </Typography>
                     </Box>
                   </Box>
                   <Box sx={classes.overviewDetailsColumn}>
