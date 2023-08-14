@@ -4,8 +4,8 @@ import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.in
 import Button from '@/components/common/Button';
 import CustomTabs from '@/components/common/CustomTabs';
 import Layout from '@/components/common/Layout';
-import Modal from '@/components/common/Modal';
 import ReviewCard from '@/components/common/ReviewCard';
+import AddDealModal from '@/components/page/Deal/Modals/AddDeal';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealPageStyles from '@/pages_styles/dealPageStyles';
 import { Box, Typography } from '@mui/material';
@@ -310,13 +310,10 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                 Add to your profile
               </Button>
             </Box>
-            <Modal
+            <AddDealModal
               open={openModals.addDeal}
               handleClose={() => handleCloseModal('addDeal')}
-            >
-              <Box>123</Box>
-            </Modal>
-
+            />
             <Box sx={classes.textWithButton}>
               <Typography variant="body1">
                 Does this deal contain any errors? Please help us maintain

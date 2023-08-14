@@ -43,6 +43,7 @@
     "pg": "^8.11.1",
     "query-string": "^8.1.0",
     "react": "18.2.0",
+    "react-date-picker": "^10.5.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.1",
     "react-query": "^3.39.3",
