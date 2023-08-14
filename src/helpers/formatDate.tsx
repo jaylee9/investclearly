@@ -1,29 +1,8 @@
-const formatDate = (dateInput: string | Date): string => {
-  let date: Date;
-  if (typeof dateInput === 'string') {
-    date = new Date(dateInput);
-  } else {
-    date = dateInput;
-  }
+import { format } from 'date-fns';
 
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-  const formatted = `${
-    months[date.getMonth()]
-  } ${date.getDate()}, ${date.getFullYear()}`;
-  return formatted;
+const formatDate = (dateInput: string | Date): string => {
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+  return format(date, 'MMM d, yyyy');
 };
 
 export default formatDate;
