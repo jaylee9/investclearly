@@ -4,6 +4,7 @@ import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.in
 import Button from '@/components/common/Button';
 import CustomTabs from '@/components/common/CustomTabs';
 import Layout from '@/components/common/Layout';
+import Modal from '@/components/common/Modal';
 import ReviewCard from '@/components/common/ReviewCard';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealPageStyles from '@/pages_styles/dealPageStyles';
@@ -28,6 +29,11 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
   const classes = useDealPageStyles();
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('overview');
+  const [openModals, setOpenModals] = useState({
+    claimDeal: false,
+    addDeal: false,
+    suggestEdit: false,
+  });
   const overviewRef = useRef<HTMLDivElement>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
   const [reviewsData] = useState(reviews);
@@ -53,6 +59,17 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
       reviewsRef.current.scrollIntoView({ behavior: 'smooth' });
     }
     setActiveTab(newValue as ActiveTab);
+  };
+  const handleOpenModal = (key: 'claimDeal' | 'addDeal' | 'suggestEdit') => {
+    setOpenModals(prevModals => {
+      return { ...prevModals, [key]: true };
+    });
+  };
+
+  const handleCloseModal = (key: 'claimDeal' | 'addDeal' | 'suggestEdit') => {
+    setOpenModals(prevModals => {
+      return { ...prevModals, [key]: false };
+    });
   };
 
   const headerProps = useHeaderProps({
@@ -283,8 +300,16 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
 
             <Box sx={classes.textWithButton}>
               <Typography variant="body1">Already invested?</Typography>
-              <Button>Add to your profile</Button>
+              <Button onClick={() => handleOpenModal('addDeal')}>
+                Add to your profile
+              </Button>
             </Box>
+            <Modal
+              open={openModals.addDeal}
+              handleClose={() => handleCloseModal('addDeal')}
+            >
+              <Box>123</Box>
+            </Modal>
 
             <Box sx={classes.textWithButton}>
               <Typography variant="body1">
