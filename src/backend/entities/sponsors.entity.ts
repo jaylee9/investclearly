@@ -57,7 +57,7 @@ export class Sponsor {
   aum: number;
 
   @Column({ type: 'enum', array: true, enum: AssetClasses, nullable: true })
-  specialties: AssetClasses[];
+  specialties: AssetClasses[] | AssetClasses;
 
   @Column({
     type: 'enum',
@@ -65,7 +65,7 @@ export class Sponsor {
     enum: InvestmentStructures,
     nullable: true,
   })
-  investmentStructures: InvestmentStructures[];
+  investmentStructures: InvestmentStructures[] | InvestmentStructures;
 
   @Column({ type: 'varchar', nullable: true })
   facebookLink: string;
@@ -80,13 +80,13 @@ export class Sponsor {
   instagramLink: string;
 
   @Column({ type: 'enum', array: true, enum: Exemptions, nullable: true })
-  exemptions: Exemptions[];
+  exemptions: Exemptions[] | Exemptions;
 
   @Column({ type: 'boolean', nullable: false, default: false })
   workForThisCompany: boolean;
 
   @Column({ type: 'enum', array: true, enum: Regions, nullable: true })
-  regions: Regions[];
+  regions: Regions[] | Regions;
 
   @Column({ type: 'int', nullable: true })
   cashOnCash: number;
@@ -107,7 +107,7 @@ export class Sponsor {
   fees: number;
 
   @Column({ type: 'enum', array: true, enum: Regulations, nullable: true })
-  regulations: Regulations[];
+  regulations: Regulations[] | Regulations;
 
   @Column({
     type: 'enum',
@@ -115,7 +115,7 @@ export class Sponsor {
     enum: Interests,
     nullable: true,
   })
-  interests: Interests[];
+  interests: Interests[] | Interests;
 
   activelyRising: boolean;
 

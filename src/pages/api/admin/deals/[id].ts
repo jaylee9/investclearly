@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { DeepPartial } from 'typeorm';
 import createHttpError from 'http-errors';
 import { AuthConstants } from '../../../../backend/constants/auth-constants';
 import { apiHandler } from '../../../../backend/utils/api-handler';
@@ -8,7 +9,7 @@ import { getDealById } from '../../../../backend/services/deals/get-deal-by-id';
 import { deleteDealRecord } from '../../../../backend/services/deals/delete-deal';
 import { DealConstants } from '../../../../backend/constants/deal-constants';
 import { parseForm } from '../../../../backend/utils/parse-form';
-import { UpdateDealInterface } from '../../../../backend/services/deals/interfaces/update-deal.interface';
+import { Deal } from '../../../../backend/entities/deals.entity';
 
 export const config = {
   api: {
@@ -25,7 +26,7 @@ const updateDeal = async (
   const id: number = Number(request.query.id);
   const updatedDeal = await update(
     id,
-    fields as unknown as UpdateDealInterface,
+    fields as unknown as DeepPartial<Deal>,
     files
   );
 

@@ -8,7 +8,7 @@ import { Attachment } from '../../entities/attachments.entity';
 import { FindAllReviewsInterface } from './interfaces/get-all-reviews.interface';
 import { Review } from '../../../backend/entities/reviews.entity';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
-import { reviewMapper } from '@/backend/mappers/review.mapper';
+import { reviewMapper } from '../../../backend/mappers/review.mapper';
 
 export const getAllReviews = async (params: FindAllReviewsInterface) => {
   const {

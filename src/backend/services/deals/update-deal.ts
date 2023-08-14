@@ -1,10 +1,10 @@
+import { DeepPartial } from 'typeorm';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { Deal } from '../../entities/deals.entity';
 import { createAttachment } from '../attachments/create-attachment';
 import { uploadFile } from '../files/upload-file';
 import { getDealById } from './get-deal-by-id';
-import { UpdateDealInterface } from './interfaces/update-deal.interface';
 import { getAttachments } from '../attachments/get-attachments';
 import { deleteFile } from '../files/delete-file';
 import { deleteAttachment } from '../attachments/delete-attachments';
@@ -12,7 +12,7 @@ import { transformObjectKeysToArrays } from '../../../backend/utils/transform-ob
 
 export const update = async (
   id: number,
-  fields: UpdateDealInterface,
+  fields: DeepPartial<Deal>,
   files: Express.Multer.File[]
 ) => {
   const connection = await getDatabaseConnection();
@@ -23,8 +23,11 @@ export const update = async (
     ...updateDealData
   } = fields;
 
-  const transformedData = transformObjectKeysToArrays({
+  const transformedAttachmentsIdsToDelete = transformObjectKeysToArrays({
     attachmentsIdsToDelete,
+  });
+
+  const transformedData = transformObjectKeysToArrays({
     investmentStructures,
     regions,
   });
@@ -35,8 +38,7 @@ export const update = async (
     { id },
     {
       ...updateDealData,
-      investmentStructures: transformedData.transformedData,
-      regions: transformedData.regions,
+      ...transformedData,
     }
   );
 
@@ -51,7 +53,7 @@ export const update = async (
     const attachments = await getAttachments(
       id,
       TargetTypesConstants.deals,
-      transformedData.attachmentsIdsToDelete
+      transformedAttachmentsIdsToDelete.attachmentsIdsToDelete
     );
     for (const attachment of attachments) {
       await deleteFile(attachment.path);

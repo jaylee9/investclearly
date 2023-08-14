@@ -3,13 +3,13 @@ import { getDatabaseConnection } from '../../config/data-source-config';
 import { Deal } from '../../entities/deals.entity';
 import { uploadFile } from '../files/upload-file';
 import { getDealById } from './get-deal-by-id';
-import { CreateDealInterface } from './interfaces/create-deal.interface';
 import { DealInterface } from './interfaces/deal.interface';
 import { createAttachment } from '../attachments/create-attachment';
 import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
+import { DeepPartial } from 'typeorm';
 
 export const createDeal = async (
-  data: CreateDealInterface,
+  data: DeepPartial<Deal>,
   files: Express.Multer.File[]
 ) => {
   const connection = await getDatabaseConnection();

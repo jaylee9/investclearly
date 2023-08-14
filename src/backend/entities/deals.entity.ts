@@ -35,7 +35,7 @@ export class Deal {
   dealAddress: string;
 
   @Column({ type: 'enum', array: true, enum: Regions, nullable: true })
-  regions: Regions[];
+  regions: Regions[] | Regions;
 
   @Column({ type: 'enum', enum: DealStatuses, nullable: true })
   status: string;
@@ -58,7 +58,7 @@ export class Deal {
     enum: InvestmentStructures,
     nullable: true,
   })
-  investmentStructures: InvestmentStructures[];
+  investmentStructures: InvestmentStructures[] | InvestmentStructures;
 
   @Column({ type: 'int', nullable: true })
   fees: number;
@@ -99,6 +99,8 @@ export class Deal {
   reviewsCount: number;
 
   avgTotalRating: number;
+
+  attachmentsIdsToDelete: number | number[];
 
   @CreateDateColumn()
   createdAt: Date;

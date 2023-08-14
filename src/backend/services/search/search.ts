@@ -1,4 +1,4 @@
-import { SearchConstants } from '@/backend/constants/search-constants';
+import { SearchConstants } from '../../../backend/constants/search-constants';
 import { getAllDeals } from '../deals/get-all-deals';
 import { getAllSponsors } from '../sponsors/get-all-sponsors';
 import { SearchInterface } from './interfaces/search.interface';
