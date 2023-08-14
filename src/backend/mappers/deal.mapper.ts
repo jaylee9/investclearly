@@ -9,7 +9,7 @@ export const dealMapper = (deal: Deal): DealInterface => {
     id: deal.id,
     dealTitle: deal.dealTitle || null,
     dealAddress: deal.dealAddress || null,
-    regions: deal.regions || null,
+    regions: deal.regions || [],
     status: deal.status || null,
     assetClass: deal.assetClass || null,
     description: deal.description || null,

@@ -1,3 +1,4 @@
+import { DeepPartial } from 'typeorm';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { Deal } from '../../entities/deals.entity';
@@ -6,7 +7,6 @@ import { getDealById } from './get-deal-by-id';
 import { DealInterface } from './interfaces/deal.interface';
 import { createAttachment } from '../attachments/create-attachment';
 import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
-import { DeepPartial } from 'typeorm';
 
 export const createDeal = async (
   data: DeepPartial<Deal>,
@@ -28,7 +28,7 @@ export const createDeal = async (
 
   const dealRecord = await getDealById(deal.id);
 
-  if (files.length) {
+  if (files?.length) {
     for (const file of files) {
       const fileUrl = await uploadFile(file, TargetTypesConstants.deals);
       await createAttachment(

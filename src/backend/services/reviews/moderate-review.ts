@@ -17,7 +17,7 @@ export const moderate = async (
     reviewData;
   const reviewRecord = await getReviewById(id);
   if (status === ReviewStatuses.published) {
-    const isVerified = reviewRecord.attachments.length !== 0;
+    const isVerified = reviewRecord.attachments?.length !== 0;
     await connection.manager.update(
       Review,
       { id },

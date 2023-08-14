@@ -66,7 +66,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     )
     .groupBy('sponsors.id, deals.id');
 
-  if (primaryAssetClasses.length) {
+  if (primaryAssetClasses?.length) {
     searchQuery = searchQuery.where(
       'sponsors.specialties && :primaryAssetClasses',
       {
@@ -75,7 +75,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     );
   }
 
-  if (regionalFocus.length) {
+  if (regionalFocus?.length) {
     searchQuery = searchQuery.andWhere('sponsors.regions && :regionalFocus', {
       regionalFocus,
     });

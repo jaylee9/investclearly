@@ -23,7 +23,7 @@ export const updateProfileSettings = async (
     regions,
   });
 
-  if (files.length) {
+  if (files?.length) {
     if (userRecord && userRecord.profilePicture) {
       await deleteFile(userRecord.profilePicture);
     }

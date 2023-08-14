@@ -31,7 +31,7 @@ export const createSponsorRecord = async (
     interests,
   });
 
-  if (files.length) {
+  if (files?.length) {
     data.businessAvatar = await uploadFile(
       files[0],
       TargetTypesConstants.sponsorAvatars

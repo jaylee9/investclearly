@@ -92,25 +92,25 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     )
     .groupBy('deals.id, attachments.id');
 
-  if (assetClasses.length) {
+  if (assetClasses?.length) {
     searchQuery = searchQuery.where('deals.assetClass IN (:...assetClasses)', {
       assetClasses,
     });
   }
 
-  if (statuses.length) {
+  if (statuses?.length) {
     searchQuery = searchQuery.andWhere('deals.status IN (:...statuses)', {
       statuses,
     });
   }
 
-  if (regions.length) {
+  if (regions?.length) {
     searchQuery = searchQuery.andWhere('deals.regions && :regions', {
       regions,
     });
   }
 
-  if (investmentStructures.length) {
+  if (investmentStructures?.length) {
     searchQuery = searchQuery.andWhere(
       'deals.investmentStructures && :investmentStructures',
       { investmentStructures }
@@ -138,13 +138,13 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     );
   }
 
-  if (exemptions.length) {
+  if (exemptions?.length) {
     searchQuery = searchQuery.andWhere('deals.exemption IN (:...exemptions)', {
       exemptions,
     });
   }
 
-  if (regulations.length) {
+  if (regulations?.length) {
     searchQuery = searchQuery.andWhere(
       'deals.regulation IN (:...regulations)',
       {

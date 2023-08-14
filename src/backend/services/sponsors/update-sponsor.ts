@@ -36,7 +36,7 @@ export const updateSponsorRecord = async (
     interests,
   });
 
-  if (files.length) {
+  if (files?.length) {
     if (sponsorRecord && sponsorRecord.businessAvatar) {
       await deleteFile(sponsorRecord.businessAvatar);
     }

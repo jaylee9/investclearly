@@ -9,7 +9,7 @@ import { getDealById } from '../../../../backend/services/deals/get-deal-by-id';
 import { deleteDealRecord } from '../../../../backend/services/deals/delete-deal';
 import { DealConstants } from '../../../../backend/constants/deal-constants';
 import { parseForm } from '../../../../backend/utils/parse-form';
-import { Deal } from '../../../../backend/entities/deals.entity';
+import { UpdateDealInterface } from '../../../../backend/services/deals/interfaces/update-deal.interface';
 
 export const config = {
   api: {
@@ -26,7 +26,7 @@ const updateDeal = async (
   const id: number = Number(request.query.id);
   const updatedDeal = await update(
     id,
-    fields as unknown as DeepPartial<Deal>,
+    fields as unknown as DeepPartial<UpdateDealInterface>,
     files
   );
 

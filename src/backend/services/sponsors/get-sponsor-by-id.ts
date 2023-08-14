@@ -27,9 +27,11 @@ export const getSponsorById = async (id: number) => {
     throw new createHttpError.NotFound(SponsorConstants.sponsorNotFound);
   }
 
-  if (sponsor.deals && sponsor.deals.length) {
+  if (sponsor.deals?.length) {
     sponsor.dealsCount = sponsor.deals.length;
+  }
 
+  if (sponsor.reviews?.length) {
     const publishedReviews = _.filter(sponsor.reviews, {
       status: ReviewStatuses.published,
     });

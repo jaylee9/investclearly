@@ -9,10 +9,11 @@ import { getAttachments } from '../attachments/get-attachments';
 import { deleteFile } from '../files/delete-file';
 import { deleteAttachment } from '../attachments/delete-attachments';
 import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
+import { UpdateDealInterface } from './interfaces/update-deal.interface';
 
 export const update = async (
   id: number,
-  fields: DeepPartial<Deal>,
+  fields: DeepPartial<UpdateDealInterface>,
   files: Express.Multer.File[]
 ) => {
   const connection = await getDatabaseConnection();
@@ -42,14 +43,14 @@ export const update = async (
     }
   );
 
-  if (files.length) {
+  if (files?.length) {
     for (const file of files) {
       const fileUrl = await uploadFile(file, TargetTypesConstants.deals);
       await createAttachment(fileUrl, id, TargetTypesConstants.deals);
     }
   }
 
-  if (transformedData.attachmentsIdsToDelete.length !== 0) {
+  if (transformedData.attachmentsIdsToDelete?.length !== 0) {
     const attachments = await getAttachments(
       id,
       TargetTypesConstants.deals,

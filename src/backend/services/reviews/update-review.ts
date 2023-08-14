@@ -23,14 +23,14 @@ export const update = async (
 
   await getReviewById(id);
 
-  if (files.length) {
+  if (files?.length) {
     for (const file of files) {
       const fileUrl = await uploadFile(file, TargetTypesConstants.reviewProofs);
       await createAttachment(fileUrl, id, TargetTypesConstants.reviewProofs);
     }
   }
 
-  if (transformedData.attachmentsIdsToDelete.length !== 0) {
+  if (transformedData.attachmentsIdsToDelete?.length !== 0) {
     const attachments = await getAttachments(
       id,
       TargetTypesConstants.reviewProofs,
