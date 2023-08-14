@@ -781,3 +781,31 @@ export const useReviewCardStyles = () => {
     },
   };
 };
+
+export const useModalStyles = () => {
+  return {
+    root: {
+      '& .MuiPaper-root': {
+        padding: '32px',
+        borderRadius: '12px',
+        background: palette.common.white,
+      },
+      '& .icon-Cross': {
+        fontSize: '24px',
+        color: palette.text.secondary,
+      },
+    },
+    iconWrapper: {
+      padding: '8px',
+      border: `1px solid ${palette.background.paper}`,
+      borderRadius: '4px',
+      position: 'absolute',
+      top: 16,
+      right: 16,
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  };
+};
