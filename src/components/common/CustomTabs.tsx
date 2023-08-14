@@ -5,7 +5,7 @@ import { useTabsStyles } from './styles';
 interface TabProps {
   label: string;
   value: string | number;
-  content: ReactNode;
+  content?: ReactNode;
   count?: number;
 }
 

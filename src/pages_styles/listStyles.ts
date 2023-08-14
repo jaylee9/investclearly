@@ -6,7 +6,6 @@ const useDealsPageStyles = () => {
     root: {
       display: 'flex',
       gap: '16px',
-      padding: '32px 48px',
     },
     leftColumn: {
       flex: '25%',
