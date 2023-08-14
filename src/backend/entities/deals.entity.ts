@@ -100,8 +100,6 @@ export class Deal {
 
   avgTotalRating: number;
 
-  attachmentsIdsToDelete: number | number[];
-
   @CreateDateColumn()
   createdAt: Date;
 
