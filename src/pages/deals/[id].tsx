@@ -72,6 +72,7 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
             src={MOCK_DEAL_IMAGE_URL}
           />
         </Box>
+
         <Box sx={classes.root}>
           <Box sx={classes.leftColumn}>
             <Box sx={classes.info}>
@@ -130,6 +131,7 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                 value={activeTab}
               />
             </Box>
+
             <Box ref={overviewRef} sx={classes.overview}>
               <Box sx={classes.overviewHeader}>
                 <Typography variant="h3">Overview</Typography>
@@ -169,6 +171,7 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                 </Box>
               </Box>
             </Box>
+
             <Box ref={reviewsRef} sx={classes.reviewsWrapper}>
               <Box sx={classes.reviewsWrapperHeader}>
                 <Box sx={classes.reviewsWrapperTitle}>
@@ -187,6 +190,7 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
               </Typography>
             </Box>
           </Box>
+
           <Box sx={classes.rightColumn}>
             <Box>
               {!deal.sponsor ? (
@@ -217,6 +221,7 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                 </Box>
               )}
             </Box>
+
             <Box sx={classes.sponsorInfo}>
               <Box sx={classes.sponsorInfoRow}>
                 <Box>
@@ -275,10 +280,12 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                 </>
               )}
             </Box>
+
             <Box sx={classes.textWithButton}>
               <Typography variant="body1">Already invested?</Typography>
               <Button>Add to your profile</Button>
             </Box>
+
             <Box sx={classes.textWithButton}>
               <Typography variant="body1">
                 Does this deal contain any errors? Please help us maintain
