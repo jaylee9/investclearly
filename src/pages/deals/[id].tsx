@@ -149,8 +149,7 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                     </Box>
                     <Box>
                       <Typography variant="caption">Regulation</Typography>
-                      {/* mock data, add after back-end implementation */}
-                      <Typography variant="body1">D</Typography>
+                      <Typography variant="body1">{deal.regulation}</Typography>
                     </Box>
                     <Box>
                       <Typography variant="caption">Region</Typography>
@@ -164,8 +163,9 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                   <Box sx={classes.overviewDetailsColumn}>
                     <Box>
                       <Typography variant="caption">SEC Industry</Typography>
-                      {/* mock data, add after back-end implementation */}
-                      <Typography variant="body1">Industry 1</Typography>
+                      <Typography variant="body1">
+                        {deal.secIndustry}
+                      </Typography>
                     </Box>
                     <Box>
                       <Typography variant="caption">Exemption</Typography>
