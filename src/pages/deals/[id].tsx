@@ -7,6 +7,7 @@ import Layout from '@/components/common/Layout';
 import ReviewCard from '@/components/common/ReviewCard';
 import AddDealModal from '@/components/page/Deal/Modals/AddDeal';
 import ClaimDealModal from '@/components/page/Deal/Modals/ClaimDeal';
+import SuggestEditModal from '@/components/page/Deal/Modals/SuggestEdit';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealPageStyles from '@/pages_styles/dealPageStyles';
 import { Box, Typography } from '@mui/material';
@@ -329,8 +330,15 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                 Does this deal contain any errors? Please help us maintain
                 accurate information.
               </Typography>
-              <Button>Suggest Edit</Button>
+              <Button onClick={() => handleOpenModal('suggestEdit')}>
+                Suggest Edit
+              </Button>
             </Box>
+            <SuggestEditModal
+              onSubmit={data => console.log(data)}
+              open={openModals.suggestEdit}
+              handleClose={() => handleCloseModal('suggestEdit')}
+            />
           </Box>
         </Box>
       </Box>
