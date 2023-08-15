@@ -7,6 +7,7 @@ import { Sponsor } from '../entities/sponsors.entity';
 import { Attachment } from '../entities/attachments.entity';
 import { loadEnvConfig } from './load-env-config';
 import { Review } from '../entities/reviews.entity';
+import { Investment } from '../entities/investments.entity';
 
 loadEnvConfig();
 
@@ -20,7 +21,7 @@ const config = {
   synchronize: false,
   namingStrategy: new SnakeNamingStrategy(),
   logging: false,
-  entities: [User, Deal, Sponsor, Attachment, Review],
+  entities: [User, Deal, Sponsor, Attachment, Review, Investment],
 };
 
 export const AppDataSource = new DataSource({
