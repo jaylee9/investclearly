@@ -812,3 +812,26 @@ export const useModalStyles = () => {
     },
   };
 };
+
+export const useCustomTextAreaStyles = () => {
+  return {
+    root: {
+      width: '100%',
+      height: '100%',
+      fontFamily: 'Inter, sans-serif',
+      padding: '9px 16px',
+      fontSize: '15px',
+      borderRadius: '12px',
+      border: `1px solid ${palette.background.paper}`,
+      transition: 'border 0.3s ease-in-out',
+      color: palette.common.black,
+      outline: 'none',
+    },
+    errorText: {
+      position: 'absolute',
+      color: palette.error.light,
+      bottom: '-20px',
+      left: 0,
+    },
+  };
+};

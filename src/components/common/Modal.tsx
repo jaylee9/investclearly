@@ -12,7 +12,7 @@ const Modal = (props: ModalProps) => {
       {...rest}
     >
       <Box sx={classes.root}>
-        <DialogTitle>
+        <DialogTitle padding="0px !important">
           <Box
             sx={classes.iconWrapper}
             onClick={e => onClose && onClose(e, 'backdropClick')}

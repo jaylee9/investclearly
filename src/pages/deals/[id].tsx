@@ -6,6 +6,7 @@ import CustomTabs from '@/components/common/CustomTabs';
 import Layout from '@/components/common/Layout';
 import ReviewCard from '@/components/common/ReviewCard';
 import AddDealModal from '@/components/page/Deal/Modals/AddDeal';
+import ClaimDealModal from '@/components/page/Deal/Modals/ClaimDeal';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealPageStyles from '@/pages_styles/dealPageStyles';
 import { Box, Typography } from '@mui/material';
@@ -219,7 +220,14 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                   <Typography variant="body1">
                     Sponsor is not currently aligned.
                   </Typography>
-                  <Button>Claim deal</Button>
+                  <Button onClick={() => handleOpenModal('claimDeal')}>
+                    Claim deal
+                  </Button>
+                  <ClaimDealModal
+                    open={openModals.claimDeal}
+                    handleClose={() => handleCloseModal('claimDeal')}
+                    onSubmit={data => console.log(data)}
+                  />
                 </Box>
               ) : (
                 <Box sx={classes.sponsor}>
@@ -311,9 +319,11 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
               </Button>
             </Box>
             <AddDealModal
+              onSubmit={data => console.log(data)}
               open={openModals.addDeal}
               handleClose={() => handleCloseModal('addDeal')}
             />
+
             <Box sx={classes.textWithButton}>
               <Typography variant="body1">
                 Does this deal contain any errors? Please help us maintain

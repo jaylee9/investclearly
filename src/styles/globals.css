@@ -139,3 +139,11 @@ body {
 .react-datepicker__day--outside-month {
   color: #717c89 !important;
 }
+
+.text-area:focus {
+  border: 1px solid #4f7ff8 !important;
+}
+
+.text-area-error {
+  border: 1px solid #d72638 !important;
+}
