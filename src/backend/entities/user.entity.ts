@@ -15,6 +15,7 @@ import { AssetClasses } from '../constants/enums/asset-classes';
 import { Regions } from '../constants/enums/regions';
 import { InvestorStatuses } from '../constants/enums/investor-statuses';
 import { IncomeAndNetWorth } from '../constants/enums/income-and-worth';
+import { Investment } from './investments.entity';
 
 @Entity({ name: 'user' })
 export class User {
@@ -113,4 +114,7 @@ export class User {
 
   @OneToMany(() => Review, reviews => reviews.reviewer)
   reviews: Relation<Review>[];
+
+  @OneToMany(() => Investment, investments => investments.user)
+  investments: Relation<Investment>[];
 }
