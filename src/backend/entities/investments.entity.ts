@@ -22,10 +22,10 @@ export class Investment {
   @Column({ type: 'int', nullable: false })
   userId: number;
 
-  @Column({ type: 'date', nullable: false })
+  @Column({ type: 'date', nullable: true })
   dateOfInvestment: Date;
 
-  @Column({ type: 'int', nullable: false })
+  @Column({ type: 'int', nullable: true })
   totalInvested: number;
 
   @Column({
