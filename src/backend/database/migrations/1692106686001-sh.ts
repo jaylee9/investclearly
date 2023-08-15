@@ -1,14 +1,14 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class Sh1692088286120 implements MigrationInterface {
-  name = 'Sh1692088286120';
+export class Sh1692106686001 implements MigrationInterface {
+  name = 'Sh1692106686001';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `CREATE TYPE "public"."investments_status_enum" AS ENUM('active', 'completed')`
     );
     await queryRunner.query(
-      `CREATE TABLE "investments" ("id" SERIAL NOT NULL, "deal_id" integer NOT NULL, "user_id" integer NOT NULL, "date_of_investment" date NOT NULL, "total_invested" integer NOT NULL, "status" "public"."investments_status_enum" NOT NULL DEFAULT 'active', "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_a1263853f1a4fb8b849c1c9aff4" PRIMARY KEY ("id"))`
+      `CREATE TABLE "investments" ("id" SERIAL NOT NULL, "deal_id" integer NOT NULL, "user_id" integer NOT NULL, "date_of_investment" date, "total_invested" integer, "status" "public"."investments_status_enum" NOT NULL DEFAULT 'active', "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_a1263853f1a4fb8b849c1c9aff4" PRIMARY KEY ("id"))`
     );
     await queryRunner.query(
       `ALTER TABLE "investments" ADD CONSTRAINT "FK_fe9d6987f15c1cce3ff55dd25e2" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
