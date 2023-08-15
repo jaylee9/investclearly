@@ -1,5 +1,5 @@
-import Modal, { ModalProps } from '@/components/common/Modal';
-import { Box, Typography } from '@mui/material';
+import Modal from '@/components/common/Modal';
+import { Box, ModalProps, Typography } from '@mui/material';
 import { useAddDealModalStyles } from './styles';
 import CustomDateRangePicker from '@/components/common/DateRangePicker';
 import { useForm } from 'react-hook-form';
@@ -7,17 +7,22 @@ import Input from '@/components/common/Input';
 
 interface AddDealModalProps extends ModalProps {
   onSubmit: () => void;
+  handleClose: () => void;
 }
 
-const AddDealModal = ({ onSubmit, ...props }: AddDealModalProps) => {
+const AddDealModal = ({
+  onSubmit,
+  handleClose,
+  ...props
+}: AddDealModalProps) => {
   const classes = useAddDealModalStyles();
   const { register, control } = useForm();
   const onFormSubmit = () => {
     onSubmit();
-    props.handleClose();
+    handleClose();
   };
   return (
-    <Modal {...props}>
+    <Modal onClose={handleClose} {...props}>
       <Box sx={classes.root}>
         <Typography variant="h3">Deal was added</Typography>
         <Typography sx={classes.subTitle} variant="body1">

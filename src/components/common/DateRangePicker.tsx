@@ -1,7 +1,9 @@
 import React from 'react';
 import { Controller, Control } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
-import DatePicker from 'react-date-picker';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import Input from './Input';
 
 interface CustomDateRangePickerProps {
   control: Control;
@@ -30,7 +32,12 @@ const CustomDateRangePicker: React.FC<CustomDateRangePickerProps> = ({
         control={control}
         name={name}
         render={({ field: { onChange, value } }) => (
-          <DatePicker value={value} onChange={date => onChange(date)} />
+          <DatePicker
+            selected={value}
+            onChange={date => onChange(date)}
+            customInput={<Input showClearOption={false} />}
+            className="custom-date-picker"
+          />
         )}
       />
     </Box>

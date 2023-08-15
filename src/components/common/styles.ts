@@ -785,11 +785,14 @@ export const useReviewCardStyles = () => {
 export const useModalStyles = () => {
   return {
     root: {
-      '& .MuiPaper-root': {
-        padding: '32px',
-        borderRadius: '12px',
-        background: palette.common.white,
-      },
+      padding: '32px',
+      borderRadius: '12px',
+      background: palette.common.white,
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: 'auto',
       '& .icon-Cross': {
         fontSize: '24px',
         color: palette.text.secondary,
