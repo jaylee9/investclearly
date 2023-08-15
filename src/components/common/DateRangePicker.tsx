@@ -36,7 +36,6 @@ const CustomDateRangePicker: React.FC<CustomDateRangePickerProps> = ({
             selected={value}
             onChange={date => onChange(date)}
             customInput={<Input showClearOption={false} />}
-            className="custom-date-picker"
           />
         )}
       />
