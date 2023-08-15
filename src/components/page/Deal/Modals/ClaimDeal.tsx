@@ -47,12 +47,14 @@ const ClaimDealModal = ({
     setStep(2);
   });
 
-  const handleGotIt = () => {
+  const onClose = () => {
     handleClose();
+    reset();
     setStep(1);
   };
+
   return (
-    <Modal onClose={handleClose} {...props}>
+    <Modal onClose={onClose} {...props}>
       <Box sx={classes.root}>
         {step === 1 && (
           <>
@@ -99,7 +101,7 @@ const ClaimDealModal = ({
                   We’ve received your request and will let you know about our
                   decision.
                 </Typography>
-                <Button customStyles={{ width: '100%' }} onClick={handleGotIt}>
+                <Button customStyles={{ width: '100%' }} onClick={onClose}>
                   Got it
                 </Button>
               </>

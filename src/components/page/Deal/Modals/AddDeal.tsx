@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 const validationSchema = z.object({
   dealDate: z.date(),
-  totalInvested: z.number(),
+  totalInvested: z.string(),
 });
 
 type ValidationSchema = z.infer<typeof validationSchema>;
