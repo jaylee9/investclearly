@@ -36,7 +36,7 @@ export const getAllInvestments = async (
     });
   }
 
-  const totalInvesteData = await searchQuery
+  const totalInvestedData = await searchQuery
     .clone()
     .select('SUM(investments.totalInvested)', 'totalInvestedSum')
     .getRawOne();
@@ -70,7 +70,7 @@ export const getAllInvestments = async (
 
   return {
     deals: await Promise.all(deals.map(investmentMapper)),
-    totalInvested: totalInvesteData.totalInvestedSum,
+    totalInvested: totalInvestedData.totalInvestedSum,
     ...paginationData,
   };
 };
