@@ -3,6 +3,10 @@ import { BoxProps } from '@mui/material';
 import { useSponsorCardStyles } from './styles';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import PlaceholderImage from './PlaceholderImage';
+import Link from 'next/link';
+
+const MOCK_IMAGE_URL =
+  'https://s3.amazonaws.com/cdn.designcrowd.com/blog/2017/April/35-Famous-Circle-Logos/19_400.png';
 
 export enum SponsorCardVariant {
   Base = 'base',
@@ -30,9 +34,11 @@ const SponsorCard = ({
         style={classes.baseImage}
         defaultImage={defaultImage}
       />
-      <Typography variant="h5" fontWeight={600}>
-        {sponsor.legalName}
-      </Typography>
+      <Link href={`/sponsors/${sponsor.id}`}>
+        <Typography variant="h5" fontWeight={600}>
+          {sponsor.legalName}
+        </Typography>
+      </Link>
       <Typography variant="body1">
         {Array.isArray(sponsor.regions)
           ? sponsor.regions.join(', ')
@@ -61,9 +67,11 @@ const SponsorCard = ({
                 Actively Rising
               </Typography>
             )}
-            <Typography variant="h5" fontWeight={600}>
-              {sponsor.legalName}
-            </Typography>
+            <Link href={`/sponsors/${sponsor.id}`}>
+              <Typography variant="h5" fontWeight={600}>
+                {sponsor.legalName}
+              </Typography>
+            </Link>
             <Box sx={classes.sponsorInfo}>
               <Typography variant="caption" sx={classes.sponsorRating}>
                 <i className="icon-Star"></i>
