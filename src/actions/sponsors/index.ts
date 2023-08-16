@@ -56,3 +56,13 @@ export const getAllSponsors = async (
     throw error;
   }
 };
+
+export const getSponsor = async ({ id }: { id: string }) => {
+  try {
+    const response: SponsorInterface = await api.get(`sponsors/${id}`).json();
+    return response;
+  } catch (error) {
+    console.error('Error fetching deal', error);
+    throw error;
+  }
+};
