@@ -33,6 +33,7 @@ export const dealMapper = (deal: Deal): DealInterface => {
     secIndustry: deal.secIndustry || null,
     closeDate: deal.closeDate || null,
     regulation: deal.regulation || null,
+    isInInvestments: deal.isInInvestments || false,
     createdAt: deal.createdAt,
     updatedAt: deal.updatedAt,
   };

@@ -11,30 +11,34 @@ loadEnvConfig();
 
 interface AuthenticatedRequestWrapper {
   request: NextApiRequest;
-  user?: User;
+  user: User | null;
 }
 
 export const authMiddleware = async (
   request: NextApiRequest,
-  response: NextApiResponse
+  response: NextApiResponse,
+  isOptional: boolean = false
 ): Promise<AuthenticatedRequestWrapper> => {
   const token = getCookies({ req: request, res: response });
 
-  if (!token.accessToken) {
+  if (!isOptional && !token.accessToken) {
     throw new createHttpError.Unauthorized(AuthConstants.unauthorized);
   }
 
-  const { userId, email } = jwt.verify(
-    token.accessToken,
-    process.env.JWT_SECRET || ''
-  ) as jwt.JwtPayload;
-  const connection = await getDatabaseConnection();
-  const user = await connection.manager.findOne(User, {
-    where: { id: userId, email },
-  });
+  let user: User | null = null;
+  if (token.accessToken) {
+    const { userId, email } = jwt.verify(
+      token.accessToken,
+      process.env.JWT_SECRET || ''
+    ) as jwt.JwtPayload;
+    const connection = await getDatabaseConnection();
+    user = await connection.manager.findOne(User, {
+      where: { id: userId, email },
+    });
 
-  if (!user) {
-    throw new createHttpError.Unauthorized(AuthConstants.unauthorized);
+    if (!user && !isOptional) {
+      throw new createHttpError.Unauthorized(AuthConstants.unauthorized);
+    }
   }
 
   return { request, user };

@@ -101,6 +101,8 @@ export class Deal {
 
   avgTotalRating: number;
 
+  isInInvestments: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

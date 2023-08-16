@@ -8,16 +8,30 @@ import { Attachment } from '../../../backend/entities/attachments.entity';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
 import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
 
-export const getDealById = async (id: number) => {
+export const getDealById = async (id: number, userId?: number) => {
   const connection = await getDatabaseConnection();
-  const deal = await connection.manager
+  let dealQuery = connection.manager
     .createQueryBuilder()
     .select('deals')
     .from(Deal, 'deals')
     .leftJoinAndSelect('deals.sponsor', 'sponsor')
-    .leftJoinAndSelect('deals.reviews', 'reviews')
+    .leftJoinAndSelect(
+      'deals.reviews',
+      'reviews',
+      'reviews.status = :reviewStatus',
+      {
+        reviewStatus: ReviewStatuses.published,
+      }
+    )
     .leftJoinAndSelect('reviews.reviewer', 'reviewer')
-    .leftJoinAndSelect('sponsor.reviews', 'sponsorReviews')
+    .leftJoinAndSelect(
+      'sponsor.reviews',
+      'sponsorReviews',
+      'sponsorReviews.status = :sponsorReviewStatus',
+      {
+        sponsorReviewStatus: ReviewStatuses.published,
+      }
+    )
     .leftJoinAndMapMany(
       'deals.attachments',
       Attachment,
@@ -25,9 +39,20 @@ export const getDealById = async (id: number) => {
       'attachments.entityId = deals.id AND attachments.entityType = :entityType',
       { entityType: TargetTypesConstants.deals }
     )
-    .where('deals.id = :id', { id })
-    .setParameter('reviewStatus', ReviewStatuses.published)
-    .getOne();
+    .where('deals.id = :id', { id });
+
+  if (userId) {
+    dealQuery = dealQuery.leftJoinAndSelect(
+      'deals.investments',
+      'investments',
+      'investments.userId = :userId',
+      {
+        userId,
+      }
+    );
+  }
+
+  const deal = await dealQuery.getOne();
 
   if (!deal) {
     throw new createHttpError.NotFound(DealConstants.dealNotFound);
@@ -46,6 +71,10 @@ export const getDealById = async (id: number) => {
 
     deal.sponsor.avgTotalRating =
       publishedReviewsCount > 0 ? totalRating / publishedReviewsCount : 0;
+  }
+
+  if (deal.investments?.length) {
+    deal.isInInvestments = true;
   }
 
   return dealMapper(deal);

@@ -26,7 +26,7 @@ export class Investment {
   dateOfInvestment: Date;
 
   @Column({ type: 'int', nullable: true })
-  totalInvested: number;
+  totalInvested: number; //The value is stored in USD
 
   @Column({
     type: 'enum',
