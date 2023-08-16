@@ -27,7 +27,9 @@ export const updateProfileSettings = async (
       } else if (typeof value === 'number' || typeof value === 'boolean') {
         formData.append(key, value.toString());
       } else if (Array.isArray(value)) {
-        formData.append(key, JSON.stringify(value));
+        for (let i = 0; i < value.length; i++) {
+          formData.append(`${key}[]`, value[i].toString());
+        }
       }
     }
   }
