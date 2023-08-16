@@ -4,19 +4,25 @@ import YesNoButtons from '@/components/common/YesNoButtons';
 import { useState } from 'react';
 import Button from '@/components/common/Button';
 import { useRouter } from 'next/router';
+import { IncomeAndNetWorth } from '@/backend/constants/enums/income-and-worth';
 
 const WorthStep = () => {
   const classes = useWorthStepStyles();
   const router = useRouter();
   const [worth, setWorth] = useState<'yes' | 'no'>(
-    (localStorage.getItem('worth') as 'yes' | 'no') || 'yes'
+    (localStorage.getItem('incomeAndNetWorth') as 'yes' | 'no') || 'yes'
   );
   const handleBackClick = () => {
     router.push('/onboarding?step=1');
   };
   const handleStepClick = (type: 'skip' | 'next') => {
     if (type === 'next') {
-      localStorage.setItem('worth', worth);
+      localStorage.setItem(
+        'incomeAndNetWorth',
+        worth === 'yes'
+          ? IncomeAndNetWorth.yesIHave
+          : IncomeAndNetWorth.noIDoNotHave
+      );
     }
     router.push('/onboarding?step=3');
   };

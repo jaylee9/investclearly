@@ -7,6 +7,9 @@ import MultiButtons from '@/components/common/MultiButtons';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import { Regions } from '@/backend/constants/enums/regions';
 import CustomSlider from '@/components/common/Slider';
+import { updateProfileSettings } from '@/actions/user/profile-settings';
+import { InvestorStatuses } from '@/backend/constants/enums/investor-statuses';
+import { IncomeAndNetWorth } from '@/backend/constants/enums/income-and-worth';
 
 interface Range {
   from: number;
@@ -45,14 +48,30 @@ const InvestmentPreferencesStep = () => {
   const handleBackClick = () => {
     router.push('/onboarding?step=2');
   };
-  const handleStepClick = (type: 'skip' | 'next') => {
+  const handleStepClick = async (type: 'skip' | 'next') => {
     if (type === 'next') {
-      localStorage.setItem(
-        'investmentPreferences',
-        JSON.stringify(investmentPreferences)
-      );
+      const investorStatus = localStorage.getItem(
+        'investorStatus'
+      ) as InvestorStatuses;
+      const incomeAndNetWorth = localStorage.getItem(
+        'incomeAndNetWorth'
+      ) as IncomeAndNetWorth;
+
+      const payload = {
+        assetClasses: investmentPreferences.assetClasses as AssetClasses[],
+        regions: investmentPreferences.regions as Regions[],
+        minimumInvestmentMin: investmentPreferences.minInvestment.from,
+        minimumInvestmentMax: investmentPreferences.minInvestment.to,
+        holdPeriodMin: investmentPreferences.minInvestment.from,
+        holdPeriodMax: investmentPreferences.minInvestment.to,
+        investorStatus,
+        incomeAndNetWorth,
+      };
+      const response = await updateProfileSettings(payload);
+      if (response) {
+        router.push('/');
+      }
     }
-    router.push('/sign-up');
   };
   const assetClassesArray = [
     ...Object.keys(AssetClasses).map(key => {

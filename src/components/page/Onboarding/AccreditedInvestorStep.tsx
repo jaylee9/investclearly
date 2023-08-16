@@ -4,16 +4,22 @@ import YesNoButtons from '@/components/common/YesNoButtons';
 import { useState } from 'react';
 import Button from '@/components/common/Button';
 import { useRouter } from 'next/router';
+import { InvestorStatuses } from '@/backend/constants/enums/investor-statuses';
 
 const AccreditedInvestorStep = () => {
   const classes = useAccreditedInvestorStepStyles();
   const router = useRouter();
   const [accredited, setAccredited] = useState<'yes' | 'no'>(
-    (localStorage.getItem('accredited') as 'yes' | 'no') || 'yes'
+    (localStorage.getItem('investorStatus') as 'yes' | 'no') || 'yes'
   );
   const handleStepClick = (type: 'skip' | 'next') => {
     if (type === 'next') {
-      localStorage.setItem('accredited', accredited);
+      localStorage.setItem(
+        'investorStatus',
+        accredited === 'yes'
+          ? InvestorStatuses.accreditedInvestor
+          : InvestorStatuses.NotAccreditedInvestor
+      );
     }
     router.push('/onboarding?step=2');
   };
