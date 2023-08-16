@@ -7,31 +7,47 @@ import Layout from '@/components/common/Layout';
 import ReviewCard from '@/components/common/ReviewCard';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useSponsorPageStyles from '@/pages_styles/sponsorPageStyles';
-import { Box, Typography } from '@mui/material';
+import { Box, Fade, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
-import { SyntheticEvent, useRef, useState } from 'react';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 
 type ActiveTab = 'overview' | 'reviews';
 
 interface SponsorPageProps {
   sponsor: SponsorInterface;
+  deals: DealInterface[];
   reviews: ReviewInterface[];
 }
 
-const SponsorPage = ({ sponsor, reviews }: SponsorPageProps) => {
+const MOCK_SPONSOR_IMAGE_URL =
+  'https://logos-download.com/wp-content/uploads/2016/03/LEGO_logo-700x700.png';
+
+const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
   const classes = useSponsorPageStyles();
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('overview');
-  const [openModals, setOpenModals] = useState({
-    claimDeal: false,
-    addDeal: false,
-    suggestEdit: false,
-  });
+  const [openClaimModal, setOpenClaimModal] = useState(false);
   const overviewRef = useRef<HTMLDivElement>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
   const dealsRef = useRef<HTMLDivElement>(null);
   const [reviewsData] = useState(reviews);
+  const [dealsData] = useState(deals);
+
+  const [isSticky, setSticky] = useState(false);
+  const checkSticky = () => {
+    if (overviewRef.current) {
+      const rect = overviewRef.current.getBoundingClientRect();
+      setSticky(rect.top <= 0);
+    }
+  };
+  useEffect(() => {
+    window.addEventListener('scroll', checkSticky);
+    return () => {
+      window.removeEventListener('scroll', checkSticky);
+    };
+  }, []);
 
   const tabs = [
     {
@@ -39,9 +55,14 @@ const SponsorPage = ({ sponsor, reviews }: SponsorPageProps) => {
       label: 'Overview',
     },
     {
+      value: 'deals',
+      label: 'Deals',
+      count: sponsor.dealsCount,
+    },
+    {
       value: 'reviews',
       label: 'Reviews',
-      count: reviews.length,
+      count: sponsor.reviewsCount,
     },
   ];
   const handleTabChange = (
@@ -52,21 +73,17 @@ const SponsorPage = ({ sponsor, reviews }: SponsorPageProps) => {
       overviewRef.current.scrollIntoView({ behavior: 'smooth' });
     } else if (newValue === 'reviews' && reviewsRef.current) {
       reviewsRef.current.scrollIntoView({ behavior: 'smooth' });
-    } else if (newValue === 'reviews' && dealsRef.current) {
+    } else if (newValue === 'deals' && dealsRef.current) {
       dealsRef.current.scrollIntoView({ behavior: 'smooth' });
     }
     setActiveTab(newValue as ActiveTab);
   };
-  const handleOpenModal = (key: 'claimDeal' | 'addDeal' | 'suggestEdit') => {
-    setOpenModals(prevModals => {
-      return { ...prevModals, [key]: true };
-    });
+  const handleOpenModal = () => {
+    setOpenClaimModal(true);
   };
 
-  const handleCloseModal = (key: 'claimDeal' | 'addDeal' | 'suggestEdit') => {
-    setOpenModals(prevModals => {
-      return { ...prevModals, [key]: false };
-    });
+  const handleCloseModal = () => {
+    setOpenClaimModal(false);
   };
 
   const headerProps = useHeaderProps({
@@ -77,15 +94,36 @@ const SponsorPage = ({ sponsor, reviews }: SponsorPageProps) => {
   });
   return (
     <Layout {...headerProps}>
-      <Box>
+      <Fade in={isSticky}>
+        <Box sx={classes.fixedHeader}>123</Box>
+      </Fade>
+      <Box sx={classes.wrapper}>
         <Box sx={classes.info}>
           <Box sx={classes.infoHeader}>
-            <Box>
-              <Typography variant="h3">{sponsor.legalName}</Typography>
+            <Box sx={classes.infoHeaderMain}>
+              <Image
+                alt="sponsor image"
+                src={sponsor.businessAvatar || MOCK_SPONSOR_IMAGE_URL}
+                width={80}
+                height={80}
+              />
+              <Box>
+                <Typography variant="h3">{sponsor.legalName}</Typography>
+                <Typography variant="body1" sx={classes.sponsorRating}>
+                  <i className="icon-Star"></i>
+                  {sponsor.avgTotalRating}
+                  <span>({sponsor.reviewsCount} reviews)</span>
+                </Typography>
+              </Box>
             </Box>
-            <div>
+            <Box sx={classes.infoHeaderActions}>
               <i className="icon-Saved"></i>
-            </div>
+              <Button variant="secondary">
+                <Box sx={classes.websiteButton}>
+                  <i className="icon-Link"></i>Website
+                </Box>
+              </Button>
+            </Box>
           </Box>
           <Box sx={classes.infoContent}>
             <Box sx={classes.infoContentColumn}>
@@ -138,7 +176,7 @@ const SponsorPage = ({ sponsor, reviews }: SponsorPageProps) => {
               <Box sx={classes.overviewContent}>
                 <Typography variant="h5">Details</Typography>
                 <Box sx={classes.overviewDetails}>
-                  <Box sx={classes.overviewDetailsColumn}>
+                  <Box sx={classes.overviewDetailswrapper}>
                     <Box>
                       <Typography variant="caption">Legal Name</Typography>
                       <Typography variant="body1">
@@ -158,11 +196,21 @@ const SponsorPage = ({ sponsor, reviews }: SponsorPageProps) => {
               </Box>
             </Box>
 
+            <Box ref={dealsRef} sx={classes.overview}>
+              <Box sx={classes.dealsBlockHeader}>
+                <Typography variant="h3">Deals</Typography>
+                <Typography variant="body1">{sponsor?.dealsCount}</Typography>
+              </Box>
+              <Box sx={classes.overviewContent}></Box>
+            </Box>
+
             <Box ref={reviewsRef} sx={classes.reviewsWrapper}>
               <Box sx={classes.reviewsWrapperHeader}>
                 <Box sx={classes.reviewsWrapperTitle}>
                   <Typography variant="h3">Reviews</Typography>
-                  <Typography variant="body1">{reviewsData?.length}</Typography>
+                  <Typography variant="body1">
+                    {sponsor?.reviewsCount}
+                  </Typography>
                 </Box>
                 <Button>Write a review</Button>
               </Box>
@@ -179,19 +227,13 @@ const SponsorPage = ({ sponsor, reviews }: SponsorPageProps) => {
 
           <Box sx={classes.rightColumn}>
             <Box sx={classes.sponsorInfo}>
-              <Box sx={classes.sponsorInfoRow}>
+              <Box sx={classes.sponsorInfoColumn}>
                 <Box>
                   <Typography variant="caption">Raising</Typography>
                   <Typography variant="body1">
-                    ${sponsor.activelyRising ? 'Yes' : 'No'}
+                    {sponsor.activelyRising ? 'Yes' : 'No'}
                   </Typography>
                 </Box>
-                <Box>
-                  <Typography variant="caption">Average IRR</Typography>
-                  <Typography variant="body1">{sponsor.actualIRR}%</Typography>
-                </Box>
-              </Box>
-              <Box sx={classes.sponsorInfoRow}>
                 <Box>
                   <Typography variant="caption">
                     Average Equity Multiple
@@ -199,6 +241,12 @@ const SponsorPage = ({ sponsor, reviews }: SponsorPageProps) => {
                   <Typography variant="body1">
                     {sponsor.equityMultiple}
                   </Typography>
+                </Box>
+              </Box>
+              <Box sx={classes.sponsorInfoColumn}>
+                <Box>
+                  <Typography variant="caption">Average IRR</Typography>
+                  <Typography variant="body1">{sponsor.actualIRR}%</Typography>
                 </Box>
                 <Box>
                   <Typography variant="caption">AUM</Typography>
@@ -211,9 +259,7 @@ const SponsorPage = ({ sponsor, reviews }: SponsorPageProps) => {
               <Typography variant="body1">
                 Is Cloud Investment Ltd your company?
               </Typography>
-              <Button onClick={() => handleOpenModal('addDeal')}>
-                Claim this profile
-              </Button>
+              <Button onClick={handleOpenModal}>Claim this profile</Button>
             </Box>
           </Box>
         </Box>
@@ -233,6 +279,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   return {
     props: {
       reviews: sponsorResponse.reviews,
+      deal: sponsorResponse.deals,
       sponsor: sponsorResponse,
     },
   };
