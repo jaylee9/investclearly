@@ -5,6 +5,9 @@ import Button from '@/components/common/Button';
 import CustomTabs from '@/components/common/CustomTabs';
 import Layout from '@/components/common/Layout';
 import ReviewCard from '@/components/common/ReviewCard';
+import AddDealModal from '@/components/page/Deal/Modals/AddDeal';
+import ClaimDealModal from '@/components/page/Deal/Modals/ClaimDeal';
+import SuggestEditModal from '@/components/page/Deal/Modals/SuggestEdit';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealPageStyles from '@/pages_styles/dealPageStyles';
 import { Box, Typography } from '@mui/material';
@@ -28,6 +31,11 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
   const classes = useDealPageStyles();
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('overview');
+  const [openModals, setOpenModals] = useState({
+    claimDeal: false,
+    addDeal: false,
+    suggestEdit: false,
+  });
   const overviewRef = useRef<HTMLDivElement>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
   const [reviewsData] = useState(reviews);
@@ -53,6 +61,17 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
       reviewsRef.current.scrollIntoView({ behavior: 'smooth' });
     }
     setActiveTab(newValue as ActiveTab);
+  };
+  const handleOpenModal = (key: 'claimDeal' | 'addDeal' | 'suggestEdit') => {
+    setOpenModals(prevModals => {
+      return { ...prevModals, [key]: true };
+    });
+  };
+
+  const handleCloseModal = (key: 'claimDeal' | 'addDeal' | 'suggestEdit') => {
+    setOpenModals(prevModals => {
+      return { ...prevModals, [key]: false };
+    });
   };
 
   const headerProps = useHeaderProps({
@@ -202,7 +221,14 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                   <Typography variant="body1">
                     Sponsor is not currently aligned.
                   </Typography>
-                  <Button>Claim deal</Button>
+                  <Button onClick={() => handleOpenModal('claimDeal')}>
+                    Claim deal
+                  </Button>
+                  <ClaimDealModal
+                    open={openModals.claimDeal}
+                    handleClose={() => handleCloseModal('claimDeal')}
+                    onSubmit={data => console.log(data)}
+                  />
                 </Box>
               ) : (
                 <Box sx={classes.sponsor}>
@@ -289,16 +315,30 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
 
             <Box sx={classes.textWithButton}>
               <Typography variant="body1">Already invested?</Typography>
-              <Button>Add to your profile</Button>
+              <Button onClick={() => handleOpenModal('addDeal')}>
+                Add to your profile
+              </Button>
             </Box>
+            <AddDealModal
+              onSubmit={data => console.log(data)}
+              open={openModals.addDeal}
+              handleClose={() => handleCloseModal('addDeal')}
+            />
 
             <Box sx={classes.textWithButton}>
               <Typography variant="body1">
                 Does this deal contain any errors? Please help us maintain
                 accurate information.
               </Typography>
-              <Button>Suggest Edit</Button>
+              <Button onClick={() => handleOpenModal('suggestEdit')}>
+                Suggest Edit
+              </Button>
             </Box>
+            <SuggestEditModal
+              onSubmit={data => console.log(data)}
+              open={openModals.suggestEdit}
+              handleClose={() => handleCloseModal('suggestEdit')}
+            />
           </Box>
         </Box>
       </Box>

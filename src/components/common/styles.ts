@@ -781,3 +781,57 @@ export const useReviewCardStyles = () => {
     },
   };
 };
+
+export const useModalStyles = () => {
+  return {
+    root: {
+      padding: '32px',
+      borderRadius: '12px',
+      background: palette.common.white,
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: 'auto',
+      '& .icon-Cross': {
+        fontSize: '24px',
+        color: palette.text.secondary,
+      },
+    },
+    iconWrapper: {
+      padding: '8px',
+      border: `1px solid ${palette.background.paper}`,
+      borderRadius: '4px',
+      position: 'absolute',
+      top: 16,
+      right: 16,
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  };
+};
+
+export const useCustomTextAreaStyles = () => {
+  return {
+    root: {
+      width: '100%',
+      height: '100%',
+      fontFamily: 'Inter, sans-serif',
+      padding: '9px 16px',
+      fontSize: '15px',
+      borderRadius: '12px',
+      border: `1px solid ${palette.background.paper}`,
+      transition: 'border 0.3s ease-in-out',
+      color: palette.common.black,
+      outline: 'none',
+    },
+    errorText: {
+      position: 'absolute',
+      color: palette.error.light,
+      bottom: '-20px',
+      left: 0,
+    },
+  };
+};

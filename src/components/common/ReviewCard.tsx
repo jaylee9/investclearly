@@ -10,8 +10,6 @@ interface ReviewCardProps {
   review: ReviewInterface;
 }
 
-const MOCK_REVIEWER_NAME = 'Derek Wild';
-
 const ReviewCard = ({ review }: ReviewCardProps) => {
   const classes = useReviewCardStyles();
   return (
@@ -19,13 +17,16 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
       <Box sx={classes.reviewHeader}>
         <Box sx={classes.reviewHeaderInfo}>
           <Box sx={classes.reviewerAvatar}>
-            {/* mock name will be replaced */}
             <Typography variant="body1">
-              {getInitials(MOCK_REVIEWER_NAME)}
+              {getInitials(
+                `${review.reviewer?.firstName} ${review.reviewer?.lastName}`
+              )}
             </Typography>
           </Box>
           <Box sx={classes.reviewHeaderMainInfo}>
-            <Typography variant="h5">{MOCK_REVIEWER_NAME}</Typography>
+            <Typography variant="h5">
+              {review.reviewer?.firstName} {review.reviewer?.lastName}
+            </Typography>
             <Typography variant="caption">
               {formatDate(review.createdAt)}
             </Typography>
