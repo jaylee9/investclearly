@@ -35,7 +35,7 @@ const CustomDateRangePicker = <T extends FieldValues>({
         render={({ field: { onChange, value } }) => (
           <DatePicker
             selected={value}
-            onChange={date => onChange(date)}
+            onChange={onChange}
             customInput={
               <Input
                 showClearOption={false}
