@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { useYesNoButtonStyles } from './styles';
 
@@ -42,7 +43,7 @@ const YesNoButtons = ({
   return (
     <Box sx={classes.root}>
       {values.map(item => (
-        <>
+        <React.Fragment key={item}>
           <Box sx={blockSx(item)} onClick={() => onChange(item)}>
             <Box sx={classes.header}>
               <Box sx={radioButtonSx(item)}>
@@ -56,7 +57,7 @@ const YesNoButtons = ({
               <Typography variant="body1">{titles[item]}</Typography>
             </Box>
           </Box>
-        </>
+        </React.Fragment>
       ))}
     </Box>
   );
