@@ -19,6 +19,7 @@ import { Attachment } from './attachments.entity';
 import { Review } from './reviews.entity';
 import { SecIndustries } from '../constants/enums/sec-industries';
 import { Regulations } from '../constants/enums/regulations';
+import { Investment } from './investments.entity';
 
 @Entity({ name: 'deals' })
 export class Deal {
@@ -100,6 +101,8 @@ export class Deal {
 
   avgTotalRating: number;
 
+  isInInvestments: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -114,4 +117,7 @@ export class Deal {
 
   @PolymorphicParent(() => Attachment, { eager: false, cascade: true })
   attachments: Relation<Attachment[]>;
+
+  @OneToMany(() => Investment, investments => investments.deal)
+  investments: Relation<Investment>[];
 }
