@@ -8,6 +8,7 @@ import {
   OneToMany,
   Relation,
 } from 'typeorm';
+import { PolymorphicParent } from 'typeorm-polymorphic';
 import { AssetClasses } from '../constants/enums/asset-classes';
 import { Exemptions } from '../constants/enums/exemptions';
 import { Regions } from '../constants/enums/regions';
@@ -17,6 +18,7 @@ import { InvestmentStructures } from '../constants/enums/investment-structures';
 import { Review } from './reviews.entity';
 import { Regulations } from '../constants/enums/regulations';
 import { Interests } from '../constants/enums/interests';
+import { Bookmark } from './bookmark.entity';
 
 @Entity({ name: 'sponsors' })
 export class Sponsor {
@@ -139,4 +141,7 @@ export class Sponsor {
 
   @OneToMany(() => Review, reviews => reviews.sponsor)
   reviews: Relation<Review>[];
+
+  @PolymorphicParent(() => Bookmark, { eager: false, cascade: true })
+  bookmarks: Relation<Bookmark[]>;
 }
