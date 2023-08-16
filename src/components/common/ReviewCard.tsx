@@ -12,7 +12,6 @@ interface ReviewCardProps {
 
 const ReviewCard = ({ review }: ReviewCardProps) => {
   const classes = useReviewCardStyles();
-  console.log(review.reviewer);
   return (
     <Box sx={classes.root}>
       <Box sx={classes.reviewHeader}>
