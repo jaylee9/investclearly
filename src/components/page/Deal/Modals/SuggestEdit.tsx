@@ -8,6 +8,7 @@ import { z } from 'zod';
 import CustomTextArea from '@/components/common/TextArea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
+import { STEP1, STEP2 } from '@/config/constants';
 
 const validationSchema = z.object({
   email: z
@@ -53,7 +54,7 @@ const SuggestEditModal = ({
   return (
     <Modal onClose={handleClose} {...props}>
       <Box sx={classes.root}>
-        {step === 1 && (
+        {step === STEP1 && (
           <>
             <Typography variant="h3">Claim deal</Typography>
             <Typography variant="body1" sx={classes.subTitle}></Typography>
@@ -84,9 +85,9 @@ const SuggestEditModal = ({
             </form>
           </>
         )}
-        <Fade in={step === 2}>
+        <Fade in={step === STEP2}>
           <Box sx={classes.secondStepWrapper}>
-            {step === 2 && (
+            {step === STEP2 && (
               <>
                 <Typography variant="h3">Message sent</Typography>
                 <Typography
