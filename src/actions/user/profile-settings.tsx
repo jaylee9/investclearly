@@ -2,11 +2,14 @@ import { PublicUserInterface } from '@/backend/services/users/interfaces/public-
 import { UpdateProfileSettingsInterface } from '@/backend/services/users/interfaces/update-profile-settings.interface';
 import api from '@/config/ky';
 
-type UpdateProfileSettingPayload = Omit<
-  UpdateProfileSettingsInterface,
+export type OptionalUpdateProfileSettingsInterface =
+  Partial<UpdateProfileSettingsInterface>;
+
+export type UpdateProfileSettingPayload = Omit<
+  OptionalUpdateProfileSettingsInterface,
   'profilePicture'
 > & {
-  profilePicture: File;
+  profilePicture?: File;
 };
 
 export const updateProfileSettings = async (
