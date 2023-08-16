@@ -3,8 +3,18 @@ import theme from '@/config/theme';
 const useSponsorPageStyles = () => {
   const { palette } = theme;
   return {
+    wrapper: {
+      padding: '32px 48px',
+    },
+    fixedHeader: {
+      background: 'red',
+      position: 'fixed',
+      width: '100%',
+      zIndex: 100,
+      height: '100px',
+      top: 0,
+    },
     root: {
-      padding: '0px 48px 32px',
       display: 'flex',
       gap: '16px',
     },
@@ -25,6 +35,7 @@ const useSponsorPageStyles = () => {
       background: palette.common.white,
       padding: '40px 40px 0px',
       borderRadius: '12px',
+      marginBottom: '16px',
     },
     infoHeader: {
       display: 'flex',
@@ -42,6 +53,23 @@ const useSponsorPageStyles = () => {
         fontSize: '24px',
         color: palette.text.secondary,
         cursor: 'pointer',
+      },
+    },
+    infoHeaderMain: {
+      display: 'flex',
+      gap: '24px',
+    },
+    infoHeaderActions: {
+      display: 'flex',
+      gap: '20px',
+      alignItems: 'center',
+    },
+    websiteButton: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      '& .icon-Link': {
+        fontSize: '24px',
       },
     },
     infoContent: {
@@ -99,16 +127,30 @@ const useSponsorPageStyles = () => {
       display: 'flex',
       justifyContent: 'space-between',
     },
-    overviewDetailsColumn: {
+    overviewDetailswrapper: {
       display: 'flex',
-      flexDirection: 'column',
-      gap: '12px',
+      width: '60%',
+      justifyContent: 'space-between',
       '& span': {
         color: palette.text.disabled,
         marginBottom: '4px',
       },
       '& p': {
         fontWeight: 500,
+      },
+    },
+    dealsBlockHeader: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      '& h3': {
+        fontWeight: 600,
+      },
+      '& p': {
+        padding: '2px 8px',
+        background: palette.background.default,
+        borderRadius: '20px',
+        color: palette.text.secondary,
       },
     },
     textWithButton: {
@@ -142,8 +184,7 @@ const useSponsorPageStyles = () => {
       background: palette.common.white,
       borderRadius: '12px',
       display: 'flex',
-      flexDirection: 'column',
-      gap: '20px',
+      gap: '16px',
       '& span': {
         color: palette.text.disabled,
       },
@@ -151,18 +192,20 @@ const useSponsorPageStyles = () => {
         fontWeight: 500,
       },
     },
-    sponsorInfoRow: {
+    sponsorInfoColumn: {
       display: 'flex',
-      gap: '16px',
+      flexDirection: 'column',
+      gap: '20px',
     },
     sponsorRating: {
-      color: palette.secondary.main,
+      color: `${palette.secondary.main} !important`,
       display: 'flex',
       alignItems: 'center',
       gap: '4px',
       fontWeight: 600,
       '& .icon-Star': {
         fontSize: '16px',
+        color: palette.secondary.main,
       },
       '& span': {
         fontWeight: 400,
