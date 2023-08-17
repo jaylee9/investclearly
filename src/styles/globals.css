@@ -14,12 +14,3 @@ body {
   background-color: #717c89;
   border-radius: 50%;
 }
-
-/* @keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-} */
