@@ -5,15 +5,12 @@ import { useGlobalSearchStyles } from './styles';
 import { Box, Fade, Typography } from '@mui/material';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
 import Link from 'next/link';
-import Image from 'next/image';
 import { GlobalSearchResponse, globalSearch } from '@/actions/common';
 import { useQuery } from 'react-query';
 import { debounce } from 'lodash';
 import Loading from '@/components/common/Loading';
 import { useRouter } from 'next/router';
-
-const MOCK_IMAGE_URL =
-  'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
+import PlaceholderImage from '@/components/common/PlaceholderImage';
 
 export enum GlobalSearchVariant {
   BASE = 'base',
@@ -32,7 +29,7 @@ const GlobalSearch = ({
 }: GlobalSearchProps) => {
   const classes = useGlobalSearchStyles();
   const router = useRouter();
-  const { search } = router.query;
+  const { search, type } = router.query;
   const [isOpenGlobalSearch, setIsOpenGlobalSearch] = useState(false);
   const [value, setValue] = useState(search || '');
   const [globalSearchValue, setGlobalSearchValue] = useState(
@@ -80,12 +77,37 @@ const GlobalSearch = ({
       },
     }
   );
+
+  const searchType = data?.sponsors?.length
+    ? type === 'sponsors' && 'sponsors'
+    : 'deals';
+
+  const searchLink = `/list?type=${searchType}&search=${globalSearchValue}`;
+
   const handleClearInput = () => {
+    setValue('');
     setGlobalSearchValue('');
+    router.push(`/list?type=${searchType}`);
+    if (onChangeSearch) {
+      onChangeSearch('');
+    }
   };
-  const searchLink = `/list?type=${
-    data?.deals?.length ? 'deals' : 'sponsors'
-  }&search=${globalSearchValue}`;
+
+  const handleSearchSubmit = () => {
+    if (globalSearchValue.trim() !== '') {
+      setIsOpenGlobalSearch(false);
+      router.push(searchLink);
+      if (onChangeSearch) {
+        onChangeSearch(globalSearchValue);
+      }
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleSearchSubmit();
+    }
+  };
   useOnClickOutside(ref, handleClose);
   return (
     <Box ref={ref} onClick={handleOpen} sx={classes.root}>
@@ -98,6 +120,7 @@ const GlobalSearch = ({
           placeholder="Deals, Sponsors, and Asset Class"
           customStyles={classes.searchInput}
           height="large"
+          onKeyDown={handleKeyDown}
           endComponent={
             <Link href={searchLink}>
               <Button
@@ -124,6 +147,7 @@ const GlobalSearch = ({
           onClear={handleClearInput}
           value={value}
           customStyles={classes.baseSearchInput}
+          onKeyDown={handleKeyDown}
         />
       )}
       {isOpenGlobalSearch && (
@@ -146,14 +170,15 @@ const GlobalSearch = ({
                   </Link>
                 </Box>
                 <Box>
-                  {data.deals.map(deal => (
+                  {data?.deals?.map(deal => (
                     <Box sx={classes.blockListItem} key={deal.id}>
-                      <Image
-                        src={MOCK_IMAGE_URL}
+                      <PlaceholderImage
+                        src={deal?.attachments?.[0]?.path as string}
                         alt="Deal image"
                         width={48}
                         height={48}
                         style={classes.blockListItemImage}
+                        defaultImage="/assets/Sponsor-placeholder.png"
                       />
                       <Box>
                         <Typography
@@ -216,14 +241,15 @@ const GlobalSearch = ({
                   </Link>
                 </Box>
                 <Box>
-                  {data.sponsors.map(sponsor => (
+                  {data?.sponsors?.map(sponsor => (
                     <Box sx={classes.blockListItem} key={sponsor.id}>
-                      <Image
-                        src={MOCK_IMAGE_URL}
+                      <PlaceholderImage
+                        src={sponsor.businessAvatar as string}
                         alt="Deal image"
                         width={48}
                         height={48}
                         style={classes.blockListItemImage}
+                        defaultImage="/assets/Sponsor-placeholder.png"
                       />
                       <Box>
                         <Typography
@@ -257,19 +283,16 @@ const GlobalSearch = ({
             )}
             {globalSearchValue &&
               !isLoading &&
-              (!!data.deals.length || !!data.sponsors.length) && (
+              (!!data?.deals?.length || !!data?.sponsors?.length) && (
                 <Fade in={Boolean(globalSearchValue)}>
-                  <Link
-                    href={`/list?type=deals&search=${globalSearchValue}`}
-                    onClick={handleShowAllLinkClick}
-                  >
+                  <Link href={searchLink} onClick={handleShowAllLinkClick}>
                     <Typography sx={classes.showAllLink} variant="body1">
                       Show all results for {globalSearchValue}
                     </Typography>
                   </Link>
                 </Fade>
               )}
-            {!data?.deals.length && !data?.sponsors.length && (
+            {!data?.deals?.length && !data?.sponsors?.length && (
               <Typography variant="caption" sx={classes.noResults}>
                 No results found
               </Typography>
