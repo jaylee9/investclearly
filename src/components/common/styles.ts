@@ -532,7 +532,7 @@ export const useSponsorCardStyles = () => {
     },
     largeRoot: {
       display: 'flex',
-      borderRadius: '0px 12px 12px 0px',
+      borderRadius: '12px',
       width: '100%',
       background: palette.common.white,
       gap: '16px',
