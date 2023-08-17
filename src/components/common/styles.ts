@@ -259,6 +259,13 @@ export const useDealCardStyles = () => {
         color: palette.text.secondary,
         cursor: 'pointer',
       },
+      '& h5': {
+        fontWeight: 600,
+        maxWidth: '700px',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      },
     },
     largeHeaderLeftColumn: {
       display: 'flex',

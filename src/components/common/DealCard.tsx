@@ -88,9 +88,7 @@ const DealCard = ({
               </Typography>
             )} */}
             <Link href={`/deals/${deal.id}`}>
-              <Typography variant="h5" fontWeight={600}>
-                {deal.dealTitle}
-              </Typography>
+              <Typography variant="h5">{deal.dealTitle}</Typography>
             </Link>
             <Box sx={classes.sponsorInfo}>
               <Typography variant="caption">{deal.dealSponsor}</Typography>
