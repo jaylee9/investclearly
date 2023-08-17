@@ -508,6 +508,7 @@ export const useSponsorCardStyles = () => {
       borderRadius: '12px',
       boxShadow: theme.customShadows.header,
       border: `1px solid ${theme.palette.background.paper}`,
+      height: '202px',
     },
     baseImage: {
       borderRadius: '100px',

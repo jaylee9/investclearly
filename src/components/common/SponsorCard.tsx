@@ -1,11 +1,8 @@
 import { Box, Typography } from '@mui/material';
 import { BoxProps } from '@mui/material';
-import Image from 'next/image';
 import { useSponsorCardStyles } from './styles';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
-
-const MOCK_IMAGE_URL =
-  'https://s3.amazonaws.com/cdn.designcrowd.com/blog/2017/April/35-Famous-Circle-Logos/19_400.png';
+import PlaceholderImage from './PlaceholderImage';
 
 export enum SponsorCardVariant {
   Base = 'base',
@@ -24,12 +21,13 @@ const SponsorCard = ({
   const classes = useSponsorCardStyles();
   return variant === SponsorCardVariant.Base ? (
     <Box sx={classes.baseWrapper}>
-      <Image
-        src={MOCK_IMAGE_URL}
+      <PlaceholderImage
+        src={sponsor.businessAvatar as string}
         width={72}
         height={72}
         alt="sponsor image"
         style={classes.baseImage}
+        type="sponsor"
       />
       <Typography variant="h5" fontWeight={600}>
         {sponsor.legalName}
@@ -46,7 +44,14 @@ const SponsorCard = ({
     </Box>
   ) : (
     <Box sx={classes.largeRoot}>
-      <Image src={MOCK_IMAGE_URL} alt="sponsor image" width={96} height={96} />
+      <PlaceholderImage
+        src={sponsor.businessAvatar as string}
+        alt="sponsor image"
+        width={96}
+        height={96}
+        type="sponsor"
+        style={{ borderRadius: '1230px' }}
+      />
       <Box sx={classes.largeContent}>
         <Box sx={classes.largeHeader}>
           <Box sx={classes.largeHeaderLeftColumn}>

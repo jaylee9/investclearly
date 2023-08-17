@@ -65,6 +65,7 @@ const SponsorsComponent = ({
   const changedFilters = filterDifferences(filters, defaultFilters);
   const isChangedFilters = !!Object.values(changedFilters).length;
   const handleChangeSelect = (value: 'DESC' | 'ASC') => {
+    setPage(1);
     setOrderDirection(value);
   };
   const changedFiltersAfterApply = filterDifferences(
@@ -150,16 +151,16 @@ const SponsorsComponent = ({
   };
   const formattedAppliedFilters = formatFilters(changedFiltersAfterApply);
 
-  const payload = Object.entries(changedFilters).length
+  const payload = Object.entries(changedFiltersAfterApply).length
     ? {
-        page: 1,
+        page,
         pageSize: 10,
         orderDirection,
         search: searchValue,
-        ...changedFilters,
+        ...changedFiltersAfterApply,
       }
     : {
-        page: 1,
+        page,
         pageSize: 10,
         orderDirection,
         search: searchValue,
@@ -170,13 +171,13 @@ const SponsorsComponent = ({
     () => getAllSponsors(payload),
     {
       onSuccess: data => {
-        setPage(1);
         setSponsorsData(data);
       },
       keepPreviousData: true,
     }
   );
   const handleApplyFilters = () => {
+    setPage(1);
     setAppliedFilters(filters);
     refetch();
   };
