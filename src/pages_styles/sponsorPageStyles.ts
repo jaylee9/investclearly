@@ -193,20 +193,6 @@ const useSponsorPageStyles = () => {
         fontWeight: 600,
       },
     },
-    sponsor: {
-      padding: '24px 28px',
-      display: 'flex',
-      gap: '16px',
-      background: palette.common.white,
-      borderRadius: '12px',
-      '& img': {
-        borderRadius: '12px',
-      },
-      '& h5': {
-        fontWeight: 600,
-        marginBottom: '4px',
-      },
-    },
     sponsorInfo: {
       padding: '24px 28px',
       background: palette.common.white,
