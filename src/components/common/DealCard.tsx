@@ -5,6 +5,7 @@ import { useDealCardStyles } from './styles';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import Link from 'next/link';
 import PlaceholderImage from './PlaceholderImage';
+import { DEFAULT_DEAL_IMAGE } from '@/config/constants';
 
 export enum DealCardVariant {
   Base = 'base',
@@ -22,14 +23,13 @@ const DealCard = ({
   ...props
 }: DealCardProps) => {
   const classes = useDealCardStyles();
-  const defaultImage = '/assets/Deal-placeholder.png';
   return variant === DealCardVariant.Base ? (
     <Box
       sx={{
         ...props.sx,
         background: theme.palette.common.white,
-        height: '100%',
         borderRadius: '12px',
+        height: '332px',
       }}
       display="flex"
       flexDirection="column"
@@ -46,7 +46,7 @@ const DealCard = ({
           width: '100%',
           objectFit: 'cover',
         }}
-        defaultImage={defaultImage}
+        defaultImage={DEFAULT_DEAL_IMAGE}
       />
       <Box sx={classes.baseDealCardContent}>
         <Link href={`/deals/${deal.id}`}>
@@ -81,7 +81,7 @@ const DealCard = ({
           borderRadius: '12px 0px 0px 12px',
           objectFit: 'cover',
         }}
-        defaultImage={defaultImage}
+        defaultImage={DEFAULT_DEAL_IMAGE}
       />
       <Box sx={classes.largeContent}>
         <Box sx={classes.largeHeader}>
