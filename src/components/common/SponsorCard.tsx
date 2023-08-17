@@ -5,9 +5,6 @@ import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor
 import PlaceholderImage from './PlaceholderImage';
 import Link from 'next/link';
 
-const MOCK_IMAGE_URL =
-  'https://s3.amazonaws.com/cdn.designcrowd.com/blog/2017/April/35-Famous-Circle-Logos/19_400.png';
-
 export enum SponsorCardVariant {
   Base = 'base',
   Large = 'large',
