@@ -76,6 +76,7 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
     isSignIn: true,
     isSearch: true,
   });
+  const defaultSponsorImage = '/assets/Sponsor-placeholder.png';
   return (
     <Layout {...headerProps}>
       <Box>
@@ -237,7 +238,7 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                     width={58}
                     height={58}
                     src={deal.sponsor.businessAvatar as string}
-                    type="sponsor"
+                    defaultImage={defaultSponsorImage}
                   />
                   <Box>
                     <Typography variant="h5">

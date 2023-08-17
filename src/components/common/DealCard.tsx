@@ -22,6 +22,7 @@ const DealCard = ({
   ...props
 }: DealCardProps) => {
   const classes = useDealCardStyles();
+  const defaultImage = '/assets/Deal-placeholder.png';
   return variant === DealCardVariant.Base ? (
     <Box
       sx={{
@@ -44,6 +45,7 @@ const DealCard = ({
           width: '100%',
           objectFit: 'cover',
         }}
+        defaultImage={defaultImage}
       />
       <Box sx={classes.baseDealCardContent}>
         <Link href={`/deals/${deal.id}`}>
@@ -78,6 +80,7 @@ const DealCard = ({
           borderRadius: '12px 0px 0px 12px',
           objectFit: 'cover',
         }}
+        defaultImage={defaultImage}
       />
       <Box sx={classes.largeContent}>
         <Box sx={classes.largeHeader}>

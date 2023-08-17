@@ -3,25 +3,16 @@ import SkeletonImage from './SkeletonImage';
 
 interface SkeletonImageProps extends Omit<ImageProps, 'onLoadingComplete'> {
   alt: string;
-  type?: 'deal' | 'sponsor';
+  defaultImage: string;
 }
 
 const PlaceholderImage: React.FC<SkeletonImageProps> = ({
-  type = 'deal',
+  defaultImage,
   ...props
 }) => {
-  const placeholderSrc =
-    type === 'deal'
-      ? '/assets/Deal-placeholder.png'
-      : '/assets/Sponsor-placeholder.png';
   const { alt, src, ...rest } = props;
   return (
-    <SkeletonImage
-      alt={alt}
-      quality={90}
-      src={src || placeholderSrc}
-      {...rest}
-    />
+    <SkeletonImage alt={alt} quality={90} src={src || defaultImage} {...rest} />
   );
 };
 

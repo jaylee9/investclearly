@@ -19,6 +19,7 @@ const SponsorCard = ({
   sponsor,
 }: SponsorCardProps) => {
   const classes = useSponsorCardStyles();
+  const defaultImage = '/assets/Sponsor-placeholder.png';
   return variant === SponsorCardVariant.Base ? (
     <Box sx={classes.baseWrapper}>
       <PlaceholderImage
@@ -27,7 +28,7 @@ const SponsorCard = ({
         height={72}
         alt="sponsor image"
         style={classes.baseImage}
-        type="sponsor"
+        defaultImage={defaultImage}
       />
       <Typography variant="h5" fontWeight={600}>
         {sponsor.legalName}
@@ -49,8 +50,8 @@ const SponsorCard = ({
         alt="sponsor image"
         width={96}
         height={96}
-        type="sponsor"
         style={{ borderRadius: '1230px' }}
+        defaultImage={defaultImage}
       />
       <Box sx={classes.largeContent}>
         <Box sx={classes.largeHeader}>
