@@ -60,9 +60,14 @@ const GlobalSearch = ({
     setValue(e.target.value);
   };
 
-  const handleShowAllLinkClick = (event: React.MouseEvent) => {
+  const handleCloseGlobalSearch = (event: React.MouseEvent) => {
     event.stopPropagation();
     setIsOpenGlobalSearch(false);
+  };
+
+  const handleShowAllLinkClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    handleCloseGlobalSearch(event);
     if (onChangeSearch) {
       onChangeSearch(globalSearchValue);
     }
@@ -87,9 +92,12 @@ const GlobalSearch = ({
   const handleClearInput = () => {
     setValue('');
     setGlobalSearchValue('');
-    router.push(`/list?type=${searchType}`);
-    if (onChangeSearch) {
-      onChangeSearch('');
+    setIsOpenGlobalSearch(false);
+    if (type) {
+      router.push(`/list?type=${searchType}`);
+      if (onChangeSearch) {
+        onChangeSearch('');
+      }
     }
   };
 
@@ -181,7 +189,10 @@ const GlobalSearch = ({
                         defaultImage="/assets/Sponsor-placeholder.png"
                       />
                       <Box>
-                        <Link href={`/deals/${deal.id}`}>
+                        <Link
+                          href={`/deals/${deal.id}`}
+                          onClick={handleCloseGlobalSearch}
+                        >
                           <Typography
                             variant="body1"
                             sx={classes.blockListItemContentTitle}
@@ -254,7 +265,10 @@ const GlobalSearch = ({
                         defaultImage="/assets/Sponsor-placeholder.png"
                       />
                       <Box>
-                        <Link href={`/sponsors/${sponsor.id}`}>
+                        <Link
+                          href={`/sponsors/${sponsor.id}`}
+                          onClick={handleCloseGlobalSearch}
+                        >
                           <Typography
                             variant="body1"
                             sx={classes.blockListItemContentTitle}
