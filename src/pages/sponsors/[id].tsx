@@ -138,7 +138,11 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
                 width={80}
                 height={80}
                 defaultImage={DEFAULT_SPONSOR_IMAGE}
-                style={{ borderRadius: '1230px' }}
+                style={{
+                  borderRadius: '1230px',
+                  minHeight: '80px',
+                  maxWidth: '80px',
+                }}
               />
               <Box>
                 <Typography variant="h3">{sponsor.legalName}</Typography>
