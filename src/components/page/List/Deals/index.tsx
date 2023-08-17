@@ -128,14 +128,14 @@ const DealsComponent = ({
 
   const payload = Object.entries(changedFilters).length
     ? {
-        page,
+        page: 1,
         pageSize: 10,
         orderDirection,
         search: searchValue,
         ...changedFilters,
       }
     : {
-        page,
+        page: 1,
         pageSize: 10,
         orderDirection,
         search: searchValue,
@@ -147,6 +147,7 @@ const DealsComponent = ({
     () => getAllDeals(payload),
     {
       onSuccess: data => {
+        setPage(1);
         setDealsData(data);
       },
       keepPreviousData: true,
@@ -254,6 +255,11 @@ const DealsComponent = ({
     }
   };
   const formattedAppliedFilters = formatFilters(changedFiltersAfterApply);
+
+  const handleChangePaginate = (page: number) => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    setPage(page);
+  };
   return (
     <>
       <ColumnsComponent
@@ -335,7 +341,7 @@ const DealsComponent = ({
             <CustomPagination
               count={dealsData.lastPage}
               page={page}
-              onChange={(event, value) => setPage(value)}
+              onChange={(event, value) => handleChangePaginate(value)}
             />
           </>
         }

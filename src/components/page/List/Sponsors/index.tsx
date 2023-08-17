@@ -152,14 +152,14 @@ const SponsorsComponent = ({
 
   const payload = Object.entries(changedFilters).length
     ? {
-        page,
+        page: 1,
         pageSize: 10,
         orderDirection,
         search: searchValue,
         ...changedFilters,
       }
     : {
-        page,
+        page: 1,
         pageSize: 10,
         orderDirection,
         search: searchValue,
@@ -170,6 +170,7 @@ const SponsorsComponent = ({
     () => getAllSponsors(payload),
     {
       onSuccess: data => {
+        setPage(1);
         setSponsorsData(data);
       },
       keepPreviousData: true,
@@ -192,6 +193,11 @@ const SponsorsComponent = ({
   const firstItem = (page - 1) * 10 + 1;
   const lastItem =
     page * 10 > sponsorsData.total ? sponsorsData.total : page * 10;
+
+  const handleChangePaginate = (page: number) => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    setPage(page);
+  };
   return (
     <ColumnsComponent
       count={sponsorsData.total}
@@ -287,7 +293,7 @@ const SponsorsComponent = ({
           <CustomPagination
             count={sponsorsData.lastPage}
             page={page}
-            onChange={(event, value) => setPage(value)}
+            onChange={(event, value) => handleChangePaginate(value)}
           />
         </>
       }

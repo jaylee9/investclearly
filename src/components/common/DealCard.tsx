@@ -45,9 +45,11 @@ const DealCard = ({
         style={{ borderRadius: '12px 12px 0px 0px', width: '100%' }}
       />
       <Box sx={classes.baseDealCardContent}>
-        <Typography variant="h5" sx={classes.baseDealName}>
-          {deal.dealTitle}
-        </Typography>
+        <Link href={`/deals/${deal.id}`}>
+          <Typography variant="h5" sx={classes.baseDealName}>
+            {deal.dealTitle}
+          </Typography>
+        </Link>
         <Typography variant="body1" sx={classes.baseDealLocation}>
           {Array.isArray(deal.regions) ? deal.regions.join(', ') : deal.regions}
         </Typography>
