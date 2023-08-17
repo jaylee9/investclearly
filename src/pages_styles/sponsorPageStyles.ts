@@ -158,6 +158,7 @@ const useSponsorPageStyles = () => {
       display: 'flex',
       alignItems: 'center',
       gap: '8px',
+      marginBottom: '16px',
       '& h3': {
         fontWeight: 600,
       },
@@ -172,6 +173,7 @@ const useSponsorPageStyles = () => {
       display: 'flex',
       gap: '12px',
       alignItems: 'center',
+      marginBottom: '16px',
     },
     textWithButton: {
       padding: '24px 28px',
@@ -265,7 +267,7 @@ const useSponsorPageStyles = () => {
       gap: '8px',
       marginBottom: '16px',
     },
-    showMoreReviews: {
+    showMoreLink: {
       cursor: 'pointer',
       color: palette.primary.light,
       display: 'flex',
