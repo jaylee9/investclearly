@@ -239,9 +239,11 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
                   <DealCard key={deal.id} deal={deal} sx={{ width: '33%' }} />
                 ))}
               </Box>
-              <Typography variant="body1" sx={classes.showMoreLink}>
-                Show more deals <i className="icon-Caret-down"></i>
-              </Typography>
+              {!!sponsor.dealsCount && sponsor.dealsCount > 3 && (
+                <Typography variant="body1" sx={classes.showMoreLink}>
+                  Show more deals <i className="icon-Caret-down"></i>
+                </Typography>
+              )}
             </Box>
 
             <Box ref={reviewsRef} sx={classes.reviewsWrapper}>
@@ -259,9 +261,11 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
                   <ReviewCard review={review} key={review.id} />
                 ))}
               </Box>
-              <Typography variant="body1" sx={classes.showMoreLink}>
-                Show more reviews <i className="icon-Caret-down"></i>
-              </Typography>
+              {!!sponsor.reviewsCount && sponsor.reviewsCount > 3 && (
+                <Typography variant="body1" sx={classes.showMoreLink}>
+                  Show more reviews <i className="icon-Caret-down"></i>
+                </Typography>
+              )}
             </Box>
           </Box>
 
