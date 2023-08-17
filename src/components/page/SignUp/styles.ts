@@ -57,6 +57,8 @@ export const useConfirmEmailStyles = () => {
     },
     verificationInputWrapper: {
       marginBottom: '32px',
+      display: 'flex',
+      justifyContent: 'center',
     },
     sendAgainText: {
       cursor: 'pointer',
