@@ -12,6 +12,7 @@ import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
+import DealCard from '@/components/common/DealCard';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -231,7 +232,11 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
                 <Typography variant="h3">Deals</Typography>
                 <Typography variant="body1">{sponsor?.dealsCount}</Typography>
               </Box>
-              <Box sx={classes.overviewContent}></Box>
+              <Box sx={classes.dealsBlockContent}>
+                {dealsData
+                  ?.splice(0, 3)
+                  .map(deal => <DealCard key={deal.id} deal={deal} />)}
+              </Box>
             </Box>
 
             <Box ref={reviewsRef} sx={classes.reviewsWrapper}>
@@ -309,7 +314,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   return {
     props: {
       reviews: sponsorResponse.reviews,
-      deal: sponsorResponse.deals,
+      deals: sponsorResponse.deals,
       sponsor: sponsorResponse,
     },
   };
