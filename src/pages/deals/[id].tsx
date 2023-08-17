@@ -4,6 +4,7 @@ import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.in
 import Button from '@/components/common/Button';
 import CustomTabs from '@/components/common/CustomTabs';
 import Layout from '@/components/common/Layout';
+import PlaceholderImage from '@/components/common/PlaceholderImage';
 import ReviewCard from '@/components/common/ReviewCard';
 import SkeletonImage from '@/components/common/SkeletonImage';
 import AddDealModal from '@/components/page/Deal/Modals/AddDeal';
@@ -235,11 +236,12 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                 </Box>
               ) : (
                 <Box sx={classes.sponsor}>
-                  <Image
+                  <PlaceholderImage
                     alt="sponsor avatar"
                     width={58}
                     height={58}
-                    src={MOCK_SPONSOR_IMAGE_URL}
+                    src={deal.sponsor.businessAvatar as string}
+                    type="sponsor"
                   />
                   <Box>
                     <Typography variant="h5">
