@@ -28,7 +28,7 @@ const DealCard = ({
       sx={{
         ...props.sx,
         background: theme.palette.common.white,
-        height: '100%',
+        height: '332px',
       }}
       display="flex"
       flexDirection="column"

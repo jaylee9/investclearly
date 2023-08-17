@@ -34,13 +34,13 @@ const useSponsorPageStyles = () => {
       gap: '16px',
     },
     leftColumn: {
-      width: '78%',
+      width: '70%',
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
     },
     rightColumn: {
-      width: '22%',
+      width: '30%',
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
