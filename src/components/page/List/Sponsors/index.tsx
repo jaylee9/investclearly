@@ -239,7 +239,7 @@ const SponsorsComponent = ({
             <span style={{ fontWeight: 600 }}>
               {sponsorsData.total} Sponsors
             </span>{' '}
-            found for Invest
+            found {!!searchValue && `for ${searchValue}`}
           </Typography>
           <Box sx={classes.selectWrapper}>
             <Typography variant="body1">Sort by:</Typography>
