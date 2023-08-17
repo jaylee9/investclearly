@@ -1,18 +1,33 @@
 import theme from '@/config/theme';
 
 const useSponsorPageStyles = () => {
-  const { palette } = theme;
+  const { palette, customShadows } = theme;
   return {
     wrapper: {
       padding: '32px 48px',
     },
     fixedHeader: {
-      background: 'red',
+      background: palette.common.white,
       position: 'fixed',
       width: '100%',
       zIndex: 100,
-      height: '100px',
       top: 0,
+      padding: '12px 48px 0px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      boxShadow: customShadows.header,
+    },
+    fixedHeaderInfo: {
+      display: 'flex',
+      gap: '16px',
+      alignItems: 'center',
+      paddingBottom: '12px',
+      '& img': {
+        borderRadius: '1230px',
+      },
+      '& h5': {
+        fontWeight: 600,
+      },
     },
     root: {
       display: 'flex',
@@ -49,11 +64,6 @@ const useSponsorPageStyles = () => {
       '& p': {
         color: palette.text.secondary,
       },
-      '& .icon-Saved': {
-        fontSize: '24px',
-        color: palette.text.secondary,
-        cursor: 'pointer',
-      },
     },
     infoHeaderMain: {
       display: 'flex',
@@ -63,6 +73,11 @@ const useSponsorPageStyles = () => {
       display: 'flex',
       gap: '20px',
       alignItems: 'center',
+      '& .icon-Saved': {
+        fontSize: '24px',
+        color: palette.text.secondary,
+        cursor: 'pointer',
+      },
     },
     websiteButton: {
       display: 'flex',

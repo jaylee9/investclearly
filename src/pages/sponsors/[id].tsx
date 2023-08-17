@@ -35,11 +35,11 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
   const [reviewsData] = useState(reviews);
   const [dealsData] = useState(deals);
 
-  const [isSticky, setSticky] = useState(false);
+  const [isFixedHeader, setFixedHeader] = useState(false);
   const checkSticky = () => {
     if (overviewRef.current) {
       const rect = overviewRef.current.getBoundingClientRect();
-      setSticky(rect.top <= 0);
+      setFixedHeader(rect.top <= 0);
     }
   };
   useEffect(() => {
@@ -94,8 +94,38 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
   });
   return (
     <Layout {...headerProps}>
-      <Fade in={isSticky}>
-        <Box sx={classes.fixedHeader}>123</Box>
+      <Fade in={isFixedHeader}>
+        <Box sx={classes.fixedHeader}>
+          <Box sx={classes.fixedHeaderInfo}>
+            <Image
+              alt="sponsor image"
+              width={56}
+              height={56}
+              src={MOCK_SPONSOR_IMAGE_URL}
+            />
+            <Box>
+              <Typography variant="h5">{sponsor.legalName}</Typography>
+              <Typography variant="body1" sx={classes.sponsorRating}>
+                <i className="icon-Star"></i>
+                {sponsor.avgTotalRating}
+                <span>({sponsor.reviewsCount})</span>
+              </Typography>
+            </Box>
+          </Box>
+          <CustomTabs
+            tabs={tabs}
+            onChange={handleTabChange}
+            value={activeTab}
+          />
+          <Box sx={classes.infoHeaderActions}>
+            <i className="icon-Saved"></i>
+            <Button variant="secondary">
+              <Box sx={classes.websiteButton}>
+                <i className="icon-Link"></i>Website
+              </Box>
+            </Button>
+          </Box>
+        </Box>
       </Fade>
       <Box sx={classes.wrapper}>
         <Box sx={classes.info}>
