@@ -14,6 +14,7 @@ import { DealInterface } from '@/backend/services/deals/interfaces/deal.interfac
 import DealCard from '@/components/common/DealCard';
 import PlaceholderImage from '@/components/common/PlaceholderImage';
 import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
+import ClaimCompanyModal from '@/components/page/Sponsor/Modals/ClaimCompany';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -309,6 +310,11 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
               </Typography>
               <Button onClick={handleOpenModal}>Claim this profile</Button>
             </Box>
+            <ClaimCompanyModal
+              onSubmit={data => console.log(data)}
+              open={openClaimModal}
+              handleClose={handleCloseModal}
+            />
           </Box>
         </Box>
       </Box>
