@@ -175,6 +175,12 @@ const useSponsorPageStyles = () => {
       alignItems: 'center',
       marginBottom: '16px',
     },
+    dealCard: {
+      width: '33%',
+      '& h5': {
+        maxWidth: '340px',
+      },
+    },
     textWithButton: {
       padding: '24px 28px',
       display: 'flex',

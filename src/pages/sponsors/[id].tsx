@@ -236,7 +236,7 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
               </Box>
               <Box sx={classes.dealsBlockContent}>
                 {dealsData?.map(deal => (
-                  <DealCard key={deal.id} deal={deal} sx={{ width: '33%' }} />
+                  <DealCard key={deal.id} deal={deal} sx={classes.dealCard} />
                 ))}
               </Box>
               {!!sponsor.dealsCount && sponsor.dealsCount > 3 && (
