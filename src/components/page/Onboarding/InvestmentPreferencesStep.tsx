@@ -69,7 +69,9 @@ const InvestmentPreferencesStep = () => {
       };
       const response = await updateProfileSettings(payload);
       if (response) {
-        localStorage.clear();
+        localStorage.removeItem('investmentPreferences');
+        localStorage.removeItem('investorStatus');
+        localStorage.removeItem('incomeAndNetWorth');
         router.push('/');
       }
     }
