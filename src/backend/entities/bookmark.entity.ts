@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   Column,
+  Relation,
 } from 'typeorm';
 import { User } from './user.entity';
 import { PolymorphicChildInterface } from 'typeorm-polymorphic/dist/polymorphic.interface';
@@ -23,8 +24,8 @@ export class Bookmark implements PolymorphicChildInterface {
   @Column({ type: 'int', nullable: false })
   userId: number;
 
-  @ManyToOne(() => User, { onDelete: 'NO ACTION' })
-  user: User;
+  @ManyToOne(() => User, users => users.bookmarks)
+  user: Relation<User>;
 
   @CreateDateColumn()
   createdAt: Date;
