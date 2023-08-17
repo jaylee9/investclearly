@@ -36,6 +36,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     maxRating = ReviewConstants.minAndMaxRatings.maxRating,
     sponsorId,
     regulations = [],
+    entityIds = [],
   } = params;
 
   const connection = await getDatabaseConnection();
@@ -63,6 +64,15 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
       'deals.sponsorId = :sponsorId',
       {
         sponsorId,
+      }
+    );
+  }
+
+  if (entityIds?.length) {
+    averageRatingQuery = averageRatingQuery.andWhere(
+      'deals.id IN (:...entityIds)',
+      {
+        entityIds,
       }
     );
   }
@@ -192,6 +202,12 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
           });
       })
     );
+  }
+
+  if (entityIds?.length) {
+    searchQuery = searchQuery.andWhere('deals.id IN (:...entityIds)', {
+      entityIds,
+    });
   }
 
   if (limit) {
