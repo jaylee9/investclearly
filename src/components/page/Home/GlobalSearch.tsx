@@ -181,12 +181,14 @@ const GlobalSearch = ({
                         defaultImage="/assets/Sponsor-placeholder.png"
                       />
                       <Box>
-                        <Typography
-                          variant="body1"
-                          sx={classes.blockListItemContentTitle}
-                        >
-                          {deal.dealLegalName}
-                        </Typography>
+                        <Link href={`/deals/${deal.id}`}>
+                          <Typography
+                            variant="body1"
+                            sx={classes.blockListItemContentTitle}
+                          >
+                            {deal.dealLegalName}
+                          </Typography>
+                        </Link>
                         <Typography
                           variant="caption"
                           sx={classes.blockListItemDefaultText}
@@ -252,12 +254,14 @@ const GlobalSearch = ({
                         defaultImage="/assets/Sponsor-placeholder.png"
                       />
                       <Box>
-                        <Typography
-                          variant="body1"
-                          sx={classes.blockListItemContentTitle}
-                        >
-                          {sponsor.legalName}
-                        </Typography>
+                        <Link href={`/sponsors/${sponsor.id}`}>
+                          <Typography
+                            variant="body1"
+                            sx={classes.blockListItemContentTitle}
+                          >
+                            {sponsor.legalName}
+                          </Typography>
+                        </Link>
                         <Typography
                           variant="caption"
                           sx={classes.sponsorRating}
