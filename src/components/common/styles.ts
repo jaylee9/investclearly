@@ -259,6 +259,13 @@ export const useDealCardStyles = () => {
         color: palette.text.secondary,
         cursor: 'pointer',
       },
+      '& h5': {
+        fontWeight: 600,
+        maxWidth: '700px',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      },
     },
     largeHeaderLeftColumn: {
       display: 'flex',
@@ -508,6 +515,7 @@ export const useSponsorCardStyles = () => {
       borderRadius: '12px',
       boxShadow: theme.customShadows.header,
       border: `1px solid ${theme.palette.background.paper}`,
+      height: '202px',
     },
     baseImage: {
       borderRadius: '100px',

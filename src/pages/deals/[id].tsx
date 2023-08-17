@@ -4,7 +4,9 @@ import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.in
 import Button from '@/components/common/Button';
 import CustomTabs from '@/components/common/CustomTabs';
 import Layout from '@/components/common/Layout';
+import PlaceholderImage from '@/components/common/PlaceholderImage';
 import ReviewCard from '@/components/common/ReviewCard';
+import SkeletonImage from '@/components/common/SkeletonImage';
 import AddDealModal from '@/components/page/Deal/Modals/AddDeal';
 import ClaimDealModal from '@/components/page/Deal/Modals/ClaimDeal';
 import SuggestEditModal from '@/components/page/Deal/Modals/SuggestEdit';
@@ -12,13 +14,7 @@ import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealPageStyles from '@/pages_styles/dealPageStyles';
 import { Box, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
-import Image from 'next/image';
 import { SyntheticEvent, useRef, useState } from 'react';
-
-const MOCK_SPONSOR_IMAGE_URL =
-  'https://logos-download.com/wp-content/uploads/2016/03/LEGO_logo-700x700.png';
-const MOCK_DEAL_IMAGE_URL =
-  'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -48,7 +44,7 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
     {
       value: 'reviews',
       label: 'Reviews',
-      count: reviews.length,
+      count: deal.reviewsCount,
     },
   ];
   const handleTabChange = (
@@ -80,16 +76,19 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
     isSignIn: true,
     isSearch: true,
   });
+  const defaultSponsorImage = '/assets/Sponsor-placeholder.png';
   return (
     <Layout {...headerProps}>
       <Box>
         <Box sx={classes.imageWrapper}>
-          <Image
-            alt="deal image"
-            width={1200}
-            height={400}
-            src={MOCK_DEAL_IMAGE_URL}
-          />
+          {deal.attachments[0] && (
+            <SkeletonImage
+              alt="deal image"
+              width={1200}
+              height={400}
+              src={deal.attachments[0].path}
+            />
+          )}
         </Box>
 
         <Box sx={classes.root}>
@@ -199,7 +198,7 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
               <Box sx={classes.reviewsWrapperHeader}>
                 <Box sx={classes.reviewsWrapperTitle}>
                   <Typography variant="h3">Reviews</Typography>
-                  <Typography variant="body1">{reviewsData?.length}</Typography>
+                  <Typography variant="body1">{deal.reviewsCount}</Typography>
                 </Box>
                 <Button>Write a review</Button>
               </Box>
@@ -208,9 +207,11 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                   <ReviewCard review={review} key={review.id} />
                 ))}
               </Box>
-              <Typography variant="body1" sx={classes.showMoreReviews}>
-                Show more reviews <i className="icon-Caret-down"></i>
-              </Typography>
+              {!!deal.reviewsCount && deal.reviewsCount > 3 && (
+                <Typography variant="body1" sx={classes.showMoreReviews}>
+                  Show more reviews <i className="icon-Caret-down"></i>
+                </Typography>
+              )}
             </Box>
           </Box>
 
@@ -232,11 +233,12 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                 </Box>
               ) : (
                 <Box sx={classes.sponsor}>
-                  <Image
+                  <PlaceholderImage
                     alt="sponsor avatar"
                     width={58}
                     height={58}
-                    src={MOCK_SPONSOR_IMAGE_URL}
+                    src={deal.sponsor.businessAvatar as string}
+                    defaultImage={defaultSponsorImage}
                   />
                   <Box>
                     <Typography variant="h5">

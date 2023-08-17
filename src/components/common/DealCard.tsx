@@ -1,13 +1,10 @@
 import { Box, Typography } from '@mui/material';
 import { BoxProps } from '@mui/material';
 import theme from '@/config/theme';
-import Image from 'next/image';
 import { useDealCardStyles } from './styles';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import Link from 'next/link';
-
-const MOCK_IMAGE_URL =
-  'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
+import PlaceholderImage from './PlaceholderImage';
 
 export enum DealCardVariant {
   Base = 'base',
@@ -25,6 +22,7 @@ const DealCard = ({
   ...props
 }: DealCardProps) => {
   const classes = useDealCardStyles();
+  const defaultImage = '/assets/Deal-placeholder.png';
   return variant === DealCardVariant.Base ? (
     <Box
       sx={{
@@ -37,17 +35,24 @@ const DealCard = ({
       borderRadius="0px 0px 12px 12px"
       boxShadow={theme.customShadows.header}
     >
-      <Image
-        src={MOCK_IMAGE_URL}
+      <PlaceholderImage
+        src={deal.attachments?.[0]?.path}
         alt="deal image"
         width={292}
         height={172}
-        style={{ borderRadius: '12px 12px 0px 0px', width: '100%' }}
+        style={{
+          borderRadius: '12px 12px 0px 0px',
+          width: '100%',
+          objectFit: 'cover',
+        }}
+        defaultImage={defaultImage}
       />
       <Box sx={classes.baseDealCardContent}>
-        <Typography variant="h5" sx={classes.baseDealName}>
-          {deal.dealTitle}
-        </Typography>
+        <Link href={`/deals/${deal.id}`}>
+          <Typography variant="h5" sx={classes.baseDealName}>
+            {deal.dealTitle}
+          </Typography>
+        </Link>
         <Typography variant="body1" sx={classes.baseDealLocation}>
           {Array.isArray(deal.regions) ? deal.regions.join(', ') : deal.regions}
         </Typography>
@@ -65,7 +70,18 @@ const DealCard = ({
     </Box>
   ) : (
     <Box sx={classes.largeRoot}>
-      <Image src={MOCK_IMAGE_URL} alt="deal image" width={200} height={170} />
+      <PlaceholderImage
+        src={deal.attachments?.[0]?.path}
+        alt="deal image"
+        width={200}
+        height={170}
+        style={{
+          height: '170px',
+          borderRadius: '12px 0px 0px 12px',
+          objectFit: 'cover',
+        }}
+        defaultImage={defaultImage}
+      />
       <Box sx={classes.largeContent}>
         <Box sx={classes.largeHeader}>
           <Box sx={classes.largeHeaderLeftColumn}>
@@ -75,9 +91,7 @@ const DealCard = ({
               </Typography>
             )} */}
             <Link href={`/deals/${deal.id}`}>
-              <Typography variant="h5" fontWeight={600}>
-                {deal.dealTitle}
-              </Typography>
+              <Typography variant="h5">{deal.dealTitle}</Typography>
             </Link>
             <Box sx={classes.sponsorInfo}>
               <Typography variant="caption">{deal.dealSponsor}</Typography>

@@ -65,6 +65,7 @@ const SponsorsComponent = ({
   const changedFilters = filterDifferences(filters, defaultFilters);
   const isChangedFilters = !!Object.values(changedFilters).length;
   const handleChangeSelect = (value: 'DESC' | 'ASC') => {
+    setPage(1);
     setOrderDirection(value);
   };
   const changedFiltersAfterApply = filterDifferences(
@@ -150,13 +151,13 @@ const SponsorsComponent = ({
   };
   const formattedAppliedFilters = formatFilters(changedFiltersAfterApply);
 
-  const payload = Object.entries(changedFilters).length
+  const payload = Object.entries(changedFiltersAfterApply).length
     ? {
         page,
         pageSize: 10,
         orderDirection,
         search: searchValue,
-        ...changedFilters,
+        ...changedFiltersAfterApply,
       }
     : {
         page,
@@ -176,6 +177,7 @@ const SponsorsComponent = ({
     }
   );
   const handleApplyFilters = () => {
+    setPage(1);
     setAppliedFilters(filters);
     refetch();
   };
@@ -192,6 +194,11 @@ const SponsorsComponent = ({
   const firstItem = (page - 1) * 10 + 1;
   const lastItem =
     page * 10 > sponsorsData.total ? sponsorsData.total : page * 10;
+
+  const handleChangePaginate = (page: number) => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    setPage(page);
+  };
   return (
     <ColumnsComponent
       count={sponsorsData.total}
@@ -287,7 +294,7 @@ const SponsorsComponent = ({
           <CustomPagination
             count={sponsorsData.lastPage}
             page={page}
-            onChange={(event, value) => setPage(value)}
+            onChange={(event, value) => handleChangePaginate(value)}
           />
         </>
       }

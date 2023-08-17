@@ -37,7 +37,7 @@ type FilterArrayKeys =
 type FilterLabelKeys =
   | 'actualIRR'
   | 'fees'
-  | 'prefferd_return'
+  | 'preffered_return'
   | 'min_investment'
   | 'targetIRR';
 
@@ -45,7 +45,7 @@ const filtersLabels: Record<FilterLabelKeys, string> = {
   actualIRR: 'Actual IRR, %',
   targetIRR: 'Target IRR, %',
   fees: 'Fees, %',
-  prefferd_return: 'Preffered return, USD',
+  preffered_return: 'Preffered return, USD',
   min_investment: 'Min investment, USD',
 };
 
@@ -66,6 +66,7 @@ const DealsComponent = ({
   const [orderDirection, setOrderDirection] = useState<'DESC' | 'ASC'>('DESC');
   const handleChangeSelect = (e: SelectChangeEvent<unknown>) => {
     setOrderDirection(e.target.value as 'DESC' | 'ASC');
+    setPage(1);
   };
   useEffect(() => {
     setDealsCount(dealsData.total);
@@ -94,7 +95,7 @@ const DealsComponent = ({
       from: 5000,
       to: 25000,
     },
-    prefferd_return: {
+    preffered_return: {
       from: 5000,
       to: 25000,
     },
@@ -126,13 +127,13 @@ const DealsComponent = ({
     defaultFilters
   );
 
-  const payload = Object.entries(changedFilters).length
+  const payload = Object.entries(changedFiltersAfterApply).length
     ? {
         page,
         pageSize: 10,
         orderDirection,
         search: searchValue,
-        ...changedFilters,
+        ...changedFiltersAfterApply,
       }
     : {
         page,
@@ -154,6 +155,7 @@ const DealsComponent = ({
   );
 
   const handleApplyFilters = () => {
+    setPage(1);
     setAppliedFilters(filters);
     refetch();
   };
@@ -254,6 +256,11 @@ const DealsComponent = ({
     }
   };
   const formattedAppliedFilters = formatFilters(changedFiltersAfterApply);
+
+  const handleChangePaginate = (page: number) => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    setPage(page);
+  };
   return (
     <>
       <ColumnsComponent
@@ -335,7 +342,7 @@ const DealsComponent = ({
             <CustomPagination
               count={dealsData.lastPage}
               page={page}
-              onChange={(event, value) => setPage(value)}
+              onChange={(event, value) => handleChangePaginate(value)}
             />
           </>
         }

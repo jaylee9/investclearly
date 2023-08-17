@@ -30,7 +30,7 @@ export interface IFilters {
   actualIRR?: Range;
   fees?: Range;
   min_investment?: Range;
-  prefferd_return?: Range;
+  preffered_return?: Range;
 }
 
 interface DealsFiltersProps {
@@ -302,8 +302,8 @@ const DealsFilters = ({
               handleSliderChange(value as number[], 'preffered_return')
             }
             value={[
-              filters.prefferd_return?.from as number,
-              filters.prefferd_return?.to as number,
+              filters.preffered_return?.from as number,
+              filters.preffered_return?.to as number,
             ]}
           />
         </Box>

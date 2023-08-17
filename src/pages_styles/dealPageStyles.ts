@@ -15,6 +15,9 @@ const useDealPageStyles = () => {
         width: '100%',
         objectFit: 'cover',
       },
+      '& span': {
+        width: '100% !important',
+      },
     },
     leftColumn: {
       width: '78%',
