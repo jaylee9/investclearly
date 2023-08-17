@@ -168,6 +168,11 @@ const useSponsorPageStyles = () => {
         color: palette.text.secondary,
       },
     },
+    dealsBlockContent: {
+      display: 'flex',
+      gap: '12px',
+      alignItems: 'center',
+    },
     textWithButton: {
       padding: '24px 28px',
       display: 'flex',
