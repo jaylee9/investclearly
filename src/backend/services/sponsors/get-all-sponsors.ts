@@ -23,11 +23,12 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     limit,
     minRating = ReviewConstants.minAndMaxRatings.minRating,
     maxRating = ReviewConstants.minAndMaxRatings.maxRating,
+    entityIds = [],
   } = params;
 
   const connection = await getDatabaseConnection();
 
-  const activelyRisingQuery = connection.manager
+  let activelyRisingQuery = connection.manager
     .createQueryBuilder()
     .select([
       'sponsors.id AS sponsor_id',
@@ -52,6 +53,15 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
       }
     )
     .groupBy('sponsors.id');
+
+  if (entityIds?.length) {
+    activelyRisingQuery = activelyRisingQuery.andWhere(
+      'sponsors.id IN (:...entityIds)',
+      {
+        entityIds,
+      }
+    );
+  }
 
   let searchQuery = connection.manager
     .createQueryBuilder(Sponsor, 'sponsors')
@@ -103,6 +113,12 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
           });
       })
     );
+  }
+
+  if (entityIds?.length) {
+    searchQuery = searchQuery.andWhere('sponsors.id IN (:...entityIds)', {
+      entityIds,
+    });
   }
 
   if (limit) {

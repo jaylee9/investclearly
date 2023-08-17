@@ -13,4 +13,5 @@ export interface FindAllSponsorsInterface {
   maxRating?: number;
   search?: string;
   limit?: number;
+  entityIds?: number[];
 }
