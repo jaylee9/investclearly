@@ -14,11 +14,7 @@ import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealPageStyles from '@/pages_styles/dealPageStyles';
 import { Box, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
-import Image from 'next/image';
 import { SyntheticEvent, useRef, useState } from 'react';
-
-const MOCK_SPONSOR_IMAGE_URL =
-  'https://logos-download.com/wp-content/uploads/2016/03/LEGO_logo-700x700.png';
 
 type ActiveTab = 'overview' | 'reviews';
 

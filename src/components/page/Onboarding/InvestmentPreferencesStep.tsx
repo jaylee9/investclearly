@@ -69,6 +69,7 @@ const InvestmentPreferencesStep = () => {
       };
       const response = await updateProfileSettings(payload);
       if (response) {
+        localStorage.clear();
         router.push('/');
       }
     }
