@@ -9,10 +9,11 @@ import useHeaderProps from '@/hooks/useHeaderProps';
 import useSponsorPageStyles from '@/pages_styles/sponsorPageStyles';
 import { Box, Fade, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
-import Image from 'next/image';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import DealCard from '@/components/common/DealCard';
+import PlaceholderImage from '@/components/common/PlaceholderImage';
+import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -21,9 +22,6 @@ interface SponsorPageProps {
   deals: DealInterface[];
   reviews: ReviewInterface[];
 }
-
-const MOCK_SPONSOR_IMAGE_URL =
-  'https://logos-download.com/wp-content/uploads/2016/03/LEGO_logo-700x700.png';
 
 const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
   const classes = useSponsorPageStyles();
@@ -98,11 +96,13 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
       <Fade in={isFixedHeader}>
         <Box sx={classes.fixedHeader}>
           <Box sx={classes.fixedHeaderInfo}>
-            <Image
+            <PlaceholderImage
               alt="sponsor image"
               width={56}
               height={56}
-              src={MOCK_SPONSOR_IMAGE_URL}
+              src={sponsor.businessAvatar as string}
+              defaultImage={DEFAULT_SPONSOR_IMAGE}
+              style={{ borderRadius: '1230px' }}
             />
             <Box>
               <Typography variant="h5">{sponsor.legalName}</Typography>
@@ -132,11 +132,13 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
         <Box sx={classes.info}>
           <Box sx={classes.infoHeader}>
             <Box sx={classes.infoHeaderMain}>
-              <Image
+              <PlaceholderImage
                 alt="sponsor image"
-                src={sponsor.businessAvatar || MOCK_SPONSOR_IMAGE_URL}
+                src={sponsor.businessAvatar as string}
                 width={80}
                 height={80}
+                defaultImage={DEFAULT_SPONSOR_IMAGE}
+                style={{ borderRadius: '1230px' }}
               />
               <Box>
                 <Typography variant="h3">{sponsor.legalName}</Typography>
@@ -237,6 +239,9 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
                   <DealCard key={deal.id} deal={deal} sx={{ width: '33%' }} />
                 ))}
               </Box>
+              <Typography variant="body1" sx={classes.showMoreLink}>
+                Show more deals <i className="icon-Caret-down"></i>
+              </Typography>
             </Box>
 
             <Box ref={reviewsRef} sx={classes.reviewsWrapper}>
@@ -254,7 +259,7 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
                   <ReviewCard review={review} key={review.id} />
                 ))}
               </Box>
-              <Typography variant="body1" sx={classes.showMoreReviews}>
+              <Typography variant="body1" sx={classes.showMoreLink}>
                 Show more reviews <i className="icon-Caret-down"></i>
               </Typography>
             </Box>

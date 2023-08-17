@@ -4,6 +4,7 @@ import { useSponsorCardStyles } from './styles';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import PlaceholderImage from './PlaceholderImage';
 import Link from 'next/link';
+import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 
 export enum SponsorCardVariant {
   Base = 'base',
@@ -20,7 +21,6 @@ const SponsorCard = ({
   sponsor,
 }: SponsorCardProps) => {
   const classes = useSponsorCardStyles();
-  const defaultImage = '/assets/Sponsor-placeholder.png';
   return variant === SponsorCardVariant.Base ? (
     <Box sx={classes.baseWrapper}>
       <PlaceholderImage
@@ -29,7 +29,7 @@ const SponsorCard = ({
         height={72}
         alt="sponsor image"
         style={classes.baseImage}
-        defaultImage={defaultImage}
+        defaultImage={DEFAULT_SPONSOR_IMAGE}
       />
       <Link href={`/sponsors/${sponsor.id}`}>
         <Typography variant="h5" fontWeight={600}>
@@ -54,7 +54,7 @@ const SponsorCard = ({
         width={96}
         height={96}
         style={{ borderRadius: '1230px' }}
-        defaultImage={defaultImage}
+        defaultImage={DEFAULT_SPONSOR_IMAGE}
       />
       <Box sx={classes.largeContent}>
         <Box sx={classes.largeHeader}>
