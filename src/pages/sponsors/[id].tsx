@@ -233,9 +233,9 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
                 <Typography variant="body1">{sponsor?.dealsCount}</Typography>
               </Box>
               <Box sx={classes.dealsBlockContent}>
-                {dealsData
-                  ?.splice(0, 3)
-                  .map(deal => <DealCard key={deal.id} deal={deal} />)}
+                {dealsData?.map(deal => (
+                  <DealCard key={deal.id} deal={deal} sx={{ width: '33%' }} />
+                ))}
               </Box>
             </Box>
 
@@ -314,7 +314,8 @@ export const getServerSideProps: GetServerSideProps = async context => {
   return {
     props: {
       reviews: sponsorResponse.reviews,
-      deals: sponsorResponse.deals,
+      // splice will be removed after added logic on back end side
+      deals: sponsorResponse.deals?.splice(1, 4),
       sponsor: sponsorResponse,
     },
   };

@@ -30,7 +30,7 @@ const DealCard = ({
       sx={{
         ...props.sx,
         background: theme.palette.common.white,
-        height: '100%',
+        height: '332px',
       }}
       display="flex"
       flexDirection="column"
@@ -42,7 +42,11 @@ const DealCard = ({
         alt="deal image"
         width={292}
         height={172}
-        style={{ borderRadius: '12px 12px 0px 0px', width: '100%' }}
+        style={{
+          borderRadius: '12px 12px 0px 0px',
+          width: '100%',
+          objectFit: 'cover',
+        }}
       />
       <Box sx={classes.baseDealCardContent}>
         <Typography variant="h5" sx={classes.baseDealName}>
