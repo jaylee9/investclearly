@@ -12,6 +12,7 @@ export interface SponsorInterface extends CreateSponsorInterface {
   dealsCount?: number | 0;
   reviewsCount?: number | 0;
   avgTotalRating?: number | 0;
+  isInBookmarks?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

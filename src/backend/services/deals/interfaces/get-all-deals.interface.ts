@@ -29,4 +29,6 @@ export interface FindAllDealsInterface {
   regulations?: Regulations[] | Regulations;
   search?: string;
   limit?: number;
+  entityIds?: number[];
+  currentUserId?: number;
 }

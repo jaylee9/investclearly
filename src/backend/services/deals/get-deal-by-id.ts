@@ -7,6 +7,8 @@ import { dealMapper } from '../../mappers/deal.mapper';
 import { Attachment } from '../../../backend/entities/attachments.entity';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
 import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
+import { BookmarkConstants } from '../../../backend/constants/bookmark-constants';
+import { Bookmark } from '../../../backend/entities/bookmark.entity';
 
 export const getDealById = async (id: number, userId?: number) => {
   const connection = await getDatabaseConnection();
@@ -42,14 +44,22 @@ export const getDealById = async (id: number, userId?: number) => {
     .where('deals.id = :id', { id });
 
   if (userId) {
-    dealQuery = dealQuery.leftJoinAndSelect(
-      'deals.investments',
-      'investments',
-      'investments.userId = :userId',
-      {
-        userId,
-      }
-    );
+    dealQuery = dealQuery
+      .leftJoinAndSelect(
+        'deals.investments',
+        'investments',
+        'investments.userId = :userId',
+        {
+          userId,
+        }
+      )
+      .leftJoinAndMapMany(
+        'deals.bookmarks',
+        Bookmark,
+        'bookmarks',
+        'bookmarks.entityId = deals.id AND bookmarks.entityType = :entityType AND bookmarks.userId = :userId',
+        { entityType: BookmarkConstants.entityTypes.deal, userId }
+      );
   }
 
   const deal = await dealQuery.getOne();
@@ -71,10 +81,15 @@ export const getDealById = async (id: number, userId?: number) => {
 
     deal.sponsor.avgTotalRating =
       publishedReviewsCount > 0 ? totalRating / publishedReviewsCount : 0;
+    deal.sponsor.reviewsCount = publishedReviewsCount;
   }
 
   if (deal.investments?.length) {
     deal.isInInvestments = true;
+  }
+
+  if (deal.bookmarks?.length) {
+    deal.isInBookmarks = true;
   }
 
   return dealMapper(deal);
