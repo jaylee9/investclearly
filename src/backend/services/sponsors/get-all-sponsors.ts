@@ -10,6 +10,8 @@ import { sponsorMapper } from '../../../backend/mappers/sponsor.mapper';
 import { DealStatuses } from '../../../backend/constants/enums/deal-statuses';
 import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
 import { ReviewConstants } from '../../../backend/constants/review-constants';
+import { Bookmark } from '../../../backend/entities/bookmark.entity';
+import { BookmarkConstants } from '../../../backend/constants/bookmark-constants';
 
 export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
   const {
@@ -24,6 +26,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     minRating = ReviewConstants.minAndMaxRatings.minRating,
     maxRating = ReviewConstants.minAndMaxRatings.maxRating,
     entityIds = [],
+    currentUserId,
   } = params;
 
   const connection = await getDatabaseConnection();
@@ -51,8 +54,24 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
         minRating,
         maxRating,
       }
-    )
-    .groupBy('sponsors.id');
+    );
+
+  if (currentUserId) {
+    activelyRisingQuery = activelyRisingQuery
+      .leftJoinAndMapMany(
+        'sponsors.bookmarks',
+        Bookmark,
+        'bookmarks',
+        'bookmarks.entityId = sponsors.id AND bookmarks.entityType = :entityType AND bookmarks.userId = :userId',
+        {
+          entityType: BookmarkConstants.entityTypes.sponsor,
+          userId: currentUserId,
+        }
+      )
+      .groupBy('sponsors.id, bookmarks.id');
+  } else {
+    activelyRisingQuery = activelyRisingQuery.groupBy('sponsors.id');
+  }
 
   if (entityIds?.length) {
     activelyRisingQuery = activelyRisingQuery.andWhere(
@@ -139,6 +158,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
       dealsCount: parseInt(item.deals_count),
       reviewsCount: parseInt(item.reviews_count),
       avgTotalRating: parseFloat(item.avg_overall_rating),
+      isInBookmarks: !!item?.bookmarks_id,
     };
     return map;
   }, {});
@@ -149,6 +169,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     dealsCount: activelyRisingMap[sponsor.id]?.dealsCount,
     reviewsCount: activelyRisingMap[sponsor.id]?.reviewsCount,
     avgTotalRating: activelyRisingMap[sponsor.id]?.avgTotalRating,
+    isInBookmarks: activelyRisingMap[sponsor.id]?.isInBookmarks,
   }));
 
   const paginationData = await buildPaginationInfo(
