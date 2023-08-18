@@ -1,11 +1,8 @@
 import { getDeal } from '@/actions/deals';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
-import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.interface';
 import Button from '@/components/common/Button';
-import CustomTabs from '@/components/common/CustomTabs';
 import Layout from '@/components/common/Layout';
 import PlaceholderImage from '@/components/common/PlaceholderImage';
-import ReviewCard from '@/components/common/ReviewCard';
 import SkeletonImage from '@/components/common/SkeletonImage';
 import AddDealModal from '@/components/page/Deal/Modals/AddDeal';
 import ClaimDealModal from '@/components/page/Deal/Modals/ClaimDeal';
@@ -14,50 +11,21 @@ import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealPageStyles from '@/pages_styles/dealPageStyles';
 import { Box, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
-import { SyntheticEvent, useRef, useState } from 'react';
-
-type ActiveTab = 'overview' | 'reviews';
+import { useState } from 'react';
 
 interface DealPageProps {
   deal: DealInterface;
-  reviews: ReviewInterface[];
 }
 
-const DealPage = ({ deal, reviews }: DealPageProps) => {
+const DealPage = ({ deal }: DealPageProps) => {
   const classes = useDealPageStyles();
 
-  const [activeTab, setActiveTab] = useState<ActiveTab>('overview');
   const [openModals, setOpenModals] = useState({
     claimDeal: false,
     addDeal: false,
     suggestEdit: false,
   });
-  const overviewRef = useRef<HTMLDivElement>(null);
-  const reviewsRef = useRef<HTMLDivElement>(null);
-  const [reviewsData] = useState(reviews);
 
-  const tabs = [
-    {
-      value: 'overview',
-      label: 'Overview',
-    },
-    {
-      value: 'reviews',
-      label: 'Reviews',
-      count: deal.reviewsCount,
-    },
-  ];
-  const handleTabChange = (
-    event: SyntheticEvent<Element, Event>,
-    newValue: string | number
-  ) => {
-    if (newValue === 'overview' && overviewRef.current) {
-      overviewRef.current.scrollIntoView({ behavior: 'smooth' });
-    } else if (newValue === 'reviews' && reviewsRef.current) {
-      reviewsRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-    setActiveTab(newValue as ActiveTab);
-  };
   const handleOpenModal = (key: 'claimDeal' | 'addDeal' | 'suggestEdit') => {
     setOpenModals(prevModals => {
       return { ...prevModals, [key]: true };
@@ -143,14 +111,9 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                   </Box>
                 </Box>
               </Box>
-              <CustomTabs
-                tabs={tabs}
-                onChange={handleTabChange}
-                value={activeTab}
-              />
             </Box>
 
-            <Box ref={overviewRef} sx={classes.overview}>
+            <Box sx={classes.overview}>
               <Box sx={classes.overviewHeader}>
                 <Typography variant="h3">Overview</Typography>
                 <Typography variant="body1">{deal.description}</Typography>
@@ -192,26 +155,6 @@ const DealPage = ({ deal, reviews }: DealPageProps) => {
                   </Box>
                 </Box>
               </Box>
-            </Box>
-
-            <Box ref={reviewsRef} sx={classes.reviewsWrapper}>
-              <Box sx={classes.reviewsWrapperHeader}>
-                <Box sx={classes.reviewsWrapperTitle}>
-                  <Typography variant="h3">Reviews</Typography>
-                  <Typography variant="body1">{deal.reviewsCount}</Typography>
-                </Box>
-                <Button>Write a review</Button>
-              </Box>
-              <Box sx={classes.reviewsContent}>
-                {reviewsData.map(review => (
-                  <ReviewCard review={review} key={review.id} />
-                ))}
-              </Box>
-              {!!deal.reviewsCount && deal.reviewsCount > 3 && (
-                <Typography variant="body1" sx={classes.showMoreReviews}>
-                  Show more reviews <i className="icon-Caret-down"></i>
-                </Typography>
-              )}
             </Box>
           </Box>
 
@@ -358,7 +301,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
   return {
     props: {
-      reviews: dealResponse.reviews,
       deal: dealResponse,
     },
   };
