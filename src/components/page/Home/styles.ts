@@ -102,6 +102,8 @@ export const useGlobalSearchStyles = () => {
     },
     blockListItemImage: {
       borderRadius: '100px',
+      maxHeight: '48px',
+      maxWidth: '48px',
     },
     blockListItemContentTitle: {
       fontWeight: 500,

@@ -289,7 +289,7 @@ const DealsComponent = ({
           <>
             <Typography variant="body1">
               <span style={{ fontWeight: 600 }}>{dealsData.total} Deals</span>{' '}
-              found for Invest
+              found {!!searchValue && `for ${searchValue}`}
             </Typography>
             <Box sx={classes.selectWrapper}>
               <Typography variant="body1">Sort by:</Typography>

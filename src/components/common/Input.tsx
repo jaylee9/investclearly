@@ -43,7 +43,7 @@ const Input = ({
   topLabel,
   ...props
 }: InputProps) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(props.value || '');
   const [showPassword, setShowPassword] = useState(!isPassword);
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -55,7 +55,8 @@ const Input = ({
     isFilledWhite,
     height,
   });
-  const handleClear = () => {
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setValue('');
     if (onClear) {
       onClear();
@@ -103,11 +104,10 @@ const Input = ({
             <>
               {showClearOption && (
                 <Fade in={!!value}>
-                  <InputAdornment position="end">
+                  <InputAdornment position="end" onClick={handleClear}>
                     <i
                       className="icon-Cross"
                       style={{ cursor: 'pointer', fontSize: 24 }}
-                      onClick={handleClear}
                     ></i>
                   </InputAdornment>
                 </Fade>
