@@ -127,6 +127,8 @@ export class Sponsor {
 
   avgTotalRating: number;
 
+  isInBookmarks: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

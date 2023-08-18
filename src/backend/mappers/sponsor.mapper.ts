@@ -45,6 +45,7 @@ export const sponsorMapper = (sponsor: Sponsor): SponsorInterface => {
     reviewsCount: sponsor.reviewsCount || 0,
     avgTotalRating: sponsor.avgTotalRating || 0,
     reviews: sponsor.reviews ? sponsor.reviews.map(reviewMapper) : [],
+    isInBookmarks: sponsor.isInBookmarks || false,
     createdAt: sponsor.createdAt,
     updatedAt: sponsor.updatedAt,
   };
