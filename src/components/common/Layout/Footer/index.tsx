@@ -21,7 +21,7 @@ const Footer = () => {
         <Logo variant={LogoVariant.Light} />
         <Box sx={classes.linksWrapper}>
           {links.map(link => (
-            <Link href={link.label} key={link.href}>
+            <Link href={link.href} key={link.href}>
               {link.label}
             </Link>
           ))}
