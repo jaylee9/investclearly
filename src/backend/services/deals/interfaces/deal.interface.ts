@@ -11,6 +11,7 @@ export interface DealInterface extends CreateDealInterface {
   reviewsCount?: number | 0;
   avgTotalRating?: number | 0;
   isInInvestments?: boolean;
+  isInBookmarks?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

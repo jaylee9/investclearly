@@ -30,4 +30,5 @@ export interface FindAllDealsInterface {
   search?: string;
   limit?: number;
   entityIds?: number[];
+  currentUserId?: number;
 }

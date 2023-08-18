@@ -14,4 +14,5 @@ export interface FindAllSponsorsInterface {
   search?: string;
   limit?: number;
   entityIds?: number[];
+  currentUserId?: number;
 }
