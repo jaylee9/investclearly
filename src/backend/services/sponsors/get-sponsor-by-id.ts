@@ -5,11 +5,13 @@ import { SponsorConstants } from '../../../backend/constants/validation/sponsor-
 import { Sponsor } from '../../../backend/entities/sponsors.entity';
 import { sponsorMapper } from '../../../backend/mappers/sponsor.mapper';
 import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
+import { Bookmark } from '../../../backend/entities/bookmark.entity';
+import { BookmarkConstants } from '../../../backend/constants/bookmark-constants';
 
-export const getSponsorById = async (id: number) => {
+export const getSponsorById = async (id: number, currentUserId?: number) => {
   const connection = await getDatabaseConnection();
 
-  const sponsor = await connection.manager
+  let sponsorQuery = connection.manager
     .createQueryBuilder(Sponsor, 'sponsor')
     .where('sponsor.id = :id', { id })
     .leftJoinAndSelect('sponsor.user', 'user')
@@ -20,8 +22,22 @@ export const getSponsorById = async (id: number) => {
       'reviews.status = :reviewStatus'
     )
     .leftJoinAndSelect('reviews.reviewer', 'reviewer')
-    .setParameter('reviewStatus', ReviewStatuses.published)
-    .getOne();
+    .setParameter('reviewStatus', ReviewStatuses.published);
+
+  if (currentUserId) {
+    sponsorQuery = sponsorQuery.leftJoinAndMapMany(
+      'sponsor.bookmarks',
+      Bookmark,
+      'bookmarks',
+      'bookmarks.entityId = sponsor.id AND bookmarks.entityType = :entityType AND bookmarks.userId = :userId',
+      {
+        entityType: BookmarkConstants.entityTypes.sponsor,
+        userId: currentUserId,
+      }
+    );
+  }
+
+  const sponsor = await sponsorQuery.getOne();
 
   if (!sponsor) {
     throw new createHttpError.NotFound(SponsorConstants.sponsorNotFound);
@@ -41,6 +57,10 @@ export const getSponsorById = async (id: number) => {
     sponsor.reviewsCount = publishedReviewsCount;
     sponsor.avgTotalRating =
       publishedReviewsCount > 0 ? totalRating / publishedReviewsCount : 0;
+  }
+
+  if (sponsor.bookmarks?.length) {
+    sponsor.isInBookmarks = true;
   }
 
   return sponsorMapper(sponsor);
