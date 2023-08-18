@@ -124,7 +124,7 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
               label={
                 <Typography variant="body1">
                   I agree to Invest Clearly{' '}
-                  <Link href="/terms_of_service">Terms of Service</Link>
+                  <Link href="/terms-conditions">Terms of Service</Link>
                 </Typography>
               }
               customStyles={{ marginBottom: '32px' }}
