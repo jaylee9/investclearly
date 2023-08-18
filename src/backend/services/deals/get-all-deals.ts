@@ -11,6 +11,8 @@ import { Attachment } from '../../../backend/entities/attachments.entity';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
 import { ReviewConstants } from '../../../backend/constants/review-constants';
 import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
+import { Bookmark } from '../../../backend/entities/bookmark.entity';
+import { BookmarkConstants } from '../../../backend/constants/bookmark-constants';
 
 export const getAllDeals = async (params: FindAllDealsInterface) => {
   const {
@@ -37,6 +39,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     sponsorId,
     regulations = [],
     entityIds = [],
+    currentUserId,
   } = params;
 
   const connection = await getDatabaseConnection();
@@ -77,7 +80,22 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     );
   }
 
-  averageRatingQuery = averageRatingQuery.groupBy('deals.id');
+  if (currentUserId) {
+    averageRatingQuery = averageRatingQuery
+      .leftJoinAndMapMany(
+        'deals.bookmarks',
+        Bookmark,
+        'bookmarks',
+        'bookmarks.entityId = deals.id AND bookmarks.entityType = :entityType AND bookmarks.userId = :userId',
+        {
+          entityType: BookmarkConstants.entityTypes.deal,
+          userId: currentUserId,
+        }
+      )
+      .groupBy('deals.id, bookmarks.id');
+  } else {
+    averageRatingQuery = averageRatingQuery.groupBy('deals.id');
+  }
 
   let searchQuery = connection.manager
     .createQueryBuilder()
@@ -222,18 +240,20 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   const averageRatingData = await averageRatingQuery.getRawMany();
   const deals = await searchQuery.getMany();
 
-  const activelyRisingMap = averageRatingData.reduce((map, item) => {
+  const averageRatingMap = averageRatingData.reduce((map, item) => {
     map[item.deal_id] = {
       reviewsCount: parseInt(item.reviews_count),
       avgTotalRating: parseFloat(item.avg_overall_rating),
+      isInBookmarks: !!item?.bookmarks_id,
     };
     return map;
   }, {});
 
   const dealsWithCounters = deals.map(deal => ({
     ...deal,
-    reviewsCount: activelyRisingMap[deal.id]?.reviewsCount,
-    avgTotalRating: activelyRisingMap[deal.id]?.avgTotalRating,
+    reviewsCount: averageRatingMap[deal.id]?.reviewsCount,
+    avgTotalRating: averageRatingMap[deal.id]?.avgTotalRating,
+    isInBookmarks: averageRatingMap[deal.id]?.isInBookmarks,
   }));
 
   const paginationData = await buildPaginationInfo(amountDeals, page, pageSize);
