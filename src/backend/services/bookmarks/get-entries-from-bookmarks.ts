@@ -11,12 +11,11 @@ export const getAllEntriesFromBookmarks = async (
   userId: number
 ) => {
   const connection = await getDatabaseConnection();
-  params.entityIds = await (
-    await connection.manager.find(Bookmark, {
-      where: { entityType: params.entityType, userId },
-    })
-  ).map(record => record.entityId);
+  const bookmarks = await connection.manager.find(Bookmark, {
+    where: { entityType: params.entityType, userId },
+  });
 
+  params.entityIds = bookmarks.map(record => record.entityId);
   let entities = null;
 
   if (params.entityIds?.length) {
