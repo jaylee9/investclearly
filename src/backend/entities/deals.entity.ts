@@ -104,6 +104,8 @@ export class Deal {
 
   isInInvestments: boolean;
 
+  isInBookmarks: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
