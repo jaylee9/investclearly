@@ -3,9 +3,16 @@ import { apiHandler } from '../../../backend/utils/api-handler';
 import { getAllDeals } from '../../../backend/services/deals/get-all-deals';
 import { FindAllDealsInterface } from '../../../backend/services/deals/interfaces/get-all-deals.interface';
 import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
+import { authMiddleware } from '../../../backend/middleware/auth';
 
 const getDeals = async (request: NextApiRequest, response: NextApiResponse) => {
-  const params: FindAllDealsInterface = request.query;
+  const { request: authRequest, user } = await authMiddleware(
+    request,
+    response,
+    true
+  );
+  const currentUserId = user?.id;
+  const params: FindAllDealsInterface = authRequest.query;
   const {
     assetClasses,
     statuses,
@@ -25,7 +32,11 @@ const getDeals = async (request: NextApiRequest, response: NextApiResponse) => {
     regulations,
   });
 
-  const deals = await getAllDeals({ ...getDealsData, ...transformedData });
+  const deals = await getAllDeals({
+    ...getDealsData,
+    ...transformedData,
+    currentUserId,
+  });
   response.status(200).json(deals);
 };
 
