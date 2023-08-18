@@ -1,5 +1,5 @@
 export interface GetAllEntriesFromBookmarksInterface {
-  entityType: string;
+  entityType?: string;
   pageSize?: number;
   page?: number;
   search?: string;

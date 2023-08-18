@@ -9,6 +9,7 @@ import { BookmarkConstants } from '../../../backend/constants/bookmark-constants
 import { GetAllEntriesFromBookmarksInterface } from '../../../backend/services/bookmarks/interfaces/find-all-bookmarks-entries.interface';
 import { getAllEntriesFromBookmarks } from '../../../backend/services/bookmarks/get-entries-from-bookmarks';
 import { deleteBookmarkRecord } from '../../../backend/services/bookmarks/delete-bookmark';
+import { DeleteBookmarkInterface } from '../../../backend/services/bookmarks/interfaces/delete-bookmark.interface';
 
 const create = async (request: NextApiRequest, response: NextApiResponse) => {
   const { request: authRequest, user } = await authMiddleware(
@@ -53,9 +54,10 @@ const deleteBookmark = async (
     response
   );
 
-  const { entityId, entityType } = authRequest.query;
+  const { entityId, entityType } =
+    authRequest.query as unknown as DeleteBookmarkInterface;
   const userId = user?.id;
-  await deleteBookmarkRecord(entityId, entityType, userId);
+  await deleteBookmarkRecord(entityId, entityType, userId!);
   response
     .status(200)
     .json({ message: BookmarkConstants.bookmarkSuccessfullyDeleted });
