@@ -34,18 +34,6 @@ const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
   });
   const tabs = [
     {
-      value: 'deals',
-      label: 'Deals',
-      count: dealsCount,
-      content: (
-        <DealsComponent
-          dealsResponse={dealsResponse}
-          searchValue={searchValue}
-          setDealsCount={setDealsCount}
-        />
-      ),
-    },
-    {
       value: 'sponsors',
       label: 'Sponsors',
       count: sponsorsCount,
@@ -54,6 +42,18 @@ const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
           sponsorsResponse={sponsorsResponse}
           searchValue={searchValue}
           setSponsorsCount={setSponsorsCount}
+        />
+      ),
+    },
+    {
+      value: 'deals',
+      label: 'Deals',
+      count: dealsCount,
+      content: (
+        <DealsComponent
+          dealsResponse={dealsResponse}
+          searchValue={searchValue}
+          setDealsCount={setDealsCount}
         />
       ),
     },
