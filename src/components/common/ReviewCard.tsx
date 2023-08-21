@@ -24,9 +24,11 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
             </Typography>
           </Box>
           <Box sx={classes.reviewHeaderMainInfo}>
-            <Typography variant="h5">
-              {review.reviewer?.firstName} {review.reviewer?.lastName}
-            </Typography>
+            <Link href={`/users/${review.reviewer?.id}`}>
+              <Typography variant="h5">
+                {review.reviewer?.firstName} {review.reviewer?.lastName}
+              </Typography>
+            </Link>
             <Typography variant="caption">
               {formatDate(review.createdAt)}
             </Typography>
