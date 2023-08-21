@@ -30,17 +30,19 @@ export const createSponsorRecord = async (
     regulations,
     interests,
   });
+  let businessAvatar: string = '';
 
   if (files?.length) {
-    data.businessAvatar = await uploadFile(
+    businessAvatar = (await uploadFile(
       files[0],
       TargetTypesConstants.sponsorAvatars
-    );
+    )) as string;
   }
 
   const sponsor = connection.manager.create(Sponsor, {
     ...transformedData,
     ...createSponsorData,
+    businessAvatar,
   }) as SponsorInterface;
   await connection.manager.save(sponsor);
 

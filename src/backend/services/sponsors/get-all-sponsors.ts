@@ -157,7 +157,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
       activelyRising: item.actively_rising,
       dealsCount: parseInt(item.deals_count),
       reviewsCount: parseInt(item.reviews_count),
-      avgTotalRating: parseFloat(item.avg_overall_rating),
+      avgTotalRating: parseFloat(item.avg_overall_rating).toFixed(1),
       isInBookmarks: !!item?.bookmarks_id,
     };
     return map;

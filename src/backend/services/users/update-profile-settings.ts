@@ -13,11 +13,11 @@ export const updateProfileSettings = async (
   files: Express.Multer.File[]
 ) => {
   const { assetClasses, regions, ...updateProfileData } = data;
-  let profilePicture: string = '';
   const connection = await getDatabaseConnection();
   const userRecord = await connection.manager.findOne(User, {
     where: { id },
   });
+  let profilePicture = userRecord?.profilePicture;
 
   const transformedData = transformObjectKeysToArrays({
     assetClasses,

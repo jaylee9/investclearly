@@ -35,7 +35,7 @@ export const updateSponsorRecord = async (
     regulations,
     interests,
   });
-  let businessAvatar: string = '';
+  let businessAvatar = sponsorRecord?.businessAvatar;
 
   if (files?.length) {
     if (sponsorRecord && sponsorRecord.businessAvatar) {

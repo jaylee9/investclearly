@@ -67,7 +67,9 @@ export const getDealById = async (id: number, userId?: number) => {
     const totalRating = _.sumBy(publishedReviews, 'overallRating');
 
     deal.sponsor.avgTotalRating =
-      publishedReviewsCount > 0 ? totalRating / publishedReviewsCount : 0;
+      publishedReviewsCount > 0
+        ? parseFloat((totalRating / publishedReviewsCount).toFixed(1))
+        : 0;
     deal.sponsor.reviewsCount = publishedReviewsCount;
   }
 

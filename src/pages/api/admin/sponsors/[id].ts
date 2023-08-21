@@ -4,7 +4,7 @@ import { AuthConstants } from '../../../../backend/constants/auth-constants';
 import { apiHandler } from '../../../../backend/utils/api-handler';
 import { authMiddleware } from '../../../../backend/middleware/auth';
 import { parseForm } from '../../../../backend/utils/parse-form';
-import { SponsorConstants } from '../../../../backend/constants/validation/sponsor-constants';
+import { SponsorConstants } from '../../../../backend/constants/sponsor-constants';
 import { updateSponsorRecord } from '../../../../backend/services/sponsors/update-sponsor';
 import { getSponsorById } from '../../../../backend/services/sponsors/get-sponsor-by-id';
 import { deleteSponsorRecord } from '../../../../backend/services/sponsors/delete-sponsor';
