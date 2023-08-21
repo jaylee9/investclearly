@@ -62,6 +62,18 @@ const usePublicUserPageStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       gap: '8px',
+      marginBottom: '16px',
+    },
+    showMoreLink: {
+      cursor: 'pointer',
+      color: palette.primary.light,
+      display: 'flex',
+      alignItems: 'center',
+      fontWeight: 600,
+      gap: '8px',
+      '& i': {
+        fontSize: '24px',
+      },
     },
   };
 };

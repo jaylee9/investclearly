@@ -1,6 +1,5 @@
 import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
 import { getUser } from '@/actions/user';
-import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.interface';
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
 import DealCard from '@/components/common/DealCard';
@@ -56,6 +55,9 @@ const PublicUserPage = ({ user, reviews, deals }: PublicUserPageProps) => {
                 <DealCard key={deal.id} deal={deal} sx={classes.dealCard} />
               ))}
             </Box>
+            <Typography variant="body1" sx={classes.showMoreLink}>
+              Show more deals <i className="icon-Caret-down"></i>
+            </Typography>
           </Box>
           <Box sx={classes.rightColumnBlock}>
             <Box sx={classes.rightColumnBlockHeader} marginBottom="16px">
@@ -65,9 +67,15 @@ const PublicUserPage = ({ user, reviews, deals }: PublicUserPageProps) => {
             </Box>
             <Box sx={classes.reviewsBlockContent}>
               {reviews?.map(review => (
-                <ReviewCard key={review.id} review={review} />
+                <ReviewCard
+                  key={review.id}
+                  review={{ ...review, reviewer: user }}
+                />
               ))}
             </Box>
+            <Typography variant="body1" sx={classes.showMoreLink}>
+              Show more reviews <i className="icon-Caret-down"></i>
+            </Typography>
           </Box>
         </Box>
       </Box>
