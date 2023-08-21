@@ -1,10 +1,10 @@
 import { Box, Rating, Typography } from '@mui/material';
 import { useReviewCardStyles } from './styles';
 import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.interface';
-import getInitials from '@/helpers/getInitials';
 import formatDate from '@/helpers/formatDate';
 import StarIcon from './StarIcon';
 import Link from 'next/link';
+import UserAvatar from './UserAvatar';
 
 interface ReviewCardProps {
   review: ReviewInterface;
@@ -16,13 +16,12 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
     <Box sx={classes.root}>
       <Box sx={classes.reviewHeader}>
         <Box sx={classes.reviewHeaderInfo}>
-          <Box sx={classes.reviewerAvatar}>
-            <Typography variant="body1">
-              {getInitials(
-                `${review.reviewer?.firstName} ${review.reviewer?.lastName}`
-              )}
-            </Typography>
-          </Box>
+          <UserAvatar
+            name={`${review.reviewer?.firstName} ${review.reviewer?.lastName}`}
+            src={review.reviewer?.profilePicture}
+            width={48}
+            height={48}
+          />
           <Box sx={classes.reviewHeaderMainInfo}>
             <Link href={`/users/${review.reviewer?.id}`}>
               <Typography variant="h5">

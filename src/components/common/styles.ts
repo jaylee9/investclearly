@@ -726,19 +726,6 @@ export const useReviewCardStyles = () => {
       display: 'flex',
       gap: '12px',
     },
-    reviewerAvatar: {
-      width: '48px',
-      height: '48px',
-      borderRadius: '100px',
-      background: palette.common.black,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      '& p': {
-        color: palette.common.white,
-        fontWeight: 500,
-      },
-    },
     reviewHeaderMainInfo: {
       '& h5': {
         fontWeight: 600,
@@ -840,6 +827,22 @@ export const useCustomTextAreaStyles = () => {
       color: palette.error.light,
       bottom: '-20px',
       left: 0,
+    },
+  };
+};
+
+export const useUserAvatarStyles = () => {
+  return {
+    root: {
+      borderRadius: '100px',
+      background: palette.common.black,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      '& p': {
+        color: palette.common.white,
+        fontWeight: 500,
+      },
     },
   };
 };
