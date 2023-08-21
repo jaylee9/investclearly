@@ -71,7 +71,7 @@ const theme = createTheme({
       },
     },
     h3: {
-      fontSize: 28,
+      fontSize: 26,
       lineHeight: '36px',
       '@media (max-width:744px)': {
         fontSize: 24,

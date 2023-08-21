@@ -18,6 +18,17 @@ const usePublicUserPageStyles = () => {
       borderRadius: '12px',
       alignItems: 'center',
     },
+    rightColumn: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+    },
+    rightColumnBlock: {
+      padding: '40px',
+      borderRadius: '12px',
+      background: palette.common.white,
+      '& h3': {},
+    },
   };
 };
 

@@ -43,6 +43,9 @@ const PublicUserPage = ({ user, reviews, deals }: PublicUserPageProps) => {
             {user.firstName} {user.lastName}
           </Typography>
         </Box>
+        <Box sx={classes.rightColumn}>
+          <Box sx={classes.rightColumnBlock}></Box>
+        </Box>
       </Box>
     </Layout>
   );
