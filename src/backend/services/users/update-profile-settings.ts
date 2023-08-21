@@ -13,6 +13,7 @@ export const updateProfileSettings = async (
   files: Express.Multer.File[]
 ) => {
   const { assetClasses, regions, ...updateProfileData } = data;
+  let profilePicture: string = '';
   const connection = await getDatabaseConnection();
   const userRecord = await connection.manager.findOne(User, {
     where: { id },
@@ -28,16 +29,16 @@ export const updateProfileSettings = async (
       await deleteFile(userRecord.profilePicture);
     }
 
-    data.profilePicture = await uploadFile(
+    profilePicture = (await uploadFile(
       files[0],
       TargetTypesConstants.profilePictures
-    );
+    )) as string;
   }
 
   await connection.manager.update(
     User,
     { id },
-    { ...transformedData, ...updateProfileData }
+    { ...transformedData, ...updateProfileData, profilePicture }
   );
 
   return getUserById(id);

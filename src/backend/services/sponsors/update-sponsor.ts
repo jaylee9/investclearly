@@ -35,22 +35,23 @@ export const updateSponsorRecord = async (
     regulations,
     interests,
   });
+  let businessAvatar: string = '';
 
   if (files?.length) {
     if (sponsorRecord && sponsorRecord.businessAvatar) {
       await deleteFile(sponsorRecord.businessAvatar);
     }
 
-    data.businessAvatar = await uploadFile(
+    businessAvatar = (await uploadFile(
       files[0],
       TargetTypesConstants.sponsorAvatars
-    );
+    )) as string;
   }
 
   await connection.manager.update(
     Sponsor,
     { id },
-    { ...updateSponsorData, ...transformedData }
+    { ...updateSponsorData, ...transformedData, businessAvatar }
   );
 
   return getSponsorById(id);

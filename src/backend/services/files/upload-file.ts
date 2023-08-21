@@ -12,21 +12,21 @@ export const uploadFile = async (
 ) => {
   const { originalname, buffer } = file;
   const randValue = crypto.randomBytes(10).toString('hex');
-  const originalFilename = originalname || '';
+  const originalFilename = originalname.replace(/\s+/g, '-') || '';
 
   try {
-    const fileName =
-      originalFilename.replace(/\s+/g, '-') ||
-      `${randValue}-${path.extname(originalFilename)}`;
+    if (path.extname(originalFilename)) {
+      const fileName = `${randValue}-${originalFilename}`;
 
-    const uploadParams = {
-      Bucket: bucketName,
-      Body: buffer,
-      Key: `${targetType}/${fileName}`,
-    };
-    const uploadResult = await s3.upload(uploadParams).promise();
+      const uploadParams = {
+        Bucket: bucketName,
+        Body: buffer,
+        Key: `${targetType}/${fileName}`,
+      };
+      const uploadResult = await s3.upload(uploadParams).promise();
 
-    return uploadResult.Key;
+      return uploadResult.Key;
+    }
   } catch (error) {
     throw new createHttpError.BadRequest();
   }
