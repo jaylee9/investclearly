@@ -3,7 +3,7 @@ import api from '@/config/ky';
 
 export const getUser = async ({ id }: { id: string }) => {
   try {
-    const response: PublicUserInterface = await api.get(`deals/${id}`).json();
+    const response: PublicUserInterface = await api.get(`users/${id}`).json();
     return response;
   } catch (error) {
     console.error('Error fetching user', error);

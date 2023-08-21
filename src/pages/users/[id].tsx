@@ -4,19 +4,20 @@ import { DealInterface } from '@/backend/services/deals/interfaces/deal.interfac
 import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.interface';
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
 import Layout from '@/components/common/Layout';
+import UserAvatar from '@/components/common/UserAvatar';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import usePublicUserPageStyles from '@/pages_styles/publicUserPageStyles';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 
-interface PublicUserPage {
+interface PublicUserPageProps {
   user: PublicUserInterface;
   reviews: ReviewInterface[];
   deals: DealInterface[];
 }
 
-const PublicUserPage = ({ user, reviews, deals }) => {
+const PublicUserPage = ({ user, reviews, deals }: PublicUserPageProps) => {
   const headerProps = useHeaderProps({
     type: 'search-dark',
     isLinks: true,
@@ -31,7 +32,17 @@ const PublicUserPage = ({ user, reviews, deals }) => {
   return (
     <Layout {...headerProps}>
       <Box sx={classes.root}>
-        <Box sx={classes.userInfo}></Box>
+        <Box sx={classes.userInfo}>
+          <UserAvatar
+            src={user.profilePicture}
+            name={`${user.firstName} ${user.lastName}`}
+            width={80}
+            height={80}
+          />
+          <Typography variant="h3" fontWeight={600}>
+            {user.firstName} {user.lastName}
+          </Typography>
+        </Box>
       </Box>
     </Layout>
   );
