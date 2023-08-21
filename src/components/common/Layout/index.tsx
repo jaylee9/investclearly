@@ -32,6 +32,7 @@ const Layout = ({
   content,
   onChangeSearch,
   isEntrySpacing = false,
+  isSticky,
 }: LayoutProps) => {
   const defaultStyles = useDefaultLayoutStyles();
   const entryStyles = useEntryLayoutStyles(isEntrySpacing);
@@ -52,6 +53,7 @@ const Layout = ({
               type={type}
               content={content}
               onChangeSearch={onChangeSearch}
+              isSticky={isSticky}
             />
             {children}
           </Box>

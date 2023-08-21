@@ -17,17 +17,46 @@ const usePublicUserPageStyles = () => {
       gap: '12px',
       borderRadius: '12px',
       alignItems: 'center',
+      maxHeight: '176px',
     },
     rightColumn: {
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
+      width: '75%',
     },
     rightColumnBlock: {
       padding: '40px',
       borderRadius: '12px',
       background: palette.common.white,
-      '& h3': {},
+      '& h3': {
+        fontWeight: 600,
+      },
+    },
+    rightColumnBlockHeader: {
+      display: 'flex',
+      gap: '8px',
+      '& h3': {
+        fontWeight: 600,
+      },
+      '& p': {
+        padding: '4px 8px',
+        background: palette.background.default,
+        borderRadius: '20px',
+        color: palette.text.secondary,
+      },
+    },
+    dealsBlockContent: {
+      display: 'flex',
+      gap: '12px',
+      alignItems: 'center',
+      marginBottom: '16px',
+    },
+    dealCard: {
+      width: '33%',
+      '& h5': {
+        maxWidth: '340px',
+      },
     },
   };
 };

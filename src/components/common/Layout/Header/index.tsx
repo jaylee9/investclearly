@@ -28,7 +28,7 @@ const Header = ({
   type,
   isShadow,
   onChangeSearch,
-  isFixed,
+  isSticky,
 }: HeaderProps) => {
   const [isArrowRotated, setIsArrowRotated] = useState(false);
   const classes = getStyles({ type, isShadow });
@@ -55,7 +55,13 @@ const Header = ({
   const secondColumn = assetClassesArray.slice(columnLength);
   return (
     <header
-      style={{ ...classes.root, position: isFixed ? 'fixed' : 'initial' }}
+      style={{
+        ...classes.root,
+        position: isSticky ? 'sticky' : 'initial',
+        top: 0,
+        right: 0,
+        width: '100%',
+      }}
     >
       {!!content && content}
       <Box sx={classes.leftSideWrapper}>
