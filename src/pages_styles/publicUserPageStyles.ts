@@ -58,6 +58,11 @@ const usePublicUserPageStyles = () => {
         maxWidth: '340px',
       },
     },
+    reviewsBlockContent: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px',
+    },
   };
 };
 
