@@ -95,6 +95,10 @@ export class User {
   @Column({ type: 'int', nullable: true })
   holdPeriodMax: number;
 
+  reviewsCount: number;
+
+  investmentsCount: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

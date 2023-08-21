@@ -2,6 +2,7 @@ import { ReviewInterface } from '../../reviews/interfaces/review.interface';
 import { UserInterface } from './user.interface';
 import { AssetClasses } from '../../../../backend/constants/enums/asset-classes';
 import { Regions } from '../../../../backend/constants/enums/regions';
+import { InvestmentInterface } from '../../investments/interfaces/investment.interface';
 
 export interface PublicUserInterface extends UserInterface {
   reviews?: ReviewInterface[] | null;
@@ -22,4 +23,7 @@ export interface PublicUserInterface extends UserInterface {
   minimumInvestmentMax: number;
   holdPeriodMin: number;
   holdPeriodMax: number;
+  reviewsCount: number;
+  investmentsCount: number;
+  investments: InvestmentInterface[];
 }
