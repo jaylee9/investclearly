@@ -28,6 +28,7 @@ const Header = ({
   type,
   isShadow,
   onChangeSearch,
+  isFixed,
 }: HeaderProps) => {
   const [isArrowRotated, setIsArrowRotated] = useState(false);
   const classes = getStyles({ type, isShadow });
@@ -53,7 +54,9 @@ const Header = ({
   const firstColumn = assetClassesArray.slice(0, columnLength);
   const secondColumn = assetClassesArray.slice(columnLength);
   return (
-    <header style={classes.root}>
+    <header
+      style={{ ...classes.root, position: isFixed ? 'fixed' : 'initial' }}
+    >
       {!!content && content}
       <Box sx={classes.leftSideWrapper}>
         <Logo variant={logoVariant} />
