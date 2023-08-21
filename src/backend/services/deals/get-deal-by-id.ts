@@ -18,15 +18,6 @@ export const getDealById = async (id: number, userId?: number) => {
     .from(Deal, 'deals')
     .leftJoinAndSelect('deals.sponsor', 'sponsor')
     .leftJoinAndSelect(
-      'deals.reviews',
-      'reviews',
-      'reviews.status = :reviewStatus',
-      {
-        reviewStatus: ReviewStatuses.published,
-      }
-    )
-    .leftJoinAndSelect('reviews.reviewer', 'reviewer')
-    .leftJoinAndSelect(
       'sponsor.reviews',
       'sponsorReviews',
       'sponsorReviews.status = :sponsorReviewStatus',
@@ -66,10 +57,6 @@ export const getDealById = async (id: number, userId?: number) => {
 
   if (!deal) {
     throw new createHttpError.NotFound(DealConstants.dealNotFound);
-  }
-
-  if (deal.reviews?.length) {
-    deal.reviewsCount = deal.reviews.length;
   }
 
   if (deal.sponsor?.reviews?.length) {
