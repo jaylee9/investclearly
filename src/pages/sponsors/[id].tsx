@@ -35,7 +35,7 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
   const [reviewsData] = useState(reviews);
   const [dealsData] = useState(deals);
 
-  const [isFixedHeader, setFixedHeader] = useState(false);
+  const [isStickyHeader, setFixedHeader] = useState(false);
   const checkSticky = () => {
     if (overviewRef.current) {
       const rect = overviewRef.current.getBoundingClientRect();
@@ -94,7 +94,7 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
   });
   return (
     <Layout {...headerProps}>
-      <Fade in={isFixedHeader}>
+      <Fade in={isStickyHeader}>
         <Box sx={classes.fixedHeader}>
           <Box sx={classes.fixedHeaderInfo}>
             <PlaceholderImage
