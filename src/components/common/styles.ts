@@ -847,44 +847,6 @@ export const useUserAvatarStyles = () => {
   };
 };
 
-export const useCreateReviewFormStyles = () => {
-  return {
-    root: {
-      width: '100vw',
-      height: '100vh',
-      background: palette.common.white,
-    },
-    header: {
-      padding: '16px 24px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      borderBottom: `1px solid ${palette.background.default}`,
-      boxShadow: customShadows.header,
-      '& .icon-Cross': {
-        cursor: 'pointer',
-        fontSize: '24px',
-        color: palette.text.secondary,
-      },
-    },
-    leftPart: {
-      display: 'flex',
-      gap: '32px',
-      alignItems: 'center',
-      '& p': {
-        fontWeight: 600,
-      },
-    },
-    content: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      paddingTop: '32px',
-      gap: '32px',
-    },
-  };
-};
-
 export const useStepsComponentStyles = () => {
   return {
     root: {
@@ -937,6 +899,36 @@ export const useStepsComponentStyles = () => {
 
 export const useTagSelectorStyles = () => {
   return {
-    root: {},
+    root: {
+      position: 'relative',
+    },
+    variantsWrapper: {
+      overflow: 'auto',
+      maxHeight: '440px',
+      background: theme.palette.common.white,
+      width: '100%',
+      borderRadius: '16px',
+      border: `1px solid ${theme.palette.background.paper}`,
+      boxShadow: theme.customShadows.base,
+      padding: '8px 24px',
+      boxSizing: 'border-box',
+      position: 'absolute',
+      zIndex: 10,
+      '&::-webkit-scrollbar': {
+        display: 'none',
+      },
+      msOverflowStyle: 'none',
+      scrollbarWidth: 'none',
+      marginTop: '8px',
+    },
+    tag: {
+      position: 'absolute',
+      top: 6,
+      left: 50,
+      background: palette.common.white,
+      padding: '2px 12px',
+      borderRadius: '16px',
+      border: `1px solid ${palette.background.paper}`,
+    },
   };
 };
