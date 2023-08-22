@@ -33,10 +33,10 @@ export const createSponsorRecord = async (
   let businessAvatar: string = '';
 
   if (files?.length) {
-    businessAvatar = (await uploadFile(
+    businessAvatar = await uploadFile(
       files[0],
       TargetTypesConstants.sponsorAvatars
-    )) as string;
+    );
   }
 
   const sponsor = connection.manager.create(Sponsor, {

@@ -29,10 +29,10 @@ export const updateProfileSettings = async (
       await deleteFile(userRecord.profilePicture);
     }
 
-    profilePicture = (await uploadFile(
+    profilePicture = await uploadFile(
       files[0],
       TargetTypesConstants.profilePictures
-    )) as string;
+    );
   }
 
   await connection.manager.update(

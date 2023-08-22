@@ -9,7 +9,7 @@ loadEnvConfig();
 export const uploadFile = async (
   file: Express.Multer.File,
   targetType: string
-) => {
+): Promise<string> => {
   const { originalname, buffer } = file;
   const randValue = crypto.randomBytes(10).toString('hex');
   const originalFilename = originalname.replace(/\s+/g, '-') || '';
@@ -26,6 +26,8 @@ export const uploadFile = async (
       const uploadResult = await s3.upload(uploadParams).promise();
 
       return uploadResult.Key;
+    } else {
+      throw new createHttpError.BadRequest();
     }
   } catch (error) {
     throw new createHttpError.BadRequest();
