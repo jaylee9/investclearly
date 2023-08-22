@@ -5,6 +5,7 @@ import { useState } from 'react';
 import StepsComponent from '../StepsComponent';
 import ChooseSponsorStep from './ChooseSponsor';
 import { CreateReviewPayloadInterface } from '@/actions/reviews';
+import ChooseDealStep from './ChooseDeal';
 
 interface CreateReviewFormProps extends Omit<ModalProps, 'children'> {}
 
@@ -18,27 +19,42 @@ const steps = [
 const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
   const { onClose, ...other } = props;
   const [step, setStep] = useState(0);
-  const [payload, setPayload] = useState<CreateReviewPayloadInterface>({
-    sponsorId: undefined,
-  });
+  const [payload, setPayload] = useState<CreateReviewPayloadInterface>({});
   const classes = useCreateReviewFormStyles();
+  const handleClose = (e: MouseEvent | object) => {
+    if (onClose) {
+      onClose(e, 'backdropClick');
+    }
+    setStep(0);
+    setPayload({});
+  };
   return (
-    <Modal closeAfterTransition {...other}>
+    <Modal
+      onClose={e => {
+        handleClose(e);
+      }}
+      {...other}
+    >
       <Box sx={classes.root}>
         <Box sx={classes.header}>
           <Box sx={classes.leftPart}>
             <Logo />
             <Typography variant="body1">Write a Review</Typography>
           </Box>
-          <i
-            className="icon-Cross"
-            onClick={e => onClose && onClose(e, 'backdropClick')}
-          />
+          <i className="icon-Cross" onClick={e => handleClose(e)} />
         </Box>
         <Box sx={classes.content}>
           <StepsComponent steps={steps} currentStep={step} />
           {step === 0 && (
             <ChooseSponsorStep
+              step={step}
+              setStep={setStep}
+              payload={payload}
+              setPayload={setPayload}
+            />
+          )}
+          {step === 1 && (
+            <ChooseDealStep
               step={step}
               setStep={setStep}
               payload={payload}

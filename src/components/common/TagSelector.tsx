@@ -64,7 +64,9 @@ const TagSelector = ({
       />
       <Fade in={!!activeTag}>
         <Box sx={classes.tag}>
-          <Typography variant="body1">{activeTag}</Typography>
+          <Typography variant="body1" className="tag-title">
+            {activeTag}
+          </Typography>
         </Box>
       </Fade>
       <Fade in={open}>

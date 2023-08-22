@@ -929,6 +929,12 @@ export const useTagSelectorStyles = () => {
       padding: '2px 12px',
       borderRadius: '16px',
       border: `1px solid ${palette.background.paper}`,
+      '& .tag-title': {
+        whiteSpace: 'nowrap',
+        maxWidth: '300px',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      },
     },
   };
 };

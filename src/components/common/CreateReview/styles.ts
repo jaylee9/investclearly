@@ -99,3 +99,57 @@ export const useChooseSponsorStepStyles = () => {
     },
   };
 };
+
+export const useChooseDealStepStyles = () => {
+  return {
+    root: {
+      padding: '64px 32px 16px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '64px',
+      borderRadius: '12px',
+      background: palette.common.white,
+      boxShadow: customShadows.header,
+    },
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    subTitle: {
+      color: palette.text.secondary,
+      textAlign: 'center',
+      maxWidth: '520px',
+      marginBottom: '24px',
+    },
+    buttonsWrapper: {
+      display: 'flex',
+      justifyContent: 'end',
+      gap: '8px',
+    },
+    noResults: {
+      color: palette.text.secondary,
+    },
+    dealVariantWrapper: {
+      display: 'flex',
+      gap: '12px',
+      cursor: 'pointer',
+    },
+    tagSelectorWrapper: {
+      width: '520px',
+    },
+    tagSelectorContent: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px',
+    },
+    address: {
+      color: palette.text.secondary,
+    },
+    assetClassesWrapper: {
+      display: 'flex',
+      gap: '4px',
+      alignItems: 'center',
+    },
+  };
+};
