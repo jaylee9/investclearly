@@ -24,4 +24,7 @@ export const TemplatesIds = {
   unverifiedReviewPublishedEmail: 'd-56bab407e42b416aaf80bad685b96b81',
   reviewRejectedEmail: 'd-1b544cf59d2f4df8af9b5b87561ddab7',
   reviewUnpublishedEmail: 'd-59d7a3fdad2e45ad86e35bfd5450c9cf',
+  publishedReviewEmailToBmRecipients: 'd-e78d6118c3304548aced4e33bde3bfcc',
+  unverifiedReviewPublishedEmailToBmRecipients:
+    'd-95e8d9691b194844a93544335be80ef8',
 };
