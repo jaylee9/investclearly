@@ -9,10 +9,13 @@ import Loading from '../Loading';
 import { getAllSponsors } from '@/actions/sponsors';
 import PlaceholderImage from '../PlaceholderImage';
 import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
+import { CreateReviewPayloadInterface } from '@/actions/reviews';
 
 interface ChooseSponsorStepProps {
   setStep: (value: number) => void;
   step: number;
+  payload: CreateReviewPayloadInterface;
+  setPayload: (value: CreateReviewPayloadInterface) => void;
 }
 
 interface Tag {
@@ -20,7 +23,12 @@ interface Tag {
   id?: number;
 }
 
-const ChooseSponsorStep = ({ setStep, step }: ChooseSponsorStepProps) => {
+const ChooseSponsorStep = ({
+  setStep,
+  step,
+  payload,
+  setPayload,
+}: ChooseSponsorStepProps) => {
   const classes = useChooseSponsorStepStyles();
   const [tagSelectorValue, setTagSelectorValue] = useState('');
   const [debouncedValue, setDebouncedValue] = useState(tagSelectorValue);
@@ -49,13 +57,16 @@ const ChooseSponsorStep = ({ setStep, step }: ChooseSponsorStepProps) => {
     fetchSponsors
   );
 
-  const [tag, setTag] = useState<Tag>({ name: '', id: undefined });
+  const defaultTag = { name: '', id: undefined };
+  const [tag, setTag] = useState<Tag>(defaultTag);
+  const dirtyTag = tag.name !== defaultTag.name && tag.id !== defaultTag.id;
 
   const handleClearTag = () => {
-    setTag({ name: '', id: undefined });
+    setTag(defaultTag);
   };
 
   const handleNextPage = () => {
+    setPayload({ ...payload, sponsorId: tag.id });
     setStep(step + 1);
   };
   const handleChooseSponsor = (event: React.MouseEvent, { name, id }: Tag) => {
@@ -126,7 +137,9 @@ const ChooseSponsorStep = ({ setStep, step }: ChooseSponsorStepProps) => {
         </Box>
       </Box>
       <Box sx={classes.buttonsWrapper}>
-        <Button onClick={handleNextPage}>Next</Button>
+        <Button onClick={handleNextPage} disabled={!dirtyTag}>
+          Next
+        </Button>
       </Box>
     </Box>
   );

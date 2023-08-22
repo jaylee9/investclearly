@@ -4,6 +4,7 @@ import Logo from '@/assets/components/Logo';
 import { useState } from 'react';
 import StepsComponent from '../StepsComponent';
 import ChooseSponsorStep from './ChooseSponsor';
+import { CreateReviewPayloadInterface } from '@/actions/reviews';
 
 interface CreateReviewFormProps extends Omit<ModalProps, 'children'> {}
 
@@ -17,6 +18,9 @@ const steps = [
 const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
   const { onClose, ...other } = props;
   const [step, setStep] = useState(0);
+  const [payload, setPayload] = useState<CreateReviewPayloadInterface>({
+    sponsorId: undefined,
+  });
   const classes = useCreateReviewFormStyles();
   return (
     <Modal closeAfterTransition {...other}>
@@ -33,7 +37,14 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
         </Box>
         <Box sx={classes.content}>
           <StepsComponent steps={steps} currentStep={step} />
-          {step === 0 && <ChooseSponsorStep step={step} setStep={setStep} />}
+          {step === 0 && (
+            <ChooseSponsorStep
+              step={step}
+              setStep={setStep}
+              payload={payload}
+              setPayload={setPayload}
+            />
+          )}
         </Box>
       </Box>
     </Modal>

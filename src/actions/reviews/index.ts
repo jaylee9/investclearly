@@ -4,7 +4,8 @@ import api from '@/config/ky';
 
 export type OptionalCreateReviewInterface = Partial<CreateReviewInterface>;
 
-interface CreateReviewPayloadInterface extends OptionalCreateReviewInterface {
+export interface CreateReviewPayloadInterface
+  extends OptionalCreateReviewInterface {
   file?: File | File[];
 }
 
