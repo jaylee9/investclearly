@@ -846,3 +846,91 @@ export const useUserAvatarStyles = () => {
     },
   };
 };
+
+export const useCreateReviewFormStyles = () => {
+  return {
+    root: {
+      width: '100vw',
+      height: '100vh',
+      background: palette.common.white,
+    },
+    header: {
+      padding: '16px 24px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderBottom: `1px solid ${palette.background.default}`,
+      boxShadow: customShadows.header,
+      '& .icon-Cross': {
+        cursor: 'pointer',
+        fontSize: '24px',
+        color: palette.text.secondary,
+      },
+    },
+    leftPart: {
+      display: 'flex',
+      gap: '32px',
+      alignItems: 'center',
+      '& p': {
+        fontWeight: 600,
+      },
+    },
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      paddingTop: '32px',
+      gap: '32px',
+    },
+  };
+};
+
+export const useStepsComponentStyles = () => {
+  return {
+    root: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '16px',
+    },
+    stepWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '16px',
+    },
+    defaultStep: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '14px',
+      '& .icon-Check': {
+        fontSize: '24px',
+        transition: 'opacity 0.3s',
+      },
+      '& .step-status': {
+        borderRadius: '1230px',
+        color: palette.common.white,
+        background: palette.text.disabled,
+        width: '26px',
+        height: '26px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontWeight: 600,
+        transition: 'background 0.3s',
+      },
+      '& .step-status-current': { background: palette.primary.light },
+      '& .step-status-completed': { background: palette.success.main },
+      '& .step-label': {
+        fontWeight: 600,
+        color: palette.text.secondary,
+        transition: 'color 0.3s',
+      },
+      '& .step-label-current': { color: palette.primary.light },
+      '& .step-label-completed': { color: palette.common.black },
+    },
+    divider: {
+      width: '24px',
+      height: '2px',
+      background: palette.background.paper,
+    },
+  };
+};
