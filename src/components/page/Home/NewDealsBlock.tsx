@@ -22,7 +22,7 @@ const NewDealsBlock = ({ deals }: NewDealsBlockProps) => {
         {deals.map((deal, index) => (
           <Box
             key={index}
-            sx={{ width: `calc(${100 / deals.length})`, height: '332px' }}
+            sx={{ width: `calc(100%/${deals.length})`, height: '332px' }}
           >
             <DealCard deal={deal} />
           </Box>
