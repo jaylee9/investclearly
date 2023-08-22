@@ -25,7 +25,10 @@ export const update = async (
 
   if (files?.length) {
     for (const file of files) {
-      const fileUrl = await uploadFile(file, TargetTypesConstants.reviewProofs);
+      const fileUrl = (await uploadFile(
+        file,
+        TargetTypesConstants.reviewProofs
+      )) as string;
       await createAttachment(fileUrl, id, TargetTypesConstants.reviewProofs);
     }
   }
