@@ -934,3 +934,9 @@ export const useStepsComponentStyles = () => {
     },
   };
 };
+
+export const useTagSelectorStyles = () => {
+  return {
+    root: {},
+  };
+};
