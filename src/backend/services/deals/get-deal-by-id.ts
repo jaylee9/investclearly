@@ -18,15 +18,6 @@ export const getDealById = async (id: number, userId?: number) => {
     .from(Deal, 'deals')
     .leftJoinAndSelect('deals.sponsor', 'sponsor')
     .leftJoinAndSelect(
-      'deals.reviews',
-      'reviews',
-      'reviews.status = :reviewStatus',
-      {
-        reviewStatus: ReviewStatuses.published,
-      }
-    )
-    .leftJoinAndSelect('reviews.reviewer', 'reviewer')
-    .leftJoinAndSelect(
       'sponsor.reviews',
       'sponsorReviews',
       'sponsorReviews.status = :sponsorReviewStatus',
@@ -68,10 +59,6 @@ export const getDealById = async (id: number, userId?: number) => {
     throw new createHttpError.NotFound(DealConstants.dealNotFound);
   }
 
-  if (deal.reviews?.length) {
-    deal.reviewsCount = deal.reviews.length;
-  }
-
   if (deal.sponsor?.reviews?.length) {
     const publishedReviews = _.filter(deal.sponsor.reviews, {
       status: ReviewStatuses.published,
@@ -80,7 +67,9 @@ export const getDealById = async (id: number, userId?: number) => {
     const totalRating = _.sumBy(publishedReviews, 'overallRating');
 
     deal.sponsor.avgTotalRating =
-      publishedReviewsCount > 0 ? totalRating / publishedReviewsCount : 0;
+      publishedReviewsCount > 0
+        ? parseFloat((totalRating / publishedReviewsCount).toFixed(1))
+        : 0;
     deal.sponsor.reviewsCount = publishedReviewsCount;
   }
 

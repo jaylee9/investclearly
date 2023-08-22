@@ -17,6 +17,7 @@ export const updateProfileSettings = async (
   const userRecord = await connection.manager.findOne(User, {
     where: { id },
   });
+  let profilePicture = userRecord?.profilePicture;
 
   const transformedData = transformObjectKeysToArrays({
     assetClasses,
@@ -28,7 +29,7 @@ export const updateProfileSettings = async (
       await deleteFile(userRecord.profilePicture);
     }
 
-    data.profilePicture = await uploadFile(
+    profilePicture = await uploadFile(
       files[0],
       TargetTypesConstants.profilePictures
     );
@@ -37,7 +38,7 @@ export const updateProfileSettings = async (
   await connection.manager.update(
     User,
     { id },
-    { ...transformedData, ...updateProfileData }
+    { ...transformedData, ...updateProfileData, profilePicture }
   );
 
   return getUserById(id);

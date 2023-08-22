@@ -1,28 +1,44 @@
 import createHttpError from 'http-errors';
 import _ from 'lodash';
 import { getDatabaseConnection } from '../../config/data-source-config';
-import { SponsorConstants } from '../../../backend/constants/validation/sponsor-constants';
+import { SponsorConstants } from '../../constants/sponsor-constants';
 import { Sponsor } from '../../../backend/entities/sponsors.entity';
 import { sponsorMapper } from '../../../backend/mappers/sponsor.mapper';
 import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
 import { Bookmark } from '../../../backend/entities/bookmark.entity';
 import { BookmarkConstants } from '../../../backend/constants/bookmark-constants';
+import { Review } from '../../../backend/entities/reviews.entity';
+import { Deal } from '../../../backend/entities/deals.entity';
 
-export const getSponsorById = async (id: number, currentUserId?: number) => {
+export const getSponsorById = async (
+  id: number,
+  reviewsLimit = SponsorConstants.defaultLimits.defaultReviewsLimit,
+  dealsLimit = SponsorConstants.defaultLimits.defaultDealsLimit,
+  currentUserId?: number
+) => {
   const connection = await getDatabaseConnection();
 
   let sponsorQuery = connection.manager
-    .createQueryBuilder(Sponsor, 'sponsor')
+    .createQueryBuilder()
+    .select('sponsor')
+    .from(Sponsor, 'sponsor')
     .where('sponsor.id = :id', { id })
-    .leftJoinAndSelect('sponsor.user', 'user')
-    .leftJoinAndSelect('sponsor.deals', 'deals')
-    .leftJoinAndSelect(
-      'sponsor.reviews',
-      'reviews',
-      'reviews.status = :reviewStatus'
-    )
-    .leftJoinAndSelect('reviews.reviewer', 'reviewer')
-    .setParameter('reviewStatus', ReviewStatuses.published);
+    .leftJoinAndSelect('sponsor.user', 'user');
+
+  const reviewsQuery = connection.manager
+    .createQueryBuilder(Review, 'reviews')
+    .where('reviews.sponsorId = :sponsorId', { sponsorId: id })
+    .andWhere('reviews.status = :reviewStatus', {
+      reviewStatus: ReviewStatuses.published,
+    })
+    .leftJoinAndSelect('reviews.reviewer', 'reviewer');
+
+  const dealsQuery = connection.manager
+    .createQueryBuilder(Deal, 'deals')
+    .where('deals.sponsorId = :sponsorId', { sponsorId: id });
+
+  const dealsCount = await dealsQuery.clone().getCount();
+  const publishedReviewsCount = await reviewsQuery.clone().getCount();
 
   if (currentUserId) {
     sponsorQuery = sponsorQuery.leftJoinAndMapMany(
@@ -42,21 +58,19 @@ export const getSponsorById = async (id: number, currentUserId?: number) => {
   if (!sponsor) {
     throw new createHttpError.NotFound(SponsorConstants.sponsorNotFound);
   }
+  const publishedReviews = await reviewsQuery.getMany();
+  sponsor.reviews = await reviewsQuery.limit(reviewsLimit).getMany();
+  sponsor.deals = await dealsQuery.limit(dealsLimit).getMany();
+  sponsor.dealsCount = dealsCount;
 
-  if (sponsor.deals?.length) {
-    sponsor.dealsCount = sponsor.deals.length;
-  }
-
-  if (sponsor.reviews?.length) {
-    const publishedReviews = _.filter(sponsor.reviews, {
-      status: ReviewStatuses.published,
-    });
-    const publishedReviewsCount = publishedReviews.length;
+  if (publishedReviews?.length) {
     const totalRating = _.sumBy(publishedReviews, 'overallRating');
 
     sponsor.reviewsCount = publishedReviewsCount;
     sponsor.avgTotalRating =
-      publishedReviewsCount > 0 ? totalRating / publishedReviewsCount : 0;
+      publishedReviewsCount > 0
+        ? parseFloat((totalRating / publishedReviewsCount).toFixed(1))
+        : 0;
   }
 
   if (sponsor.bookmarks?.length) {

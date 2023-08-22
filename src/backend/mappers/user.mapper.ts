@@ -1,6 +1,7 @@
 import { User } from '../entities/user.entity';
 import { PublicUserInterface } from '../services/users/interfaces/public-user.interface';
 import { buildFullImagePath } from '../utils/build-full-image-path';
+import { investmentMapper } from './investment.mapper';
 import { reviewMapper } from './review.mapper';
 
 export const userMapper = (user: User): PublicUserInterface => {
@@ -35,6 +36,9 @@ export const userMapper = (user: User): PublicUserInterface => {
     holdPeriodMin: user.holdPeriodMin,
     holdPeriodMax: user.holdPeriodMax,
     reviews: user.reviews ? user.reviews.map(reviewMapper) : [],
+    reviewsCount: user.reviewsCount || 0,
+    investments: user.investments ? user.investments.map(investmentMapper) : [],
+    investmentsCount: user.investmentsCount || 0,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
   };
