@@ -87,7 +87,9 @@ const GlobalSearch = ({
     ? type === 'sponsors' && 'sponsors'
     : 'deals';
 
-  const searchLink = `/list?type=${searchType}&search=${globalSearchValue}`;
+  const searchLink = `/list?type=${
+    searchType || 'sponsors'
+  }&search=${globalSearchValue}`;
 
   const handleClearInput = () => {
     setValue('');
@@ -102,12 +104,10 @@ const GlobalSearch = ({
   };
 
   const handleSearchSubmit = () => {
-    if (globalSearchValue.trim() !== '') {
-      setIsOpenGlobalSearch(false);
-      router.push(searchLink);
-      if (onChangeSearch) {
-        onChangeSearch(globalSearchValue);
-      }
+    setIsOpenGlobalSearch(false);
+    router.push(searchLink);
+    if (onChangeSearch) {
+      onChangeSearch(globalSearchValue);
     }
   };
 
@@ -129,6 +129,7 @@ const GlobalSearch = ({
           customStyles={classes.searchInput}
           height="large"
           onKeyDown={handleKeyDown}
+          autoComplete="off"
           endComponent={
             <Link href={searchLink}>
               <Button
@@ -156,6 +157,7 @@ const GlobalSearch = ({
           value={value}
           customStyles={classes.baseSearchInput}
           onKeyDown={handleKeyDown}
+          autoComplete="off"
         />
       )}
       {isOpenGlobalSearch && (

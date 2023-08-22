@@ -20,7 +20,10 @@ const NewDealsBlock = ({ deals }: NewDealsBlockProps) => {
       </Typography>
       <Box sx={classes.dealCardsWrapper}>
         {deals.map((deal, index) => (
-          <Box key={index} sx={{ width: 'calc(100%/4)', height: '332px' }}>
+          <Box
+            key={index}
+            sx={{ width: `calc(${100 / deals.length})`, height: '332px' }}
+          >
             <DealCard deal={deal} />
           </Box>
         ))}
