@@ -334,7 +334,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
     props: {
       reviews: sponsorResponse.reviews,
       // splice will be removed after added logic on back end side
-      deals: sponsorResponse.deals?.splice(1, 4),
+      deals: sponsorResponse.deals,
       sponsor: sponsorResponse,
     },
   };
