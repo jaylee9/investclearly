@@ -30,7 +30,10 @@ export const createDeal = async (
 
   if (files?.length) {
     for (const file of files) {
-      const fileUrl = await uploadFile(file, TargetTypesConstants.deals);
+      const fileUrl = (await uploadFile(
+        file,
+        TargetTypesConstants.deals
+      )) as string;
       await createAttachment(
         fileUrl,
         dealRecord.id,
