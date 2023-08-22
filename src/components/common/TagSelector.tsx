@@ -1,7 +1,7 @@
 import { Box, Fade, InputAdornment, Typography } from '@mui/material';
 import { useTagSelectorStyles } from './styles';
 import Input from './Input';
-import { ReactNode, useRef, useState } from 'react';
+import { ReactNode, useRef } from 'react';
 import { useOnClickOutside } from 'usehooks-ts';
 
 interface TagSelectorProps {
@@ -10,6 +10,9 @@ interface TagSelectorProps {
   activeTag: string;
   onClearTags: () => void;
   children: ReactNode;
+  open: boolean;
+  handleOpen: () => void;
+  handleClose: () => void;
 }
 
 const TagSelector = ({
@@ -18,13 +21,13 @@ const TagSelector = ({
   activeTag,
   onClearTags,
   children,
+  open,
+  handleClose,
+  handleOpen,
 }: TagSelectorProps) => {
   const classes = useTagSelectorStyles();
   const ref = useRef(null);
-  const [showVariants, setShowVariants] = useState(false);
-  const handleOpen = () => setShowVariants(true);
 
-  const handleClose = () => setShowVariants(false);
   const onClearInput = () => {
     handleClose();
     onChange('');
@@ -64,7 +67,7 @@ const TagSelector = ({
           <Typography variant="body1">{activeTag}</Typography>
         </Box>
       </Fade>
-      <Fade in={showVariants}>
+      <Fade in={open}>
         <Box sx={classes.variantsWrapper}>{children}</Box>
       </Fade>
     </Box>
