@@ -1,9 +1,9 @@
 import { Box, Modal, ModalProps, Typography } from '@mui/material';
-import { useCreateReviewFormStyles } from '../styles';
+import { useCreateReviewFormStyles } from './styles';
 import Logo from '@/assets/components/Logo';
 import { useState } from 'react';
 import StepsComponent from '../StepsComponent';
-import TagSelector from '../TagSelector';
+import ChooseSponsorStep from './ChooseSponsor';
 
 interface CreateReviewFormProps extends Omit<ModalProps, 'children'> {}
 
@@ -33,6 +33,7 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
         </Box>
         <Box sx={classes.content}>
           <StepsComponent steps={steps} currentStep={step} />
+          {step === 0 && <ChooseSponsorStep step={step} setStep={setStep} />}
         </Box>
       </Box>
     </Modal>
