@@ -15,7 +15,7 @@ import DealCard from '@/components/common/DealCard';
 import PlaceholderImage from '@/components/common/PlaceholderImage';
 import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 import ClaimCompanyModal from '@/components/page/Sponsor/Modals/ClaimCompany';
-import CreateReviewForm from '@/components/common/CreateReviewForm';
+import CreateReviewForm from '@/components/common/CreateReview';
 
 type ActiveTab = 'overview' | 'reviews';
 

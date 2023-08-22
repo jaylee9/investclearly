@@ -1,8 +1,9 @@
 import { Box, Modal, ModalProps, Typography } from '@mui/material';
-import { useCreateReviewFormStyles } from './styles';
+import { useCreateReviewFormStyles } from '../styles';
 import Logo from '@/assets/components/Logo';
 import { useState } from 'react';
-import StepsComponent from './StepsComponent';
+import StepsComponent from '../StepsComponent';
+import TagSelector from '../TagSelector';
 
 interface CreateReviewFormProps extends Omit<ModalProps, 'children'> {}
 
