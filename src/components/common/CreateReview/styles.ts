@@ -56,16 +56,46 @@ export const useChooseSponsorStepStyles = () => {
       flexDirection: 'column',
       alignItems: 'center',
     },
-    subTitle: {
-      textAlign: 'center',
-      maxWidth: '500px',
-      color: palette.text.secondary,
-      marginBottom: '24px',
-    },
     buttonsWrapper: {
       display: 'flex',
       justifyContent: 'end',
+    },
+    noResults: {
+      color: palette.text.secondary,
+    },
+    sponsorVariantWrapper: {
+      display: 'flex',
+      gap: '12px',
+      cursor: 'pointer',
+    },
+    tagSelectorWrapper: {
+      width: '520px',
+    },
+    tagSelectorContent: {
+      display: 'flex',
+      flexDirection: 'column',
       gap: '8px',
+    },
+    sponsorRating: {
+      display: 'flex',
+      gap: '4px',
+      alignItems: 'center',
+      marginBottom: '6px',
+      '& .icon-Star': {
+        fontSize: '12px',
+        color: theme.palette.secondary.main,
+      },
+      color: theme.palette.secondary.main,
+      fontWeight: 600,
+      '& span': {
+        '&:last-child': {
+          color: theme.palette.text.secondary,
+          fontWeight: 400,
+        },
+      },
+    },
+    address: {
+      color: palette.text.secondary,
     },
   };
 };
