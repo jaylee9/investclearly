@@ -3,7 +3,7 @@ import { User } from '../../entities/user.entity';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { Deal } from '../../entities/deals.entity';
 import { MomentConstants } from '../../constants/moment-constants';
-import { dealsMatchedYourInvestmentPreferences } from '../mails/send-deals-mathing-your-investment-preferences';
+import { sendDealsMatchedYourInvestmentPreferences } from '../mails/send-deals-mathing-your-investment-preferences';
 import { Attachment } from '../../entities/attachments.entity';
 import { TargetTypesConstants } from '../../constants/target-types-constants';
 import { dealMapper } from '../../mappers/deal.mapper';
@@ -56,7 +56,7 @@ export const getUsersAndTheirMatchedInvestmentPreferencesDeals = async () => {
         .getMany();
 
       if (user && deals?.length === 3) {
-        dealsMatchedYourInvestmentPreferences(
+        sendDealsMatchedYourInvestmentPreferences(
           user,
           await Promise.all(deals.map(dealMapper))
         );
