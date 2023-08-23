@@ -14,3 +14,7 @@ body {
   background-color: #717c89;
   border-radius: 50%;
 }
+
+.required-star {
+  color: #d72638;
+}

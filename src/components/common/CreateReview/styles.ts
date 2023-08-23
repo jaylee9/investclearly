@@ -8,6 +8,7 @@ export const useCreateReviewFormStyles = () => {
       width: '100vw',
       height: '100vh',
       background: palette.common.white,
+      overflow: 'auto',
     },
     header: {
       padding: '16px 24px',
@@ -34,7 +35,7 @@ export const useCreateReviewFormStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      paddingTop: '32px',
+      padding: '32px 0px 32px',
       gap: '32px',
     },
   };
@@ -150,6 +151,52 @@ export const useChooseDealStepStyles = () => {
       display: 'flex',
       gap: '4px',
       alignItems: 'center',
+    },
+  };
+};
+
+export const useReviewDetailsStepStyles = () => {
+  return {
+    root: {
+      borderRadius: '12px',
+      background: palette.common.white,
+      boxShadow: customShadows.header,
+      padding: '40px 40px 16px',
+      '& .add-comment': {
+        display: 'flex',
+        gap: '8px',
+        alignItems: 'center',
+        fontWeight: 600,
+        '& .icon-Plus': {
+          fontSize: '24px',
+        },
+      },
+      '& .add-comment-disabled': {
+        color: palette.text.disabled,
+        cursor: 'default',
+        transition: 'color 0.3s ease',
+      },
+      '& .add-comment-active': {
+        cursor: 'pointer !important',
+        color: palette.primary.light,
+        transition: 'color 0.3s ease',
+      },
+    },
+    form: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '32px',
+    },
+    titleInput: { minWidth: '700px' },
+    ratingField: {
+      marginBottom: '12px',
+    },
+    overallRatingField: {
+      marginBottom: '16px',
+    },
+    buttonWrapper: {
+      display: 'flex',
+      justifyContent: 'end',
     },
   };
 };
