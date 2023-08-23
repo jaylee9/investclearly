@@ -27,4 +27,11 @@ export const TemplatesIds = {
   publishedReviewEmailToBmRecipients: 'd-e78d6118c3304548aced4e33bde3bfcc',
   unverifiedReviewPublishedEmailToBmRecipients:
     'd-95e8d9691b194844a93544335be80ef8',
+  sponsorPostedNewDeals: 'd-fa5dc29ee1db47ca91b6a27805dcc8b0',
+  newDealsMatchingYourInvestmentPreferences:
+    'd-3f1e3aecfe1346709fb63b4f90ac9ca3',
+};
+
+export const DefaultImages = {
+  dealImage: 'https://i.imgur.com/jrK2kh4.jpg',
 };
