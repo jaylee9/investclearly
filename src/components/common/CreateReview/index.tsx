@@ -7,6 +7,7 @@ import ChooseSponsorStep from './ChooseSponsor';
 import { CreateReviewPayloadInterface } from '@/actions/reviews';
 import ChooseDealStep from './ChooseDeal';
 import ReviewDetailsStep from './ReviewDetails';
+import UploadProofStep from './UploadProof';
 
 interface CreateReviewFormProps extends Omit<ModalProps, 'children'> {}
 
@@ -19,7 +20,7 @@ const steps = [
 
 const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
   const { onClose, ...other } = props;
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(3);
   const [payload, setPayload] = useState<CreateReviewPayloadInterface>({});
 
   const classes = useCreateReviewFormStyles();
@@ -72,6 +73,7 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
               setPayload={setPayload}
             />
           )}
+          {step === 3 && <UploadProofStep />}
         </Box>
       </Box>
     </Modal>
