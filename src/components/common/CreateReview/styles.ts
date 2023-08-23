@@ -200,3 +200,18 @@ export const useReviewDetailsStepStyles = () => {
     },
   };
 };
+
+export const useUploadProofStepStyles = () => {
+  return {
+    root: {
+      borderRadius: '12px',
+      background: palette.common.white,
+      boxShadow: customShadows.header,
+      padding: '40px 40px 16px',
+    },
+    subTitle: {
+      color: palette.text.secondary,
+      margin: '4px 0px 32px',
+    },
+  };
+};
