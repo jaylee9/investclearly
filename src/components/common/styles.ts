@@ -957,6 +957,7 @@ export const useFileUploaderStyles = () => {
         fontSize: '36px',
         color: palette.text.secondary,
       },
+      marginBottom: '12px',
     },
     dropZoneContent: {
       display: 'flex',
@@ -966,6 +967,61 @@ export const useFileUploaderStyles = () => {
     },
     infoText: {
       color: palette.text.secondary,
+    },
+    filesWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px',
+      '& .error': {
+        border: `1px solid ${palette.error.light}`,
+      },
+    },
+    file: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '16px 24px',
+      borderRadius: '8px',
+      border: `1px solid ${palette.background.paper}`,
+    },
+    mainFileInfo: {
+      display: 'flex',
+      gap: '12px',
+      alignItems: 'center',
+      '& .icon-File': {
+        color: palette.text.secondary,
+        fontSize: '24px',
+      },
+      '& .error-text': {
+        color: palette.error.light,
+      },
+    },
+    fileName: {
+      fontWeight: 600,
+      marginBottom: '4px',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      maxWidth: '200px',
+      textOverflow: 'ellipsis',
+    },
+    fileSize: {
+      color: palette.text.secondary,
+    },
+    actionsWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      fontSize: '24px',
+      '& i': {
+        cursor: 'pointer',
+      },
+      '& .icon-Reload': {
+        color: palette.text.secondary,
+      },
+      '& .icon-Delete': {
+        color: palette.error.light,
+      },
     },
   };
 };
