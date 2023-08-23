@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { useUploadProofStepStyles } from './styles';
+import FileUploader from '../FileUploader';
 
 const UploadProofStep = () => {
   const classes = useUploadProofStepStyles();
@@ -12,6 +13,7 @@ const UploadProofStep = () => {
         Attach any documents or screenshots that prove your involvement with
         Cloud Investment Ltd.
       </Typography>
+      <FileUploader />
     </Box>
   );
 };

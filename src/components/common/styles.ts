@@ -938,3 +938,34 @@ export const useTagSelectorStyles = () => {
     },
   };
 };
+
+export const useFileUploaderStyles = () => {
+  return {
+    root: {},
+    dropZone: {
+      width: '100%',
+      borderRadius: '8px',
+      border: `1px dashed ${palette.background.paper}`,
+      padding: '32px 0px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      '& .icon-Upload': {
+        fontSize: '36px',
+        color: palette.text.secondary,
+      },
+    },
+    dropZoneContent: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    infoText: {
+      color: palette.text.secondary,
+    },
+  };
+};
