@@ -19,7 +19,7 @@ const steps = [
 
 const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
   const { onClose, ...other } = props;
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
   const [payload, setPayload] = useState<CreateReviewPayloadInterface>({});
 
   const classes = useCreateReviewFormStyles();
