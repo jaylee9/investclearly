@@ -6,6 +6,7 @@ import StepsComponent from '../StepsComponent';
 import ChooseSponsorStep from './ChooseSponsor';
 import { CreateReviewPayloadInterface } from '@/actions/reviews';
 import ChooseDealStep from './ChooseDeal';
+import ReviewDetailsStep from './ReviewDetails';
 
 interface CreateReviewFormProps extends Omit<ModalProps, 'children'> {}
 
@@ -18,9 +19,11 @@ const steps = [
 
 const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
   const { onClose, ...other } = props;
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(2);
   const [payload, setPayload] = useState<CreateReviewPayloadInterface>({});
+
   const classes = useCreateReviewFormStyles();
+
   const handleClose = (e: MouseEvent | object) => {
     if (onClose) {
       onClose(e, 'backdropClick');
@@ -55,6 +58,14 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
           )}
           {step === 1 && (
             <ChooseDealStep
+              step={step}
+              setStep={setStep}
+              payload={payload}
+              setPayload={setPayload}
+            />
+          )}
+          {step === 2 && (
+            <ReviewDetailsStep
               step={step}
               setStep={setStep}
               payload={payload}

@@ -3,17 +3,29 @@ import StarIcon from './StarIcon';
 
 interface CustomRatingProps extends RatingProps {
   label?: string;
+  fontSize?: string;
+  required?: boolean;
 }
 
-const CustomRating = ({ label, ...props }: CustomRatingProps) => {
+const CustomRating = ({
+  label,
+  fontSize,
+  required,
+  ...props
+}: CustomRatingProps) => {
   return (
     <Box>
       {label && (
         <Typography variant="body1" fontWeight={600} marginBottom="4px">
           {label}
+          {required && <span className="required-star">*</span>}
         </Typography>
       )}
-      <Rating icon={<StarIcon filled />} emptyIcon={<StarIcon />} {...props} />
+      <Rating
+        icon={<StarIcon filled fontSize={fontSize} />}
+        emptyIcon={<StarIcon fontSize={fontSize} />}
+        {...props}
+      />
     </Box>
   );
 };
