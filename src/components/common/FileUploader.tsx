@@ -12,7 +12,12 @@ interface FileItem {
   reader: FileReader;
 }
 
-const FileUploader = () => {
+interface FileUploaderProps {
+  onUpload: (file: File) => void;
+  onDelete: (file: File) => void;
+}
+
+const FileUploader = ({ onUpload, onDelete }: FileUploaderProps) => {
   const classes = useFileUploaderStyles();
   const [files, setFiles] = useState<FileItem[]>([]);
   const maxSize = 10 * 1024 * 1024;
@@ -35,12 +40,22 @@ const FileUploader = () => {
         );
       };
 
+      reader.onloadend = () => {
+        if (fileItem.status !== 'error') {
+          onUpload(fileItem.file);
+        }
+      };
+
       reader.readAsDataURL(file);
       setFiles(prevFiles => [...prevFiles, fileItem]);
     });
   };
 
   const deleteFile = (fileId: string) => {
+    const fileToDelete = files.find(f => f.id === fileId);
+    if (fileToDelete && fileToDelete.status !== 'error') {
+      onDelete(fileToDelete.file);
+    }
     setFiles(prevFiles => prevFiles.filter(f => f.id !== fileId));
   };
 
