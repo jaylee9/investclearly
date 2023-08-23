@@ -972,6 +972,7 @@ export const useFileUploaderStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       gap: '12px',
+      marginBottom: '12px',
       '& .error': {
         border: `1px solid ${palette.error.light}`,
       },
@@ -1022,6 +1023,10 @@ export const useFileUploaderStyles = () => {
       '& .icon-Delete': {
         color: palette.error.light,
       },
+    },
+    additionalInfo: {
+      maxWidth: '75%',
+      color: palette.text.secondary,
     },
   };
 };

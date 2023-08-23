@@ -120,6 +120,11 @@ const FileUploader = () => {
           </Fade>
         ))}
       </Box>
+      <Typography sx={classes.additionalInfo}>
+        Your provided files are securely processed and immediately deleted after
+        verification, ensuring the privacy and confidentiality of your
+        information.
+      </Typography>
     </Box>
   );
 };
