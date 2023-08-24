@@ -9,6 +9,8 @@ import { Bookmark } from '../../../backend/entities/bookmark.entity';
 import { BookmarkConstants } from '../../../backend/constants/bookmark-constants';
 import { Review } from '../../../backend/entities/reviews.entity';
 import { Deal } from '../../../backend/entities/deals.entity';
+import { Attachment } from '../../../backend/entities/attachments.entity';
+import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
 
 export const getSponsorById = async (
   id: number,
@@ -35,7 +37,14 @@ export const getSponsorById = async (
 
   const dealsQuery = connection.manager
     .createQueryBuilder(Deal, 'deals')
-    .where('deals.sponsorId = :sponsorId', { sponsorId: id });
+    .where('deals.sponsorId = :sponsorId', { sponsorId: id })
+    .leftJoinAndMapMany(
+      'deals.attachments',
+      Attachment,
+      'attachments',
+      'attachments.entityId = deals.id AND attachments.entityType = :entityType',
+      { entityType: TargetTypesConstants.deals }
+    );
 
   const dealsCount = await dealsQuery.clone().getCount();
   const publishedReviewsCount = await reviewsQuery.clone().getCount();
