@@ -7,6 +7,7 @@ import { sendDealsMatchedYourInvestmentPreferences } from '../mails/send-deals-m
 import { Attachment } from '../../entities/attachments.entity';
 import { TargetTypesConstants } from '../../constants/target-types-constants';
 import { dealMapper } from '../../mappers/deal.mapper';
+import { DealConstants } from '../../../backend/constants/deal-constants';
 
 export const getUsersAndTheirMatchedInvestmentPreferencesDeals = async () => {
   const connection = await getDatabaseConnection();
@@ -52,10 +53,14 @@ export const getUsersAndTheirMatchedInvestmentPreferencesDeals = async () => {
           'deals.createdAt <= :toDateEndOfTheDay AND deals.createdAt >= :fromDate',
           { fromDate, toDateEndOfTheDay }
         )
-        .limit(3)
+        .limit(DealConstants.maxAmountOfDealsMatchedOnUserInvestmentPreferences)
         .getMany();
 
-      if (user && deals?.length === 3) {
+      if (
+        user &&
+        deals?.length ===
+          DealConstants.maxAmountOfDealsMatchedOnUserInvestmentPreferences
+      ) {
         sendDealsMatchedYourInvestmentPreferences(
           user,
           await Promise.all(deals.map(dealMapper))

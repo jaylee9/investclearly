@@ -1,5 +1,5 @@
 import * as sgMail from '@sendgrid/mail';
-import { ClientResponse, MailDataRequired } from '@sendgrid/mail';
+import { MailDataRequired } from '@sendgrid/mail';
 import moment from 'moment';
 import { MailConfig, TemplatesIds } from '../../config/mail-config';
 import { ReviewInterface } from '../reviews/interfaces/review.interface';
@@ -12,9 +12,7 @@ export const sendUnverifiedReviewPublishedEmailToBmRecipients = async (
   sgMail.setApiKey(MailConfig.sendgridApiKey);
 
   if (reviewRecord && reviewRecord.sponsor) {
-    const userEmails: Promise<[ClientResponse, unknown]>[] = [];
-
-    bmRecipientEmails.forEach(recipientEmail => {
+    const userEmails = bmRecipientEmails.map(recipientEmail => {
       const mailDataForRecipient: MailDataRequired = {
         to: { email: recipientEmail },
         from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },
@@ -27,12 +25,13 @@ export const sendUnverifiedReviewPublishedEmailToBmRecipients = async (
           ),
           sponsorVanityName: reviewRecord.sponsor!.vanityName,
           sponsorBusinessAvatar: reviewRecord.sponsor!.businessAvatar,
-          reviewTittle: reviewRecord.title,
+          reviewTitle: reviewRecord.title,
           overallComment: reviewRecord.overallComment,
         },
       };
-      userEmails.push(sgMail.send(mailDataForRecipient));
+      return sgMail.send(mailDataForRecipient);
     });
+
     await Promise.all(userEmails);
   }
 };

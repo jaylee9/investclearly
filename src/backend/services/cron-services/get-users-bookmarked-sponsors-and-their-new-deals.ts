@@ -8,6 +8,7 @@ import { TargetTypesConstants } from '../../constants/target-types-constants';
 import { dealMapper } from '../../mappers/deal.mapper';
 import { BookmarkConstants } from '../../constants/bookmark-constants';
 import { sendSponsorPostedNewDeals } from '../mails/send-sponsor-posted-new-deals';
+import { DealConstants } from '../../../backend/constants/deal-constants';
 
 export const getUsersBookmarkedSponsorsAndTheirNewDeals = async () => {
   const connection = await getDatabaseConnection();
@@ -56,10 +57,13 @@ export const getUsersBookmarkedSponsorsAndTheirNewDeals = async () => {
           'deals.createdAt <= :toDateEndOfTheDay AND deals.createdAt >= :fromDate',
           { fromDate, toDateEndOfTheDay }
         )
-        .limit(2)
+        .limit(DealConstants.maxAmountNewDealsAtBookmarkedSponsor)
         .getMany();
 
-      if (user && deals?.length === 2) {
+      if (
+        user &&
+        deals?.length === DealConstants.maxAmountNewDealsAtBookmarkedSponsor
+      ) {
         sendSponsorPostedNewDeals(
           user,
           await Promise.all(deals.map(dealMapper))
