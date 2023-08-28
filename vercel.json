@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/src/pages/api/cron/every-friday-at-8-AM.ts",
+      "schedule": "00 08 * * 5"
+    }
+  ]
+}
