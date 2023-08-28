@@ -14,6 +14,7 @@ interface UploadProofStepProps {
 const UploadProofStep = ({ setStep, step, payload }: UploadProofStepProps) => {
   const classes = useUploadProofStepStyles();
   const [files, setFiles] = useState<File[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const onUpload = (file: File) => {
     setFiles(prevFiles => [...prevFiles, file]);
   };
@@ -26,11 +27,21 @@ const UploadProofStep = ({ setStep, step, payload }: UploadProofStepProps) => {
     setStep(step - 1);
   };
 
-  const handleSubmit = (type: 'withProof' | 'withoutProof') => {
+  const handleSubmit = async (type: 'withProof' | 'withoutProof') => {
     if (type === 'withoutProof') {
-      createReview(payload);
+      setIsLoading(true);
+      const result = await createReview(payload);
+      if (result) {
+        setStep(step + 1);
+        setIsLoading(false);
+      }
     } else if (type === 'withProof') {
-      createReview({ ...payload, file: files });
+      setIsLoading(true);
+      const result = await createReview({ ...payload, file: files });
+      if (result) {
+        setStep(step + 1);
+        setIsLoading(false);
+      }
     }
   };
 
@@ -44,7 +55,11 @@ const UploadProofStep = ({ setStep, step, payload }: UploadProofStepProps) => {
           Attach any documents or screenshots that prove your involvement with
           Cloud Investment Ltd.
         </Typography>
-        <FileUploader onUpload={onUpload} onDelete={onDelete} />
+        <FileUploader
+          onUpload={onUpload}
+          onDelete={onDelete}
+          isLoading={isLoading}
+        />
       </Box>
       <Box sx={classes.buttonsWrapper}>
         <Button variant="tertiary" onClick={handleBackButton}>

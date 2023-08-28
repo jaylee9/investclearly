@@ -3,6 +3,7 @@ import { useFileUploaderStyles } from './styles';
 import { useDropzone } from 'react-dropzone';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import Loading from './Loading';
 
 interface FileItem {
   id: string;
@@ -15,16 +16,16 @@ interface FileItem {
 interface FileUploaderProps {
   onUpload: (file: File) => void;
   onDelete: (file: File) => void;
+  isLoading?: boolean;
 }
 
-const FileUploader = ({ onUpload, onDelete }: FileUploaderProps) => {
+const FileUploader = ({ onUpload, onDelete, isLoading }: FileUploaderProps) => {
   const classes = useFileUploaderStyles();
   const [files, setFiles] = useState<FileItem[]>([]);
   const [fileLengthError, setFileLengthError] = useState<boolean>(false);
   const maxSize = 10 * 1024 * 1024;
   const handleFiles = (acceptedFiles: File[]) => {
     setFileLengthError(false);
-    console.log(acceptedFiles.length + files.length);
     if (acceptedFiles.length + files.length > 3) {
       setFileLengthError(true);
       setTimeout(() => {
@@ -76,6 +77,7 @@ const FileUploader = ({ onUpload, onDelete }: FileUploaderProps) => {
 
   const { getRootProps, getInputProps } = useDropzone({
     maxSize,
+    disabled: isLoading,
     accept: {
       'image/jpeg': ['.jpg', '.jpeg'],
       'image/png': ['.png'],
@@ -94,7 +96,7 @@ const FileUploader = ({ onUpload, onDelete }: FileUploaderProps) => {
           <input {...getInputProps()} />
           {files.length < 3 && (
             <Box sx={classes.dropZone}>
-              <i className="icon-Upload"></i>
+              {isLoading ? <Loading /> : <i className="icon-Upload"></i>}
               <Box sx={classes.dropZoneContent}>
                 <Typography variant="body1" fontWeight={600} marginBottom="4px">
                   Drag and drop or Click to upload files
