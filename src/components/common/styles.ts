@@ -967,6 +967,14 @@ export const useFileUploaderStyles = () => {
     },
     infoText: {
       color: palette.text.secondary,
+      '& .fileLength': {
+        transition: 'color 0.3s ease, font-weight 0.3s ease',
+      },
+      '& .fileLengthError': {
+        color: palette.error.light,
+        fontWeight: 600,
+        transition: 'color 0.3s ease, font-weight 0.3s ease',
+      },
     },
     filesWrapper: {
       display: 'flex',

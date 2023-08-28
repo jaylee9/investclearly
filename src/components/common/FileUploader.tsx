@@ -20,8 +20,18 @@ interface FileUploaderProps {
 const FileUploader = ({ onUpload, onDelete }: FileUploaderProps) => {
   const classes = useFileUploaderStyles();
   const [files, setFiles] = useState<FileItem[]>([]);
+  const [fileLengthError, setFileLengthError] = useState<boolean>(false);
   const maxSize = 10 * 1024 * 1024;
   const handleFiles = (acceptedFiles: File[]) => {
+    setFileLengthError(false);
+    console.log(acceptedFiles.length + files.length);
+    if (acceptedFiles.length + files.length > 3) {
+      setFileLengthError(true);
+      setTimeout(() => {
+        setFileLengthError(false);
+      }, 2000);
+      return;
+    }
     acceptedFiles.forEach(file => {
       const reader = new FileReader();
       const fileItem: FileItem = {
@@ -90,8 +100,15 @@ const FileUploader = ({ onUpload, onDelete }: FileUploaderProps) => {
                   Drag and drop or Click to upload files
                 </Typography>
                 <Typography variant="caption" sx={classes.infoText}>
-                  Max 3 files, 10 MB each. Accepted formats: *.jpg,
-                  *.jpeg,*.png, *.gif, *.docx, *.pdf
+                  <span
+                    className={
+                      fileLengthError ? 'fileLengthError' : 'fileLength'
+                    }
+                  >
+                    Max 3 files
+                  </span>
+                  , 10 MB each. Accepted formats: *.jpg, *.jpeg,*.png, *.gif,
+                  *.docx, *.pdf
                 </Typography>
               </Box>
             </Box>
