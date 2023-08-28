@@ -49,10 +49,14 @@ const ReviewDetailsStep = ({
 }: ReviewDetailsStepProps) => {
   const classes = useReviewDetailsStepStyles();
   const [activeComments, setActiveComments] = useState<ActiveComments>({
-    preInvestmentCommunicationComment: false,
-    postInvestmentCommunicationComment: false,
-    strengthOfLeadershipTeamComment: false,
-    alignmentOfExpectationsComment: false,
+    preInvestmentCommunicationComment:
+      !!payload.preInvestmentCommunicationComment || false,
+    postInvestmentCommunicationComment:
+      !!payload.postInvestmentCommunicationComment || false,
+    strengthOfLeadershipTeamComment:
+      !!payload.strengthOfLeadershipTeamComment || false,
+    alignmentOfExpectationsComment:
+      !!payload.alignmentOfExpectationsComment || false,
   });
   const handleOpenComment = (
     commentName: keyof ActiveComments,
@@ -70,8 +74,29 @@ const ReviewDetailsStep = ({
     handleSubmit,
     control,
     formState: { isValid },
+    watch,
+    setValue,
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
+    defaultValues: {
+      title: payload.title,
+      preInvestmentCommunicationComment:
+        payload.preInvestmentCommunicationComment as string,
+      postInvestmentCommunicationComment:
+        payload.postInvestmentCommunicationComment as string,
+      strengthOfLeadershipTeamComment:
+        payload.strengthOfLeadershipTeamComment as string,
+      alignmentOfExpectationsComment:
+        payload.alignmentOfExpectationsComment as string,
+      preInvestmentCommunicationRating:
+        payload.preInvestmentCommunicationRating,
+      postInvestmentCommunicationRating:
+        payload.postInvestmentCommunicationRating,
+      strengthOfLeadershipTeamRating: payload.strengthOfLeadershipTeamRating,
+      alignmentOfExpectationsRating: payload.alignmentOfExpectationsRating,
+      overallComment: payload.overallComment,
+      overallRating: payload.overallRating,
+    },
   });
   const onSubmit = handleSubmit(data => {
     setPayload({ ...payload, ...data });
@@ -123,6 +148,8 @@ const ReviewDetailsStep = ({
               customStyles={classes.titleInput}
               showClearOption={false}
               register={register('title')}
+              value={watch('title')}
+              onChange={e => setValue('title', e.target.value)}
             />
             {ratings.map(item => (
               <Controller
@@ -137,6 +164,7 @@ const ReviewDetailsStep = ({
                       required
                       onChange={(e, value) => onChange(Number(value))}
                       sx={classes.ratingField}
+                      value={Number(value)}
                     />
                     {!activeComments[item.commentName] && (
                       <Typography
@@ -158,6 +186,10 @@ const ReviewDetailsStep = ({
                           register={register(item.commentName)}
                           placeholder="Tell in details about your experience"
                           height="148px"
+                          value={watch(item.commentName)}
+                          onChange={e =>
+                            setValue(item.commentName, e.target.value)
+                          }
                         />
                       </Box>
                     )}
@@ -169,13 +201,14 @@ const ReviewDetailsStep = ({
               <Controller
                 name="overallRating"
                 control={control}
-                render={({ field: { onChange } }) => (
+                render={({ field: { onChange, value } }) => (
                   <CustomRating
                     fontSize="40px"
                     label="Overall Rating"
                     required
                     onChange={(e, value) => onChange(Number(value))}
                     sx={classes.overallRatingField}
+                    value={value}
                   />
                 )}
               />
@@ -186,6 +219,8 @@ const ReviewDetailsStep = ({
                 register={register('overallComment')}
                 placeholder="Tell in details about your experience"
                 height="148px"
+                value={watch('overallComment')}
+                onChange={e => setValue('overallComment', e.target.value)}
               />
             </Box>
           </Box>
