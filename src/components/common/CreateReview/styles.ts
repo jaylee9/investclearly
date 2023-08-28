@@ -213,5 +213,17 @@ export const useUploadProofStepStyles = () => {
       color: palette.text.secondary,
       margin: '4px 0px 32px',
     },
+    content: {
+      paddingBottom: '40px',
+      marginBottom: '100px',
+    },
+    buttonsWrapper: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    mainButtonsWrapper: {
+      display: 'flex',
+      gap: '8px',
+    },
   };
 };

@@ -25,7 +25,7 @@ export const createReview = async (
         formData.append(key, value.toString());
       } else if (Array.isArray(value)) {
         for (let i = 0; i < value.length; i++) {
-          formData.append(`${key}[]`, value[i].toString());
+          formData.append(`${key}[]`, value[i]);
         }
       }
     }

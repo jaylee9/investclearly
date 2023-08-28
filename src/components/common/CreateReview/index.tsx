@@ -20,7 +20,7 @@ const steps = [
 
 const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
   const { onClose, ...other } = props;
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(0);
   const [payload, setPayload] = useState<CreateReviewPayloadInterface>({});
 
   const classes = useCreateReviewFormStyles();
@@ -73,7 +73,9 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
               setPayload={setPayload}
             />
           )}
-          {step === 3 && <UploadProofStep />}
+          {step === 3 && (
+            <UploadProofStep step={step} setStep={setStep} payload={payload} />
+          )}
         </Box>
       </Box>
     </Modal>

@@ -2,8 +2,16 @@ import { Box, Typography } from '@mui/material';
 import { useUploadProofStepStyles } from './styles';
 import FileUploader from '../FileUploader';
 import { useState } from 'react';
+import Button from '../Button';
+import { CreateReviewPayloadInterface, createReview } from '@/actions/reviews';
 
-const UploadProofStep = () => {
+interface UploadProofStepProps {
+  setStep: (value: number) => void;
+  step: number;
+  payload: CreateReviewPayloadInterface;
+}
+
+const UploadProofStep = ({ setStep, step, payload }: UploadProofStepProps) => {
   const classes = useUploadProofStepStyles();
   const [files, setFiles] = useState<File[]>([]);
   const onUpload = (file: File) => {
@@ -14,16 +22,46 @@ const UploadProofStep = () => {
     setFiles(prevFiles => prevFiles.filter(f => f.name !== file.name));
   };
 
+  const handleBackButton = () => {
+    setStep(step - 1);
+  };
+
+  const handleSubmit = (type: 'withProof' | 'withoutProof') => {
+    if (type === 'withoutProof') {
+      createReview(payload);
+    } else if (type === 'withProof') {
+      createReview({ ...payload, file: files });
+    }
+  };
+
   return (
     <Box sx={classes.root}>
-      <Typography variant="h4" fontWeight={600}>
-        Upload proof that you have worked with this sponsor
-      </Typography>
-      <Typography variant="body1" sx={classes.subTitle}>
-        Attach any documents or screenshots that prove your involvement with
-        Cloud Investment Ltd.
-      </Typography>
-      <FileUploader onUpload={onUpload} onDelete={onDelete} />
+      <Box sx={classes.content}>
+        <Typography variant="h4" fontWeight={600}>
+          Upload proof that you have worked with this sponsor
+        </Typography>
+        <Typography variant="body1" sx={classes.subTitle}>
+          Attach any documents or screenshots that prove your involvement with
+          Cloud Investment Ltd.
+        </Typography>
+        <FileUploader onUpload={onUpload} onDelete={onDelete} />
+      </Box>
+      <Box sx={classes.buttonsWrapper}>
+        <Button variant="tertiary" onClick={handleBackButton}>
+          Back
+        </Button>
+        <Box sx={classes.mainButtonsWrapper}>
+          <Button
+            variant="secondary"
+            onClick={() => handleSubmit('withoutProof')}
+          >
+            Submit without proof
+          </Button>
+          <Button onClick={() => handleSubmit('withProof')}>
+            Submit review
+          </Button>
+        </Box>
+      </Box>
     </Box>
   );
 };
