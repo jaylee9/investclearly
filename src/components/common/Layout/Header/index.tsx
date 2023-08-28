@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 import Button from '@/components/common/Button';
 import CustomPopover from '@/components/common/Popover';
-import { TLinks } from '@/types/common';
+import { TModalHandlers } from '@/types/common';
 import { HeaderProps } from '@/hooks/useHeaderProps';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import GlobalSearch, {
@@ -14,7 +14,7 @@ import GlobalSearch, {
 import escapeStringForHttpParams from '@/helpers/escapeStringForHttpParams';
 import CreateReviewForm from '../../CreateReview';
 
-const links: TLinks = [
+const links: TModalHandlers = [
   { type: 'review', label: 'Write a Review' },
   { type: 'sponsor-profile', label: 'Claim Sponsor Profile' },
 ];
