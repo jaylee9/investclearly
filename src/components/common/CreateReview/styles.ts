@@ -227,3 +227,26 @@ export const useUploadProofStepStyles = () => {
     },
   };
 };
+
+export const useReviewSubmittedStyles = () => {
+  return {
+    root: {
+      padding: '64px 32px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: '12px',
+      background: palette.common.white,
+      boxShadow: customShadows.header,
+    },
+    subTitle: {
+      color: palette.text.secondary,
+      marginBottom: '24px',
+    },
+    buttonsWrapper: {
+      display: 'flex',
+      gap: '8px',
+    },
+  };
+};

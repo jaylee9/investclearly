@@ -9,9 +9,15 @@ interface UploadProofStepProps {
   setStep: (value: number) => void;
   step: number;
   payload: CreateReviewPayloadInterface;
+  setPayload: (value: CreateReviewPayloadInterface) => void;
 }
 
-const UploadProofStep = ({ setStep, step, payload }: UploadProofStepProps) => {
+const UploadProofStep = ({
+  setStep,
+  step,
+  payload,
+  setPayload,
+}: UploadProofStepProps) => {
   const classes = useUploadProofStepStyles();
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +40,7 @@ const UploadProofStep = ({ setStep, step, payload }: UploadProofStepProps) => {
       if (result) {
         setStep(step + 1);
         setIsLoading(false);
+        setPayload({});
       }
     } else if (type === 'withProof') {
       setIsLoading(true);
@@ -41,6 +48,7 @@ const UploadProofStep = ({ setStep, step, payload }: UploadProofStepProps) => {
       if (result) {
         setStep(step + 1);
         setIsLoading(false);
+        setPayload({});
       }
     }
   };
