@@ -33,6 +33,7 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
     setStep(0);
     setPayload({});
   };
+
   return (
     <Modal
       onClose={e => {

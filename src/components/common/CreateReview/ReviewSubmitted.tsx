@@ -15,6 +15,7 @@ const ReviewSubmitted = ({ handleClose, setStep }: ReviewSubmittedProps) => {
     setStep(0);
     handleClose(e);
   };
+
   return (
     <Box sx={classes.root}>
       <Typography variant="h3" fontWeight={600} marginBottom="4px">

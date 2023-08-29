@@ -75,6 +75,7 @@ const ChooseSponsorStep = ({
     setTag({ name, id });
     setTagSelectorValue('');
   };
+
   return (
     <Box sx={classes.root}>
       <Box sx={classes.content}>

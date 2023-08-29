@@ -48,6 +48,7 @@ const ReviewDetailsStep = ({
   setPayload,
 }: ReviewDetailsStepProps) => {
   const classes = useReviewDetailsStepStyles();
+
   const [activeComments, setActiveComments] = useState<ActiveComments>({
     preInvestmentCommunicationComment:
       !!payload.preInvestmentCommunicationComment,
@@ -56,6 +57,7 @@ const ReviewDetailsStep = ({
     strengthOfLeadershipTeamComment: !!payload.strengthOfLeadershipTeamComment,
     alignmentOfExpectationsComment: !!payload.alignmentOfExpectationsComment,
   });
+
   const handleOpenComment = (
     commentName: keyof ActiveComments,
     active: boolean
@@ -67,6 +69,7 @@ const ReviewDetailsStep = ({
     }
     return;
   };
+
   const {
     register,
     handleSubmit,
@@ -100,6 +103,7 @@ const ReviewDetailsStep = ({
     setPayload({ ...payload, ...data });
     setStep(step + 1);
   });
+
   const ratings: {
     name: keyof ValidationSchema;
     commentName: keyof ActiveComments;
@@ -126,11 +130,13 @@ const ReviewDetailsStep = ({
       label: 'Alignment of Expectations',
     },
   ];
+
   const addCommentClassname = (isValue: boolean) =>
     clsx('add-comment', {
       'add-comment-disabled': !isValue,
       'add-comment-active': isValue,
     });
+
   return (
     <Box sx={classes.root}>
       <Box>
