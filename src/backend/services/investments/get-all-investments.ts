@@ -30,16 +30,16 @@ export const getAllInvestments = async (
     .leftJoinAndSelect('investments.deal', 'deal')
     .where('investments.userId = :userId', { userId });
 
+  const totalInvestedData = await searchQuery
+    .clone()
+    .select('SUM(investments.totalInvested)', 'totalInvestedSum')
+    .getRawOne();
+
   if (status) {
     searchQuery = searchQuery.andWhere('investments.status = :status', {
       status,
     });
   }
-
-  const totalInvestedData = await searchQuery
-    .clone()
-    .select('SUM(investments.totalInvested)', 'totalInvestedSum')
-    .getRawOne();
 
   if (search) {
     searchQuery = searchQuery.andWhere(
