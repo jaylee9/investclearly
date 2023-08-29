@@ -12,12 +12,13 @@ import ReviewSubmitted from './ReviewSubmitted';
 
 interface CreateReviewFormProps extends Omit<ModalProps, 'children'> {}
 
-const steps = [
-  'Choose Sponsor',
-  'Choose Deal',
-  'Review Details',
-  'Upload Proof',
-];
+const steps = {
+  'Choose Sponsor': 0,
+  'Choose Deal': 1,
+  'Review Details': 2,
+  'Upload Proof': 3,
+  'Review Submitted': 4,
+};
 
 const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
   const { onClose, ...other } = props;
@@ -33,6 +34,10 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
     setStep(0);
     setPayload({});
   };
+
+  const stepsArray = Object.keys(steps).filter(
+    item => item !== 'Review Submitted'
+  );
 
   return (
     <Modal
@@ -50,8 +55,8 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
           <i className="icon-Cross" onClick={e => handleClose(e)} />
         </Box>
         <Box sx={classes.content}>
-          <StepsComponent steps={steps} currentStep={step} />
-          {step === 0 && (
+          <StepsComponent steps={stepsArray} currentStep={step} />
+          {step === steps['Choose Sponsor'] && (
             <ChooseSponsorStep
               step={step}
               setStep={setStep}
@@ -59,7 +64,7 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
               setPayload={setPayload}
             />
           )}
-          {step === 1 && (
+          {step === steps['Choose Deal'] && (
             <ChooseDealStep
               step={step}
               setStep={setStep}
@@ -67,7 +72,7 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
               setPayload={setPayload}
             />
           )}
-          {step === 2 && (
+          {step === steps['Review Details'] && (
             <ReviewDetailsStep
               step={step}
               setStep={setStep}
@@ -75,7 +80,7 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
               setPayload={setPayload}
             />
           )}
-          {step === 3 && (
+          {step === steps['Upload Proof'] && (
             <UploadProofStep
               step={step}
               setStep={setStep}
@@ -83,7 +88,7 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
               setPayload={setPayload}
             />
           )}
-          {step === 4 && (
+          {step === steps['Review Submitted'] && (
             <ReviewSubmitted handleClose={handleClose} setStep={setStep} />
           )}
         </Box>
