@@ -846,3 +846,195 @@ export const useUserAvatarStyles = () => {
     },
   };
 };
+
+export const useStepsComponentStyles = () => {
+  return {
+    root: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '16px',
+    },
+    stepWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '16px',
+    },
+    defaultStep: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '14px',
+      '& .icon-Check': {
+        fontSize: '24px',
+        transition: 'opacity 0.3s',
+      },
+      '& .step-status': {
+        borderRadius: '1230px',
+        color: palette.common.white,
+        background: palette.text.disabled,
+        width: '26px',
+        height: '26px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontWeight: 600,
+        transition: 'background 0.3s',
+      },
+      '& .step-status-current': { background: palette.primary.light },
+      '& .step-status-completed': { background: palette.success.main },
+      '& .step-label': {
+        fontWeight: 600,
+        color: palette.text.secondary,
+        transition: 'color 0.3s',
+      },
+      '& .step-label-current': { color: palette.primary.light },
+      '& .step-label-completed': { color: palette.common.black },
+    },
+    divider: {
+      width: '24px',
+      height: '2px',
+      background: palette.background.paper,
+    },
+  };
+};
+
+export const useTagSelectorStyles = () => {
+  return {
+    root: {
+      position: 'relative',
+    },
+    variantsWrapper: {
+      overflow: 'auto',
+      maxHeight: '475px',
+      padding: '8px 24px',
+      background: theme.palette.common.white,
+      width: '100%',
+      borderRadius: '16px',
+      border: `1px solid ${theme.palette.background.paper}`,
+      boxShadow: theme.customShadows.base,
+      boxSizing: 'border-box',
+      position: 'absolute',
+      zIndex: 10,
+      '&::-webkit-scrollbar': {
+        display: 'none',
+      },
+      msOverflowStyle: 'none',
+      scrollbarWidth: 'none',
+      marginTop: '8px',
+    },
+    tag: {
+      position: 'absolute',
+      top: 6,
+      left: 50,
+      background: palette.common.white,
+      padding: '2px 12px',
+      borderRadius: '16px',
+      border: `1px solid ${palette.background.paper}`,
+      '& .tag-title': {
+        whiteSpace: 'nowrap',
+        maxWidth: '300px',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      },
+    },
+  };
+};
+
+export const useFileUploaderStyles = () => {
+  return {
+    root: {},
+    dropZone: {
+      width: '100%',
+      borderRadius: '8px',
+      border: `1px dashed ${palette.background.paper}`,
+      padding: '32px 0px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      '& .icon-Upload': {
+        fontSize: '36px',
+        color: palette.text.secondary,
+      },
+      marginBottom: '12px',
+    },
+    dropZoneContent: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    infoText: {
+      color: palette.text.secondary,
+      '& .fileLength': {
+        transition: 'color 0.3s ease, font-weight 0.3s ease',
+      },
+      '& .fileLengthError': {
+        color: palette.error.light,
+        fontWeight: 600,
+        transition: 'color 0.3s ease, font-weight 0.3s ease',
+      },
+    },
+    filesWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px',
+      marginBottom: '12px',
+      '& .error': {
+        border: `1px solid ${palette.error.light}`,
+      },
+    },
+    file: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '16px 24px',
+      borderRadius: '8px',
+      border: `1px solid ${palette.background.paper}`,
+    },
+    mainFileInfo: {
+      display: 'flex',
+      gap: '12px',
+      alignItems: 'center',
+      '& .icon-File': {
+        color: palette.text.secondary,
+        fontSize: '24px',
+      },
+      '& .error-text': {
+        color: palette.error.light,
+      },
+    },
+    fileName: {
+      fontWeight: 600,
+      marginBottom: '4px',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      maxWidth: '200px',
+      textOverflow: 'ellipsis',
+    },
+    fileSize: {
+      color: palette.text.secondary,
+    },
+    actionsWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      fontSize: '24px',
+      '& i': {
+        cursor: 'pointer',
+      },
+      '& .icon-Reload': {
+        color: palette.text.secondary,
+      },
+      '& .icon-Delete': {
+        color: palette.error.light,
+      },
+    },
+    additionalInfo: {
+      maxWidth: '75%',
+      color: palette.text.secondary,
+    },
+  };
+};

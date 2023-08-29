@@ -78,6 +78,7 @@ const Input = ({
       {!!topLabel && (
         <Typography variant="caption" fontWeight={600}>
           {topLabel}
+          {props.required && <span className="required-star">*</span>}
         </Typography>
       )}
       <TextField

@@ -15,6 +15,7 @@ import DealCard from '@/components/common/DealCard';
 import PlaceholderImage from '@/components/common/PlaceholderImage';
 import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 import ClaimCompanyModal from '@/components/page/Sponsor/Modals/ClaimCompany';
+import CreateReviewForm from '@/components/common/CreateReview';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -29,6 +30,7 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('overview');
   const [openClaimModal, setOpenClaimModal] = useState(false);
+  const [showCreateReviewForm, setShowCreateReviewForm] = useState(false);
   const overviewRef = useRef<HTMLDivElement>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
   const dealsRef = useRef<HTMLDivElement>(null);
@@ -86,12 +88,21 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
     setOpenClaimModal(false);
   };
 
+  const handleShowCreateReviewForm = () => {
+    setShowCreateReviewForm(true);
+  };
+
+  const handleHideCreateReviewForm = () => {
+    setShowCreateReviewForm(false);
+  };
+
   const headerProps = useHeaderProps({
     type: 'search-dark',
     isLinks: true,
     isSignIn: true,
     isSearch: true,
   });
+
   return (
     <Layout {...headerProps}>
       <Fade in={isStickyHeader}>
@@ -259,7 +270,13 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
                     {sponsor?.reviewsCount}
                   </Typography>
                 </Box>
-                <Button>Write a review</Button>
+                <Button onClick={handleShowCreateReviewForm}>
+                  Write a review
+                </Button>
+                <CreateReviewForm
+                  open={showCreateReviewForm}
+                  onClose={handleHideCreateReviewForm}
+                />
               </Box>
               <Box sx={classes.reviewsContent}>
                 {reviewsData.map(review => (

@@ -2,14 +2,15 @@ import theme from '@/config/theme';
 
 interface StarIconProps {
   filled?: boolean;
+  fontSize?: string;
 }
 
-const StarIcon = ({ filled = false }: StarIconProps) => {
+const StarIcon = ({ filled = false, fontSize }: StarIconProps) => {
   return (
     <i
       className="icon-Star"
       style={{
-        fontSize: '16px',
+        fontSize: fontSize || '16px',
         color: filled
           ? theme.palette.secondary.main
           : theme.palette.background.paper,

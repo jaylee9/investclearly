@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import Logo from '@/assets/components/Logo';
 import getStyles from './styles';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 import Button from '@/components/common/Button';
 import CustomPopover from '@/components/common/Popover';
-import { TLinks } from '@/types/common';
+import { TModalHandlers } from '@/types/common';
 import { HeaderProps } from '@/hooks/useHeaderProps';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import GlobalSearch, {
   GlobalSearchVariant,
 } from '@/components/page/Home/GlobalSearch';
 import escapeStringForHttpParams from '@/helpers/escapeStringForHttpParams';
+import CreateReviewForm from '../../CreateReview';
 
-const links: TLinks = [
-  { href: '/review', label: 'Write a Review' },
-  { href: '/sponsor-profile', label: 'Claim Sponsor Profile' },
+const links: TModalHandlers = [
+  { type: 'review', label: 'Write a Review' },
+  { type: 'sponsor-profile', label: 'Claim Sponsor Profile' },
 ];
 
 const Header = ({
@@ -31,6 +32,7 @@ const Header = ({
   isSticky,
 }: HeaderProps) => {
   const [isArrowRotated, setIsArrowRotated] = useState(false);
+  const [openCreateReviewForm, setOpenCreateReviewForm] = useState(false);
   const classes = getStyles({ type, isShadow });
   const handleChangeSearch = (value: string) => {
     if (onChangeSearch) {
@@ -53,6 +55,15 @@ const Header = ({
   const columnLength = Math.ceil(assetClassesArray.length / 2);
   const firstColumn = assetClassesArray.slice(0, columnLength);
   const secondColumn = assetClassesArray.slice(columnLength);
+
+  const handleOpenCreateReviewForm = () => setOpenCreateReviewForm(true);
+  const handleCloseCreateReviewForm = () => setOpenCreateReviewForm(false);
+
+  const handleClickLink = (type: string) => {
+    if (type === 'review') {
+      handleOpenCreateReviewForm();
+    }
+  };
   return (
     <header
       style={{
@@ -124,9 +135,14 @@ const Header = ({
               </Box>
             </CustomPopover>
             {links.map(link => (
-              <Link href={link.href} key={link.href} style={classes.link}>
+              <Typography
+                variant="body1"
+                key={link.type}
+                sx={classes.link}
+                onClick={() => handleClickLink(link.type)}
+              >
                 {link.label}
-              </Link>
+              </Typography>
             ))}
           </>
         )}
@@ -135,6 +151,10 @@ const Header = ({
             <Button>Log in / Sign up</Button>
           </Link>
         )}
+        <CreateReviewForm
+          open={openCreateReviewForm}
+          onClose={handleCloseCreateReviewForm}
+        />
       </Box>
     </header>
   );
