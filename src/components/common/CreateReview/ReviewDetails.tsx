@@ -50,13 +50,11 @@ const ReviewDetailsStep = ({
   const classes = useReviewDetailsStepStyles();
   const [activeComments, setActiveComments] = useState<ActiveComments>({
     preInvestmentCommunicationComment:
-      !!payload.preInvestmentCommunicationComment || false,
+      !!payload.preInvestmentCommunicationComment,
     postInvestmentCommunicationComment:
-      !!payload.postInvestmentCommunicationComment || false,
-    strengthOfLeadershipTeamComment:
-      !!payload.strengthOfLeadershipTeamComment || false,
-    alignmentOfExpectationsComment:
-      !!payload.alignmentOfExpectationsComment || false,
+      !!payload.postInvestmentCommunicationComment,
+    strengthOfLeadershipTeamComment: !!payload.strengthOfLeadershipTeamComment,
+    alignmentOfExpectationsComment: !!payload.alignmentOfExpectationsComment,
   });
   const handleOpenComment = (
     commentName: keyof ActiveComments,
