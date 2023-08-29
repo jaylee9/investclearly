@@ -51,9 +51,10 @@ const usePublicUserPageStyles = () => {
       gap: '12px',
       alignItems: 'center',
       marginBottom: '16px',
+      flexWrap: 'wrap',
     },
     dealCard: {
-      width: '33%',
+      width: 'calc((100% - 24px) / 3)',
       '& h5': {
         maxWidth: '340px',
       },

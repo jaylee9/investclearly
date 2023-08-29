@@ -1,9 +1,10 @@
-import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
 import { getUser } from '@/actions/user';
+import { InvestmentInterface } from '@/backend/services/investments/interfaces/investment.interface';
 import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.interface';
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
 import DealCard from '@/components/common/DealCard';
 import Layout from '@/components/common/Layout';
+import Loading from '@/components/common/Loading';
 import ReviewCard from '@/components/common/ReviewCard';
 import UserAvatar from '@/components/common/UserAvatar';
 import useHeaderProps from '@/hooks/useHeaderProps';
@@ -11,14 +12,19 @@ import usePublicUserPageStyles from '@/pages_styles/publicUserPageStyles';
 import { Box, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
 import { useState } from 'react';
+import { useQuery } from 'react-query';
 
 interface PublicUserPageProps {
   user: PublicUserInterface;
   reviews: ReviewInterface[];
-  deals: GetAllDealsResponse;
+  investments: InvestmentInterface[];
 }
 
-const PublicUserPage = ({ user, reviews, deals }: PublicUserPageProps) => {
+const PublicUserPage = ({
+  user,
+  reviews,
+  investments,
+}: PublicUserPageProps) => {
   const headerProps = useHeaderProps({
     type: 'search-dark',
     isLinks: true,
@@ -27,8 +33,52 @@ const PublicUserPage = ({ user, reviews, deals }: PublicUserPageProps) => {
     isSticky: true,
   });
   const classes = usePublicUserPageStyles();
-  const [reviewsData] = useState(reviews);
-  const [dealsData] = useState(deals);
+  const [reviewsData, setReviewsData] = useState(reviews);
+  const [investmentsData, setInvestmentsData] = useState(investments);
+  const [reviewsLimit, setReviewsLimit] = useState(3);
+  const fetchReviews = async () => {
+    const response = await getUser({
+      id: String(user.id),
+      reviewsLimit,
+      investmentsLimit,
+    });
+    return response.reviews;
+  };
+  const { isLoading: isLoadingReviews } = useQuery(
+    ['sponsorReviews', reviewsLimit],
+    fetchReviews,
+    {
+      onSuccess: response => {
+        setReviewsData(response as ReviewInterface[]);
+      },
+      enabled: reviewsLimit > 3,
+    }
+  );
+  const handleShowMoreReviews = () =>
+    setReviewsLimit(prevLimit => prevLimit + 3);
+
+  const [investmentsLimit, setInvestmentsLimit] = useState(3);
+  const fetchInvestments = async () => {
+    const response = await getUser({
+      id: String(user.id),
+      reviewsLimit,
+      investmentsLimit,
+    });
+    return response.investments;
+  };
+  const { isLoading: isLoadingInvestments } = useQuery(
+    ['sponsorDeals', investmentsLimit],
+    fetchInvestments,
+    {
+      onSuccess: response => {
+        setInvestmentsData(response as InvestmentInterface[]);
+      },
+      enabled: investmentsLimit > 3,
+    }
+  );
+  const handleShowMoreInvestments = () =>
+    setInvestmentsLimit(prevLimit => prevLimit + 3);
+
   return (
     <Layout {...headerProps}>
       <Box sx={classes.root}>
@@ -47,35 +97,63 @@ const PublicUserPage = ({ user, reviews, deals }: PublicUserPageProps) => {
           <Box sx={classes.rightColumnBlock}>
             <Box sx={classes.rightColumnBlockHeader} marginBottom="32px">
               <Typography variant="h3">Deals</Typography>
-              {/* mock data, will be replaced by dealsCount */}
-              <Typography variant="body1">{dealsData.total}</Typography>
+              <Typography variant="body1">{user.investmentsCount}</Typography>
             </Box>
             <Box sx={classes.dealsBlockContent}>
-              {dealsData?.deals?.map(deal => (
-                <DealCard key={deal.id} deal={deal} sx={classes.dealCard} />
+              {investmentsData?.map(investment => (
+                <DealCard
+                  key={investment.id}
+                  deal={investment.deal}
+                  sx={classes.dealCard}
+                />
               ))}
             </Box>
-            <Typography variant="body1" sx={classes.showMoreLink}>
-              Show more deals <i className="icon-Caret-down"></i>
-            </Typography>
+            {!!user.investmentsCount &&
+              user.investmentsCount > investmentsLimit &&
+              !isLoadingInvestments && (
+                <Typography
+                  variant="body1"
+                  sx={classes.showMoreLink}
+                  onClick={handleShowMoreInvestments}
+                >
+                  Show more deals <i className="icon-Caret-down"></i>
+                </Typography>
+              )}
+            {isLoadingInvestments && (
+              <Box>
+                <Loading />
+              </Box>
+            )}
           </Box>
           <Box sx={classes.rightColumnBlock}>
             <Box sx={classes.rightColumnBlockHeader} marginBottom="16px">
               <Typography variant="h3">Reviews</Typography>
-              {/* mock data, will be replaced by reviewsCount */}
-              <Typography variant="body1">{reviewsData.length}</Typography>
+              <Typography variant="body1">{user.reviewsCount}</Typography>
             </Box>
             <Box sx={classes.reviewsBlockContent}>
-              {reviews?.map(review => (
+              {reviewsData?.map(review => (
                 <ReviewCard
                   key={review.id}
                   review={{ ...review, reviewer: user }}
                 />
               ))}
             </Box>
-            <Typography variant="body1" sx={classes.showMoreLink}>
-              Show more reviews <i className="icon-Caret-down"></i>
-            </Typography>
+            {!!user.reviewsCount &&
+              user.reviewsCount > reviewsLimit &&
+              !isLoadingReviews && (
+                <Typography
+                  variant="body1"
+                  sx={classes.showMoreLink}
+                  onClick={handleShowMoreReviews}
+                >
+                  Show more reviews <i className="icon-Caret-down"></i>
+                </Typography>
+              )}
+            {isLoadingReviews && (
+              <Box>
+                <Loading />
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>
@@ -85,9 +163,11 @@ const PublicUserPage = ({ user, reviews, deals }: PublicUserPageProps) => {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const id = context.params?.id as string;
-  const userResponse = await getUser({ id });
-  //mock request that will be replaced by user deals
-  const deals = await getAllDeals({ page: 1, pageSize: 3 });
+  const userResponse = await getUser({
+    id,
+    reviewsLimit: 3,
+    investmentsLimit: 3,
+  });
   if (!userResponse) {
     return {
       notFound: true,
@@ -97,7 +177,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
     props: {
       user: userResponse,
       reviews: userResponse.reviews,
-      deals,
+      investments: userResponse.investments,
     },
   };
 };
