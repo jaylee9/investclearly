@@ -22,7 +22,7 @@ const steps = {
 
 const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
   const { onClose, ...other } = props;
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(steps['Choose Sponsor']);
   const [payload, setPayload] = useState<CreateReviewPayloadInterface>({});
 
   const classes = useCreateReviewFormStyles();
@@ -31,7 +31,7 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
     if (onClose) {
       onClose(e, 'backdropClick');
     }
-    setStep(0);
+    setStep(steps['Choose Sponsor']);
     setPayload({});
   };
 
