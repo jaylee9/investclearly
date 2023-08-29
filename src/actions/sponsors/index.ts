@@ -57,9 +57,29 @@ export const getAllSponsors = async (
   }
 };
 
-export const getSponsor = async ({ id }: { id: string }) => {
+interface GetSponsorPayload {
+  id: string;
+  reviewsLimit: number;
+  dealsLimit: number;
+}
+
+export const getSponsor = async ({
+  id,
+  reviewsLimit,
+  dealsLimit,
+}: GetSponsorPayload) => {
   try {
-    const response: SponsorInterface = await api.get(`sponsors/${id}`).json();
+    const stringifiedParameters = queryString.stringify(
+      { reviewsLimit, dealsLimit },
+      {
+        arrayFormat: 'none',
+        skipNull: true,
+        skipEmptyString: true,
+      }
+    );
+    const response: SponsorInterface = await api
+      .get(`sponsors/${id}?${stringifiedParameters}`)
+      .json();
     return response;
   } catch (error) {
     console.error('Error fetching deal', error);

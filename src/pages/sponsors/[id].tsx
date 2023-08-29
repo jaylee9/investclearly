@@ -16,6 +16,8 @@ import PlaceholderImage from '@/components/common/PlaceholderImage';
 import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 import ClaimCompanyModal from '@/components/page/Sponsor/Modals/ClaimCompany';
 import CreateReviewForm from '@/components/common/CreateReview';
+import { useQuery } from 'react-query';
+import Loading from '@/components/common/Loading';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -34,8 +36,48 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
   const overviewRef = useRef<HTMLDivElement>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
   const dealsRef = useRef<HTMLDivElement>(null);
-  const [reviewsData] = useState(reviews);
-  const [dealsData] = useState(deals);
+  const [reviewsData, setReviewsData] = useState(reviews);
+  const [dealsData, setDealsData] = useState(deals);
+  const [reviewsLimit, setReviewsLimit] = useState(3);
+  const fetchReviews = async () => {
+    const response = await getSponsor({
+      id: String(sponsor.id),
+      reviewsLimit,
+      dealsLimit,
+    });
+    return response.reviews;
+  };
+  const { isLoading: isLoadingReviews } = useQuery(
+    ['sponsorReviews', reviewsLimit],
+    fetchReviews,
+    {
+      onSuccess: response => {
+        setReviewsData(response as ReviewInterface[]);
+      },
+    }
+  );
+  const handleShowMoreReviews = () =>
+    setReviewsLimit(prevLimit => prevLimit + 3);
+
+  const [dealsLimit, setDealsLimit] = useState(3);
+  const fetchDeals = async () => {
+    const response = await getSponsor({
+      id: String(sponsor.id),
+      reviewsLimit,
+      dealsLimit,
+    });
+    return response.deals;
+  };
+  const { isLoading: isLoadingDeals } = useQuery(
+    ['sponsorDeals', dealsLimit],
+    fetchDeals,
+    {
+      onSuccess: response => {
+        setDealsData(response as DealInterface[]);
+      },
+    }
+  );
+  const handleShowMoreDeals = () => setDealsLimit(prevLimit => prevLimit + 3);
 
   const [isStickyHeader, setFixedHeader] = useState(false);
   const checkSticky = () => {
@@ -255,10 +297,21 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
                   <DealCard key={deal.id} deal={deal} sx={classes.dealCard} />
                 ))}
               </Box>
-              {!!sponsor.dealsCount && sponsor.dealsCount > 3 && (
-                <Typography variant="body1" sx={classes.showMoreLink}>
-                  Show more deals <i className="icon-Caret-down"></i>
-                </Typography>
+              {!!sponsor.dealsCount &&
+                sponsor.dealsCount > dealsLimit &&
+                !isLoadingDeals && (
+                  <Typography
+                    variant="body1"
+                    sx={classes.showMoreLink}
+                    onClick={handleShowMoreDeals}
+                  >
+                    Show more deals <i className="icon-Caret-down"></i>
+                  </Typography>
+                )}
+              {isLoadingDeals && (
+                <Box>
+                  <Loading />
+                </Box>
               )}
             </Box>
 
@@ -283,11 +336,18 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
                   <ReviewCard review={review} key={review.id} />
                 ))}
               </Box>
-              {!!sponsor.reviewsCount && sponsor.reviewsCount > 3 && (
-                <Typography variant="body1" sx={classes.showMoreLink}>
-                  Show more reviews <i className="icon-Caret-down"></i>
-                </Typography>
-              )}
+              {!!sponsor.reviewsCount &&
+                sponsor.reviewsCount > reviewsLimit &&
+                !isLoadingReviews && (
+                  <Typography
+                    variant="body1"
+                    sx={classes.showMoreLink}
+                    onClick={handleShowMoreReviews}
+                  >
+                    Show more reviews <i className="icon-Caret-down"></i>
+                  </Typography>
+                )}
+              {isLoadingReviews && <Loading />}
             </Box>
           </Box>
 
@@ -341,7 +401,11 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const id = context.params?.id as string;
-  const sponsorResponse = await getSponsor({ id });
+  const sponsorResponse = await getSponsor({
+    id,
+    reviewsLimit: 3,
+    dealsLimit: 3,
+  });
   if (!sponsorResponse) {
     return {
       notFound: true,
@@ -350,7 +414,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
   return {
     props: {
       reviews: sponsorResponse.reviews,
-      // splice will be removed after added logic on back end side
       deals: sponsorResponse.deals,
       sponsor: sponsorResponse,
     },
