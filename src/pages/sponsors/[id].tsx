@@ -54,6 +54,7 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
       onSuccess: response => {
         setReviewsData(response as ReviewInterface[]);
       },
+      enabled: reviewsLimit > 3,
     }
   );
   const handleShowMoreReviews = () =>
@@ -75,6 +76,7 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
       onSuccess: response => {
         setDealsData(response as DealInterface[]);
       },
+      enabled: dealsLimit > 3,
     }
   );
   const handleShowMoreDeals = () => setDealsLimit(prevLimit => prevLimit + 3);
