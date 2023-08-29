@@ -85,6 +85,7 @@ const FileUploader = ({ onUpload, onDelete, isLoading }: FileUploaderProps) => {
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
         ['.docx'],
       'application/pdf': ['.pdf'],
+      'application/msword': ['.doc'],
     },
     onDrop: handleFiles,
   });
@@ -110,7 +111,7 @@ const FileUploader = ({ onUpload, onDelete, isLoading }: FileUploaderProps) => {
                     Max 3 files
                   </span>
                   , 10 MB each. Accepted formats: *.jpg, *.jpeg,*.png, *.gif,
-                  *.docx, *.pdf
+                  *.docx, *.doc, *.pdf
                 </Typography>
               </Box>
             </Box>
