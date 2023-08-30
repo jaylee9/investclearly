@@ -7,12 +7,14 @@ const useUserProfilePageStyles = () => {
     root: {
       display: 'flex',
       justifyContent: 'center',
-      padding: '24px 0px',
+      padding: '24px 48px',
     },
     wrapper: {
       display: 'flex',
       borderRadius: '12px',
       background: palette.common.white,
+      height: '80vh',
+      width: '100%',
     },
     sideBar: {
       display: 'flex',
@@ -20,6 +22,7 @@ const useUserProfilePageStyles = () => {
       gap: '4px',
       padding: '24px 16px',
       borderRight: `1px solid ${palette.background.paper}`,
+      width: '20%',
       '& .section': {
         padding: '8px 16px',
         display: 'flex',
@@ -38,6 +41,11 @@ const useUserProfilePageStyles = () => {
         background: palette.primary.contrastText,
         transition: 'color 0.3s ease-in-out, background 0.3s ease-in-out',
       },
+    },
+    content: {
+      padding: '24px',
+      width: '80%',
+      height: '100%',
     },
   };
 };

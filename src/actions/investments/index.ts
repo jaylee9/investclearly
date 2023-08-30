@@ -4,7 +4,7 @@ import { TPaginationInfo } from '@/backend/utils/pagination/paginate-info.type';
 import api from '@/config/ky';
 import queryString from 'query-string';
 
-interface GetAllInvestmentsPayload extends TPaginationInfo {
+export interface GetAllInvestmentsResponse extends TPaginationInfo {
   deals: DealInterface[];
   totalInvested: number;
 }
@@ -24,7 +24,7 @@ export const getAllInvestments = async ({
         skipEmptyString: true,
       }
     );
-    const response: GetAllInvestmentsPayload = await api
+    const response: GetAllInvestmentsResponse = await api
       .get(`investments?${stringifiedParameters}`)
       .json();
     return response;

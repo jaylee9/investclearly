@@ -4,9 +4,15 @@ import useUserProfilePageStyles from '@/pages_styles/userProfilePageStyles';
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import clsx from 'clsx';
+import ProfileInvestments from '@/components/page/Profile/Investments';
 
 const sections = [
-  { label: 'Investments', icon: 'icon-Investment', href: 'investments' },
+  {
+    label: 'Investments',
+    icon: 'icon-Investment',
+    href: 'investments',
+    component: <ProfileInvestments />,
+  },
   { label: 'My Reviews', icon: 'icon-Review', href: 'reviews' },
   { label: 'Saved', icon: 'icon-Saved', href: 'saved' },
   {
@@ -37,6 +43,7 @@ const UserProfilePage = () => {
       query: { ...router.query, section: href },
     });
   };
+
   return (
     <Layout {...layoutProps}>
       <Box sx={classes.root}>
@@ -53,6 +60,12 @@ const UserProfilePage = () => {
                 {section.label}
               </Typography>
             ))}
+          </Box>
+          <Box sx={classes.content}>
+            <Typography variant="h3" fontWeight={600} marginBottom="20px">
+              {activeTab?.label}
+            </Typography>
+            {activeTab?.component}
           </Box>
         </Box>
       </Box>
