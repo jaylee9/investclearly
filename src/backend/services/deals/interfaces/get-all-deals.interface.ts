@@ -25,6 +25,8 @@ export interface FindAllDealsInterface {
   sponsorFeesMax?: number;
   minRating?: number;
   maxRating?: number;
+  preferredReturnMin?: number;
+  preferredReturnMax?: number;
   sponsorId?: number;
   regulations?: Regulations[] | Regulations;
   search?: string;
