@@ -16,6 +16,7 @@ interface LayoutProps extends HeaderProps {
   children: ReactNode;
   variant?: LayoutVariant;
   isEntrySpacing?: boolean;
+  isFooter?: boolean;
 }
 
 const Layout = ({
@@ -33,6 +34,7 @@ const Layout = ({
   onChangeSearch,
   isEntrySpacing = false,
   isSticky,
+  isFooter = true,
 }: LayoutProps) => {
   const defaultStyles = useDefaultLayoutStyles();
   const entryStyles = useEntryLayoutStyles(isEntrySpacing);
@@ -57,7 +59,7 @@ const Layout = ({
             />
             {children}
           </Box>
-          <Footer />
+          {isFooter && <Footer />}
         </Box>
       )}
       {variant === LayoutVariant.Entry && (

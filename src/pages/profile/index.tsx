@@ -1,0 +1,63 @@
+import Layout from '@/components/common/Layout';
+import useHeaderProps from '@/hooks/useHeaderProps';
+import useUserProfilePageStyles from '@/pages_styles/userProfilePageStyles';
+import { Box, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import clsx from 'clsx';
+
+const sections = [
+  { label: 'Investments', icon: 'icon-Investment', href: 'investments' },
+  { label: 'My Reviews', icon: 'icon-Review', href: 'reviews' },
+  { label: 'Saved', icon: 'icon-Saved', href: 'saved' },
+  {
+    label: 'Profile Settings',
+    icon: 'icon-Settings',
+    href: 'profile-settings',
+  },
+];
+
+const UserProfilePage = () => {
+  const headerProps = useHeaderProps({
+    type: 'search-dark',
+    isLinks: true,
+    isSignIn: true,
+    isSearch: true,
+  });
+  const classes = useUserProfilePageStyles();
+  const router = useRouter();
+  const activeTab = sections.find(item => item.href === router.query.section);
+  const layoutProps = { isFooter: false, ...headerProps };
+  const sectionClassName = (href: string) =>
+    clsx('section', {
+      'active-section': activeTab?.href === href,
+    });
+  const handleSectionClick = (href: string) => {
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, section: href },
+    });
+  };
+  return (
+    <Layout {...layoutProps}>
+      <Box sx={classes.root}>
+        <Box sx={classes.wrapper}>
+          <Box sx={classes.sideBar}>
+            {sections.map(section => (
+              <Typography
+                variant="body1"
+                key={section.href}
+                className={sectionClassName(section.href)}
+                onClick={() => handleSectionClick(section.href)}
+              >
+                <i className={section.icon}></i>
+                {section.label}
+              </Typography>
+            ))}
+          </Box>
+        </Box>
+      </Box>
+    </Layout>
+  );
+};
+
+export default UserProfilePage;

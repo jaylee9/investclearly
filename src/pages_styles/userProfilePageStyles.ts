@@ -1,0 +1,45 @@
+import theme from '@/config/theme';
+
+const { palette } = theme;
+
+const useUserProfilePageStyles = () => {
+  return {
+    root: {
+      display: 'flex',
+      justifyContent: 'center',
+      padding: '24px 0px',
+    },
+    wrapper: {
+      display: 'flex',
+      borderRadius: '12px',
+      background: palette.common.white,
+    },
+    sideBar: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '4px',
+      padding: '24px 16px',
+      borderRight: `1px solid ${palette.background.paper}`,
+      '& .section': {
+        padding: '8px 16px',
+        display: 'flex',
+        alignItems: 'center',
+        color: palette.text.secondary,
+        gap: '8px',
+        cursor: 'pointer',
+        fontWeight: 600,
+        borderRadius: '8px',
+        '& i': {
+          fontSize: '24px',
+        },
+      },
+      '& .active-section': {
+        color: palette.primary.light,
+        background: palette.primary.contrastText,
+        transition: 'color 0.3s ease-in-out, background 0.3s ease-in-out',
+      },
+    },
+  };
+};
+
+export default useUserProfilePageStyles;
