@@ -14,6 +14,7 @@ export interface CreateDealInterface {
   holdPeriod: number | null;
   targetIRR?: number | null;
   actualIRR?: number | null;
+  preferredReturn?: number | null;
   dealLegalName?: string | null;
   dealSponsor?: string | null;
   exemption?: string | null;
