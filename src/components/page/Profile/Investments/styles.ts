@@ -2,7 +2,7 @@ import theme from '@/config/theme';
 
 const { palette } = theme;
 
-export const useAllInvestmentsStyles = () => {
+export const useInvestmentsStyles = () => {
   return {
     root: {
       padding: '24px',
