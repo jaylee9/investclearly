@@ -12,5 +12,11 @@ export const useInvestmentsStyles = () => {
       marginBottom: '4px',
       color: palette.text.disabled,
     },
+    dealName: {
+      maxWidth: '260px',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      margin: 0,
+    },
   };
 };

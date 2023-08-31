@@ -1,11 +1,11 @@
-import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { FindAllInvestmentsInterface } from '@/backend/services/investments/interfaces/get-all-investments.interface';
+import { InvestmentInterface } from '@/backend/services/investments/interfaces/investment.interface';
 import { TPaginationInfo } from '@/backend/utils/pagination/paginate-info.type';
 import api from '@/config/ky';
 import queryString from 'query-string';
 
 export interface GetAllInvestmentsResponse extends TPaginationInfo {
-  deals: DealInterface[];
+  deals: InvestmentInterface[];
   totalInvested: number;
 }
 

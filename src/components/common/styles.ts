@@ -1038,3 +1038,35 @@ export const useFileUploaderStyles = () => {
     },
   };
 };
+
+export const useTableStyles = () => {
+  return {
+    root: {
+      background: palette.common.white,
+      boxShadow: 'none',
+      borderRadius: 0,
+    },
+    tableHeader: {
+      '&.MuiTableHead-root': {
+        background: palette.background.default,
+      },
+      '& th': {
+        color: palette.text.secondary,
+        fontSize: typography.caption,
+        fontWeight: 600,
+        borderBottom: 'none',
+        padding: '8px',
+        '&:first-of-type': {
+          paddingLeft: '24px',
+        },
+      },
+    },
+    bodyCell: {
+      fontSize: typography.body1,
+      borderBottom: `1px solid ${palette.background.paper}`,
+      '& p': {
+        margin: 0,
+      },
+    },
+  };
+};
