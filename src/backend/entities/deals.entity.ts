@@ -98,6 +98,9 @@ export class Deal {
   @Column({ type: 'enum', enum: Regulations, nullable: true })
   regulation: string;
 
+  @Column({ type: 'int', nullable: true })
+  preferredReturn: number;
+
   reviewsCount: number;
 
   avgTotalRating: number;

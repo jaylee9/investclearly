@@ -15,6 +15,7 @@ export interface UpdateDealInterface {
   holdPeriod: number;
   targetIRR?: number;
   actualIRR?: number;
+  preferredReturn?: number;
   dealLegalName?: string;
   dealSponsor?: string;
   exemption?: string;

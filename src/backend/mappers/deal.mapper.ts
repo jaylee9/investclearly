@@ -22,6 +22,7 @@ export const dealMapper = (deal: Deal): DealInterface => {
     holdPeriod: deal.holdPeriod || null,
     targetIRR: deal.targetIRR || null,
     actualIRR: deal.actualIRR || null,
+    preferredReturn: deal.preferredReturn || null,
     dealLegalName: deal.dealLegalName || null,
     dealSponsor: deal.dealSponsor || null,
     exemption: deal.exemption || null,

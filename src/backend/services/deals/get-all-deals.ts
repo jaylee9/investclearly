@@ -29,6 +29,8 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     actualIRRMax,
     investmentMinValue,
     investmentMaxValue,
+    preferredReturnMin,
+    preferredReturnMax,
     exemptions = [],
     sponsorFeesMin,
     sponsorFeesMax,
@@ -166,6 +168,13 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     );
   }
 
+  if (preferredReturnMin && preferredReturnMax) {
+    searchQuery = searchQuery.andWhere(
+      'deals.preferredReturn BETWEEN :preferredReturnMin AND :preferredReturnMax',
+      { preferredReturnMin, preferredReturnMax }
+    );
+  }
+
   if (exemptions?.length) {
     searchQuery = searchQuery.andWhere('deals.exemption IN (:...exemptions)', {
       exemptions,
@@ -258,8 +267,46 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
 
   const paginationData = await buildPaginationInfo(amountDeals, page, pageSize);
 
+  const {
+    minInvestment,
+    maxInvestment,
+    minTargetIRR,
+    maxTargetIRR,
+    minActualIRR,
+    maxActualIRR,
+    minFee,
+    maxFee,
+    minPreferredReturn,
+    maxPreferredReturn,
+  } = await connection
+    .createQueryBuilder()
+    .select('MIN(deals.minimumInvestment)', 'minInvestment')
+    .addSelect('MAX(deals.minimumInvestment)', 'maxInvestment')
+    .addSelect('MIN(deals.targetIRR)', 'minTargetIRR')
+    .addSelect('MAX(deals.targetIRR)', 'maxTargetIRR')
+    .addSelect('MIN(deals.actualIRR)', 'minActualIRR')
+    .addSelect('MAX(deals.actualIRR)', 'maxActualIRR')
+    .addSelect('MIN(deals.fees)', 'minFee')
+    .addSelect('MAX(deals.fees)', 'maxFee')
+    .addSelect('MIN(deals.preferredReturn)', 'minPreferredReturn')
+    .addSelect('MAX(deals.preferredReturn)', 'maxPreferredReturn')
+    .from(Deal, 'deals')
+    .getRawOne();
+
   return {
     deals: await Promise.all(dealsWithCounters.map(dealMapper)),
+    rangeData: {
+      minInvestment,
+      maxInvestment,
+      minTargetIRR,
+      maxTargetIRR,
+      minActualIRR,
+      maxActualIRR,
+      minFee,
+      maxFee,
+      minPreferredReturn,
+      maxPreferredReturn,
+    },
     ...paginationData,
   };
 };
