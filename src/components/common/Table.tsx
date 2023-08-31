@@ -7,6 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useTableStyles } from './styles';
+import { Box, Typography } from '@mui/material';
+import CustomPagination from './Pagination';
 
 export interface Column<T> {
   label: string;
@@ -25,15 +27,27 @@ interface CustomTableProps<RowData> {
   columns: Column<RowData>[];
   data: RowData[];
   actions?: Action<RowData>[];
+  page: number;
+  total: number;
+  lastPage: number;
+  setPage: (value: number) => void;
 }
 
 const CustomTable = <RowData,>({
   columns,
   data,
   actions,
+  page,
+  total,
+  lastPage,
+  setPage,
 }: CustomTableProps<RowData>) => {
   const classes = useTableStyles();
-  console.log(data);
+  const firstItem = (page - 1) * 4 + 1;
+  const lastItem = page * 4 > total ? total : page * 4;
+  const handleChangePaginate = (page: number) => {
+    setPage(page);
+  };
   return (
     <TableContainer component={Paper} sx={classes.root}>
       <Table>
@@ -81,6 +95,16 @@ const CustomTable = <RowData,>({
           ))}
         </TableBody>
       </Table>
+      <Box sx={classes.pagination}>
+        <Typography variant="caption">
+          Showing {firstItem}-{lastItem} of {total} results
+        </Typography>
+        <CustomPagination
+          page={page}
+          count={lastPage}
+          onChange={(event, value) => handleChangePaginate(value)}
+        />
+      </Box>
     </TableContainer>
   );
 };

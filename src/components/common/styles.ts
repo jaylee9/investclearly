@@ -1068,5 +1068,15 @@ export const useTableStyles = () => {
         margin: 0,
       },
     },
+    pagination: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      width: '100%',
+      alignItems: 'center',
+      padding: '8px 24px',
+      '& span': {
+        color: palette.text.secondary,
+      },
+    },
   };
 };

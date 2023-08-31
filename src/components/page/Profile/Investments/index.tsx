@@ -32,13 +32,14 @@ const ProfileInvestments = () => {
     event: SyntheticEvent<Element, Event>,
     newValue: string | number
   ) => {
+    setPage(1);
     setActiveTab(newValue as string);
   };
 
   const classes = useInvestmentsStyles();
-  const [page] = useState(1);
+  const [page, setPage] = useState(1);
   const { data, isLoading } = useQuery(
-    ['allInvestments', activeTab],
+    ['allInvestments', activeTab, page],
     () =>
       getAllInvestments({
         page,
@@ -109,6 +110,10 @@ const ProfileInvestments = () => {
               <CustomTable<InvestmentInterface>
                 data={data?.deals as InvestmentInterface[]}
                 columns={columns}
+                page={page}
+                total={Number(data?.total)}
+                lastPage={Number(data?.lastPage)}
+                setPage={setPage}
               />
             </Box>
           </Box>
