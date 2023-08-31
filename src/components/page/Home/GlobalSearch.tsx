@@ -11,6 +11,8 @@ import { debounce } from 'lodash';
 import Loading from '@/components/common/Loading';
 import { useRouter } from 'next/router';
 import PlaceholderImage from '@/components/common/PlaceholderImage';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { Search } from '@mui/icons-material';
 
 export enum GlobalSearchVariant {
   BASE = 'base',
@@ -39,6 +41,8 @@ const GlobalSearch = ({
     searchResponse as GlobalSearchResponse
   );
   const ref = useRef(null);
+  const { isMobile } = useBreakpoints();
+
   const handleOpen = () => {
     setIsOpenGlobalSearch(true);
   };
@@ -116,7 +120,9 @@ const GlobalSearch = ({
       handleSearchSubmit();
     }
   };
+
   useOnClickOutside(ref, handleClose);
+
   return (
     <Box ref={ref} onClick={handleOpen} sx={classes.root}>
       {variant === GlobalSearchVariant.LARGE && (
@@ -131,17 +137,23 @@ const GlobalSearch = ({
           onKeyDown={handleKeyDown}
           autoComplete="off"
           endComponent={
-            <Link href={searchLink}>
-              <Button
-                customStyles={{
-                  boxSizing: 'border-box',
-                  padding: '12px 40px !important',
-                  height: '48px !important',
-                }}
-              >
-                Search
+            isMobile ? (
+              <Button customStyles={classes.searchButton}>
+                <Search />
               </Button>
-            </Link>
+            ) : (
+              <Link href={searchLink}>
+                <Button
+                  customStyles={{
+                    boxSizing: 'border-box',
+                    padding: '12px 40px !important',
+                    height: '48px !important',
+                  }}
+                >
+                  Search
+                </Button>
+              </Link>
+            )
           }
           onChange={handleChange}
         />

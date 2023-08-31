@@ -1,12 +1,17 @@
 import { Box, Typography, Grid } from '@mui/material';
 import Link from 'next/link';
 import { blueTitleStyles, useDealsBlockStyles } from './styles';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { FC } from 'react';
 import { Regions } from '@/backend/constants/enums/regions';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import escapeStringForHttpParams from '@/helpers/escapeStringForHttpParams';
 
-const DealsBlock = () => {
+const DealsBlock: FC = () => {
   const classes = useDealsBlockStyles();
+  const { isDesktop } = useBreakpoints();
+  const spacingSize = isDesktop ? 24 : 3;
+
   const regionArray = Object.values(Regions).map(value => {
     const linkValue = escapeStringForHttpParams(value);
     const href = `/list?type=deals&regions=${linkValue}`;
@@ -15,6 +20,7 @@ const DealsBlock = () => {
       href,
     };
   });
+
   const assetClassesArray = [
     ...Object.keys(AssetClasses).map(key => {
       const value = AssetClasses[key as keyof typeof AssetClasses];
@@ -23,6 +29,7 @@ const DealsBlock = () => {
       return { value, href };
     }),
   ];
+
   return (
     <Box sx={classes.root}>
       <Typography variant="caption" sx={blueTitleStyles}>
@@ -31,7 +38,11 @@ const DealsBlock = () => {
       <Typography variant="h2" fontWeight={600} marginBottom="40px">
         Search Deals and Sponsors by Asset Class
       </Typography>
-      <Grid container spacing={24}>
+      <Grid
+        container
+        spacing={spacingSize}
+        direction={isDesktop ? 'row' : 'column'}
+      >
         <Grid item xs={6}>
           <Typography variant="body1" sx={blueTitleStyles} marginBottom="12px">
             Asset Class

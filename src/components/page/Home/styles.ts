@@ -19,12 +19,11 @@ export const useHeadBlockStyles = () => {
       backgroundSize: 'cover',
       height: '356px',
       marginTop: '-90px',
-      paddingTop: '170px',
+      paddingTop: { xs: '140px', lg: '170px' },
       boxSizing: 'border-box',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      marginBottom: '100px',
     },
     titleWrapper: {
       display: 'flex',
@@ -33,8 +32,10 @@ export const useHeadBlockStyles = () => {
       color: theme.palette.common.white,
       alignItems: 'center',
       marginBottom: '48px',
+      padding: { xs: '0 16px', md: '0 40px' },
     },
     title: {
+      textAlign: 'center',
       fontWeight: 600,
     },
     subTitle: {
@@ -47,19 +48,30 @@ export const useHeadBlockStyles = () => {
 export const useGlobalSearchStyles = () => {
   return {
     root: {
-      position: 'relative',
+      width: { xs: '100%', lg: 'auto' },
+      position: { xs: 'relative', lg: 'initial' },
     },
     searchInput: {
-      width: '736px',
+      width: {
+        xs: 'calc(100vw - 32px)',
+        md: 'calc(100vw - 80px)',
+        lg: '736px',
+      },
       boxShadow: theme.customShadows.header,
       '& div': {
         paddingRight: '4px !important',
       },
       marginBottom: '8px',
+      position: { xs: 'absolute', lg: 'initial' },
+      top: { xs: '-32px', lg: 0 },
+      left: 0,
+      right: 0,
+      margin: '0 auto',
     },
     searchButton: {
       boxSizing: 'border-box',
-      padding: '12px 40px !important',
+      padding: { xs: '0 !important', md: '12px 40px !important' },
+      minWidth: { xs: '48px !important', md: 'auto !important' },
       height: '48px !important',
     },
     searchContent: {
@@ -72,7 +84,9 @@ export const useGlobalSearchStyles = () => {
       boxShadow: theme.customShadows.base,
       padding: '8px 24px',
       boxSizing: 'border-box',
-      position: 'absolute',
+      // position: 'absolute',
+      position: 'relative',
+      top: { xs: '32px', lg: '8px' },
       zIndex: 10,
       '&::-webkit-scrollbar': {
         display: 'none',
@@ -143,7 +157,9 @@ export const useNewDealsBlockStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      paddingBottom: '100px',
+      margin: { xs: '0', xl: '0 calc(calc(1376px - 100vw) / 2)' },
+      padding: { xs: '64px 16px', md: '80px 40px', lg: '100px 160px' },
+      backgroundColor: theme.palette.common.white,
     },
     dealCardsWrapper: {
       display: 'flex',
@@ -179,7 +195,11 @@ export const useTopRatedSponsorsBlockStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: '100px 0px',
+      padding: { xs: '64px 16px', md: '80px 40px', lg: '100px 25px' },
+    },
+    gridContainer: {
+      width: { xs: '100%', lg: 'calc(100% + 40px)' },
+      marginLeft: { xs: 0, lg: '-40px' },
     },
     title: {
       fontWeight: 600,
@@ -199,6 +219,9 @@ export const useTopRatedSponsorsBlockStyles = () => {
       '& p': {
         color: theme.palette.text.secondary,
       },
+    },
+    sponsorGridContainer: {
+      paddingLeft: { xs: '0 !important', lg: '40px !important' },
     },
     sponsorWrapper: {
       padding: '16px 20px',
@@ -228,7 +251,7 @@ export const useDealsBlockStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: '100px 0px',
+      padding: { xs: '64px 25px', md: '80px 25px', lg: '100px 25px' },
     },
     list: {
       display: 'flex',
@@ -266,6 +289,7 @@ export const useBannerBlockStyles = ({
       alignItems: 'center',
       justifyContent: 'center',
       height: '320px',
+      padding: { xs: '0 16px', md: '0 64px', lg: '80px' },
       backgroundImage: 'url(/assets/writeReviewBanner.jpg)',
       backgroundPosition: 'center',
       backgroundSize: 'cover',

@@ -1,4 +1,9 @@
-import { Box, Typography } from '@mui/material';
+import Link from 'next/link';
+import { Box, Grid, SxProps, Theme, Typography } from '@mui/material';
+import type { FC } from 'react';
+import DealCard from '@/components/common/DealCard';
+import Button from '@/components/common/Button';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { blueTitleStyles, useNewDealsBlockStyles, viewAllLink } from './styles';
 import DealCard from '@/components/common/DealCard';
 import Link from 'next/link';
@@ -29,9 +34,11 @@ const NewDealsBlock = ({ deals }: NewDealsBlockProps) => {
         ))}
       </Box>
       <Link href="/list?type=deals">
-        <Typography variant="body1" sx={viewAllLink}>
-          View all deals
-        </Typography>
+        <Button variant="secondary">
+          <Typography variant="body1" sx={viewAllLink}>
+            View all deals
+          </Typography>
+        </Button>
       </Link>
     </Box>
   );

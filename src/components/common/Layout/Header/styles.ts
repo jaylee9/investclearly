@@ -10,7 +10,7 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
   return {
     root: {
       display: 'flex',
-      padding: '16px 48px',
+      padding: { xs: '16px', lg: '16px 48px' },
       justifyContent: 'space-between',
       alignItems: 'center',
       boxShadow: isShadow ? theme.customShadows.header : 'none',
@@ -25,6 +25,49 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
         '',
       fontSize: theme.typography.body1,
       alignItems: 'center',
+    },
+    mobileMenu: {
+      '& .MuiPaper-root': {
+        borderRadius: '12px',
+      },
+      '& .MuiList-root': {
+        minWidth: '320px',
+        maxWidth: '343px',
+        backgroundColor: theme.palette.common.white,
+        borderColor: theme.palette.background.default,
+        borderWidth: '1px',
+        borderStyle: 'solid',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '4px',
+      },
+    },
+    mobileMenuHeader: {
+      gap: '8px',
+      display: 'flex',
+      alignItems: 'center',
+      padding: '8px 8px 8px 12px',
+    },
+    mobileMenuHeaderAvatar: {
+      width: '36px',
+      height: '36px',
+    },
+    mobileMenuHeaderTextWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    mobileMenuIcon: {
+      marginRight: '12px',
+    },
+    mobileMenuProfileItem: {
+      padding: '8px',
+    },
+    mobileMenuItem: {
+      padding: '8px 12px',
+    },
+    mobileMenuLogOut: {
+      color: theme.palette.primary.light,
+      padding: '16px 24px',
     },
     link: {
       display: 'flex',

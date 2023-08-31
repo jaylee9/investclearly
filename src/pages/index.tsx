@@ -19,8 +19,9 @@ interface HomeProps {
   sponsors: SponsorInterface[];
   searchResponse: GlobalSearchResponse;
 }
+import type { FC } from 'react';
 
-const Home = ({ deals, sponsors, searchResponse }: HomeProps) => {
+const Home: FC = ({ deals, sponsors, searchResponse }: HomeProps) => {
   const classes = useHomeStyles();
   const headerProps = useHeaderProps({
     type: 'light',
