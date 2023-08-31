@@ -28,7 +28,9 @@ interface TopRatedSponsorsBlockProps {
   sponsors: SponsorInterface[];
 }
 
-const TopRatedSponsorsBlock: FC = ({ sponsors }: TopRatedSponsorsBlockProps) => {
+const TopRatedSponsorsBlock: FC<TopRatedSponsorsBlockProps> = ({
+  sponsors,
+}) => {
   const classes = useTopRatedSponsorsBlockStyles();
   const { isDesktop, isMobile } = useBreakpoints();
 
@@ -81,8 +83,8 @@ const TopRatedSponsorsBlock: FC = ({ sponsors }: TopRatedSponsorsBlockProps) => 
         <Grid item xs={gridSize} sx={classes.sponsorGridContainer}>
           <Box>
             <Grid container spacing={2}>
-              {sponsors.map((item, index) => (
-                <Grid item xs={6} key={index}>
+              {sponsorsFiltered.map((item, index) => (
+                <Grid item xs={gridCardSize} key={index}>
                   <SponsorCard sponsor={item} />
                 </Grid>
               ))}
@@ -90,7 +92,7 @@ const TopRatedSponsorsBlock: FC = ({ sponsors }: TopRatedSponsorsBlockProps) => 
           </Box>
         </Grid>
         {!isDesktop && (
-          <Link href="/sponsors" style={{ margin: '32px auto 0' }}>
+          <Link href="/list?type=sponsors" style={{ margin: '32px auto 0' }}>
             <Button variant="secondary">
               <Typography variant="body1" sx={viewAllLink} padding="0px 24px">
                 View all sponsors

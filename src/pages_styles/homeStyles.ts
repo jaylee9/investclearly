@@ -6,8 +6,7 @@ const useHomeStyles = () => {
       alignItems: 'center',
     },
     content: {
-      maxWidth: '1376px',
-      padding: '0px 25px',
+      maxWidth: { xs: '100%', xl: '1376px' },
     },
   };
 };

@@ -18,15 +18,20 @@ import {
   Menu as MenuIcon,
   SettingsOutlined,
 } from '@mui/icons-material';
-import { useState, type FC } from 'react';
-import { links } from '../Menu';
+import { useState, type FC, CSSProperties } from 'react';
 import Button from '@/components/common/Button';
+import { links } from '..';
+import CustomPopover from '@/components/common/Popover';
+import getStyles from '../styles';
 
 type MobileMenuClassesProp = SxProps<Theme> | undefined;
 
 interface MobileMenuProps {
-  classes: Record<string, MobileMenuClassesProp>;
   isSignIn?: boolean;
+  isShadow?: boolean;
+  firstColumn: { href: string; value: string }[];
+  secondColumn: { href: string; value: string }[];
+  handleClickLink: (v: string) => void;
 }
 
 const linkStyle = { textDecoration: 'none', outline: 'none' };
@@ -58,10 +63,22 @@ const mobileMenuProfileLinks = [
   },
 ];
 
-export const MobileMenu: FC<MobileMenuProps> = ({ classes, isSignIn }) => {
+export const MobileMenu: FC<MobileMenuProps> = ({
+  isSignIn,
+  isShadow,
+  firstColumn,
+  secondColumn,
+  handleClickLink,
+}) => {
+  const [isArrowRotated, setIsArrowRotated] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const classes = getStyles({ type: 'dark', isShadow });
 
   const open = Boolean(anchorEl);
+
+  const handleArrowClick = () => {
+    setIsArrowRotated(!isArrowRotated);
+  };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -122,27 +139,87 @@ export const MobileMenu: FC<MobileMenuProps> = ({ classes, isSignIn }) => {
             ))}
           </>
         ) : (
-          <Button
-            style={{
-              width: 'calc(100% - 24px)',
-              margin: '0 auto 12px',
-              display: 'block',
-            }}
-          >
-            Log in / Sign up
-          </Button>
+          <Link href="/sign-up">
+            <Button
+              style={{
+                width: 'calc(100% - 24px)',
+                margin: '0 auto 12px',
+                display: 'flex',
+              }}
+            >
+              Log in / Sign up
+            </Button>
+          </Link>
         )}
         <Divider />
-        {links.map(({ href, label }) => (
-          <Link href={href} passHref style={linkStyle} key={href}>
+        <CustomPopover
+          open={isArrowRotated}
+          handleClose={() => setIsArrowRotated(false)}
+          trigger={
             <MenuItem
-              onClick={handleClose}
+              onClick={handleArrowClick}
               disableRipple
               sx={classes.mobileMenuItem}
             >
-              {label}
+              <span>Deals</span>
+              <i
+                className={`icon-Caret-down ${isArrowRotated ? 'rotate' : ''}`}
+                style={classes.arrow as CSSProperties}
+              ></i>
             </MenuItem>
-          </Link>
+          }
+        >
+          <Box sx={classes.popoverWrapper}>
+            <Box sx={classes.column}>
+              {firstColumn.map(item => (
+                <Link
+                  href={item.href}
+                  key={item.value}
+                  style={classes.popoverItem as CSSProperties}
+                  onClick={() => {
+                    setIsArrowRotated(false);
+                    handleClose();
+                  }}
+                >
+                  {item.value}
+                </Link>
+              ))}
+            </Box>
+            <Box sx={classes.column}>
+              {secondColumn.map(item => (
+                <Link
+                  href={item.href}
+                  key={item.value}
+                  onClick={() => {
+                    setIsArrowRotated(false);
+                    handleClose();
+                  }}
+                  style={
+                    item.value === 'All Deals'
+                      ? ({
+                          ...classes.popoverItem,
+                          ...classes.dealsLink,
+                        } as CSSProperties)
+                      : (classes.popoverItem as CSSProperties)
+                  }
+                >
+                  {item.value}
+                </Link>
+              ))}
+            </Box>
+          </Box>
+        </CustomPopover>
+        {links.map(({ type, label }) => (
+          <MenuItem
+            onClick={() => {
+              handleClickLink(type);
+              handleClose();
+            }}
+            disableRipple
+            sx={classes.mobileMenuItem}
+          >
+            {label}
+          </MenuItem>
         ))}
         {isSignIn && (
           <>

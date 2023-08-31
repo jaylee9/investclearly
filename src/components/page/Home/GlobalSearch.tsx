@@ -132,15 +132,17 @@ const GlobalSearch = ({
           isSearch
           showClearOption={false}
           placeholder="Deals, Sponsors, and Asset Class"
-          customStyles={classes.searchInput}
+          sxCustomStyles={classes.searchInput}
           height="large"
           onKeyDown={handleKeyDown}
           autoComplete="off"
           endComponent={
             isMobile ? (
-              <Button customStyles={classes.searchButton}>
-                <Search />
-              </Button>
+              <Link href={searchLink}>
+                <Button sxCustomStyles={classes.searchButton}>
+                  <Search />
+                </Button>
+              </Link>
             ) : (
               <Link href={searchLink}>
                 <Button

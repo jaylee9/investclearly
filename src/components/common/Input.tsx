@@ -4,6 +4,8 @@ import {
   InputAdornment,
   Box,
   Typography,
+  SxProps,
+  Theme,
 } from '@mui/material';
 import { TextFieldProps } from '@mui/material';
 import { CSSProperties, ChangeEvent, ReactNode, useState } from 'react';
@@ -19,6 +21,7 @@ interface InputProps extends Omit<TextFieldProps, 'variant'> {
   showClearOption?: boolean;
   isPassword?: boolean;
   customStyles?: CSSProperties;
+  sxCustomStyles?: SxProps<Theme>;
   height?: 'base' | 'large';
   endComponent?: ReactNode;
   register?: UseFormRegisterReturn;
@@ -33,6 +36,7 @@ const Input = ({
   showClearOption = true,
   isFilledWhite = false,
   customStyles = {},
+  sxCustomStyles = {},
   height = 'base',
   endComponent,
   register,
@@ -55,6 +59,11 @@ const Input = ({
     isFilledWhite,
     height,
   });
+  const sxStyles = {
+    ...styles[variant],
+    ...styles.root,
+    ...sxCustomStyles,
+  };
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation();
     setValue('');
@@ -86,10 +95,7 @@ const Input = ({
         value={value}
         onChange={handleChange}
         helperText={errorText}
-        sx={{
-          ...styles[variant],
-          ...styles.root,
-        }}
+        sx={sxStyles as SxProps<Theme>}
         style={customStyles}
         InputProps={{
           startAdornment: isSearch && (

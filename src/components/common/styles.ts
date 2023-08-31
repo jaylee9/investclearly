@@ -1,5 +1,6 @@
 import theme from '@/config/theme';
 import { SelectVariant } from './Select';
+import { AccordionVariant } from './Accordion';
 
 const { palette, typography, customShadows } = theme;
 
@@ -379,14 +380,22 @@ export const useSelectStyles = ({ variant }: UseSelectStylesProps) => {
   };
 };
 
-export const useAccordionStyles = () => {
+export const useAccordionStyles = ({
+  variant,
+}: {
+  variant: AccordionVariant;
+}) => {
   return {
     root: {
-      background: palette.common.white,
+      width: '100%',
+      background: variant === 'primary' ? palette.common.white : 'transparent',
       boxShadow: 'none',
       borderRadius: '0px !important',
-      padding: '0px 16px',
-      borderBottom: `1px solid ${palette.background.paper}`,
+      padding: variant === 'primary' ? '0px 16px' : '0',
+      borderBottom:
+        variant === 'primary'
+          ? `1px solid ${palette.background.paper}`
+          : 'none',
       margin: '0px !important',
       '& .MuiButtonBase-root': {
         '&:first-child': {
@@ -399,14 +408,27 @@ export const useAccordionStyles = () => {
       '& .MuiAccordionSummary-content': {
         '& .MuiTypography-root': {
           fontWeight: 600,
-          color: palette.common.black,
+          color:
+            variant === 'primary'
+              ? palette.common.black
+              : palette.primary.light,
         },
       },
       '& .MuiAccordionDetails-root': {
         padding: '0px 0px 16px 0px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
       },
       '& div': {
         padding: 0,
+      },
+      '& .MuiSvgIcon-root ': {
+        fill:
+          variant === 'primary' ? palette.common.black : palette.primary.light,
+      },
+      '& .MuiAccordionSummary-content.Mui-expanded': {
+        margin: variant === 'primary' ? '20px 0' : '12px 0',
       },
     },
   };

@@ -76,6 +76,7 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
     },
     arrow: {
       fontSize: '24px',
+      margin: '0 0 0 auto',
       transform: 'rotate(0deg)',
       transition: 'transform 0.3s ease',
       color:

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Logo from '@/assets/components/Logo';
 import getStyles from './styles';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import Link from 'next/link';
 import Button from '@/components/common/Button';
-import CustomPopover from '@/components/common/Popover';
 import { TModalHandlers } from '@/types/common';
 import { HeaderProps } from '@/hooks/useHeaderProps';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
@@ -17,7 +16,7 @@ import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { MobileMenu } from './MobileMenu';
 import { Menu } from './Menu';
 
-const links: TModalHandlers = [
+export const links: TModalHandlers = [
   { type: 'review', label: 'Write a Review' },
   { type: 'sponsor-profile', label: 'Claim Sponsor Profile' },
 ];
@@ -65,9 +64,18 @@ const Header = ({
       handleOpenCreateReviewForm();
     }
   };
-  
+
   return (
-    <Box component="header" sx={classes.root}>
+    <Box
+      component="header"
+      sx={{
+        ...classes.root,
+        position: isSticky ? 'sticky' : 'initial',
+        top: 0,
+        right: 0,
+        width: '100%',
+      }}
+    >
       {!!content && content}
       <Box sx={classes.leftSideWrapper}>
         <Logo variant={logoVariant} />
@@ -81,9 +89,21 @@ const Header = ({
       </Box>
       <Box sx={classes.menu}>
         {isDesktop && isLinks ? (
-          <Menu type={type} isShadow={isShadow} />
+          <Menu
+            type={type}
+            isShadow={isShadow}
+            firstColumn={firstColumn}
+            secondColumn={secondColumn}
+            handleClickLink={handleClickLink}
+          />
         ) : (
-          <MobileMenu classes={classes} isSignIn={isSignIn} />
+          <MobileMenu
+            isSignIn={isSignIn}
+            isShadow={isShadow}
+            firstColumn={firstColumn}
+            secondColumn={secondColumn}
+            handleClickLink={handleClickLink}
+          />
         )}
         {isDesktop && isSignIn && (
           <Link href="/sign-up">

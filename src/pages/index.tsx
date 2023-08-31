@@ -13,15 +13,15 @@ import { DealInterface } from '@/backend/services/deals/interfaces/deal.interfac
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import { getAllSponsors } from '@/actions/sponsors';
 import { GlobalSearchResponse, globalSearch } from '@/actions/common';
+import type { FC } from 'react';
 
 interface HomeProps {
   deals: DealInterface[];
   sponsors: SponsorInterface[];
   searchResponse: GlobalSearchResponse;
 }
-import type { FC } from 'react';
 
-const Home: FC = ({ deals, sponsors, searchResponse }: HomeProps) => {
+const Home: FC<HomeProps> = ({ deals, sponsors, searchResponse }) => {
   const classes = useHomeStyles();
   const headerProps = useHeaderProps({
     type: 'light',

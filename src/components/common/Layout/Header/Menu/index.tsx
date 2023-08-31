@@ -1,46 +1,26 @@
 import Link from 'next/link';
 import { useState, type FC } from 'react';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CustomPopover from '@/components/common/Popover';
 import { HeaderType } from '@/hooks/useHeaderProps';
-import type { TLinks } from '@/types/common';
 import getStyles from '../styles';
+import { links } from '..';
 
 interface MenuProps {
   type?: HeaderType;
   isShadow?: boolean;
+  firstColumn: { href: string; value: string }[];
+  secondColumn: { href: string; value: string }[];
+  handleClickLink: (v: string) => void;
 }
 
-export const links: TLinks = [
-  { href: '/review', label: 'Write a Review' },
-  { href: '/sponsor-profile', label: 'Claim Sponsor Profile' },
-];
-
-const popoverMockData: { value: string; href: string }[] = [
-  { value: 'Build-to-Rent', href: '/example' },
-  { value: 'Co-Living', href: '/example' },
-  { value: 'Data Center', href: '/example' },
-  { value: 'Flex R&D', href: '/example' },
-  { value: 'Flex/Office', href: '/example' },
-  { value: 'Hospitality', href: '/example' },
-  { value: 'Industrial', href: '/example' },
-  { value: 'Land Manufactured Housing', href: '/example' },
-  { value: 'Medical Office', href: '/example' },
-  { value: 'Mixed Use', href: '/example' },
-  { value: 'Mobile Home', href: '/example' },
-  { value: 'Multi-Asset', href: '/example' },
-  { value: 'Multifamily', href: '/example' },
-  { value: 'Office', href: '/example' },
-  { value: 'Parking Garage', href: '/example' },
-  { value: 'Retail', href: '/example' },
-  { value: 'Senior Housing', href: '/example' },
-  { value: 'Single Family', href: '/example' },
-  { value: 'Specialty', href: '/example' },
-  { value: 'All Deals', href: '/example' },
-  { value: 'Storage', href: '/example' },
-];
-
-export const Menu: FC<MenuProps> = ({ type, isShadow }) => {
+export const Menu: FC<MenuProps> = ({
+  type,
+  isShadow,
+  firstColumn,
+  secondColumn,
+  handleClickLink
+}) => {
   const [isArrowRotated, setIsArrowRotated] = useState(false);
   const classes = getStyles({ type, isShadow });
 
@@ -64,25 +44,45 @@ export const Menu: FC<MenuProps> = ({ type, isShadow }) => {
         }
       >
         <Box sx={classes.popoverWrapper}>
-          {popoverMockData.map(item => (
-            <Link
-              href={item.href}
-              key={item.value}
-              style={
-                item.value === 'All Deals'
-                  ? { ...classes.popoverItem, ...classes.dealsLink }
-                  : classes.popoverItem
-              }
-            >
-              {item.value}
-            </Link>
-          ))}
+          <Box sx={classes.column}>
+            {firstColumn.map(item => (
+              <Link
+                href={item.href}
+                key={item.value}
+                style={classes.popoverItem}
+                onClick={() => setIsArrowRotated(false)}
+              >
+                {item.value}
+              </Link>
+            ))}
+          </Box>
+          <Box sx={classes.column}>
+            {secondColumn.map(item => (
+              <Link
+                href={item.href}
+                key={item.value}
+                onClick={() => setIsArrowRotated(false)}
+                style={
+                  item.value === 'All Deals'
+                    ? { ...classes.popoverItem, ...classes.dealsLink }
+                    : classes.popoverItem
+                }
+              >
+                {item.value}
+              </Link>
+            ))}
+          </Box>
         </Box>
       </CustomPopover>
-      {links.map(link => (
-        <Link href={link.href} key={link.href} style={classes.link}>
-          {link.label}
-        </Link>
+      {links.map(({ type, label }) => (
+        <Typography
+          variant="body1"
+          key={type}
+          sx={classes.link}
+          onClick={() => handleClickLink(type)}
+        >
+          {label}
+        </Typography>
       ))}
     </>
   );
