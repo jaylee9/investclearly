@@ -1068,6 +1068,12 @@ export const useTableStyles = () => {
         margin: 0,
       },
     },
+    actionCell: {
+      paddingRight: '24px',
+      display: 'flex',
+      gap: '8px',
+      alignItems: 'center',
+    },
     pagination: {
       display: 'flex',
       justifyContent: 'space-between',

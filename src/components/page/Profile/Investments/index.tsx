@@ -93,6 +93,19 @@ const ProfileInvestments = () => {
     },
   ];
 
+  const actions = [
+    {
+      icon: 'icon-Edit',
+      onClick: (data: InvestmentInterface) => console.log(data),
+      styles: classes.editIcon,
+    },
+    {
+      icon: 'icon-Delete',
+      onClick: (data: InvestmentInterface) => console.log(data),
+      styles: classes.deleteIcon,
+    },
+  ];
+
   return (
     <Box>
       <CustomTabs tabs={tabs} onChange={handleChangeTab} value={activeTab} />
@@ -114,6 +127,7 @@ const ProfileInvestments = () => {
                 total={Number(data?.total)}
                 lastPage={Number(data?.lastPage)}
                 setPage={setPage}
+                actions={actions}
               />
             </Box>
           </Box>
