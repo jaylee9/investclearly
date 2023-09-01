@@ -39,13 +39,12 @@ const EditDealModal = ({
     register,
     control,
     handleSubmit,
-    formState: { isDirty, errors },
+    formState: { isDirty },
     setValue,
     watch,
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
   });
-  console.log(errors);
   const onFormSubmit = handleSubmit(async data => {
     const payload = {
       dateOfInvestment: format(data.dateOfInvestment, 'dd/MM/yyyy'),

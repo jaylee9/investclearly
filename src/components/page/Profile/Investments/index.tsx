@@ -162,14 +162,14 @@ const ProfileInvestments = () => {
       <Box sx={classes.root}>
         {isLoading && <Loading />}
         {!isLoading && (
-          <Box>
-            <Box marginBottom="24px">
-              <Typography variant="caption" sx={classes.title}>
-                Total Invested
-              </Typography>
-              <Typography variant="h2" sx={classes.totalInvested}>
-                ${data?.totalInvested}
-              </Typography>
+          <Box marginBottom="24px">
+            <Typography variant="caption" sx={classes.title}>
+              Total Invested
+            </Typography>
+            <Typography variant="h2" sx={classes.totalInvested}>
+              ${data?.totalInvested || 0}
+            </Typography>
+            {!!data?.deals.length ? (
               <Box>
                 <Box sx={classes.tableWrapperHeader}>
                   <Typography variant="h5">Deals</Typography>
@@ -208,7 +208,19 @@ const ProfileInvestments = () => {
                   id={openModals.dealToEdit.id}
                 />
               </Box>
-            </Box>
+            ) : (
+              <Box>
+                <Typography variant="h5" sx={classes.noDealsTitle}>
+                  Deals
+                </Typography>
+                <Typography variant="body1" sx={classes.noDealsSubTitle}>
+                  You have no deals yet. You can add your deals here
+                </Typography>
+                <Link href="/list?type=deals">
+                  <Button>Search for deals</Button>
+                </Link>
+              </Box>
+            )}
           </Box>
         )}
       </Box>

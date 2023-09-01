@@ -46,5 +46,13 @@ export const useInvestmentsStyles = () => {
       gap: '8px',
       alignItems: 'center',
     },
+    noDealsTitle: {
+      fontWeight: 600,
+      marginBottom: '16px',
+    },
+    noDealsSubTitle: {
+      color: palette.text.secondary,
+      marginBottom: '12px',
+    },
   };
 };
