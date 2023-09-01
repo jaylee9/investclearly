@@ -14,10 +14,11 @@ export const getAllInvestments = async ({
   pageSize,
   orderDirection,
   status,
+  search,
 }: FindAllInvestmentsInterface) => {
   try {
     const stringifiedParameters = queryString.stringify(
-      { page, pageSize, orderDirection, status },
+      { page, pageSize, orderDirection, status, search },
       {
         arrayFormat: 'none',
         skipNull: true,

@@ -46,6 +46,7 @@ const useUserProfilePageStyles = () => {
       padding: '24px',
       width: '80%',
       height: '100%',
+      overflow: 'auto',
     },
   };
 };

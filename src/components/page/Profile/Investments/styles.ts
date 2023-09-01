@@ -12,6 +12,10 @@ export const useInvestmentsStyles = () => {
       marginBottom: '4px',
       color: palette.text.disabled,
     },
+    totalInvested: {
+      fontWeight: 600,
+      marginBottom: '24px',
+    },
     dealName: {
       maxWidth: '260px',
       overflow: 'hidden',
@@ -27,6 +31,20 @@ export const useInvestmentsStyles = () => {
       fontSize: '24px',
       padding: '8px',
       color: palette.error.light,
+    },
+    tableWrapperHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '15px',
+      '& h5': {
+        fontWeight: 600,
+      },
+    },
+    searchWrapper: {
+      display: 'flex',
+      gap: '8px',
+      alignItems: 'center',
     },
   };
 };

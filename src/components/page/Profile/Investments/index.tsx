@@ -10,6 +10,11 @@ import { InvestmentStatuses } from '@/backend/constants/enums/investment-statuse
 import CustomTable, { Column } from '@/components/common/Table';
 import { InvestmentInterface } from '@/backend/services/investments/interfaces/investment.interface';
 import { format } from 'date-fns';
+import Input from '@/components/common/Input';
+import Button from '@/components/common/Button';
+import Link from 'next/link';
+import { debounce } from 'lodash';
+import EditDealModal, { DealToEdit } from './Modals/EditDeal';
 
 const tabs = [
   {
@@ -26,6 +31,11 @@ const tabs = [
   },
 ];
 
+enum ModalTypes {
+  edit = 'edit',
+  delete = 'delete',
+}
+
 const ProfileInvestments = () => {
   const [activeTab, setActiveTab] = useState('all');
   const handleChangeTab = (
@@ -36,10 +46,18 @@ const ProfileInvestments = () => {
     setActiveTab(newValue as string);
   };
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const handleSearch = debounce((value: string) => {
+    setSearchTerm(value);
+  }, 300);
+  const handleClearSearch = () => {
+    setSearchTerm('');
+  };
+
   const classes = useInvestmentsStyles();
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useQuery(
-    ['allInvestments', activeTab, page],
+  const { data, isLoading, refetch } = useQuery(
+    ['allInvestments', activeTab, page, searchTerm],
     () =>
       getAllInvestments({
         page,
@@ -47,6 +65,7 @@ const ProfileInvestments = () => {
         orderDirection: OrderDirectionConstants.DESC,
         status:
           activeTab === 'all' ? undefined : (activeTab as InvestmentStatuses),
+        search: searchTerm,
       }),
     {
       keepPreviousData: true,
@@ -93,10 +112,39 @@ const ProfileInvestments = () => {
     },
   ];
 
+  const [openModals, setOpenModals] = useState({
+    edit: false,
+    delete: false,
+    dealToEdit: {},
+  });
+  const handleOpenModal = (type: ModalTypes, data: InvestmentInterface) => {
+    setOpenModals(prevState => {
+      return {
+        ...prevState,
+        dealToEdit: {
+          id: data.id,
+          totalInvested: data.totalInvested,
+          dateOfInvestment: data.dateOfInvestment,
+        },
+        [type]: true,
+      };
+    });
+  };
+  const handleCloseModal = (type: ModalTypes) => {
+    setOpenModals(prevState => {
+      return { ...prevState, [type]: false };
+    });
+  };
+
+  const onSubmitClose = (type: ModalTypes) => {
+    refetch().then(() => handleCloseModal(type));
+  };
+
   const actions = [
     {
       icon: 'icon-Edit',
-      onClick: (data: InvestmentInterface) => console.log(data),
+      onClick: (data: InvestmentInterface) =>
+        handleOpenModal(ModalTypes.edit, data),
       styles: classes.editIcon,
     },
     {
@@ -117,18 +165,44 @@ const ProfileInvestments = () => {
               <Typography variant="caption" sx={classes.title}>
                 Total Invested
               </Typography>
-              <Typography variant="h2" fontWeight={600}>
+              <Typography variant="h2" sx={classes.totalInvested}>
                 ${data?.totalInvested}
               </Typography>
-              <CustomTable<InvestmentInterface>
-                data={data?.deals as InvestmentInterface[]}
-                columns={columns}
-                page={page}
-                total={Number(data?.total)}
-                lastPage={Number(data?.lastPage)}
-                setPage={setPage}
-                actions={actions}
-              />
+              <Box>
+                <Box sx={classes.tableWrapperHeader}>
+                  <Typography variant="h5">Deals</Typography>
+                  <Box sx={classes.searchWrapper}>
+                    <Input
+                      variant="filled"
+                      isSearch
+                      placeholder="Search my deals"
+                      onChange={e => handleSearch(e.target.value)}
+                      onClear={handleClearSearch}
+                    />
+                    <Link href="/list?type=deals">
+                      <Button>Search for deals</Button>
+                    </Link>
+                  </Box>
+                </Box>
+                <CustomTable<InvestmentInterface>
+                  data={data?.deals as InvestmentInterface[]}
+                  columns={columns}
+                  page={page}
+                  total={Number(data?.total)}
+                  lastPage={Number(data?.lastPage)}
+                  setPage={setPage}
+                  actions={actions}
+                />
+                <EditDealModal
+                  open={
+                    !!Object.values(openModals.dealToEdit).length &&
+                    openModals.edit
+                  }
+                  onClose={() => handleCloseModal(ModalTypes.edit)}
+                  onSubmitClose={() => onSubmitClose(ModalTypes.edit)}
+                  dealToEdit={openModals.dealToEdit as DealToEdit}
+                />
+              </Box>
             </Box>
           </Box>
         )}
