@@ -15,6 +15,7 @@ import Button from '@/components/common/Button';
 import Link from 'next/link';
 import { debounce } from 'lodash';
 import EditDealModal, { DealToEdit } from './Modals/EditDeal';
+import DeleteDealModal from './Modals/DeleteDeal';
 
 const tabs = [
   {
@@ -115,7 +116,7 @@ const ProfileInvestments = () => {
   const [openModals, setOpenModals] = useState({
     edit: false,
     delete: false,
-    dealToEdit: {},
+    dealToEdit: { id: 0 },
   });
   const handleOpenModal = (type: ModalTypes, data: InvestmentInterface) => {
     setOpenModals(prevState => {
@@ -149,7 +150,8 @@ const ProfileInvestments = () => {
     },
     {
       icon: 'icon-Delete',
-      onClick: (data: InvestmentInterface) => console.log(data),
+      onClick: (data: InvestmentInterface) =>
+        handleOpenModal(ModalTypes.delete, data),
       styles: classes.deleteIcon,
     },
   ];
@@ -198,6 +200,12 @@ const ProfileInvestments = () => {
                   onClose={() => handleCloseModal(ModalTypes.edit)}
                   onSubmitClose={() => onSubmitClose(ModalTypes.edit)}
                   dealToEdit={openModals.dealToEdit as DealToEdit}
+                />
+                <DeleteDealModal
+                  open={openModals.delete}
+                  onClose={() => handleCloseModal(ModalTypes.delete)}
+                  onSubmitClose={() => onSubmitClose(ModalTypes.delete)}
+                  id={openModals.dealToEdit.id}
                 />
               </Box>
             </Box>

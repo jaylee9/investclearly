@@ -55,3 +55,12 @@ export const updateInvestment = async ({
     return { isError: true };
   }
 };
+
+export const deleteInvestment = async ({ id }: { id: number }) => {
+  try {
+    await api.delete(`investments/${id}`);
+    return { isError: false };
+  } catch (error) {
+    return { isError: true };
+  }
+};

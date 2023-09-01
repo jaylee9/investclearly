@@ -1,7 +1,11 @@
 import { Box, ModalProps, DialogTitle, Modal as ModalMUI } from '@mui/material';
 import { useModalStyles } from './styles';
 
-const Modal = (props: ModalProps) => {
+interface CustomModalProps extends ModalProps {
+  showCloseIcon?: boolean;
+}
+
+const Modal = ({ showCloseIcon = true, ...props }: CustomModalProps) => {
   const classes = useModalStyles();
   const { onClose, children, ...rest } = props;
   return (
@@ -13,12 +17,14 @@ const Modal = (props: ModalProps) => {
     >
       <Box sx={classes.root}>
         <DialogTitle padding="0px !important">
-          <Box
-            sx={classes.iconWrapper}
-            onClick={e => onClose && onClose(e, 'backdropClick')}
-          >
-            <span className="icon-Cross"></span>
-          </Box>
+          {showCloseIcon && (
+            <Box
+              sx={classes.iconWrapper}
+              onClick={e => onClose && onClose(e, 'backdropClick')}
+            >
+              <span className="icon-Cross"></span>
+            </Box>
+          )}
         </DialogTitle>
         {children}
       </Box>
