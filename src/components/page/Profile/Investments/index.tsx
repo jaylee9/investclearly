@@ -56,6 +56,7 @@ const ProfileInvestments = () => {
   };
 
   const classes = useInvestmentsStyles();
+
   const [page, setPage] = useState(1);
   const { data, isLoading, refetch } = useQuery(
     ['allInvestments', activeTab, page, searchTerm],

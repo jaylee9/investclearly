@@ -11,12 +11,14 @@ interface DeleteDealModal extends Omit<ModalProps, 'children' | 'id'> {
 
 const DeleteDealModal = ({ onSubmitClose, id, ...props }: DeleteDealModal) => {
   const classes = useDeleteDealModalStyles();
+
   const handleDelete = async () => {
     const response = await deleteInvestment({ id });
     if (!response.isError) {
       onSubmitClose();
     }
   };
+
   return (
     <Modal showCloseIcon={false} {...props}>
       <Box sx={classes.root}>

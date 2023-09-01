@@ -35,6 +35,7 @@ const EditDealModal = ({
   ...props
 }: EditDealModalProps) => {
   const classes = useEditDealModalStyles();
+
   const {
     register,
     control,
@@ -62,6 +63,7 @@ const EditDealModal = ({
       setValue('dateOfInvestment', new Date(dealToEdit.dateOfInvestment));
     }
   }, [dealToEdit.totalInvested, setValue, dealToEdit]);
+
   return (
     <Modal {...props}>
       <Box>
