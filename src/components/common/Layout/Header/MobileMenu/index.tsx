@@ -14,15 +14,16 @@ import {
   AnalyticsOutlined,
   BookmarkBorderOutlined,
   ChatBubbleOutlineOutlined,
+  KeyboardArrowDown,
   Logout,
   Menu as MenuIcon,
   SettingsOutlined,
 } from '@mui/icons-material';
-import { useState, type FC, CSSProperties } from 'react';
+import { useState, type FC, type CSSProperties } from 'react';
 import Button from '@/components/common/Button';
 import { links } from '..';
-import CustomPopover from '@/components/common/Popover';
 import getStyles from '../styles';
+import CustomAccordion from '@/components/common/Accordion';
 
 type MobileMenuClassesProp = SxProps<Theme> | undefined;
 
@@ -70,15 +71,10 @@ export const MobileMenu: FC<MobileMenuProps> = ({
   secondColumn,
   handleClickLink,
 }) => {
-  const [isArrowRotated, setIsArrowRotated] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const classes = getStyles({ type: 'dark', isShadow });
 
   const open = Boolean(anchorEl);
-
-  const handleArrowClick = () => {
-    setIsArrowRotated(!isArrowRotated);
-  };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -133,7 +129,9 @@ export const MobileMenu: FC<MobileMenuProps> = ({
                   sx={classes.mobileMenuProfileItem}
                 >
                   {icon(classes.mobileMenuIcon)}
-                  {label}
+                  <Typography variant="body1" sx={classes.mobileMenuText}>
+                    {label}
+                  </Typography>
                 </MenuItem>
               </Link>
             ))}
@@ -152,63 +150,29 @@ export const MobileMenu: FC<MobileMenuProps> = ({
           </Link>
         )}
         <Divider />
-        <CustomPopover
-          open={isArrowRotated}
-          handleClose={() => setIsArrowRotated(false)}
-          trigger={
-            <MenuItem
-              onClick={handleArrowClick}
-              disableRipple
-              sx={classes.mobileMenuItem}
-            >
-              <span>Deals</span>
-              <i
-                className={`icon-Caret-down ${isArrowRotated ? 'rotate' : ''}`}
-                style={classes.arrow as CSSProperties}
-              ></i>
-            </MenuItem>
-          }
+        <CustomAccordion
+          label={'Deals'}
+          expandIcon={<KeyboardArrowDown />}
+          customStyles={classes.dealsCustomAccordion}
         >
-          <Box sx={classes.popoverWrapper}>
-            <Box sx={classes.column}>
-              {firstColumn.map(item => (
-                <Link
-                  href={item.href}
-                  key={item.value}
-                  style={classes.popoverItem as CSSProperties}
-                  onClick={() => {
-                    setIsArrowRotated(false);
-                    handleClose();
-                  }}
-                >
-                  {item.value}
-                </Link>
-              ))}
-            </Box>
-            <Box sx={classes.column}>
-              {secondColumn.map(item => (
-                <Link
-                  href={item.href}
-                  key={item.value}
-                  onClick={() => {
-                    setIsArrowRotated(false);
-                    handleClose();
-                  }}
-                  style={
-                    item.value === 'All Deals'
-                      ? ({
-                          ...classes.popoverItem,
-                          ...classes.dealsLink,
-                        } as CSSProperties)
-                      : (classes.popoverItem as CSSProperties)
-                  }
-                >
-                  {item.value}
-                </Link>
-              ))}
-            </Box>
-          </Box>
-        </CustomPopover>
+          {[...firstColumn, ...secondColumn].map(({ href, value }) => (
+            <Link
+              href={href}
+              key={value}
+              style={
+                value === 'All Deals'
+                  ? ({
+                      ...classes.dealsCustomAccordionPopoverItem,
+                      ...classes.dealsLink,
+                    } as CSSProperties)
+                  : (classes.dealsCustomAccordionPopoverItem as CSSProperties)
+              }
+              onClick={handleClose}
+            >
+              {value}
+            </Link>
+          ))}
+        </CustomAccordion>
         {links.map(({ type, label }) => (
           <MenuItem
             onClick={() => {
@@ -217,13 +181,16 @@ export const MobileMenu: FC<MobileMenuProps> = ({
             }}
             disableRipple
             sx={classes.mobileMenuItem}
+            key={type}
           >
-            {label}
+            <Typography variant="body1" sx={classes.mobileMenuText}>
+              {label}
+            </Typography>
           </MenuItem>
         ))}
         {isSignIn && (
           <>
-            <Divider />
+            <Divider sx={classes.mobileMenuLogOutDivider} />
             <Link href="/logout" passHref style={linkStyle}>
               <MenuItem
                 onClick={handleClose}

@@ -385,17 +385,20 @@ export const useAccordionStyles = ({
 }: {
   variant: AccordionVariant;
 }) => {
+  const background =
+    variant === 'primary' ? palette.common.white : 'transparent';
+  const padding = variant === 'primary' ? '0px 16px' : '0';
+  const borderBottom =
+    variant === 'primary' ? `1px solid ${palette.background.paper}` : 'none';
+
   return {
     root: {
       width: '100%',
-      background: variant === 'primary' ? palette.common.white : 'transparent',
+      background,
       boxShadow: 'none',
       borderRadius: '0px !important',
-      padding: variant === 'primary' ? '0px 16px' : '0',
-      borderBottom:
-        variant === 'primary'
-          ? `1px solid ${palette.background.paper}`
-          : 'none',
+      padding,
+      borderBottom,
       margin: '0px !important',
       '& .MuiButtonBase-root': {
         '&:first-child': {

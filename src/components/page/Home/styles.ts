@@ -294,7 +294,6 @@ export const useBannerBlockStyles = ({
       backgroundImage: 'url(/assets/writeReviewBanner.jpg)',
       backgroundPosition: 'center',
       backgroundSize: 'cover',
-      marginBottom: isMarginBottom ? '100px' : '0px',
       width: '100%',
       gap: '24px',
       '& h2': {

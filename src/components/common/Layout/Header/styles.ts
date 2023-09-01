@@ -59,11 +59,18 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
     mobileMenuIcon: {
       marginRight: '12px',
     },
+    mobileMenuText: {
+      fontWeight: 600,
+    },
     mobileMenuProfileItem: {
       padding: '8px',
     },
     mobileMenuItem: {
       padding: '8px 12px',
+    },
+    mobileMenuLogOutDivider: {
+      marginTop: '0 !important',
+      marginBottom: '0 !important',
     },
     mobileMenuLogOut: {
       color: theme.palette.primary.light,
@@ -88,12 +95,25 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
       display: 'flex',
       width: '500px',
     },
+    mobileMenuPopoverWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      width: '500px',
+    },
     column: {
       display: 'flex',
       flexDirection: 'column',
       '&:first-child': {
         borderRight: `1px solid ${theme.palette.background.paper}`,
       },
+    },
+    dealsCustomAccordion: {
+      padding: '0 12px',
+      borderBottom: 'none',
+    },
+    dealsCustomAccordionPopoverItem: {
+      padding: '7px 8px',
+      color: theme.palette.common.black,
     },
     popoverItem: {
       padding: '7px 24px',
