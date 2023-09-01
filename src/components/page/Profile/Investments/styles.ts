@@ -54,5 +54,16 @@ export const useInvestmentsStyles = () => {
       color: palette.text.secondary,
       marginBottom: '12px',
     },
+    contactUsWrapper: {
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+      padding: '24px 0px',
+      background: palette.primary.contrastText,
+      border: `1px solid ${palette.background.paper}`,
+      borderRadius: '12px',
+      alignItems: 'center',
+    },
   };
 };

@@ -224,6 +224,14 @@ const ProfileInvestments = () => {
             )}
           </Box>
         )}
+        <Box sx={classes.contactUsWrapper}>
+          <Typography variant="body1" fontWeight={600}>
+            Can’t find a deal? Contact us and we’ll resolve it!
+          </Typography>
+          <Link href="mailto:test@example.com?subject=Can’t find a deal">
+            <Button>Contact Us</Button>
+          </Link>
+        </Box>
       </Box>
     </Box>
   );
