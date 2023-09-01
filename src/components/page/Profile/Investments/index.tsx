@@ -194,10 +194,7 @@ const ProfileInvestments = () => {
                   actions={actions}
                 />
                 <EditDealModal
-                  open={
-                    !!Object.values(openModals.dealToEdit).length &&
-                    openModals.edit
-                  }
+                  open={openModals.edit}
                   onClose={() => handleCloseModal(ModalTypes.edit)}
                   onSubmitClose={() => onSubmitClose(ModalTypes.edit)}
                   dealToEdit={openModals.dealToEdit as DealToEdit}

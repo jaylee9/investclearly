@@ -7,6 +7,9 @@ import CustomDateRangePicker from '@/components/common/DateRangePicker';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import { useEditDealModalStyles } from './styles';
+import { useEffect } from 'react';
+import { updateInvestment } from '@/actions/investments';
+import { format } from 'date-fns';
 
 const validationSchema = z.object({
   dateOfInvestment: z.date(),
@@ -36,24 +39,36 @@ const EditDealModal = ({
     register,
     control,
     handleSubmit,
-    formState: { dirtyFields },
+    formState: { isDirty, errors },
+    setValue,
+    watch,
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
-    defaultValues: {
-      dateOfInvestment: dealToEdit.dateOfInvestment,
-      totalInvested: String(dealToEdit.totalInvested),
-    },
   });
-  const onFormSubmit = handleSubmit(data => {
-    onSubmitClose();
+  console.log(errors);
+  const onFormSubmit = handleSubmit(async data => {
+    const payload = {
+      dateOfInvestment: format(data.dateOfInvestment, 'dd/MM/yyyy'),
+      id: dealToEdit.id,
+      totalInvested: data.totalInvested,
+    };
+    const response = await updateInvestment(payload);
+    if (!response.isError) {
+      onSubmitClose();
+    }
   });
-  const allFieldsDirty =
-    'dateOfInvestment' in dirtyFields && 'totalInvested' in dirtyFields;
-  console.log(dealToEdit.totalInvested);
+  useEffect(() => {
+    if (dealToEdit) {
+      setValue('totalInvested', String(dealToEdit.totalInvested));
+      setValue('dateOfInvestment', new Date(dealToEdit.dateOfInvestment));
+    }
+  }, [dealToEdit.totalInvested, setValue, dealToEdit]);
   return (
     <Modal {...props}>
       <Box>
-        <Typography variant="h3">Edit deal</Typography>
+        <Typography variant="h3" fontWeight={600} marginBottom="24px">
+          Edit deal
+        </Typography>
         <form onSubmit={onFormSubmit}>
           <Box>
             <CustomDateRangePicker
@@ -66,6 +81,7 @@ const EditDealModal = ({
             topLabel="Total Invested"
             showClearOption={false}
             register={register('totalInvested')}
+            value={watch('totalInvested')}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -80,7 +96,7 @@ const EditDealModal = ({
           <Button
             type="submit"
             customStyles={classes.submitButton}
-            disabled={!allFieldsDirty}
+            disabled={!isDirty}
           >
             Save
           </Button>

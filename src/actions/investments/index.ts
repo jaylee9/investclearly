@@ -34,3 +34,24 @@ export const getAllInvestments = async ({
     throw error;
   }
 };
+
+interface UpdateInvestment {
+  dateOfInvestment: string;
+  totalInvested: string;
+  id: number;
+}
+
+export const updateInvestment = async ({
+  dateOfInvestment,
+  totalInvested,
+  id,
+}: UpdateInvestment) => {
+  try {
+    await api.put(`investments/${id}`, {
+      json: { dateOfInvestment, totalInvested },
+    });
+    return { isError: false };
+  } catch (error) {
+    return { isError: true };
+  }
+};
