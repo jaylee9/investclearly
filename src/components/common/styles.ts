@@ -1038,3 +1038,51 @@ export const useFileUploaderStyles = () => {
     },
   };
 };
+
+export const useTableStyles = () => {
+  return {
+    root: {
+      background: palette.common.white,
+      boxShadow: 'none',
+      borderRadius: 0,
+    },
+    tableHeader: {
+      '&.MuiTableHead-root': {
+        background: palette.background.default,
+      },
+      '& th': {
+        color: palette.text.secondary,
+        fontSize: typography.caption,
+        fontWeight: 600,
+        borderBottom: 'none',
+        padding: '8px',
+        '&:first-of-type': {
+          paddingLeft: '24px',
+        },
+      },
+    },
+    bodyCell: {
+      fontSize: typography.body1,
+      borderBottom: `1px solid ${palette.background.paper}`,
+      '& p': {
+        margin: 0,
+      },
+    },
+    actionCell: {
+      paddingRight: '24px',
+      display: 'flex',
+      gap: '8px',
+      alignItems: 'center',
+    },
+    pagination: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      width: '100%',
+      alignItems: 'center',
+      padding: '8px 24px',
+      '& span': {
+        color: palette.text.secondary,
+      },
+    },
+  };
+};
