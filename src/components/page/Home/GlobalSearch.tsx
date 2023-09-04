@@ -13,25 +13,28 @@ import { useRouter } from 'next/router';
 import PlaceholderImage from '@/components/common/PlaceholderImage';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { Search } from '@mui/icons-material';
+import { HeaderType } from '../../../hooks/useHeaderProps';
 
 export enum GlobalSearchVariant {
   BASE = 'base',
   LARGE = 'lg',
 }
 interface GlobalSearchProps {
+  type?: HeaderType;
   searchResponse?: GlobalSearchResponse;
   variant?: GlobalSearchVariant;
   onChangeSearch?: (value: string) => void;
 }
 
 const GlobalSearch = ({
+  type,
   searchResponse,
   variant = GlobalSearchVariant.LARGE,
   onChangeSearch,
 }: GlobalSearchProps) => {
-  const classes = useGlobalSearchStyles();
   const router = useRouter();
-  const { search, type } = router.query;
+  const { search, type: queryType } = router.query;
+  const classes = useGlobalSearchStyles({ type });
   const [isOpenGlobalSearch, setIsOpenGlobalSearch] = useState(false);
   const [value, setValue] = useState(search || '');
   const [globalSearchValue, setGlobalSearchValue] = useState(
@@ -88,7 +91,7 @@ const GlobalSearch = ({
   );
 
   const searchType = data?.sponsors?.length
-    ? type === 'sponsors' && 'sponsors'
+    ? queryType === 'sponsors' && 'sponsors'
     : 'deals';
 
   const searchLink = `/list?type=${
@@ -99,7 +102,7 @@ const GlobalSearch = ({
     setValue('');
     setGlobalSearchValue('');
     setIsOpenGlobalSearch(false);
-    if (type) {
+    if (queryType) {
       router.push(`/list?type=${searchType}`);
       if (onChangeSearch) {
         onChangeSearch('');
@@ -125,55 +128,57 @@ const GlobalSearch = ({
 
   return (
     <Box ref={ref} onClick={handleOpen} sx={classes.root}>
-      {variant === GlobalSearchVariant.LARGE && (
-        <Input
-          variant="filled"
-          isFilledWhite
-          isSearch
-          showClearOption={false}
-          placeholder="Deals, Sponsors, and Asset Class"
-          sxCustomStyles={classes.searchInput}
-          height="large"
-          onKeyDown={handleKeyDown}
-          autoComplete="off"
-          endComponent={
-            isMobile ? (
-              <Link href={searchLink}>
-                <Button sxCustomStyles={classes.searchButton}>
-                  <Search />
-                </Button>
-              </Link>
-            ) : (
-              <Link href={searchLink}>
-                <Button
-                  customStyles={{
-                    boxSizing: 'border-box',
-                    padding: '12px 40px !important',
-                    height: '48px !important',
-                  }}
-                >
-                  Search
-                </Button>
-              </Link>
-            )
-          }
-          onChange={handleChange}
-        />
-      )}
-      {variant === GlobalSearchVariant.BASE && (
-        <Input
-          isSearch
-          showClearOption
-          placeholder="Search"
-          variant="filled"
-          onChange={handleChangeValue}
-          onClear={handleClearInput}
-          value={value}
-          customStyles={classes.baseSearchInput}
-          onKeyDown={handleKeyDown}
-          autoComplete="off"
-        />
-      )}
+      <Box sx={classes.searchInputWrapper}>
+        {variant === GlobalSearchVariant.LARGE && (
+          <Input
+            variant="filled"
+            isFilledWhite
+            isSearch
+            showClearOption={false}
+            placeholder="Deals, Sponsors, and Asset Class"
+            sxCustomStyles={classes.searchInput}
+            height="large"
+            onKeyDown={handleKeyDown}
+            autoComplete="off"
+            endComponent={
+              isMobile ? (
+                <Link href={searchLink}>
+                  <Button sxCustomStyles={classes.searchButton}>
+                    <Search />
+                  </Button>
+                </Link>
+              ) : (
+                <Link href={searchLink}>
+                  <Button
+                    customStyles={{
+                      boxSizing: 'border-box',
+                      padding: '12px 40px !important',
+                      height: '48px !important',
+                    }}
+                  >
+                    Search
+                  </Button>
+                </Link>
+              )
+            }
+            onChange={handleChange}
+          />
+        )}
+        {variant === GlobalSearchVariant.BASE && (
+          <Input
+            isSearch
+            showClearOption
+            placeholder="Search"
+            variant="filled"
+            onChange={handleChangeValue}
+            onClear={handleClearInput}
+            value={value}
+            customStyles={classes.baseSearchInput}
+            onKeyDown={handleKeyDown}
+            autoComplete="off"
+          />
+        )}
+      </Box>
       {isOpenGlobalSearch && (
         <Fade in={isOpenGlobalSearch}>
           <Box sx={classes.searchContent}>

@@ -110,7 +110,7 @@ export const MobileMenu: FC<MobileMenuProps> = ({
         sx={classes.mobileMenu}
       >
         {isSignIn ? (
-          <>
+          <Box>
             <Box sx={classes.mobileMenuHeader}>
               <Avatar sx={classes.mobileMenuHeaderAvatar} />
               <Box sx={classes.mobileMenuHeaderTextWrapper}>
@@ -135,7 +135,7 @@ export const MobileMenu: FC<MobileMenuProps> = ({
                 </MenuItem>
               </Link>
             ))}
-          </>
+          </Box>
         ) : (
           <Link href="/sign-up">
             <Button
@@ -189,7 +189,7 @@ export const MobileMenu: FC<MobileMenuProps> = ({
           </MenuItem>
         ))}
         {isSignIn && (
-          <>
+          <Box>
             <Divider sx={classes.mobileMenuLogOutDivider} />
             <Link href="/logout" passHref style={linkStyle}>
               <MenuItem
@@ -201,7 +201,7 @@ export const MobileMenu: FC<MobileMenuProps> = ({
                 Log out
               </MenuItem>
             </Link>
-          </>
+          </Box>
         )}
       </Menu>
     </>

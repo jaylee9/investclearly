@@ -1,4 +1,6 @@
 import theme from '@/config/theme';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { HeaderType } from '@/hooks/useHeaderProps';
 
 export const blueTitleStyles = {
   color: theme.palette.primary.light,
@@ -12,6 +14,7 @@ export const viewAllLink = {
 };
 
 export const useHeadBlockStyles = () => {
+  const { isSmallMobile } = useBreakpoints();
   return {
     root: {
       backgroundImage: 'url(/assets/mainPageBanner.jpg)',
@@ -19,7 +22,7 @@ export const useHeadBlockStyles = () => {
       backgroundSize: 'cover',
       height: { xs: '425px', sm: '390px', md: '356px' },
       marginTop: '-90px',
-      paddingTop: { xs: '140px', lg: '170px' },
+      paddingTop: { xs: isSmallMobile ? '105px' : '140px', lg: '170px' },
       boxSizing: 'border-box',
       display: 'flex',
       flexDirection: 'column',
@@ -31,7 +34,7 @@ export const useHeadBlockStyles = () => {
       gap: '16px',
       color: theme.palette.common.white,
       alignItems: 'center',
-      marginBottom: '48px',
+      marginBottom: { xs: '48px', md: '' },
       padding: { xs: '0 16px', md: '0 40px' },
     },
     title: {
@@ -45,11 +48,23 @@ export const useHeadBlockStyles = () => {
   };
 };
 
-export const useGlobalSearchStyles = () => {
+export const useGlobalSearchStyles = ({
+  type = 'light',
+}: {
+  type?: HeaderType;
+}) => {
   return {
     root: {
       width: { xs: '100%', lg: 'auto' },
+      height:
+        (type.includes('dark') && '44px') ||
+        (type.includes('light') && '56px') ||
+        '',
       position: { xs: 'relative', lg: 'initial' },
+    },
+    searchInputWrapper: {
+      height: '100%',
+      position: 'relative',
     },
     searchInput: {
       width: {
@@ -63,7 +78,7 @@ export const useGlobalSearchStyles = () => {
       },
       marginBottom: '8px',
       position: { xs: 'absolute', lg: 'initial' },
-      top: 0,
+      top: { xs: 0, lg: '64px' },
       left: 0,
       right: 0,
       margin: '0 auto',
@@ -78,14 +93,19 @@ export const useGlobalSearchStyles = () => {
       overflow: 'auto',
       maxHeight: '410px',
       background: theme.palette.common.white,
-      width: '100%',
+      width: {
+        xs: 'calc(100vw - 32px)',
+        md: 'calc(100vw - 80px)',
+        lg: '736px',
+      },
+      margin: '0 auto',
       borderRadius: '16px',
       border: `1px solid ${theme.palette.background.paper}`,
       boxShadow: theme.customShadows.base,
       padding: '8px 24px',
       boxSizing: 'border-box',
       position: 'relative',
-      top: '64px',
+      top: '8px',
       zIndex: 10,
       '&::-webkit-scrollbar': {
         display: 'none',

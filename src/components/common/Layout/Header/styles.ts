@@ -1,16 +1,24 @@
+import { GlobalSearchVariant } from '@/components/page/Home/GlobalSearch';
 import theme from '@/config/theme';
 import { HeaderType } from '@/hooks/useHeaderProps';
 
 interface HeaderStylesProps {
   type?: HeaderType;
   isShadow?: boolean;
+  variant?: GlobalSearchVariant;
 }
 
-const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
+const getStyles = ({ type = 'dark', isShadow, variant }: HeaderStylesProps) => {
   return {
     root: {
       display: 'flex',
-      padding: { xs: '16px', lg: '16px 48px' },
+      maxHeight: '80px',
+      padding: {
+        xs: '8px 16px',
+        md: '18px 16px',
+        lg: '16px 48px',
+        xl: `16px calc(calc(100vw - ${theme.breakpoints.values.xl}px) / 2)`,
+      },
       justifyContent: 'space-between',
       alignItems: 'center',
       boxShadow: isShadow ? theme.customShadows.header : 'none',
@@ -103,7 +111,7 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
     column: {
       display: 'flex',
       flexDirection: 'column',
-      '&:first-child': {
+      '&:first-of-type': {
         borderRight: `1px solid ${theme.palette.background.paper}`,
       },
     },
