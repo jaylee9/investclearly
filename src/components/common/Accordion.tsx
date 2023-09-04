@@ -13,7 +13,7 @@ export type AccordionVariant = 'primary' | 'secondary';
 interface CustomAccordionProps {
   children: ReactNode;
   label: string | ReactNode;
-  expandIcon: ReactNode;
+  expandIcon?: ReactNode;
   variant?: AccordionVariant;
   customStyles?: CSSProperties;
   onChange?: (event: SyntheticEvent, expanded: boolean) => void;

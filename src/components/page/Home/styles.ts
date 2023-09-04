@@ -297,13 +297,7 @@ export const useDealsBlockStyles = () => {
   };
 };
 
-interface UseBannerBlockStylesProps {
-  isMarginBottom?: boolean;
-}
-
-export const useBannerBlockStyles = ({
-  isMarginBottom,
-}: UseBannerBlockStylesProps) => {
+export const useBannerBlockStyles = () => {
   return {
     root: {
       display: 'flex',

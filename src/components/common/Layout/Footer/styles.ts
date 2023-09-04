@@ -4,7 +4,7 @@ const getStyles = () => {
   return {
     root: {
       background: theme.palette.common.black,
-      padding: {xs: '64px 16px 16px', lg: '64px 48px 16px'},
+      padding: { xs: '64px 16px 16px', lg: '64px 48px 16px' },
       marginTop: 'auto',
     },
     content: {

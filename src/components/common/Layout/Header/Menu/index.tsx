@@ -19,7 +19,7 @@ export const Menu: FC<MenuProps> = ({
   isShadow,
   firstColumn,
   secondColumn,
-  handleClickLink
+  handleClickLink,
 }) => {
   const [isArrowRotated, setIsArrowRotated] = useState(false);
   const classes = getStyles({ type, isShadow });

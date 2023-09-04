@@ -1,14 +1,12 @@
-import { GlobalSearchVariant } from '@/components/page/Home/GlobalSearch';
 import theme from '@/config/theme';
 import { HeaderType } from '@/hooks/useHeaderProps';
 
 interface HeaderStylesProps {
   type?: HeaderType;
   isShadow?: boolean;
-  variant?: GlobalSearchVariant;
 }
 
-const getStyles = ({ type = 'dark', isShadow, variant }: HeaderStylesProps) => {
+const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
   return {
     root: {
       display: 'flex',

@@ -44,7 +44,6 @@ const Home: FC<HomeProps> = ({ deals, sponsors, searchResponse }) => {
 Share Your Experience With Other Investors"
           buttonLabel="Write a review"
           buttonHref="/create_review"
-          isMarginBottom={true}
         />
       </Box>
     </Layout>
