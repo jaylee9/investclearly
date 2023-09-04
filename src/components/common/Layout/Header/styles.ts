@@ -23,6 +23,7 @@ const getStyles = ({ type = 'dark', isShadow, variant }: HeaderStylesProps) => {
       alignItems: 'center',
       boxShadow: isShadow ? theme.customShadows.header : 'none',
       background: type.includes('search') ? theme.palette.common.white : '',
+      zIndex: 1,
     },
     menu: {
       display: 'flex',

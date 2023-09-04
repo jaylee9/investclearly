@@ -21,12 +21,12 @@ export const useHeadBlockStyles = () => {
       backgroundPosition: 'center',
       backgroundSize: 'cover',
       height: { xs: '425px', sm: '390px', md: '356px' },
-      marginTop: '-90px',
       paddingTop: { xs: isSmallMobile ? '105px' : '140px', lg: '170px' },
       boxSizing: 'border-box',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      position: 'relative',
     },
     titleWrapper: {
       display: 'flex',
@@ -60,7 +60,8 @@ export const useGlobalSearchStyles = ({
         (type.includes('dark') && '44px') ||
         (type.includes('light') && '56px') ||
         '',
-      position: { xs: 'relative', lg: 'initial' },
+      position: { xs: 'absolute', lg: 'initial' },
+      bottom: '-25px',
     },
     searchInputWrapper: {
       height: '100%',

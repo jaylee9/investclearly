@@ -70,7 +70,11 @@ const Header = ({
       component="header"
       sx={{
         ...classes.root,
-        position: isSticky ? 'sticky' : 'initial',
+        position: isSticky
+          ? 'sticky'
+          : type?.toString().includes('light')
+          ? 'absolute'
+          : 'initial',
         top: 0,
         right: 0,
         width: '100%',
