@@ -1,6 +1,9 @@
 import { CreateReviewInterface } from '@/backend/services/reviews/interfaces/create-review.interface';
+import { FindAllReviewsInterface } from '@/backend/services/reviews/interfaces/get-all-reviews.interface';
 import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.interface';
+import { TPaginationInfo } from '@/backend/utils/pagination/paginate-info.type';
 import api from '@/config/ky';
+import queryString from 'query-string';
 
 export type OptionalCreateReviewInterface = Partial<CreateReviewInterface>;
 
@@ -42,4 +45,33 @@ export const createReview = async (
   }
 };
 
-export const getUserReviews = () => {};
+export interface GetUserReviewsResponse extends TPaginationInfo {
+  reviews: ReviewInterface[];
+}
+
+export const getUserReviews = async ({
+  page,
+  pageSize,
+  orderDirection,
+  status,
+  search,
+  userId,
+}: FindAllReviewsInterface) => {
+  try {
+    const stringifiedParameters = queryString.stringify(
+      { page, pageSize, orderDirection, status, search, userId },
+      {
+        arrayFormat: 'none',
+        skipNull: true,
+        skipEmptyString: true,
+      }
+    );
+    const response: GetUserReviewsResponse = await api
+      .get(`reviews?${stringifiedParameters}`)
+      .json();
+    return response;
+  } catch (error) {
+    console.error('Error fetching reviews', error);
+    throw error;
+  }
+};
