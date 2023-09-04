@@ -28,6 +28,7 @@ const CustomAccordion: FC<CustomAccordionProps> = ({
   onChange,
 }) => {
   const classes = useAccordionStyles({ variant });
+
   return (
     <Accordion sx={classes.root} style={customStyles} onChange={onChange}>
       <AccordionSummary expandIcon={expandIcon}>
