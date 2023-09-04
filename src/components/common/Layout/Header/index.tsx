@@ -113,7 +113,7 @@ const Header = ({
         )}
         {title && title}
       </Box>
-      <Box sx={classes.menu}>
+      <Box sx={classes.dealsPopover}>
         {isDesktop && isLinks && (
           <DealsPopover
             type={type}

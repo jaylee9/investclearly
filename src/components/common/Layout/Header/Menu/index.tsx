@@ -88,18 +88,18 @@ export const Menu: FC<MenuProps> = ({
           vertical: 'top',
           horizontal: 'right',
         }}
-        sx={classes.mobileMenu}
+        sx={classes.menu}
       >
         {!!user ? (
           <Box>
-            <Box sx={classes.mobileMenuHeader}>
+            <Box sx={classes.menuHeader}>
               <UserAvatar
                 src={user.profilePicture}
                 width={36}
                 height={36}
                 name={`${user.firstName} ${user.lastName}`}
               />
-              <Box sx={classes.mobileMenuHeaderTextWrapper}>
+              <Box sx={classes.menuHeaderTextWrapper}>
                 <Typography variant="body1">
                   {user.firstName} {user.lastName}
                 </Typography>
@@ -117,10 +117,10 @@ export const Menu: FC<MenuProps> = ({
                 <MenuItem
                   onClick={handleClose}
                   disableRipple
-                  sx={classes.mobileMenuProfileItem}
+                  sx={classes.menuProfileItem}
                 >
-                  {icon(classes.mobileMenuIcon)}
-                  <Typography variant="body1" sx={classes.mobileMenuText}>
+                  {icon(classes.menuIcon)}
+                  <Typography variant="body1" sx={classes.menuText}>
                     {label}
                   </Typography>
                 </MenuItem>
@@ -178,10 +178,10 @@ export const Menu: FC<MenuProps> = ({
                   handleClose();
                 }}
                 disableRipple
-                sx={classes.mobileMenuItem}
+                sx={classes.menuItem}
                 key={type}
               >
-                <Typography variant="body1" sx={classes.mobileMenuText}>
+                <Typography variant="body1" sx={classes.menuText}>
                   {label}
                 </Typography>
               </MenuItem>
@@ -190,14 +190,14 @@ export const Menu: FC<MenuProps> = ({
         )}
         {!!user && (
           <Box>
-            <Divider sx={classes.mobileMenuLogOutDivider} />
+            <Divider sx={classes.menuLogOutDivider} />
             <Link href="/logout" passHref style={linkStyle}>
               <MenuItem
                 onClick={handleClose}
                 disableRipple
-                sx={classes.mobileMenuLogOut}
+                sx={classes.menuLogOut}
               >
-                <Logout sx={classes.mobileMenuIcon} />
+                <Logout sx={classes.menuIcon} />
                 Log out
               </MenuItem>
             </Link>
