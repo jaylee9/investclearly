@@ -23,6 +23,8 @@ import getStyles from '../styles';
 import CustomAccordion from '@/components/common/Accordion';
 import { UserInterface } from '@/backend/services/users/interfaces/user.interface';
 import UserAvatar from '@/components/common/UserAvatar';
+import { logout } from '@/actions/auth';
+import { useRouter } from 'next/router';
 
 type MenuClassesProp = SxProps<Theme> | undefined;
 
@@ -72,7 +74,14 @@ export const Menu: FC<MenuProps> = ({
   ...props
 }) => {
   const classes = getStyles({ type: 'dark', isShadow });
+  const router = useRouter();
   const { open, anchorEl } = { ...props };
+  const handleLogout = async () => {
+    const response = await logout();
+    if (!response.isError) {
+      router.push('/login');
+    }
+  };
   return (
     <>
       <MUIMenu
@@ -191,16 +200,14 @@ export const Menu: FC<MenuProps> = ({
         {!!user && (
           <Box>
             <Divider sx={classes.menuLogOutDivider} />
-            <Link href="/logout" passHref style={linkStyle}>
-              <MenuItem
-                onClick={handleClose}
-                disableRipple
-                sx={classes.menuLogOut}
-              >
-                <Logout sx={classes.menuIcon} />
-                Log out
-              </MenuItem>
-            </Link>
+            <MenuItem
+              onClick={handleLogout}
+              disableRipple
+              sx={classes.menuLogOut}
+            >
+              <Logout sx={classes.menuIcon} />
+              Log out
+            </MenuItem>
           </Box>
         )}
       </MUIMenu>
