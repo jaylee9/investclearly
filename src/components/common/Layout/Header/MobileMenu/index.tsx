@@ -152,7 +152,9 @@ export const MobileMenu: FC<MobileMenuProps> = ({
         <Divider />
         <CustomAccordion
           label={'Deals'}
-          expandIcon={<KeyboardArrowDown />}
+          expandIcon={
+            <i className={'icon-Caret-down'} style={classes.arrow}></i>
+          }
           customStyles={classes.dealsCustomAccordion}
         >
           {[...firstColumn, ...secondColumn].map(({ href, value }) => (
