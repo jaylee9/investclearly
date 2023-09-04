@@ -14,7 +14,6 @@ import {
   AnalyticsOutlined,
   BookmarkBorderOutlined,
   ChatBubbleOutlineOutlined,
-  KeyboardArrowDown,
   Logout,
   Menu as MenuIcon,
   SettingsOutlined,
