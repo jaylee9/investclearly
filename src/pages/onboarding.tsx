@@ -1,3 +1,4 @@
+import withPublicRoute from '@/HOC/withPublicRoute';
 import Layout, { LayoutVariant } from '@/components/common/Layout';
 import AccreditedInvestorStep from '@/components/page/Onboarding/AccreditedInvestorStep';
 import InvestmentPreferencesStep from '@/components/page/Onboarding/InvestmentPreferencesStep';
@@ -24,4 +25,4 @@ const Onboarding = () => {
   );
 };
 
-export default Onboarding;
+export default withPublicRoute(Onboarding);
