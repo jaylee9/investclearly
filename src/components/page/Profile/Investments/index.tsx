@@ -161,7 +161,11 @@ const ProfileInvestments = () => {
     <Box>
       <CustomTabs tabs={tabs} onChange={handleChangeTab} value={activeTab} />
       <Box sx={classes.root}>
-        {isLoading && <Loading />}
+        {isLoading && (
+          <Box marginBottom="24px">
+            <Loading />
+          </Box>
+        )}
         {!isLoading && (
           <Box marginBottom="24px">
             <Typography variant="caption" sx={classes.title}>

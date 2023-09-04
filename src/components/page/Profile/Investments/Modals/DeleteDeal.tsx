@@ -3,6 +3,7 @@ import { Box, ModalProps, Typography } from '@mui/material';
 import { useDeleteDealModalStyles } from './styles';
 import Button from '@/components/common/Button';
 import { deleteInvestment } from '@/actions/investments';
+import { useState } from 'react';
 
 interface DeleteDealModal extends Omit<ModalProps, 'children' | 'id'> {
   onSubmitClose: () => void;
@@ -11,12 +12,15 @@ interface DeleteDealModal extends Omit<ModalProps, 'children' | 'id'> {
 
 const DeleteDealModal = ({ onSubmitClose, id, ...props }: DeleteDealModal) => {
   const classes = useDeleteDealModalStyles();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
+    setIsLoading(true);
     const response = await deleteInvestment({ id });
     if (!response.isError) {
       onSubmitClose();
     }
+    setIsLoading(false);
   };
 
   return (
@@ -35,7 +39,7 @@ const DeleteDealModal = ({ onSubmitClose, id, ...props }: DeleteDealModal) => {
           >
             Cancel
           </Button>
-          <Button color="error" onClick={handleDelete}>
+          <Button color="error" onClick={handleDelete} disabled={isLoading}>
             Delete
           </Button>
         </Box>
