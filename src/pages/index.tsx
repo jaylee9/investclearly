@@ -13,6 +13,7 @@ import { DealInterface } from '@/backend/services/deals/interfaces/deal.interfac
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import { getAllSponsors } from '@/actions/sponsors';
 import { GlobalSearchResponse, globalSearch } from '@/actions/common';
+import type { FC } from 'react';
 
 interface HomeProps {
   deals: DealInterface[];
@@ -20,7 +21,7 @@ interface HomeProps {
   searchResponse: GlobalSearchResponse;
 }
 
-const Home = ({ deals, sponsors, searchResponse }: HomeProps) => {
+const Home: FC<HomeProps> = ({ deals, sponsors, searchResponse }) => {
   const classes = useHomeStyles();
   const headerProps = useHeaderProps({
     type: 'light',
@@ -43,7 +44,6 @@ const Home = ({ deals, sponsors, searchResponse }: HomeProps) => {
 Share Your Experience With Other Investors"
           buttonLabel="Write a review"
           buttonHref="/create_review"
-          isMarginBottom={true}
         />
       </Box>
     </Layout>

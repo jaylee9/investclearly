@@ -21,7 +21,7 @@ const HeadBlock = ({ searchResponse }: HeadBlockProps) => {
           confidence.
         </Typography>
       </Box>
-      <GlobalSearch searchResponse={searchResponse} />
+      <GlobalSearch searchResponse={searchResponse} type="light" />
     </Box>
   );
 };

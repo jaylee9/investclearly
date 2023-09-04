@@ -7,6 +7,9 @@ import {
 import Link from 'next/link';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import SponsorCard from '@/components/common/SponsorCard';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
+import Button from '@/components/common/Button';
+import type { FC } from 'react';
 
 const blockInformation = [
   {
@@ -25,12 +28,21 @@ interface TopRatedSponsorsBlockProps {
   sponsors: SponsorInterface[];
 }
 
-const TopRatedSponsorsBlock = ({ sponsors }: TopRatedSponsorsBlockProps) => {
+const TopRatedSponsorsBlock: FC<TopRatedSponsorsBlockProps> = ({
+  sponsors,
+}) => {
   const classes = useTopRatedSponsorsBlockStyles();
+  const { isDesktop, isMobile } = useBreakpoints();
+
+  const gridSize = isDesktop ? 6 : 12;
+  const gridCardSize = isMobile ? 12 : 6;
+
+  const sponsorsFiltered = sponsors.slice(0, isMobile ? 1 : sponsors.length);
+
   return (
     <Box sx={classes.root}>
-      <Grid container spacing={5}>
-        <Grid item xs={6}>
+      <Grid container spacing={5} sx={classes.gridContainer}>
+        <Grid item xs={gridSize} sx={classes.sponsorGridContainer}>
           <Box>
             <Typography variant="caption" sx={blueTitleStyles}>
               TOP RATED SPONSORS
@@ -53,24 +65,41 @@ const TopRatedSponsorsBlock = ({ sponsors }: TopRatedSponsorsBlockProps) => {
                 </Box>
               ))}
             </Box>
-            <Link href="/list?type=sponsors">
-              <Typography variant="body1" sx={viewAllLink} padding="0px 24px">
-                View all sponsors
-              </Typography>
-            </Link>
+            {isDesktop && (
+              <Link href="/list?type=sponsors">
+                <Button variant="secondary">
+                  <Typography
+                    variant="body1"
+                    sx={viewAllLink}
+                    padding="0px 24px"
+                  >
+                    View all sponsors
+                  </Typography>
+                </Button>
+              </Link>
+            )}
           </Box>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={gridSize} sx={classes.sponsorGridContainer}>
           <Box>
             <Grid container spacing={2}>
-              {sponsors.map((item, index) => (
-                <Grid item xs={6} key={index}>
+              {sponsorsFiltered.map((item, index) => (
+                <Grid item xs={gridCardSize} key={index}>
                   <SponsorCard sponsor={item} />
                 </Grid>
               ))}
             </Grid>
           </Box>
         </Grid>
+        {!isDesktop && (
+          <Link href="/list?type=sponsors" style={{ margin: '32px auto 0' }}>
+            <Button variant="secondary">
+              <Typography variant="body1" sx={viewAllLink} padding="0px 24px">
+                View all sponsors
+              </Typography>
+            </Button>
+          </Link>
+        )}
       </Grid>
     </Box>
   );

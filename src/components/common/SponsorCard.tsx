@@ -32,11 +32,11 @@ const SponsorCard = ({
         defaultImage={DEFAULT_SPONSOR_IMAGE}
       />
       <Link href={`/sponsors/${sponsor.id}`}>
-        <Typography variant="h5" fontWeight={600}>
+        <Typography variant="h5" fontWeight={600} noWrap>
           {sponsor.legalName}
         </Typography>
       </Link>
-      <Typography variant="body1">
+      <Typography variant="body1" noWrap>
         {Array.isArray(sponsor.regions)
           ? sponsor.regions.join(', ')
           : sponsor.regions}

@@ -4,19 +4,22 @@ const getStyles = () => {
   return {
     root: {
       background: theme.palette.common.black,
-      padding: '64px 48px 16px',
+      padding: { xs: '64px 16px 16px', lg: '64px 48px 16px' },
       marginTop: 'auto',
     },
     content: {
+      gap: '40px',
       display: 'flex',
+      flexDirection: { xs: 'column', lg: 'row' },
       justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: '80px',
+      alignItems: { xs: 'flex-start', lg: 'center' },
+      marginBottom: { xs: '56px', lg: '96px' },
     },
     linksWrapper: {
+      gap: { xs: '16px', lg: '32px' },
       display: 'flex',
-      gap: '32px',
       color: theme.palette.common.white,
+      flexDirection: { xs: 'column', lg: 'row' },
     },
     rights: {
       textAlign: 'center',

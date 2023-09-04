@@ -7,16 +7,14 @@ interface WriteReviewBlockProps {
   title: string;
   buttonLabel: string;
   buttonHref: string;
-  isMarginBottom?: boolean;
 }
 
 const BannerBlock = ({
   title,
   buttonLabel,
   buttonHref,
-  isMarginBottom = false,
 }: WriteReviewBlockProps) => {
-  const classes = useBannerBlockStyles({ isMarginBottom });
+  const classes = useBannerBlockStyles();
   return (
     <Box sx={classes.root}>
       <Typography variant="h2">{title}</Typography>

@@ -83,7 +83,7 @@ export const useColumnsComponentStyles = () => {
       borderRadius: '12px',
       boxShadow: customShadows.header,
       '& .MuiPaper-root': {
-        '&:first-child': {
+        '&:first-of-type': {
           borderRadius: '100px 100px 0px 0px !important',
         },
       },

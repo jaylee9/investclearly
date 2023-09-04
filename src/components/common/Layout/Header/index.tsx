@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Logo from '@/assets/components/Logo';
 import getStyles from './styles';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import Link from 'next/link';
 import Button from '@/components/common/Button';
-import CustomPopover from '@/components/common/Popover';
 import { TModalHandlers } from '@/types/common';
 import { HeaderProps } from '@/hooks/useHeaderProps';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
@@ -13,8 +12,11 @@ import GlobalSearch, {
 } from '@/components/page/Home/GlobalSearch';
 import escapeStringForHttpParams from '@/helpers/escapeStringForHttpParams';
 import CreateReviewForm from '../../CreateReview';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { MobileMenu } from './MobileMenu';
+import { Menu } from './Menu';
 
-const links: TModalHandlers = [
+export const links: TModalHandlers = [
   { type: 'review', label: 'Write a Review' },
   { type: 'sponsor-profile', label: 'Claim Sponsor Profile' },
 ];
@@ -31,18 +33,16 @@ const Header = ({
   onChangeSearch,
   isSticky,
 }: HeaderProps) => {
-  const [isArrowRotated, setIsArrowRotated] = useState(false);
+  const { isDesktop } = useBreakpoints();
   const [openCreateReviewForm, setOpenCreateReviewForm] = useState(false);
   const classes = getStyles({ type, isShadow });
+
   const handleChangeSearch = (value: string) => {
     if (onChangeSearch) {
       onChangeSearch(value);
     }
   };
 
-  const handleArrowClick = () => {
-    setIsArrowRotated(!isArrowRotated);
-  };
   const assetClassesArray = [
     ...Object.keys(AssetClasses).map(key => {
       const value = AssetClasses[key as keyof typeof AssetClasses];
@@ -64,11 +64,17 @@ const Header = ({
       handleOpenCreateReviewForm();
     }
   };
+
   return (
-    <header
-      style={{
+    <Box
+      component="header"
+      sx={{
         ...classes.root,
-        position: isSticky ? 'sticky' : 'initial',
+        position: isSticky
+          ? 'sticky'
+          : type?.toString().includes('light')
+          ? 'absolute'
+          : 'initial',
         top: 0,
         right: 0,
         width: '100%',
@@ -86,67 +92,24 @@ const Header = ({
         {title && title}
       </Box>
       <Box sx={classes.menu}>
-        {isLinks && (
-          <>
-            <CustomPopover
-              open={isArrowRotated}
-              handleClose={() => setIsArrowRotated(false)}
-              trigger={
-                <p style={classes.link} onClick={handleArrowClick}>
-                  <span>Deals</span>
-                  <i
-                    className={`icon-Caret-down ${
-                      isArrowRotated ? 'rotate' : ''
-                    }`}
-                    style={classes.arrow}
-                  ></i>
-                </p>
-              }
-            >
-              <Box sx={classes.popoverWrapper}>
-                <Box sx={classes.column}>
-                  {firstColumn.map(item => (
-                    <Link
-                      href={item.href}
-                      key={item.value}
-                      style={classes.popoverItem}
-                      onClick={() => setIsArrowRotated(false)}
-                    >
-                      {item.value}
-                    </Link>
-                  ))}
-                </Box>
-                <Box sx={classes.column}>
-                  {secondColumn.map(item => (
-                    <Link
-                      href={item.href}
-                      key={item.value}
-                      onClick={() => setIsArrowRotated(false)}
-                      style={
-                        item.value === 'All Deals'
-                          ? { ...classes.popoverItem, ...classes.dealsLink }
-                          : classes.popoverItem
-                      }
-                    >
-                      {item.value}
-                    </Link>
-                  ))}
-                </Box>
-              </Box>
-            </CustomPopover>
-            {links.map(link => (
-              <Typography
-                variant="body1"
-                key={link.type}
-                sx={classes.link}
-                onClick={() => handleClickLink(link.type)}
-              >
-                {link.label}
-              </Typography>
-            ))}
-          </>
+        {isDesktop && isLinks ? (
+          <Menu
+            type={type}
+            isShadow={isShadow}
+            firstColumn={firstColumn}
+            secondColumn={secondColumn}
+            handleClickLink={handleClickLink}
+          />
+        ) : (
+          <MobileMenu
+            isSignIn={isSignIn}
+            isShadow={isShadow}
+            firstColumn={firstColumn}
+            secondColumn={secondColumn}
+            handleClickLink={handleClickLink}
+          />
         )}
-        {isSignIn && (
+        {isDesktop && isSignIn && (
           <Link href="/sign-up">
             <Button>Log in / Sign up</Button>
           </Link>
@@ -156,7 +119,7 @@ const Header = ({
           onClose={handleCloseCreateReviewForm}
         />
       </Box>
-    </header>
+    </Box>
   );
 };
 
