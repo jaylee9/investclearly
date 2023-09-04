@@ -55,10 +55,6 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
       alignItems: 'center',
       padding: '8px 8px 8px 12px',
     },
-    mobileMenuHeaderAvatar: {
-      width: '36px',
-      height: '36px',
-    },
     mobileMenuHeaderTextWrapper: {
       display: 'flex',
       flexDirection: 'column',
@@ -133,6 +129,9 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
     leftSideWrapper: {
       display: 'flex',
       gap: '32px',
+    },
+    avatarWrapper: {
+      cursor: 'pointer',
     },
   };
 };

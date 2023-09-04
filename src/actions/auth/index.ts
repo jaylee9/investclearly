@@ -37,9 +37,12 @@ export const login = async ({
   email,
 }: LoginFields): Promise<{ isError: boolean }> => {
   try {
-    await api.post('auth/sign-in', {
-      json: { email, password },
-    });
+    const response = await api
+      .post('auth/sign-in', {
+        json: { email, password },
+      })
+      .json();
+    localStorage.setItem('user', JSON.stringify(response));
     return { isError: false };
   } catch (error) {
     return { isError: true };

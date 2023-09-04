@@ -18,7 +18,7 @@ const sections = [
   {
     label: 'Profile Settings',
     icon: 'icon-Settings',
-    href: 'profile-settings',
+    href: 'settings',
   },
 ];
 
