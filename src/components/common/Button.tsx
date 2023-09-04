@@ -27,6 +27,7 @@ const Button = ({
     ...styles.root,
     ...sxCustomStyles,
   };
+
   return (
     <MUIButton
       sx={sxStyles as SxProps<Theme>}
