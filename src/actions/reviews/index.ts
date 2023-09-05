@@ -75,3 +75,12 @@ export const getUserReviews = async ({
     throw error;
   }
 };
+
+export const deleteReview = async ({ id }: { id: number }) => {
+  try {
+    await api.delete(`reviews/${id}`);
+    return { isError: false };
+  } catch (error) {
+    return { isError: true };
+  }
+};

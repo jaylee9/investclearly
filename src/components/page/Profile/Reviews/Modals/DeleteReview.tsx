@@ -1,26 +1,26 @@
 import Modal from '@/components/common/Modal';
 import { Box, ModalProps, Typography } from '@mui/material';
-import { useDeleteDealModalStyles } from './styles';
+import { useDeleteReviewModalStyles } from './styles';
 import Button from '@/components/common/Button';
-import { deleteInvestment } from '@/actions/investments';
 import { useState } from 'react';
+import { deleteReview } from '@/actions/reviews';
 
-interface DeleteDealModalProps extends Omit<ModalProps, 'children' | 'id'> {
+interface DeleteReviewModalProps extends Omit<ModalProps, 'children' | 'id'> {
   onSubmitClose: () => void;
   id: number;
 }
 
-const DeleteDealModal = ({
+const DeleteReviewModal = ({
   onSubmitClose,
   id,
   ...props
-}: DeleteDealModalProps) => {
-  const classes = useDeleteDealModalStyles();
+}: DeleteReviewModalProps) => {
+  const classes = useDeleteReviewModalStyles();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
     setIsLoading(true);
-    const response = await deleteInvestment({ id });
+    const response = await deleteReview({ id });
     if (!response.isError) {
       onSubmitClose();
     }
@@ -31,7 +31,7 @@ const DeleteDealModal = ({
     <Modal showCloseIcon={false} {...props}>
       <Box sx={classes.root}>
         <Typography variant="h3" fontWeight={600}>
-          Delete deal from your profile?
+          Delete review?
         </Typography>
         <Typography variant="body1" sx={classes.subTitle}>
           This action can not be undone.
@@ -43,7 +43,7 @@ const DeleteDealModal = ({
           >
             Cancel
           </Button>
-          <Button color="error" onClick={handleDelete} disabled={isLoading}>
+          <Button onClick={handleDelete} disabled={isLoading}>
             Delete
           </Button>
         </Box>
@@ -52,4 +52,4 @@ const DeleteDealModal = ({
   );
 };
 
-export default DeleteDealModal;
+export default DeleteReviewModal;
