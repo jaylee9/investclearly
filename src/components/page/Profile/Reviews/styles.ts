@@ -4,7 +4,12 @@ const { palette } = theme;
 
 export const useProfileReviewsStyles = () => {
   return {
-    root: {},
+    content: {
+      padding: '24px 0px',
+    },
+    searchInput: {
+      maxWidth: '320px',
+    },
     warning: {
       display: 'flex',
       alignItems: 'center',
@@ -34,6 +39,23 @@ export const useProfileReviewsStyles = () => {
       '& i': {
         fontSize: '24px',
       },
+    },
+    noContentWrapper: {
+      paddingTop: '80px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    noReviewTitle: {
+      fontWeight: 600,
+      marginBottom: '4px',
+    },
+    subTitle: {
+      color: palette.text.secondary,
+      marginBottom: '24px',
+    },
+    writeReviewButton: {
+      minWidth: '240px',
     },
   };
 };
