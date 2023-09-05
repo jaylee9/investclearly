@@ -9,6 +9,7 @@ import { ReviewStatuses } from '@/backend/constants/enums/review-statuses';
 import { UserInterface } from '@/backend/services/users/interfaces/user.interface';
 import ReviewCard from '@/components/common/ReviewCard';
 import { OrderDirectionConstants } from '@/backend/constants/order-direction-constants';
+import DeleteReviewModal from './Modals/DeleteReview';
 
 const ProfileReviews = () => {
   const classes = useProfileReviewsStyles();
@@ -17,6 +18,7 @@ const ProfileReviews = () => {
   const [user, setUser] = useState<UserInterface | null>(null);
   const [pageSize, setPageSize] = useState(3);
   const [paginateLoading, setPaginateLoading] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(0);
 
   const handleShowMore = () => setPageSize(prevPageSize => prevPageSize + 3);
 
@@ -36,7 +38,10 @@ const ProfileReviews = () => {
     }
   );
 
-  const { isLoading: isLoadingOnModerationCountData } = useQuery(
+  const {
+    isLoading: isLoadingOnModerationCountData,
+    refetch: refetchOnModerationCount,
+  } = useQuery(
     ['onModerationReviewsCount'],
     () =>
       getUserReviews({ userId: user?.id, status: ReviewStatuses.onModeration }),
@@ -48,7 +53,7 @@ const ProfileReviews = () => {
     }
   );
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     ['reviews', activeTab, pageSize],
     () => {
       setPaginateLoading(true);
@@ -64,7 +69,14 @@ const ProfileReviews = () => {
       onSuccess: () => setPaginateLoading(false),
     }
   );
-  const unverifiedReviews = data?.reviews.filter(review => !review.isVerified);
+
+  const handleOpenDeleteModal = (value: number) => setOpenDeleteModal(value);
+  const handleCloseDeleteModal = () => setOpenDeleteModal(0);
+  const onDeleteSubmit = () => {
+    refetch().then(() =>
+      refetchOnModerationCount().then(handleCloseDeleteModal)
+    );
+  };
 
   const handleChangeTab = (
     event: SyntheticEvent<Element, Event>,
@@ -91,21 +103,26 @@ const ProfileReviews = () => {
   ) {
     <Loading />;
   }
-  console.log(isLoading);
+
   return (
     <Box sx={classes.root}>
       <CustomTabs value={activeTab} onChange={handleChangeTab} tabs={tabs} />
       <Box sx={classes.reviewsWrapper}>
-        {!!unverifiedReviews?.length &&
-          activeTab === ReviewStatuses.published && (
-            <Typography variant="caption" sx={classes.warning}>
-              <i className="icon-Warning"></i>
-              You have 1 unverified reviews. Please, upload proofs to help us
-              maintain accurate information.
-            </Typography>
-          )}
+        {activeTab === ReviewStatuses.published && (
+          <Typography variant="caption" sx={classes.warning}>
+            <i className="icon-Warning"></i>
+            You have 1 unverified reviews. Please, upload proofs to help us
+            maintain accurate information.
+          </Typography>
+        )}
         {data?.reviews.map(review => (
-          <ReviewCard review={review} key={review.id} />
+          <ReviewCard
+            review={review}
+            key={review.id}
+            showVerifyOption={activeTab === ReviewStatuses.published}
+            isDelete={activeTab === ReviewStatuses.onModeration}
+            onDelete={handleOpenDeleteModal}
+          />
         ))}
         {paginateLoading ? (
           <Loading />
@@ -117,6 +134,12 @@ const ProfileReviews = () => {
             </Typography>
           )
         )}
+        <DeleteReviewModal
+          open={!!openDeleteModal}
+          id={openDeleteModal}
+          onSubmitClose={onDeleteSubmit}
+          onClose={handleCloseDeleteModal}
+        />
       </Box>
     </Box>
   );
