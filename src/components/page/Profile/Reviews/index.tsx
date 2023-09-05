@@ -10,6 +10,10 @@ import { UserInterface } from '@/backend/services/users/interfaces/user.interfac
 import ReviewCard from '@/components/common/ReviewCard';
 import { OrderDirectionConstants } from '@/backend/constants/order-direction-constants';
 import DeleteReviewModal from './Modals/DeleteReview';
+import Input from '@/components/common/Input';
+import { debounce } from 'lodash';
+import Button from '@/components/common/Button';
+import CreateReviewForm from '@/components/common/CreateReview';
 
 const ProfileReviews = () => {
   const classes = useProfileReviewsStyles();
@@ -19,6 +23,15 @@ const ProfileReviews = () => {
   const [pageSize, setPageSize] = useState(3);
   const [paginateLoading, setPaginateLoading] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [openWriteReviewForm, setOpenWriteReviewForm] = useState(false);
+
+  const handleSearch = debounce((value: string) => {
+    setSearchTerm(value);
+  }, 300);
+  const handleClearSearch = () => {
+    setSearchTerm('');
+  };
 
   const handleShowMore = () => setPageSize(prevPageSize => prevPageSize + 3);
 
@@ -31,6 +44,7 @@ const ProfileReviews = () => {
     () =>
       getUserReviews({ userId: user?.id, status: ReviewStatuses.published }),
     {
+      enabled: !!user,
       onSuccess: (data: GetUserReviewsResponse) =>
         setCounters(prevCounters => {
           return { ...prevCounters, published: data.total };
@@ -46,6 +60,7 @@ const ProfileReviews = () => {
     () =>
       getUserReviews({ userId: user?.id, status: ReviewStatuses.onModeration }),
     {
+      enabled: !!user,
       onSuccess: (data: GetUserReviewsResponse) =>
         setCounters(prevCounters => {
           return { ...prevCounters, onModeration: data.total };
@@ -54,7 +69,7 @@ const ProfileReviews = () => {
   );
 
   const { data, isLoading, refetch } = useQuery(
-    ['reviews', activeTab, pageSize],
+    ['reviews', activeTab, pageSize, searchTerm],
     () => {
       setPaginateLoading(true);
       return getUserReviews({
@@ -62,10 +77,11 @@ const ProfileReviews = () => {
         status: activeTab as ReviewStatuses,
         orderDirection: OrderDirectionConstants.DESC,
         pageSize,
+        search: searchTerm,
       });
     },
     {
-      keepPreviousData: true,
+      enabled: !!user,
       onSuccess: () => setPaginateLoading(false),
     }
   );
@@ -75,6 +91,14 @@ const ProfileReviews = () => {
   const onDeleteSubmit = () => {
     refetch().then(() =>
       refetchOnModerationCount().then(handleCloseDeleteModal)
+    );
+  };
+
+  const handleOpenWriteReviewForm = () => setOpenWriteReviewForm(true);
+  const handleCloseWriteReviewForm = () => setOpenWriteReviewForm(false);
+  const onCloseWriteReviewForm = () => {
+    refetch().then(() =>
+      refetchOnModerationCount().then(handleCloseWriteReviewForm)
     );
   };
 
@@ -96,51 +120,88 @@ const ProfileReviews = () => {
       count: counters.onModeration,
     },
   ];
-  if (
-    isLoadingPublishedCountData ||
-    isLoadingOnModerationCountData ||
-    isLoading
-  ) {
-    <Loading />;
+  if (isLoadingPublishedCountData || isLoadingOnModerationCountData || !user) {
+    return <Loading />;
   }
 
   return (
-    <Box sx={classes.root}>
+    <Box>
       <CustomTabs value={activeTab} onChange={handleChangeTab} tabs={tabs} />
-      <Box sx={classes.reviewsWrapper}>
-        {activeTab === ReviewStatuses.published && (
-          <Typography variant="caption" sx={classes.warning}>
-            <i className="icon-Warning"></i>
-            You have 1 unverified reviews. Please, upload proofs to help us
-            maintain accurate information.
+      {!data?.reviews.length && !!user && !isLoading && (
+        <Box sx={classes.noContentWrapper}>
+          <Typography variant="h4" sx={classes.noReviewTitle}>
+            There are no {activeTab === ReviewStatuses.published && 'published'}
+            Reviews
+            {activeTab === ReviewStatuses.onModeration && ' on moderation'} yet
           </Typography>
-        )}
-        {data?.reviews.map(review => (
-          <ReviewCard
-            review={review}
-            key={review.id}
-            showVerifyOption={activeTab === ReviewStatuses.published}
-            isDelete={activeTab === ReviewStatuses.onModeration}
-            onDelete={handleOpenDeleteModal}
+          <Typography variant="body1" sx={classes.subTitle}>
+            All reviews
+            {activeTab === ReviewStatuses.onModeration && ' on moderation'}
+            {activeTab === ReviewStatuses.published && 'you publish'} will be
+            displayed here
+          </Typography>
+          <Button
+            customStyles={classes.writeReviewButton}
+            onClick={handleOpenWriteReviewForm}
+          >
+            Write a review
+          </Button>
+          <CreateReviewForm
+            open={openWriteReviewForm}
+            onClose={onCloseWriteReviewForm}
           />
-        ))}
-        {paginateLoading ? (
-          <Loading />
-        ) : (
-          data &&
-          data?.total > pageSize && (
-            <Typography sx={classes.showMore} onClick={handleShowMore}>
-              Show more reviews <i className="icon-Caret-down"></i>
-            </Typography>
-          )
-        )}
-        <DeleteReviewModal
-          open={!!openDeleteModal}
-          id={openDeleteModal}
-          onSubmitClose={onDeleteSubmit}
-          onClose={handleCloseDeleteModal}
-        />
-      </Box>
+        </Box>
+      )}
+      {!!data?.reviews.length && (
+        <Box sx={classes.content}>
+          <Input
+            variant="filled"
+            isSearch
+            placeholder="Search"
+            customStyles={classes.searchInput}
+            onChange={e => handleSearch(e.target.value)}
+            onClear={handleClearSearch}
+          />
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Box sx={classes.reviewsWrapper}>
+              {activeTab === ReviewStatuses.published && (
+                <Typography variant="caption" sx={classes.warning}>
+                  <i className="icon-Warning"></i>
+                  You have 1 unverified reviews. Please, upload proofs to help
+                  us maintain accurate information.
+                </Typography>
+              )}
+              {data?.reviews.map(review => (
+                <ReviewCard
+                  review={review}
+                  key={review.id}
+                  showVerifyOption={activeTab === ReviewStatuses.published}
+                  isDelete={activeTab === ReviewStatuses.onModeration}
+                  onDelete={handleOpenDeleteModal}
+                />
+              ))}
+              {paginateLoading ? (
+                <Loading />
+              ) : (
+                data &&
+                data?.total > pageSize && (
+                  <Typography sx={classes.showMore} onClick={handleShowMore}>
+                    Show more reviews <i className="icon-Caret-down"></i>
+                  </Typography>
+                )
+              )}
+              <DeleteReviewModal
+                open={!!openDeleteModal}
+                id={openDeleteModal}
+                onSubmitClose={onDeleteSubmit}
+                onClose={handleCloseDeleteModal}
+              />
+            </Box>
+          )}
+        </Box>
+      )}
     </Box>
   );
 };
