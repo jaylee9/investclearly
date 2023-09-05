@@ -25,7 +25,15 @@ export const useProfileReviewsStyles = () => {
       padding: '24px 0px',
     },
     showMore: {
+      cursor: 'pointer',
       color: palette.primary.light,
+      display: 'flex',
+      alignItems: 'center',
+      fontWeight: 600,
+      gap: '8px',
+      '& i': {
+        fontSize: '24px',
+      },
     },
   };
 };
