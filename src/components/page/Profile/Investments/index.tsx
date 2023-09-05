@@ -174,7 +174,19 @@ const ProfileInvestments = () => {
             <Typography variant="h2" sx={classes.totalInvested}>
               ${data?.totalInvested || 0}
             </Typography>
-            {!!data?.deals.length ? (
+            {!data?.deals.length && !searchTerm ? (
+              <Box>
+                <Typography variant="h5" sx={classes.noDealsTitle}>
+                  Deals
+                </Typography>
+                <Typography variant="body1" sx={classes.noDealsSubTitle}>
+                  You have no deals yet. You can add your deals here
+                </Typography>
+                <Link href="/list?type=deals">
+                  <Button>Search for deals</Button>
+                </Link>
+              </Box>
+            ) : (
               <Box>
                 <Box sx={classes.tableWrapperHeader}>
                   <Typography variant="h5">Deals</Typography>
@@ -212,18 +224,6 @@ const ProfileInvestments = () => {
                   onSubmitClose={() => onSubmitClose(ModalTypes.delete)}
                   id={openModals.dealToEdit.id}
                 />
-              </Box>
-            ) : (
-              <Box>
-                <Typography variant="h5" sx={classes.noDealsTitle}>
-                  Deals
-                </Typography>
-                <Typography variant="body1" sx={classes.noDealsSubTitle}>
-                  You have no deals yet. You can add your deals here
-                </Typography>
-                <Link href="/list?type=deals">
-                  <Button>Search for deals</Button>
-                </Link>
               </Box>
             )}
           </Box>
