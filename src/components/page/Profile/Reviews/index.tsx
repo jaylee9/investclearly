@@ -14,14 +14,14 @@ import Input from '@/components/common/Input';
 import { debounce } from 'lodash';
 import Button from '@/components/common/Button';
 import CreateReviewForm from '@/components/common/CreateReview';
+import CustomPagination from '@/components/common/Pagination';
 
 const ProfileReviews = () => {
   const classes = useProfileReviewsStyles();
   const [activeTab, setActiveTab] = useState('published');
   const [counters, setCounters] = useState({ published: 0, onModeration: 0 });
   const [user, setUser] = useState<UserInterface | null>(null);
-  const [pageSize, setPageSize] = useState(3);
-  const [paginateLoading, setPaginateLoading] = useState(false);
+  const [page, setPage] = useState(1);
   const [openDeleteModal, setOpenDeleteModal] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [openWriteReviewForm, setOpenWriteReviewForm] = useState(false);
@@ -32,8 +32,6 @@ const ProfileReviews = () => {
   const handleClearSearch = () => {
     setSearchTerm('');
   };
-
-  const handleShowMore = () => setPageSize(prevPageSize => prevPageSize + 3);
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem('user') as string));
@@ -69,21 +67,20 @@ const ProfileReviews = () => {
   );
 
   const { data, isLoading, refetch } = useQuery(
-    ['reviews', activeTab, pageSize, searchTerm],
+    ['reviews', activeTab, page, searchTerm],
     () => {
-      setPaginateLoading(true);
       return getUserReviews({
         userId: user?.id,
         status: activeTab as ReviewStatuses,
         orderDirection: OrderDirectionConstants.DESC,
-        pageSize,
+        page,
+        pageSize: 10,
         search: searchTerm,
       });
     },
     {
       enabled: !!user,
       keepPreviousData: true,
-      onSuccess: () => setPaginateLoading(false),
     }
   );
 
@@ -121,6 +118,11 @@ const ProfileReviews = () => {
       count: counters.onModeration,
     },
   ];
+
+  const handlePaginate = (value: number) => setPage(value);
+  const firstItem = (page - 1) * 10 + 1;
+  const lastItem = data && page * 10 > data?.total ? data?.total : page * 10;
+
   if (isLoadingPublishedCountData || isLoadingOnModerationCountData || !user) {
     return <Loading />;
   }
@@ -183,16 +185,16 @@ const ProfileReviews = () => {
                   onDelete={handleOpenDeleteModal}
                 />
               ))}
-              {paginateLoading ? (
-                <Loading />
-              ) : (
-                data &&
-                data?.total > pageSize && (
-                  <Typography sx={classes.showMore} onClick={handleShowMore}>
-                    Show more reviews <i className="icon-Caret-down"></i>
-                  </Typography>
-                )
-              )}
+              <Box sx={classes.pagination}>
+                <Typography variant="caption">
+                  Showing {firstItem}-{lastItem} of {data.total} results
+                </Typography>
+                <CustomPagination
+                  page={page}
+                  count={data.lastPage}
+                  onChange={(event, value) => handlePaginate(value)}
+                />
+              </Box>
               <DeleteReviewModal
                 open={!!openDeleteModal}
                 id={openDeleteModal}

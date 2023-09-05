@@ -57,5 +57,15 @@ export const useProfileReviewsStyles = () => {
     writeReviewButton: {
       minWidth: '240px',
     },
+    pagination: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      width: '100%',
+      alignItems: 'center',
+      padding: '8px 0px',
+      '& span': {
+        color: palette.text.secondary,
+      },
+    },
   };
 };
