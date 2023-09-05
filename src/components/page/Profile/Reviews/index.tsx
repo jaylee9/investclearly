@@ -15,9 +15,10 @@ const ProfileReviews = () => {
   const [activeTab, setActiveTab] = useState('published');
   const [counters, setCounters] = useState({ published: 0, onModeration: 0 });
   const [user, setUser] = useState<UserInterface | null>(null);
-  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(3);
+  const [paginateLoading, setPaginateLoading] = useState(false);
 
-  const handleShowMore = () => setPage(prevPage => prevPage + 1);
+  const handleShowMore = () => setPageSize(prevPageSize => prevPageSize + 3);
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem('user') as string));
@@ -48,17 +49,19 @@ const ProfileReviews = () => {
   );
 
   const { data, isLoading } = useQuery(
-    ['reviews', activeTab, page],
-    () =>
-      getUserReviews({
+    ['reviews', activeTab, pageSize],
+    () => {
+      setPaginateLoading(true);
+      return getUserReviews({
         userId: user?.id,
         status: activeTab as ReviewStatuses,
         orderDirection: OrderDirectionConstants.DESC,
-        pageSize: 3,
-        page,
-      }),
+        pageSize,
+      });
+    },
     {
       keepPreviousData: true,
+      onSuccess: () => setPaginateLoading(false),
     }
   );
   const unverifiedReviews = data?.reviews.filter(review => !review.isVerified);
@@ -88,6 +91,7 @@ const ProfileReviews = () => {
   ) {
     <Loading />;
   }
+  console.log(isLoading);
   return (
     <Box sx={classes.root}>
       <CustomTabs value={activeTab} onChange={handleChangeTab} tabs={tabs} />
@@ -103,9 +107,16 @@ const ProfileReviews = () => {
         {data?.reviews.map(review => (
           <ReviewCard review={review} key={review.id} />
         ))}
-        <Typography sx={classes.showMore} onClick={handleShowMore}>
-          Show more reviews <i className="icon-Caret-down"></i>
-        </Typography>
+        {paginateLoading ? (
+          <Loading />
+        ) : (
+          data &&
+          data?.total > pageSize && (
+            <Typography sx={classes.showMore} onClick={handleShowMore}>
+              Show more reviews <i className="icon-Caret-down"></i>
+            </Typography>
+          )
+        )}
       </Box>
     </Box>
   );
