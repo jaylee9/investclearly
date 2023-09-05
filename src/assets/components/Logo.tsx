@@ -15,6 +15,10 @@ interface LogoProps {
 const Logo = ({ variant = LogoVariant.Default }: LogoProps) => {
   const { isLargeDesktop } = useBreakpoints();
   const { palette } = theme;
+
+  const width = isLargeDesktop ? '154' : '112';
+  const height = isLargeDesktop ? '44' : '32';
+
   const leftPartColor =
     variant === LogoVariant.Default || variant === LogoVariant.LightText
       ? palette.primary.light
@@ -28,8 +32,8 @@ const Logo = ({ variant = LogoVariant.Default }: LogoProps) => {
   return (
     <Link href="/" style={{ lineHeight: 0 }}>
       <svg
-        width={isLargeDesktop ? '154' : '112'}
-        height={isLargeDesktop ? '44' : '32'}
+        width={width}
+        height={height}
         viewBox="0 0 140 40"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
