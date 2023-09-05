@@ -58,14 +58,14 @@ export const useGlobalSearchStyles = ({
   isMobileSearchInput?: boolean;
   type?: HeaderType;
 }) => {
+  const rootWidthMobile = isMobileSearchInput ? '100%' : 'max-content';
+  const rootWidth =
+    variant === GlobalSearchVariant.SMALL
+      ? rootWidthMobile
+      : { xs: '100%', lg: 'auto' };
   return {
     root: {
-      width:
-        variant === GlobalSearchVariant.SMALL
-          ? isMobileSearchInput
-            ? '100%'
-            : 'max-content'
-          : { xs: '100%', lg: 'auto' },
+      width: rootWidth,
       maxWidth:
         (type.includes('dark') && { xs: '100%', md: '320px' }) || '100%',
       height:

@@ -42,7 +42,12 @@ const Header = ({
     : GlobalSearchVariant.BASE;
   const [isMobileSearchInput, setIsMobileSearchInput] = useState(false);
   const [openCreateReviewForm, setOpenCreateReviewForm] = useState(false);
-  const classes = getStyles({ type, isShadow, variant: globalSearchVariant });
+  const classes = getStyles({
+    type,
+    isShadow,
+    variant: globalSearchVariant,
+    isSticky,
+  });
   const [user, setUser] = useState<null | UserInterface>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -92,20 +97,7 @@ const Header = ({
   }, []);
 
   return (
-    <Box
-      component="header"
-      sx={{
-        ...classes.root,
-        position: isSticky
-          ? 'sticky'
-          : type?.toString().includes('light')
-          ? 'absolute'
-          : 'initial',
-        top: 0,
-        right: 0,
-        width: '100%',
-      }}
-    >
+    <Box component="header" sx={classes.root}>
       {!!content && content}
       <Box sx={classes.leftSideWrapper}>
         {!isMobileSearchInput && <Logo variant={logoVariant} />}

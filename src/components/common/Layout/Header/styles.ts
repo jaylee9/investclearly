@@ -6,9 +6,20 @@ interface HeaderStylesProps {
   type?: HeaderType;
   isShadow?: boolean;
   variant?: GlobalSearchVariant;
+  isSticky?: boolean;
 }
 
-const getStyles = ({ type = 'dark', isShadow, variant }: HeaderStylesProps) => {
+const getStyles = ({
+  type = 'dark',
+  isShadow,
+  variant,
+  isSticky,
+}: HeaderStylesProps) => {
+  const rootPositionLightVariant = type?.toString().includes('light')
+    ? 'absolute'
+    : 'initial';
+  const rootPosition = isSticky ? 'sticky' : rootPositionLightVariant;
+
   return {
     root: {
       display: 'flex',
@@ -24,6 +35,10 @@ const getStyles = ({ type = 'dark', isShadow, variant }: HeaderStylesProps) => {
       boxShadow: isShadow ? theme.customShadows.header : 'none',
       background: type.includes('search') ? theme.palette.common.white : '',
       zIndex: 1,
+      position: rootPosition,
+      top: 0,
+      right: 0,
+      width: '100%',
     },
     dealsPopover: {
       display: 'flex',
