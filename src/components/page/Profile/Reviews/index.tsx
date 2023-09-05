@@ -19,7 +19,10 @@ import CustomPagination from '@/components/common/Pagination';
 const ProfileReviews = () => {
   const classes = useProfileReviewsStyles();
   const [activeTab, setActiveTab] = useState('published');
-  const [counters, setCounters] = useState({ published: 0, onModeration: 0 });
+  const [counters, setCounters] = useState({
+    published: 0,
+    'on moderation': 0,
+  });
   const [user, setUser] = useState<UserInterface | null>(null);
   const [page, setPage] = useState(1);
   const [openDeleteModal, setOpenDeleteModal] = useState(0);
@@ -61,7 +64,7 @@ const ProfileReviews = () => {
       enabled: !!user,
       onSuccess: (data: GetUserReviewsResponse) =>
         setCounters(prevCounters => {
-          return { ...prevCounters, onModeration: data.total };
+          return { ...prevCounters, 'on moderation': data.total };
         }),
     }
   );
@@ -115,7 +118,7 @@ const ProfileReviews = () => {
     {
       value: 'on moderation',
       label: 'On moderation',
-      count: counters.onModeration,
+      count: counters['on moderation'],
     },
   ];
 
@@ -126,7 +129,6 @@ const ProfileReviews = () => {
   if (isLoadingPublishedCountData || isLoadingOnModerationCountData || !user) {
     return <Loading />;
   }
-  console.log(data);
   return (
     <Box>
       <CustomTabs value={activeTab} onChange={handleChangeTab} tabs={tabs} />
