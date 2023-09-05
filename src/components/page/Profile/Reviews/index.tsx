@@ -126,36 +126,41 @@ const ProfileReviews = () => {
   if (isLoadingPublishedCountData || isLoadingOnModerationCountData || !user) {
     return <Loading />;
   }
-
+  console.log(data);
   return (
     <Box>
       <CustomTabs value={activeTab} onChange={handleChangeTab} tabs={tabs} />
-      {!data?.reviews.length && !!user && !isLoading && (
-        <Box sx={classes.noContentWrapper}>
-          <Typography variant="h4" sx={classes.noReviewTitle}>
-            There are no {activeTab === ReviewStatuses.published && 'published'}
-            Reviews
-            {activeTab === ReviewStatuses.onModeration && ' on moderation'} yet
-          </Typography>
-          <Typography variant="body1" sx={classes.subTitle}>
-            All reviews
-            {activeTab === ReviewStatuses.onModeration && ' on moderation'}
-            {activeTab === ReviewStatuses.published && 'you publish'} will be
-            displayed here
-          </Typography>
-          <Button
-            customStyles={classes.writeReviewButton}
-            onClick={handleOpenWriteReviewForm}
-          >
-            Write a review
-          </Button>
-          <CreateReviewForm
-            open={openWriteReviewForm}
-            onClose={onCloseWriteReviewForm}
-          />
-        </Box>
-      )}
-      {!!data?.reviews.length && (
+      {!counters[activeTab as keyof typeof counters] &&
+        !!user &&
+        !isLoading && (
+          <Box sx={classes.noContentWrapper}>
+            <Typography variant="h4" sx={classes.noReviewTitle}>
+              There are no{' '}
+              {activeTab === ReviewStatuses.published && 'published '}
+              Reviews
+              {activeTab === ReviewStatuses.onModeration &&
+                ' on moderation'}{' '}
+              yet
+            </Typography>
+            <Typography variant="body1" sx={classes.subTitle}>
+              All reviews
+              {activeTab === ReviewStatuses.onModeration && ' on moderation'}
+              {activeTab === ReviewStatuses.published && 'you publish'} will be
+              displayed here
+            </Typography>
+            <Button
+              customStyles={classes.writeReviewButton}
+              onClick={handleOpenWriteReviewForm}
+            >
+              Write a review
+            </Button>
+            <CreateReviewForm
+              open={openWriteReviewForm}
+              onClose={onCloseWriteReviewForm}
+            />
+          </Box>
+        )}
+      {!!counters[activeTab as keyof typeof counters] && data && (
         <Box sx={classes.content}>
           <Input
             variant="filled"
