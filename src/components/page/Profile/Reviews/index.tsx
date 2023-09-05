@@ -82,6 +82,7 @@ const ProfileReviews = () => {
     },
     {
       enabled: !!user,
+      keepPreviousData: true,
       onSuccess: () => setPaginateLoading(false),
     }
   );
