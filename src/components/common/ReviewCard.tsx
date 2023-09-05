@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { Box, Rating, Typography } from '@mui/material';
 import { useReviewCardStyles } from './styles';
 import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.interface';
@@ -5,13 +6,55 @@ import formatDate from '@/helpers/formatDate';
 import StarIcon from './StarIcon';
 import Link from 'next/link';
 import UserAvatar from './UserAvatar';
+import Button from './Button';
 
 interface ReviewCardProps {
   review: ReviewInterface;
+  isDelete?: boolean;
+  onDelete?: (value: number) => void;
+  showVerifyOption?: boolean;
+  onVerify?: () => void;
 }
 
-const ReviewCard = ({ review }: ReviewCardProps) => {
-  const classes = useReviewCardStyles();
+const ReviewCard = ({
+  review,
+  isDelete = false,
+  onDelete,
+  showVerifyOption = false,
+  onVerify,
+}: ReviewCardProps) => {
+  const [isExtended, setIsExtended] = useState(false);
+  const classes = useReviewCardStyles({ isExtended });
+  const [isTruncated, setIsTruncated] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const toggleExpand = () => {
+    setIsExtended(prevState => !prevState);
+  };
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const element = contentRef.current;
+      if (element.scrollHeight > element.clientHeight) {
+        setIsTruncated(true);
+      } else {
+        setIsTruncated(false);
+      }
+    }
+  }, [review]);
+
+  const handleDelete = (value: number) => {
+    if (onDelete) {
+      onDelete(value);
+    }
+  };
+
+  const handleVerify = () => {
+    if (onVerify) {
+      onVerify();
+    }
+  };
+
   return (
     <Box sx={classes.root}>
       <Box sx={classes.reviewHeader}>
@@ -59,14 +102,37 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
       <Typography variant="h4" fontWeight={600} marginBottom="16px">
         “{review.title}”
       </Typography>
-      <Typography variant="body1" sx={classes.fullComment}>
+      <Typography variant="body1" sx={classes.fullComment} ref={contentRef}>
         {review.overallComment}
       </Typography>
-      <Link href={`/reviews/${review.id}`}>
-        <Typography variant="body1" sx={classes.readFullLink}>
-          Read full review
+      {isTruncated && (
+        <Typography
+          variant="body1"
+          sx={classes.readFullLink}
+          onClick={toggleExpand}
+        >
+          {isExtended ? 'Hide' : 'Read'} full review
         </Typography>
-      </Link>
+      )}
+      {(isDelete || showVerifyOption) && (
+        <Box sx={classes.optionalButtonWrapper}>
+          {isDelete && (
+            <Button
+              color="error"
+              variant="secondary"
+              onClick={() => handleDelete(review.id)}
+            >
+              <i className="icon-Delete" style={classes.deleteIcon}></i>
+              Delete
+            </Button>
+          )}
+          {showVerifyOption && !review.isVerified && (
+            <Button variant="secondary" onClick={handleVerify}>
+              Verify review
+            </Button>
+          )}
+        </Box>
+      )}
     </Box>
   );
 };
