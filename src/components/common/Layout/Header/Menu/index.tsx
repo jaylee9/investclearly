@@ -103,16 +103,16 @@ export const Menu: FC<MenuProps> = ({
           <Box>
             <Box sx={classes.menuHeader}>
               <UserAvatar
-                src={user.profilePicture}
+                src={user?.profilePicture}
                 width={36}
                 height={36}
-                name={`${user.firstName} ${user.lastName}`}
+                name={`${user?.firstName} ${user?.lastName}`}
               />
               <Box sx={classes.menuHeaderTextWrapper}>
                 <Typography variant="body1">
-                  {user.firstName} {user.lastName}
+                  {user?.firstName} {user?.lastName}
                 </Typography>
-                <Typography variant="caption">{user.email}</Typography>
+                <Typography variant="caption">{user?.email}</Typography>
               </Box>
             </Box>
             <Divider />

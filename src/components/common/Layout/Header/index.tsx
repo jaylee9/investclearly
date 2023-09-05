@@ -9,7 +9,7 @@ import { HeaderProps } from '@/hooks/useHeaderProps';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import GlobalSearch, {
   GlobalSearchVariant,
-} from '@/components/page/Home/GlobalSearch';
+} from '@/components/page/Home/GlobalSearch/GlobalSearch';
 import escapeStringForHttpParams from '@/helpers/escapeStringForHttpParams';
 import CreateReviewForm from '../../CreateReview';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
@@ -36,9 +36,13 @@ const Header = ({
   onChangeSearch,
   isSticky,
 }: HeaderProps) => {
-  const { isDesktop } = useBreakpoints();
-  const classes = getStyles({ type, isShadow });
+  const { isDesktop, isMobile } = useBreakpoints();
+  const globalSearchVariant = isMobile
+    ? GlobalSearchVariant.SMALL
+    : GlobalSearchVariant.BASE;
+  const [isMobileSearchInput, setIsMobileSearchInput] = useState(false);
   const [openCreateReviewForm, setOpenCreateReviewForm] = useState(false);
+  const classes = getStyles({ type, isShadow, variant: globalSearchVariant });
   const [user, setUser] = useState<null | UserInterface>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -104,68 +108,73 @@ const Header = ({
     >
       {!!content && content}
       <Box sx={classes.leftSideWrapper}>
-        <Logo variant={logoVariant} />
+        {!isMobileSearchInput && <Logo variant={logoVariant} />}
         {isSearch && (
           <GlobalSearch
-            variant={GlobalSearchVariant.BASE}
+            type={type}
+            variant={globalSearchVariant}
             onChangeSearch={handleChangeSearch}
+            isMobileSearchInput={isMobileSearchInput}
+            setIsMobileSearchInput={setIsMobileSearchInput}
           />
         )}
         {title && title}
       </Box>
-      <Box sx={classes.dealsPopover}>
-        {isDesktop && isLinks && (
-          <DealsPopover
-            type={type}
+      {!isMobileSearchInput && (
+        <Box sx={classes.dealsPopover}>
+          {isDesktop && isLinks && (
+            <DealsPopover
+              type={type}
+              isShadow={isShadow}
+              firstColumn={firstColumn}
+              secondColumn={secondColumn}
+              handleClickLink={handleClickLink}
+            />
+          )}
+          {isDesktop ? (
+            <>
+              {isSignIn && user ? (
+                <Box sx={classes.avatarWrapper} onClick={handleOpenMenu}>
+                  <UserAvatar
+                    src={user.profilePicture as string}
+                    width={44}
+                    height={44}
+                    name={`${user.firstName} ${user.lastName}`}
+                  />
+                </Box>
+              ) : (
+                <Link href="/sign-up">
+                  <Button>Log in / Sign up</Button>
+                </Link>
+              )}
+            </>
+          ) : (
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={handleOpenMenu}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          <Menu
             isShadow={isShadow}
             firstColumn={firstColumn}
             secondColumn={secondColumn}
             handleClickLink={handleClickLink}
+            user={user}
+            isDesktop={isDesktop}
+            anchorEl={anchorEl}
+            handleClose={handleCloseMenu}
+            open={openMenu}
           />
-        )}
-        {isDesktop ? (
-          <>
-            {isSignIn && user ? (
-              <Box sx={classes.avatarWrapper} onClick={handleOpenMenu}>
-                <UserAvatar
-                  src={user.profilePicture as string}
-                  width={44}
-                  height={44}
-                  name={`${user.firstName} ${user.lastName}`}
-                />
-              </Box>
-            ) : (
-              <Link href="/sign-up">
-                <Button>Log in / Sign up</Button>
-              </Link>
-            )}
-          </>
-        ) : (
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={handleOpenMenu}
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
-        <Menu
-          isShadow={isShadow}
-          firstColumn={firstColumn}
-          secondColumn={secondColumn}
-          handleClickLink={handleClickLink}
-          user={user}
-          isDesktop={isDesktop}
-          anchorEl={anchorEl}
-          handleClose={handleCloseMenu}
-          open={openMenu}
-        />
-        <CreateReviewForm
-          open={openCreateReviewForm}
-          onClose={handleCloseCreateReviewForm}
-        />
-      </Box>
+          <CreateReviewForm
+            open={openCreateReviewForm}
+            onClose={handleCloseCreateReviewForm}
+          />
+        </Box>
+      )}
     </Box>
   );
 };

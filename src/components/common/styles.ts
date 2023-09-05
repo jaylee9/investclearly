@@ -116,13 +116,14 @@ export const useCheckboxStyles = ({ error }: UseCheckboxProps) => {
 
 interface UseButtonStylesProps {
   color: 'primary' | 'error';
-  variant: 'main' | 'secondary' | 'tertiary' | 'white' | 'auth';
+  variant: 'main' | 'secondary' | 'tertiary' | 'white' | 'auth' | 'dark';
 }
 
 const disabledButtonBackground = {
   main: palette.text.disabled,
   secondary: palette.background.default,
   tertiary: 'transparent',
+  dark: 'transparent',
   white: palette.common.white,
   auth: 'transparent',
 };
@@ -130,6 +131,7 @@ const disabledButtonColor = {
   main: palette.common.white,
   secondary: palette.text.disabled,
   tertiary: palette.text.disabled,
+  dark: palette.text.disabled,
   white: palette.common.white,
   auth: palette.text.disabled,
 };
@@ -166,6 +168,17 @@ export const useButtonStyles = ({ color, variant }: UseButtonStylesProps) => {
       },
       '&:active': {
         color: palette[color].main,
+      },
+    },
+    dark: {
+      background: 'transparent',
+      color: palette['text'].secondary,
+      '&:hover': {
+        background: 'transparent',
+        color: palette['text'].primary,
+      },
+      '&:active': {
+        color: palette['text'].disabled,
       },
     },
     white: {
@@ -401,7 +414,7 @@ export const useAccordionStyles = ({
       borderBottom,
       margin: '0px !important',
       '& .MuiButtonBase-root': {
-        '&:first-child': {
+        '&:first-of-type': {
           minHeight: 0,
         },
       },

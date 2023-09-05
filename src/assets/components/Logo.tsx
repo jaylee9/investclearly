@@ -1,4 +1,5 @@
 import theme from '@/config/theme';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { Link } from '@mui/material';
 
 export enum LogoVariant {
@@ -12,6 +13,7 @@ interface LogoProps {
 }
 
 const Logo = ({ variant = LogoVariant.Default }: LogoProps) => {
+  const { isLargeDesktop } = useBreakpoints();
   const { palette } = theme;
   const leftPartColor =
     variant === LogoVariant.Default || variant === LogoVariant.LightText
@@ -24,10 +26,10 @@ const Logo = ({ variant = LogoVariant.Default }: LogoProps) => {
       : palette.common.white;
 
   return (
-    <Link href="/">
+    <Link href="/" style={{ lineHeight: 0 }}>
       <svg
-        width="140"
-        height="40"
+        width={isLargeDesktop ? '154' : '112'}
+        height={isLargeDesktop ? '44' : '32'}
         viewBox="0 0 140 40"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

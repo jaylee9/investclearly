@@ -1,12 +1,14 @@
+import { GlobalSearchVariant } from '@/components/page/Home/GlobalSearch/GlobalSearch';
 import theme from '@/config/theme';
 import { HeaderType } from '@/hooks/useHeaderProps';
 
 interface HeaderStylesProps {
   type?: HeaderType;
   isShadow?: boolean;
+  variant?: GlobalSearchVariant;
 }
 
-const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
+const getStyles = ({ type = 'dark', isShadow, variant }: HeaderStylesProps) => {
   return {
     root: {
       display: 'flex',
@@ -129,6 +131,11 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
     leftSideWrapper: {
       display: 'flex',
       gap: '32px',
+      height: '44px',
+      alignItems: 'center',
+      width: variant === GlobalSearchVariant.SMALL ? '100%' : 'auto',
+      justifyContent:
+        variant === GlobalSearchVariant.SMALL ? 'space-between' : 'flex-start',
     },
     avatarWrapper: {
       cursor: 'pointer',

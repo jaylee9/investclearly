@@ -1,7 +1,5 @@
-import React, { useRef, useState } from 'react';
-import Input from '@/components/common/Input';
-import Button from '@/components/common/Button';
-import { useGlobalSearchStyles } from './styles';
+import React, { useEffect, useRef, useState } from 'react';
+import { useGlobalSearchStyles } from '../styles';
 import { Box, Fade, Typography } from '@mui/material';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
 import Link from 'next/link';
@@ -11,12 +9,12 @@ import { debounce } from 'lodash';
 import Loading from '@/components/common/Loading';
 import { useRouter } from 'next/router';
 import PlaceholderImage from '@/components/common/PlaceholderImage';
-import { useBreakpoints } from '@/hooks/useBreakpoints';
-import { Search } from '@mui/icons-material';
-import { HeaderType } from '../../../hooks/useHeaderProps';
+import { GlobalSearchInput } from './GlobalSearchInput';
+import { HeaderType } from '../../../../hooks/useHeaderProps';
 
 export enum GlobalSearchVariant {
   BASE = 'base',
+  SMALL = 'sm',
   LARGE = 'lg',
 }
 interface GlobalSearchProps {
@@ -24,6 +22,8 @@ interface GlobalSearchProps {
   searchResponse?: GlobalSearchResponse;
   variant?: GlobalSearchVariant;
   onChangeSearch?: (value: string) => void;
+  isMobileSearchInput?: boolean;
+  setIsMobileSearchInput?: (value: boolean) => void;
 }
 
 const GlobalSearch = ({
@@ -31,10 +31,16 @@ const GlobalSearch = ({
   searchResponse,
   variant = GlobalSearchVariant.LARGE,
   onChangeSearch,
+  isMobileSearchInput = false,
+  setIsMobileSearchInput,
 }: GlobalSearchProps) => {
   const router = useRouter();
   const { search, type: queryType } = router.query;
-  const classes = useGlobalSearchStyles({ type });
+  const classes = useGlobalSearchStyles({
+    type,
+    variant,
+    isMobileSearchInput,
+  });
   const [isOpenGlobalSearch, setIsOpenGlobalSearch] = useState(false);
   const [value, setValue] = useState(search || '');
   const [globalSearchValue, setGlobalSearchValue] = useState(
@@ -44,7 +50,6 @@ const GlobalSearch = ({
     searchResponse as GlobalSearchResponse
   );
   const ref = useRef(null);
-  const { isMobile } = useBreakpoints();
 
   const handleOpen = () => {
     setIsOpenGlobalSearch(true);
@@ -90,9 +95,9 @@ const GlobalSearch = ({
     }
   );
 
-  const searchType = data?.sponsors?.length
-    ? queryType === 'sponsors' && 'sponsors'
-    : 'deals';
+  const hasSponsors = data?.sponsors?.length;
+  const searchType =
+    hasSponsors && queryType === 'sponsors' ? 'sponsors' : 'deals';
 
   const searchLink = `/list?type=${
     searchType || 'sponsors'
@@ -126,59 +131,32 @@ const GlobalSearch = ({
 
   useOnClickOutside(ref, handleClose);
 
+  const mobileSearchInputHandler = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsMobileSearchInput && setIsMobileSearchInput(!isMobileSearchInput);
+    setIsOpenGlobalSearch(false);
+  };
+
+  useEffect(() => {
+    if (variant !== GlobalSearchVariant.SMALL) {
+      setIsMobileSearchInput && setIsMobileSearchInput(false);
+    }
+    setIsOpenGlobalSearch(false);
+  }, [setIsMobileSearchInput, variant]);
+
   return (
     <Box ref={ref} onClick={handleOpen} sx={classes.root}>
-      <Box sx={classes.searchInputWrapper}>
-        {variant === GlobalSearchVariant.LARGE && (
-          <Input
-            variant="filled"
-            isFilledWhite
-            isSearch
-            showClearOption={false}
-            placeholder="Deals, Sponsors, and Asset Class"
-            sxCustomStyles={classes.searchInput}
-            height="large"
-            onKeyDown={handleKeyDown}
-            autoComplete="off"
-            endComponent={
-              isMobile ? (
-                <Link href={searchLink}>
-                  <Button sxCustomStyles={classes.searchButton}>
-                    <Search />
-                  </Button>
-                </Link>
-              ) : (
-                <Link href={searchLink}>
-                  <Button
-                    customStyles={{
-                      boxSizing: 'border-box',
-                      padding: '12px 40px !important',
-                      height: '48px !important',
-                    }}
-                  >
-                    Search
-                  </Button>
-                </Link>
-              )
-            }
-            onChange={handleChange}
-          />
-        )}
-        {variant === GlobalSearchVariant.BASE && (
-          <Input
-            isSearch
-            showClearOption
-            placeholder="Search"
-            variant="filled"
-            onChange={handleChangeValue}
-            onClear={handleClearInput}
-            value={value}
-            customStyles={classes.baseSearchInput}
-            onKeyDown={handleKeyDown}
-            autoComplete="off"
-          />
-        )}
-      </Box>
+      <GlobalSearchInput
+        variant={variant}
+        handleKeyDown={handleKeyDown}
+        searchLink={searchLink}
+        handleChange={handleChange}
+        isMobileSearchInput={isMobileSearchInput}
+        handleChangeValue={handleChangeValue}
+        handleClearInput={handleClearInput}
+        value={value}
+        mobileSearchInputHandler={mobileSearchInputHandler}
+      />
       {isOpenGlobalSearch && (
         <Fade in={isOpenGlobalSearch}>
           <Box sx={classes.searchContent}>
