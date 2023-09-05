@@ -5,6 +5,7 @@ import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import clsx from 'clsx';
 import ProfileInvestments from '@/components/page/Profile/Investments';
+import withPrivateRoute from '@/HOC/withPrivateRoute';
 
 const sections = [
   {
@@ -18,7 +19,7 @@ const sections = [
   {
     label: 'Profile Settings',
     icon: 'icon-Settings',
-    href: 'profile-settings',
+    href: 'settings',
   },
 ];
 
@@ -73,4 +74,4 @@ const UserProfilePage = () => {
   );
 };
 
-export default UserProfilePage;
+export default withPrivateRoute(UserProfilePage);

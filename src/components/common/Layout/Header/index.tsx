@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Logo from '@/assets/components/Logo';
 import getStyles from './styles';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import Link from 'next/link';
 import Button from '@/components/common/Button';
 import { TModalHandlers } from '@/types/common';
@@ -13,8 +13,11 @@ import GlobalSearch, {
 import escapeStringForHttpParams from '@/helpers/escapeStringForHttpParams';
 import CreateReviewForm from '../../CreateReview';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import { MobileMenu } from './MobileMenu';
 import { Menu } from './Menu';
+import { DealsPopover } from './DealsPopover';
+import { UserInterface } from '@/backend/services/users/interfaces/user.interface';
+import UserAvatar from '../../UserAvatar';
+import { Menu as MenuIcon } from '@mui/icons-material';
 
 export const links: TModalHandlers = [
   { type: 'review', label: 'Write a Review' },
@@ -34,8 +37,20 @@ const Header = ({
   isSticky,
 }: HeaderProps) => {
   const { isDesktop } = useBreakpoints();
-  const [openCreateReviewForm, setOpenCreateReviewForm] = useState(false);
   const classes = getStyles({ type, isShadow });
+  const [openCreateReviewForm, setOpenCreateReviewForm] = useState(false);
+  const [user, setUser] = useState<null | UserInterface>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const openMenu = Boolean(anchorEl);
+
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
 
   const handleChangeSearch = (value: string) => {
     if (onChangeSearch) {
@@ -65,6 +80,13 @@ const Header = ({
     }
   };
 
+  useEffect(() => {
+    const userData: UserInterface = JSON.parse(
+      localStorage.getItem('user') || 'null'
+    );
+    setUser(userData);
+  }, []);
+
   return (
     <Box
       component="header"
@@ -91,29 +113,54 @@ const Header = ({
         )}
         {title && title}
       </Box>
-      <Box sx={classes.menu}>
-        {isDesktop && isLinks ? (
-          <Menu
+      <Box sx={classes.dealsPopover}>
+        {isDesktop && isLinks && (
+          <DealsPopover
             type={type}
             isShadow={isShadow}
             firstColumn={firstColumn}
             secondColumn={secondColumn}
             handleClickLink={handleClickLink}
           />
+        )}
+        {isDesktop ? (
+          <>
+            {isSignIn && user ? (
+              <Box sx={classes.avatarWrapper} onClick={handleOpenMenu}>
+                <UserAvatar
+                  src={user.profilePicture as string}
+                  width={44}
+                  height={44}
+                  name={`${user.firstName} ${user.lastName}`}
+                />
+              </Box>
+            ) : (
+              <Link href="/sign-up">
+                <Button>Log in / Sign up</Button>
+              </Link>
+            )}
+          </>
         ) : (
-          <MobileMenu
-            isSignIn={isSignIn}
-            isShadow={isShadow}
-            firstColumn={firstColumn}
-            secondColumn={secondColumn}
-            handleClickLink={handleClickLink}
-          />
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={handleOpenMenu}
+          >
+            <MenuIcon />
+          </IconButton>
         )}
-        {isDesktop && isSignIn && (
-          <Link href="/sign-up">
-            <Button>Log in / Sign up</Button>
-          </Link>
-        )}
+        <Menu
+          isShadow={isShadow}
+          firstColumn={firstColumn}
+          secondColumn={secondColumn}
+          handleClickLink={handleClickLink}
+          user={user}
+          isDesktop={isDesktop}
+          anchorEl={anchorEl}
+          handleClose={handleCloseMenu}
+          open={openMenu}
+        />
         <CreateReviewForm
           open={openCreateReviewForm}
           onClose={handleCloseCreateReviewForm}

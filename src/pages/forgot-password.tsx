@@ -8,6 +8,7 @@ import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import Link from 'next/link';
 import { forgotPassword } from '@/actions/auth';
+import withPublicRoute from '@/HOC/withPublicRoute';
 
 const validationSchema = z.object({
   email: z.string().email({ message: 'Email must be a valid email' }),
@@ -59,4 +60,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default withPublicRoute(ForgotPassword);

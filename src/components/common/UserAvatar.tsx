@@ -13,7 +13,13 @@ interface UserAvatarProps {
 const UserAvatar = ({ src, name, width, height }: UserAvatarProps) => {
   const classes = useUserAvatarStyles();
   return src ? (
-    <Image src={src} width={width} height={height} alt="user avatar" />
+    <Image
+      src={src}
+      width={width}
+      height={height}
+      alt="user avatar"
+      style={{ borderRadius: '1230px' }}
+    />
   ) : (
     <Box sx={{ ...classes.root, width, height }}>
       <Typography variant="body1">{getInitials(name)}</Typography>

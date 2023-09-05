@@ -37,9 +37,12 @@ export const login = async ({
   email,
 }: LoginFields): Promise<{ isError: boolean }> => {
   try {
-    await api.post('auth/sign-in', {
-      json: { email, password },
-    });
+    const response = await api
+      .post('auth/sign-in', {
+        json: { email, password },
+      })
+      .json();
+    localStorage.setItem('user', JSON.stringify(response));
     return { isError: false };
   } catch (error) {
     return { isError: true };
@@ -84,9 +87,22 @@ export const googleLogin = async ({
   token: string;
 }): Promise<{ isError: boolean }> => {
   try {
-    await api.post('auth/google', {
-      json: { token },
-    });
+    const response = await api
+      .post('auth/google', {
+        json: { token },
+      })
+      .json();
+    localStorage.setItem('user', JSON.stringify(response));
+    return { isError: false };
+  } catch (error) {
+    return { isError: true };
+  }
+};
+
+export const logout = async (): Promise<{ isError: boolean }> => {
+  try {
+    await api.post('auth/sign-out');
+    localStorage.removeItem('user');
     return { isError: false };
   } catch (error) {
     return { isError: true };

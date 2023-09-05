@@ -23,7 +23,7 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
       background: type.includes('search') ? theme.palette.common.white : '',
       zIndex: 1,
     },
-    menu: {
+    dealsPopover: {
       display: 'flex',
       gap: '24px',
       color:
@@ -33,7 +33,7 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
       fontSize: theme.typography.body1,
       alignItems: 'center',
     },
-    mobileMenu: {
+    menu: {
       '& .MuiPaper-root': {
         borderRadius: '12px',
       },
@@ -49,37 +49,33 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
         gap: '4px',
       },
     },
-    mobileMenuHeader: {
+    menuHeader: {
       gap: '8px',
       display: 'flex',
       alignItems: 'center',
       padding: '8px 8px 8px 12px',
     },
-    mobileMenuHeaderAvatar: {
-      width: '36px',
-      height: '36px',
-    },
-    mobileMenuHeaderTextWrapper: {
+    menuHeaderTextWrapper: {
       display: 'flex',
       flexDirection: 'column',
     },
-    mobileMenuIcon: {
+    menuIcon: {
       marginRight: '12px',
     },
-    mobileMenuText: {
+    menuText: {
       fontWeight: 600,
     },
-    mobileMenuProfileItem: {
+    menuProfileItem: {
       padding: '8px',
     },
-    mobileMenuItem: {
+    menuItem: {
       padding: '8px 12px',
     },
-    mobileMenuLogOutDivider: {
+    menuLogOutDivider: {
       marginTop: '0 !important',
       marginBottom: '0 !important',
     },
-    mobileMenuLogOut: {
+    menuLogOut: {
       color: theme.palette.primary.light,
       padding: '16px 24px',
     },
@@ -102,7 +98,7 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
       display: 'flex',
       width: '500px',
     },
-    mobileMenuPopoverWrapper: {
+    menuPopoverWrapper: {
       display: 'flex',
       flexDirection: 'column',
       width: '500px',
@@ -133,6 +129,9 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
     leftSideWrapper: {
       display: 'flex',
       gap: '32px',
+    },
+    avatarWrapper: {
+      cursor: 'pointer',
     },
   };
 };
