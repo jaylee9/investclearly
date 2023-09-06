@@ -21,6 +21,6 @@ export const globalSearch = async ({
     return response;
   } catch (error) {
     console.error(error);
-    return { error: 'Failed to fetch global search' };
+    return { error: 'Failed to fetch data for global search' };
   }
 };
