@@ -4,6 +4,7 @@ import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.in
 import { TPaginationInfo } from '@/backend/utils/pagination/paginate-info.type';
 import api from '@/config/ky';
 import queryString from 'query-string';
+import { toast } from 'react-toastify';
 
 export type OptionalCreateReviewInterface = Partial<CreateReviewInterface>;
 
@@ -14,7 +15,7 @@ export interface CreateReviewPayloadInterface
 
 export const createReview = async (
   payload: CreateReviewPayloadInterface
-): Promise<ReviewInterface> => {
+): Promise<ReviewInterface | { error: string }> => {
   const formData = new FormData();
 
   for (const key in payload) {
@@ -40,8 +41,9 @@ export const createReview = async (
     });
     return response.json();
   } catch (error) {
-    console.error('Error create review', error);
-    throw error;
+    const errorMessage = 'Failed to create review';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
 
@@ -57,7 +59,9 @@ export const getUserReviews = async ({
   status,
   search,
   userId,
-}: FindAllReviewsInterface) => {
+}: FindAllReviewsInterface): Promise<
+  GetUserReviewsResponse | { error: string }
+> => {
   try {
     const stringifiedParameters = queryString.stringify(
       { page, pageSize, orderDirection, status, search, userId },
@@ -72,17 +76,26 @@ export const getUserReviews = async ({
       .json();
     return response;
   } catch (error) {
-    console.error('Error fetching reviews', error);
-    throw error;
+    const errorMessage = 'Failed to fetch reviews';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
 
-export const deleteReview = async ({ id }: { id: number }) => {
+export const deleteReview = async ({
+  id,
+}: {
+  id: number;
+}): Promise<{ message: string } | { error: string }> => {
   try {
-    await api.delete(`reviews/${id}`);
-    return { isError: false };
+    const response: { message: string } = await api
+      .delete(`reviews/${id}`)
+      .json();
+    return response;
   } catch (error) {
-    return { isError: true };
+    const errorMessage = 'Failed to delete reviews';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
 

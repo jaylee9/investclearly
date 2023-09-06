@@ -21,7 +21,7 @@ const DeleteReviewModal = ({
   const handleDelete = async () => {
     setIsLoading(true);
     const response = await deleteReview({ id });
-    if (!response.isError) {
+    if (!('error' in response)) {
       onSubmitClose();
     }
     setIsLoading(false);
