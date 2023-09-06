@@ -47,6 +47,7 @@ export const createReview = async (
 
 export interface GetUserReviewsResponse extends TPaginationInfo {
   reviews: ReviewInterface[];
+  totalUnverifiedReviews: number;
 }
 
 export const getUserReviews = async ({

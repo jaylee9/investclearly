@@ -108,6 +108,7 @@ const ProfileReviews = () => {
     newValue: string | number
   ) => {
     setActiveTab(newValue as string);
+    setPage(1);
   };
   const tabs = [
     {
@@ -176,13 +177,15 @@ const ProfileReviews = () => {
             <Loading />
           ) : (
             <Box sx={classes.reviewsWrapper}>
-              {activeTab === ReviewStatuses.published && (
-                <Typography variant="caption" sx={classes.warning}>
-                  <i className="icon-Warning"></i>
-                  You have 1 unverified reviews. Please, upload proofs to help
-                  us maintain accurate information.
-                </Typography>
-              )}
+              {activeTab === ReviewStatuses.published &&
+                !!data.totalUnverifiedReviews && (
+                  <Typography variant="caption" sx={classes.warning}>
+                    <i className="icon-Warning"></i>
+                    You have {data.totalUnverifiedReviews} unverified review
+                    {data.totalUnverifiedReviews > 1 && 's'}. Please, upload
+                    proofs to help us maintain accurate information.
+                  </Typography>
+                )}
               {data?.reviews.map(review => (
                 <ReviewCard
                   review={review}
