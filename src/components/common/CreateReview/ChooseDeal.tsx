@@ -46,7 +46,7 @@ const ChooseDealStep = ({
       debouncedSave.cancel();
     };
   }, [tagSelectorValue]);
-  console.log(payload.sponsorId);
+
   const fetchDeals = async () => {
     const filters = {
       search: debouncedValue,
