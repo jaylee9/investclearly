@@ -5,6 +5,7 @@ import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor
 import PlaceholderImage from './PlaceholderImage';
 import Link from 'next/link';
 import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
+import EllipsisText from './EllipsisText';
 
 export enum SponsorCardVariant {
   Base = 'base',
@@ -32,9 +33,12 @@ const SponsorCard = ({
         defaultImage={DEFAULT_SPONSOR_IMAGE}
       />
       <Link href={`/sponsors/${sponsor.id}`}>
-        <Typography variant="h5" fontWeight={600} noWrap>
-          {sponsor.legalName}
-        </Typography>
+        <EllipsisText
+          variant="h5"
+          fontWeight={600}
+          text={`${sponsor.legalName}` as string}
+          sx={classes.baseTitle}
+        />
       </Link>
       <Typography variant="body1" noWrap>
         {Array.isArray(sponsor.regions)

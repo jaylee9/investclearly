@@ -6,6 +6,7 @@ import { DealInterface } from '@/backend/services/deals/interfaces/deal.interfac
 import Link from 'next/link';
 import PlaceholderImage from './PlaceholderImage';
 import { DEFAULT_DEAL_IMAGE } from '@/config/constants';
+import EllipsisText from './EllipsisText';
 
 export enum DealCardVariant {
   Base = 'base',
@@ -45,14 +46,17 @@ const DealCard = ({
           borderRadius: '12px 12px 0px 0px',
           width: '100%',
           objectFit: 'cover',
+          minHeight: '172px',
         }}
         defaultImage={DEFAULT_DEAL_IMAGE}
       />
       <Box sx={classes.baseDealCardContent}>
         <Link href={`/deals/${deal.id}`}>
-          <Typography variant="h5" sx={classes.baseDealName}>
-            {deal.dealTitle}
-          </Typography>
+          <EllipsisText
+            variant="h5"
+            sx={classes.baseDealName}
+            text={deal.dealTitle as string}
+          />
         </Link>
         <Typography variant="body1" sx={classes.baseDealLocation}>
           {Array.isArray(deal.regions) ? deal.regions.join(', ') : deal.regions}
@@ -80,6 +84,7 @@ const DealCard = ({
           height: '170px',
           borderRadius: '12px 0px 0px 12px',
           objectFit: 'cover',
+          minWidth: '200px',
         }}
         defaultImage={DEFAULT_DEAL_IMAGE}
       />
@@ -92,7 +97,11 @@ const DealCard = ({
               </Typography>
             )} */}
             <Link href={`/deals/${deal.id}`}>
-              <Typography variant="h5">{deal.dealTitle}</Typography>
+              <EllipsisText
+                variant="h5"
+                text={deal.dealTitle as string}
+                sx={classes.largeDealTitle}
+              />
             </Link>
             <Box sx={classes.sponsorInfo}>
               <Typography variant="caption">{deal.dealSponsor}</Typography>
