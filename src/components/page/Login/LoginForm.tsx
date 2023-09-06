@@ -33,16 +33,16 @@ const LoginForm = () => {
 
   const onSubmit = async (data: ValidationSchema) => {
     const { email, password } = data;
-    const { error } = await login({ email, password });
-    if (!error) {
+    const response = await login({ email, password });
+    if (!('error' in response)) {
       router.push('/');
     }
   };
   const handleGoogleLogin = async (credenitals: CredentialResponse) => {
-    const { error } = await googleLogin({
+    const response = await googleLogin({
       token: credenitals.credential as string,
     });
-    if (!error) {
+    if (!('error' in response)) {
       router.push('/');
     }
   };
