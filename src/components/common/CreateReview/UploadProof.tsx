@@ -37,7 +37,7 @@ const UploadProofStep = ({
     if (type === 'withoutProof') {
       setIsLoading(true);
       const result = await createReview(payload);
-      if (result) {
+      if (!('error' in result)) {
         setStep(step + 1);
         setIsLoading(false);
         setPayload({});
@@ -45,7 +45,7 @@ const UploadProofStep = ({
     } else if (type === 'withProof') {
       setIsLoading(true);
       const result = await createReview({ ...payload, file: files });
-      if (result) {
+      if (!('error' in result)) {
         setStep(step + 1);
         setIsLoading(false);
         setPayload({});

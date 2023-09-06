@@ -78,7 +78,7 @@ export const Menu: FC<MenuProps> = ({
   const { open, anchorEl } = { ...props };
   const handleLogout = async () => {
     const response = await logout();
-    if (!response.isError) {
+    if (!('error' in response)) {
       router.push('/login');
     }
   };

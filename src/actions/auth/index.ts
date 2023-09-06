@@ -1,19 +1,25 @@
+import { UserInterface } from '@/backend/services/users/interfaces/user.interface';
 import api from '@/config/ky';
 import { LoginFields, SignUpFields } from '@/types/auth';
+import { toast } from 'react-toastify';
 
 export const signUp = async ({
   firstName,
   lastName,
   password,
   email,
-}: SignUpFields): Promise<{ isError: boolean }> => {
+}: SignUpFields): Promise<{ email: string } | { error: string }> => {
   try {
-    await api.post('auth/sign-up', {
-      json: { firstName, lastName, email, password },
-    });
-    return { isError: false };
+    const response: { email: string } = await api
+      .post('auth/sign-up', {
+        json: { firstName, lastName, email, password },
+      })
+      .json();
+    return response;
   } catch (error) {
-    return { isError: true };
+    const errorMessage = 'Sign up was failed';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
 
@@ -21,31 +27,39 @@ export const confirmEmail = async ({
   confirmationCode,
 }: {
   confirmationCode: string;
-}): Promise<{ isError: boolean }> => {
+}): Promise<UserInterface | { error: string }> => {
   try {
-    await api.put('auth/confirm-email', {
-      json: { confirmationCode },
-    });
-    return { isError: false };
+    const user: UserInterface = await api
+      .put('auth/confirm-email', {
+        json: { confirmationCode },
+      })
+      .json();
+    toast.success('Account was succesfully created');
+    return user;
   } catch (error) {
-    return { isError: true };
+    const errorMessage = 'Failed to confirm email';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
 
 export const login = async ({
   password,
   email,
-}: LoginFields): Promise<{ isError: boolean }> => {
+}: LoginFields): Promise<UserInterface | { error: string }> => {
   try {
-    const response = await api
+    const user: UserInterface = await api
       .post('auth/sign-in', {
         json: { email, password },
       })
       .json();
-    localStorage.setItem('user', JSON.stringify(response));
-    return { isError: false };
+    localStorage.setItem('user', JSON.stringify(user));
+    toast.success('Login Successful!');
+    return user;
   } catch (error) {
-    return { isError: true };
+    const errorMessage = 'Failed to login';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
 
@@ -53,14 +67,18 @@ export const forgotPassword = async ({
   email,
 }: {
   email: string;
-}): Promise<{ isError: boolean }> => {
+}): Promise<{ message: string } | { error: string }> => {
   try {
-    await api.post('auth/forgot-password', {
-      json: { email },
-    });
-    return { isError: false };
+    const response: { message: string } = await api
+      .post('auth/forgot-password', {
+        json: { email },
+      })
+      .json();
+    return response;
   } catch (error) {
-    return { isError: true };
+    const errorMessage = 'Failed to send forgot password request';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
 
@@ -70,14 +88,18 @@ export const resetPassword = async ({
 }: {
   newPassword: string;
   resetPasswordToken: string;
-}): Promise<{ isError: boolean }> => {
+}): Promise<{ message: string } | { error: string }> => {
   try {
-    await api.put('auth/reset-password', {
-      json: { newPassword, resetPasswordToken },
-    });
-    return { isError: false };
+    const response: { message: string } = await api
+      .put('auth/reset-password', {
+        json: { newPassword, resetPasswordToken },
+      })
+      .json();
+    return response;
   } catch (error) {
-    return { isError: true };
+    const errorMessage = 'Failed to reset password';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
 
@@ -85,26 +107,34 @@ export const googleLogin = async ({
   token,
 }: {
   token: string;
-}): Promise<{ isError: boolean }> => {
+}): Promise<UserInterface | { error: string }> => {
   try {
-    const response = await api
+    const user: UserInterface = await api
       .post('auth/google', {
         json: { token },
       })
       .json();
-    localStorage.setItem('user', JSON.stringify(response));
-    return { isError: false };
+    localStorage.setItem('user', JSON.stringify(user));
+    return user;
   } catch (error) {
-    return { isError: true };
+    const errorMessage = 'Failed to authenticate';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
 
-export const logout = async (): Promise<{ isError: boolean }> => {
+export const logout = async (): Promise<
+  { message: string } | { error: string }
+> => {
   try {
-    await api.post('auth/sign-out');
+    const response: { message: string } = await api
+      .post('auth/sign-out')
+      .json();
     localStorage.removeItem('user');
-    return { isError: false };
+    return response;
   } catch (error) {
-    return { isError: true };
+    const errorMessage = 'Failed to log out';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };

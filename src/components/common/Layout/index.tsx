@@ -7,6 +7,8 @@ import Footer from './Footer';
 import { useDefaultLayoutStyles, useEntryLayoutStyles } from './styles';
 import { HeaderProps } from '@/hooks/useHeaderProps';
 import Logo, { LogoVariant } from '@/assets/components/Logo';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 export enum LayoutVariant {
   Default = 'default',
@@ -41,6 +43,7 @@ const Layout = ({
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <ToastContainer position="bottom-center" autoClose={3000} />
       {variant === LayoutVariant.Default && (
         <Box sx={defaultStyles.root}>
           <Box>

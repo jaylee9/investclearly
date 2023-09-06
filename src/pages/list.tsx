@@ -98,7 +98,7 @@ export const getServerSideProps = async (
     pageSize: 10,
     search: (search as string) || '',
   });
-  if (!dealsResponse) {
+  if ('error' in dealsResponse || 'error' in sponsorsResponse) {
     return {
       notFound: true,
     };

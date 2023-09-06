@@ -9,7 +9,7 @@ import Loading from '../Loading';
 import PlaceholderImage from '../PlaceholderImage';
 import { DEFAULT_DEAL_IMAGE } from '@/config/constants';
 import { CreateReviewPayloadInterface } from '@/actions/reviews';
-import { getAllDeals } from '@/actions/deals';
+import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
 
 interface ChooseDealStepProps {
   setStep: (value: number) => void;
@@ -54,10 +54,10 @@ const ChooseDealStep = ({
       pageSize: 5,
       sponsorId: payload.sponsorId,
     };
-    return await getAllDeals(filters);
+    return (await getAllDeals(filters)) as GetAllDealsResponse;
   };
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading } = useQuery<GetAllDealsResponse>(
     ['getAllDeals', debouncedValue],
     fetchDeals
   );

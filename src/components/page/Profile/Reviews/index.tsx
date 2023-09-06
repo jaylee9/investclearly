@@ -73,7 +73,7 @@ const ProfileReviews = () => {
     }
   );
 
-  const { data, isLoading, refetch } = useQuery(
+  const { data, isLoading, refetch } = useQuery<GetUserReviewsResponse>(
     ['reviews', activeTab, page, searchTerm],
     () => {
       return getUserReviews({
@@ -83,7 +83,7 @@ const ProfileReviews = () => {
         page,
         pageSize: 10,
         search: searchTerm,
-      });
+      }) as Promise<GetUserReviewsResponse>;
     },
     {
       enabled: !!user,

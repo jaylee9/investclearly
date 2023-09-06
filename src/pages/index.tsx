@@ -51,10 +51,13 @@ Share Your Experience With Other Investors"
 };
 
 export const getServerSideProps = async () => {
-  const dealsResponse = await getAllDeals({ page: 1, pageSize: 4 });
+  const dealsResponse = await getAllDeals({
+    page: 1,
+    pageSize: 4,
+  });
   const sponsorsResponse = await getAllSponsors({ page: 1, pageSize: 4 });
   const searchResponse = await globalSearch({ search: '' });
-  if (!dealsResponse || !sponsorsResponse) {
+  if ('error' in dealsResponse || 'error' in sponsorsResponse) {
     return {
       notFound: true,
     };

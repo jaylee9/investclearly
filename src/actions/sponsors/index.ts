@@ -2,6 +2,7 @@ import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor
 import { ISponsorFilters } from '@/components/page/List/Sponsors/SponsorsFilters';
 import api from '@/config/ky';
 import queryString from 'query-string';
+import { toast } from 'react-toastify';
 
 interface ISponsorActionFilters extends ISponsorFilters {
   page: number;
@@ -19,7 +20,7 @@ export interface GetAllSponsorsResponse {
 
 export const getAllSponsors = async (
   filters: ISponsorActionFilters
-): Promise<GetAllSponsorsResponse> => {
+): Promise<GetAllSponsorsResponse | { error: string }> => {
   const ratings = filters.ratings || [];
   let minRating: number | undefined;
   let maxRating: number | undefined;
@@ -52,8 +53,9 @@ export const getAllSponsors = async (
     const response: GetAllSponsorsResponse = await api.get(url).json();
     return response;
   } catch (error) {
-    console.error('Error fetching deals', error);
-    throw error;
+    const errorMessage = 'Failed to fetch sponsors';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
 
@@ -67,7 +69,7 @@ export const getSponsor = async ({
   id,
   reviewsLimit,
   dealsLimit,
-}: GetSponsorPayload) => {
+}: GetSponsorPayload): Promise<SponsorInterface | { error: string }> => {
   try {
     const stringifiedParameters = queryString.stringify(
       { reviewsLimit, dealsLimit },
@@ -82,7 +84,8 @@ export const getSponsor = async ({
       .json();
     return response;
   } catch (error) {
-    console.error('Error fetching deal', error);
-    throw error;
+    const errorMessage = 'Failed to fetch sponsor';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };

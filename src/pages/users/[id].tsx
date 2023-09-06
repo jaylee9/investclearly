@@ -37,11 +37,11 @@ const PublicUserPage = ({
   const [investmentsData, setInvestmentsData] = useState(investments);
   const [reviewsLimit, setReviewsLimit] = useState(3);
   const fetchReviews = async () => {
-    const response = await getUser({
+    const response = (await getUser({
       id: String(user.id),
       reviewsLimit,
       investmentsLimit,
-    });
+    })) as PublicUserInterface;
     return response.reviews;
   };
   const { isLoading: isLoadingReviews } = useQuery(
@@ -59,11 +59,11 @@ const PublicUserPage = ({
 
   const [investmentsLimit, setInvestmentsLimit] = useState(3);
   const fetchInvestments = async () => {
-    const response = await getUser({
+    const response = (await getUser({
       id: String(user.id),
       reviewsLimit,
       investmentsLimit,
-    });
+    })) as PublicUserInterface;
     return response.investments;
   };
   const { isLoading: isLoadingInvestments } = useQuery(
@@ -168,7 +168,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
     reviewsLimit: 3,
     investmentsLimit: 3,
   });
-  if (!userResponse) {
+  if ('error' in userResponse) {
     return {
       notFound: true,
     };

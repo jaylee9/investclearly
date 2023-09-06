@@ -9,6 +9,7 @@ import CustomCheckbox from '@/components/common/CustomCheckbox';
 import Link from 'next/link';
 import { googleLogin, signUp } from '@/actions/auth';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import { useRouter } from 'next/router';
 
 const validationSchema = z
   .object({
@@ -38,6 +39,7 @@ interface SignUpFormProps {
 
 const SignUpForm = ({ setEmail }: SignUpFormProps) => {
   const classes = useSignUpFormStyles();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -49,13 +51,18 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
 
   const onSubmit = async (data: ValidationSchema) => {
     const { email, password, firstName, lastName } = data;
-    const { isError } = await signUp({ email, password, firstName, lastName });
-    if (!isError) {
+    const response = await signUp({ email, password, firstName, lastName });
+    if (!('error' in response)) {
       setEmail(data.email);
     }
   };
   const handleGoogleSignUp = async (credenitals: CredentialResponse) => {
-    await googleLogin({ token: credenitals.credential as string });
+    const response = await googleLogin({
+      token: credenitals.credential as string,
+    });
+    if (!('error' in response)) {
+      router.push('/');
+    }
   };
   return (
     <Box sx={classes.root}>

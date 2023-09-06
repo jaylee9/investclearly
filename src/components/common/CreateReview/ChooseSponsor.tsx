@@ -6,7 +6,7 @@ import Button from '../Button';
 import { debounce } from 'lodash';
 import { useQuery } from 'react-query';
 import Loading from '../Loading';
-import { getAllSponsors } from '@/actions/sponsors';
+import { GetAllSponsorsResponse, getAllSponsors } from '@/actions/sponsors';
 import PlaceholderImage from '../PlaceholderImage';
 import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 import { CreateReviewPayloadInterface } from '@/actions/reviews';
@@ -49,10 +49,10 @@ const ChooseSponsorStep = ({
 
   const fetchSponsors = async () => {
     const filters = { search: debouncedValue, page: 1, pageSize: 5 };
-    return await getAllSponsors(filters);
+    return (await getAllSponsors(filters)) as GetAllSponsorsResponse;
   };
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading } = useQuery<GetAllSponsorsResponse>(
     ['getAllSponsors', debouncedValue],
     fetchSponsors
   );
