@@ -13,7 +13,7 @@ interface ReviewCardProps {
   isDelete?: boolean;
   onDelete?: (value: number) => void;
   showVerifyOption?: boolean;
-  onVerify?: () => void;
+  onVerify?: (value: number) => void;
 }
 
 const ReviewCard = ({
@@ -49,9 +49,9 @@ const ReviewCard = ({
     }
   };
 
-  const handleVerify = () => {
+  const handleVerify = (value: number) => {
     if (onVerify) {
-      onVerify();
+      onVerify(value);
     }
   };
 
@@ -127,7 +127,7 @@ const ReviewCard = ({
             </Button>
           )}
           {showVerifyOption && !review.isVerified && (
-            <Button variant="secondary" onClick={handleVerify}>
+            <Button variant="secondary" onClick={() => handleVerify(review.id)}>
               Verify review
             </Button>
           )}

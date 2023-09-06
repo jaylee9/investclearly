@@ -85,3 +85,34 @@ export const deleteReview = async ({ id }: { id: number }) => {
     return { isError: true };
   }
 };
+
+export interface UploadProofPayloadInterface {
+  file: File | File[];
+  reviewId: number;
+}
+
+export const uploadReviewProofs = async ({
+  file,
+  reviewId,
+}: UploadProofPayloadInterface): Promise<ReviewInterface> => {
+  const formData = new FormData();
+
+  const fileValue = file;
+  if (fileValue instanceof File) {
+    formData.append('file', fileValue);
+  } else if (Array.isArray(fileValue)) {
+    for (let i = 0; i < fileValue.length; i++) {
+      formData.append('file[]', fileValue[i]);
+    }
+  }
+
+  try {
+    const response = await api.put(`reviews/${reviewId}`, {
+      body: formData,
+    });
+    return response.json();
+  } catch (error) {
+    console.error('Error uploading review proof', error);
+    throw error;
+  }
+};

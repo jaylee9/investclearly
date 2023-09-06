@@ -15,6 +15,7 @@ import { debounce } from 'lodash';
 import Button from '@/components/common/Button';
 import CreateReviewForm from '@/components/common/CreateReview';
 import CustomPagination from '@/components/common/Pagination';
+import VerifyReviewModal from './Modals/VerifyReview';
 
 const ProfileReviews = () => {
   const classes = useProfileReviewsStyles();
@@ -28,6 +29,9 @@ const ProfileReviews = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [openWriteReviewForm, setOpenWriteReviewForm] = useState(false);
+  const [openVerifyReviewModal, setOpenVerifyReviewModal] = useState<
+    null | number
+  >(null);
 
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
@@ -87,21 +91,24 @@ const ProfileReviews = () => {
     }
   );
 
+  const handleRefetchFunction = () =>
+    refetch().then(() => refetchOnModerationCount());
+
   const handleOpenDeleteModal = (value: number) => setOpenDeleteModal(value);
   const handleCloseDeleteModal = () => setOpenDeleteModal(0);
   const onDeleteSubmit = () => {
-    refetch().then(() =>
-      refetchOnModerationCount().then(handleCloseDeleteModal)
-    );
+    handleRefetchFunction().then(handleCloseDeleteModal);
   };
 
   const handleOpenWriteReviewForm = () => setOpenWriteReviewForm(true);
   const handleCloseWriteReviewForm = () => setOpenWriteReviewForm(false);
   const onCloseWriteReviewForm = () => {
-    refetch().then(() =>
-      refetchOnModerationCount().then(handleCloseWriteReviewForm)
-    );
+    handleRefetchFunction().then(handleCloseWriteReviewForm);
   };
+
+  const handleOpenVerifyReviewModal = (value: number) =>
+    setOpenVerifyReviewModal(value);
+  const handleCloseVerifyReviewModal = () => setOpenVerifyReviewModal(null);
 
   const handleChangeTab = (
     event: SyntheticEvent<Element, Event>,
@@ -193,6 +200,7 @@ const ProfileReviews = () => {
                   showVerifyOption={activeTab === ReviewStatuses.published}
                   isDelete={activeTab === ReviewStatuses.onModeration}
                   onDelete={handleOpenDeleteModal}
+                  onVerify={handleOpenVerifyReviewModal}
                 />
               ))}
               <Box sx={classes.pagination}>
@@ -210,6 +218,12 @@ const ProfileReviews = () => {
                 id={openDeleteModal}
                 onSubmitClose={onDeleteSubmit}
                 onClose={handleCloseDeleteModal}
+              />
+              <VerifyReviewModal
+                open={!!openVerifyReviewModal}
+                onClose={handleCloseVerifyReviewModal}
+                refetchFunction={handleRefetchFunction}
+                reviewId={openVerifyReviewModal as number}
               />
             </Box>
           )}
