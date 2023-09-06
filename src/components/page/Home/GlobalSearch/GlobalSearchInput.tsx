@@ -101,7 +101,7 @@ export const GlobalSearchInput: FC<GlobalSearchInputProps> = ({
           <Slide
             mountOnEnter
             unmountOnExit
-            direction="left"
+            direction="right"
             in={isMobileSearchInput}
             addEndListener={slideAnimationEndHandler}
           >

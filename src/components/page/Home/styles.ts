@@ -63,25 +63,35 @@ export const useGlobalSearchStyles = ({
     variant === GlobalSearchVariant.SMALL
       ? rootWidthMobile
       : { xs: '100%', lg: 'auto' };
+  const rootMaxWidth =
+    (type.includes('dark') && { xs: '100%', md: '320px' }) || '100%';
+  const rootMinWidth =
+    (type.includes('dark') && {
+      xs: isMobileSearchInput ? '100%' : '',
+      md: '320px',
+    }) ||
+    '100%';
+  const rootHeight =
+    (type.includes('dark') && '44px') ||
+    (type.includes('light') && '56px') ||
+    '';
+  const rootPosition = {
+    xs:
+      (type.includes('dark') && 'initial') ||
+      (type.includes('light') && 'absolute'),
+    lg: 'initial',
+  };
+  const rootBottom =
+    (type.includes('dark') && 0) || (type.includes('light') && '-25px') || '';
+
   return {
     root: {
       width: rootWidth,
-      maxWidth:
-        (type.includes('dark') && { xs: '100%', md: '320px' }) || '100%',
-      height:
-        (type.includes('dark') && '44px') ||
-        (type.includes('light') && '56px') ||
-        '',
-      position: {
-        xs:
-          (type.includes('dark') && 'initial') ||
-          (type.includes('light') && 'absolute'),
-        lg: 'initial',
-      },
-      bottom:
-        (type.includes('dark') && 0) ||
-        (type.includes('light') && '-25px') ||
-        '',
+      maxWidth: rootMaxWidth,
+      minWidth: rootMinWidth,
+      height: rootHeight,
+      position: rootPosition,
+      bottom: rootBottom,
     },
     searchInputWrapper: {
       height: '100%',

@@ -41,6 +41,7 @@ const Header = ({
     ? GlobalSearchVariant.SMALL
     : GlobalSearchVariant.BASE;
   const [isMobileSearchInput, setIsMobileSearchInput] = useState(false);
+  const [isOpenGlobalSearch, setIsOpenGlobalSearch] = useState(false);
   const [openCreateReviewForm, setOpenCreateReviewForm] = useState(false);
   const classes = getStyles({
     type,
@@ -97,7 +98,10 @@ const Header = ({
   }, []);
 
   return (
-    <Box component="header" sx={classes.root}>
+    <Box
+      component="header"
+      sx={{ ...classes.root, overflow: isOpenGlobalSearch ? '' : 'hidden' }}
+    >
       {!!content && content}
       <Box sx={classes.leftSideWrapper}>
         {!isMobileSearchInput && <Logo variant={logoVariant} />}
@@ -108,6 +112,8 @@ const Header = ({
             onChangeSearch={handleChangeSearch}
             isMobileSearchInput={isMobileSearchInput}
             setIsMobileSearchInput={setIsMobileSearchInput}
+            isOpenGlobalSearch={isOpenGlobalSearch}
+            setIsOpenGlobalSearch={setIsOpenGlobalSearch}
           />
         )}
         {title && title}
