@@ -48,7 +48,12 @@ const ChooseDealStep = ({
   }, [tagSelectorValue]);
 
   const fetchDeals = async () => {
-    const filters = { search: debouncedValue, page: 1, pageSize: 5 };
+    const filters = {
+      search: debouncedValue,
+      page: 1,
+      pageSize: 5,
+      sponsorId: payload.sponsorId,
+    };
     return await getAllDeals(filters);
   };
 

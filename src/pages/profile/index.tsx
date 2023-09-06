@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import clsx from 'clsx';
 import ProfileInvestments from '@/components/page/Profile/Investments';
 import withPrivateRoute from '@/HOC/withPrivateRoute';
+import ProfileReviews from '@/components/page/Profile/Reviews';
 
 const sections = [
   {
@@ -14,7 +15,12 @@ const sections = [
     href: 'investments',
     component: <ProfileInvestments />,
   },
-  { label: 'My Reviews', icon: 'icon-Review', href: 'reviews' },
+  {
+    label: 'My Reviews',
+    icon: 'icon-Review',
+    href: 'reviews',
+    component: <ProfileReviews />,
+  },
   { label: 'Saved', icon: 'icon-Saved', href: 'saved' },
   {
     label: 'Profile Settings',

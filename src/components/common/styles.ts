@@ -734,7 +734,13 @@ export const useMultiButtonsStyles = () => {
   };
 };
 
-export const useReviewCardStyles = () => {
+interface UseReviewCardStylesProps {
+  isExtended: boolean;
+}
+
+export const useReviewCardStyles = ({
+  isExtended,
+}: UseReviewCardStylesProps) => {
   return {
     root: {
       padding: '24px 28px',
@@ -790,14 +796,23 @@ export const useReviewCardStyles = () => {
     },
     fullComment: {
       color: palette.text.secondary,
-      maxHeight: '80px',
       overflow: 'hidden',
-      textOverflow: 'ellipsis',
+      display: '-webkit-box',
+      WebkitBoxOrient: 'vertical',
+      WebkitLineClamp: isExtended ? 'none' : 3,
       marginBottom: '16px',
     },
     readFullLink: {
       fontWeight: 600,
       color: palette.primary.light,
+      cursor: 'pointer',
+    },
+    deleteIcon: {
+      fontSize: '24px',
+      marginRight: '8px',
+    },
+    optionalButtonWrapper: {
+      marginTop: '20px',
     },
   };
 };
