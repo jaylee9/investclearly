@@ -1,4 +1,3 @@
-// components/EllipsisText.tsx
 import { Tooltip, Typography, TypographyProps } from '@mui/material';
 import React, { useRef, useState, useEffect } from 'react';
 import { useEllipsisTextStyles } from './styles';
