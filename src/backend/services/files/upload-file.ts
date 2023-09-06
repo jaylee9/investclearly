@@ -1,10 +1,15 @@
 import * as crypto from 'crypto';
 import createHttpError from 'http-errors';
+import { createClient } from '@supabase/supabase-js';
 import path from 'path';
 import { loadEnvConfig } from '../../config/load-env-config';
-import { s3, bucketName } from '../../config/aws-s3-config';
 
 loadEnvConfig();
+
+const supabase = createClient(
+  process.env.SUPABASE_URL || '',
+  process.env.SUPABASE_KEY || ''
+);
 
 export const uploadFile = async (
   file: Express.Multer.File,
@@ -16,16 +21,17 @@ export const uploadFile = async (
 
   try {
     if (path.extname(originalFilename)) {
-      const fileName = `${randValue}-${originalFilename}`;
+      const fileName = `${targetType}/${randValue}-${originalFilename}`;
 
-      const uploadParams = {
-        Bucket: bucketName,
-        Body: buffer,
-        Key: `${targetType}/${fileName}`,
-      };
-      const uploadResult = await s3.upload(uploadParams).promise();
+      const { error } = await supabase.storage
+        .from(process.env.SUPABASE_BUCKET_NAME || '')
+        .upload(fileName, buffer, { cacheControl: '3600' });
 
-      return uploadResult.Key;
+      if (error) {
+        throw new createHttpError.BadRequest();
+      }
+
+      return fileName;
     } else {
       throw new createHttpError.BadRequest();
     }
