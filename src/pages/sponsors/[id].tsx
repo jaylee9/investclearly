@@ -40,11 +40,11 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
   const [dealsData, setDealsData] = useState(deals);
   const [reviewsLimit, setReviewsLimit] = useState(3);
   const fetchReviews = async () => {
-    const response = await getSponsor({
+    const response = (await getSponsor({
       id: String(sponsor.id),
       reviewsLimit,
       dealsLimit,
-    });
+    })) as SponsorInterface;
     return response.reviews;
   };
   const { isLoading: isLoadingReviews } = useQuery(
@@ -62,11 +62,11 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
 
   const [dealsLimit, setDealsLimit] = useState(3);
   const fetchDeals = async () => {
-    const response = await getSponsor({
+    const response = (await getSponsor({
       id: String(sponsor.id),
       reviewsLimit,
       dealsLimit,
-    });
+    })) as SponsorInterface;
     return response.deals;
   };
   const { isLoading: isLoadingDeals } = useQuery(
@@ -408,7 +408,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
     reviewsLimit: 3,
     dealsLimit: 3,
   });
-  if (!sponsorResponse) {
+  if ('error' in sponsorResponse) {
     return {
       notFound: true,
     };

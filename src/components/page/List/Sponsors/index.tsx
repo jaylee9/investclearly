@@ -166,9 +166,9 @@ const SponsorsComponent = ({
         search: searchValue,
         ...dirtyFilters,
       };
-  const { isLoading, refetch } = useQuery(
+  const { isLoading, refetch } = useQuery<GetAllSponsorsResponse>(
     ['sponsors', page, orderDirection, searchValue],
-    () => getAllSponsors(payload),
+    () => getAllSponsors(payload) as Promise<GetAllSponsorsResponse>,
     {
       onSuccess: data => {
         setSponsorsData(data);

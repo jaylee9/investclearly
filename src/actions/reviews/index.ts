@@ -39,6 +39,7 @@ export const createReview = async (
     const response = await api.post('reviews', {
       body: formData,
     });
+    toast.success('Review successfuly created');
     return response.json();
   } catch (error) {
     const errorMessage = 'Failed to create review';
@@ -91,6 +92,7 @@ export const deleteReview = async ({
     const response: { message: string } = await api
       .delete(`reviews/${id}`)
       .json();
+    toast.success('Review successfuly deleted');
     return response;
   } catch (error) {
     const errorMessage = 'Failed to delete reviews';
