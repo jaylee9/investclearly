@@ -36,17 +36,24 @@ export const getAllReviews = async (params: FindAllReviewsInterface) => {
       { entityType: TargetTypesConstants.reviewProofs }
     );
 
+  if (userId) {
+    searchQuery = searchQuery.andWhere('reviews.reviewerId = :userId', {
+      userId,
+    });
+  }
+
   if (status) {
     searchQuery = searchQuery.andWhere('reviews.status = :status', {
       status,
     });
   }
 
-  if (userId) {
-    searchQuery = searchQuery.andWhere('reviews.reviewerId = :userId', {
-      userId,
-    });
-  }
+  const totalUnverifiedReviews = await searchQuery
+    .clone()
+    .andWhere('reviews.isVerified = :isVerified', {
+      isVerified: false,
+    })
+    .getCount();
 
   if (search) {
     const fieldsToSearch = [
@@ -80,6 +87,7 @@ export const getAllReviews = async (params: FindAllReviewsInterface) => {
 
   return {
     reviews: await Promise.all(reviews.map(reviewMapper)),
+    totalUnverifiedReviews,
     ...paginationData,
   };
 };
