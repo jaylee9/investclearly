@@ -294,7 +294,7 @@ const DealPage = ({ deal }: DealPageProps) => {
 export const getServerSideProps: GetServerSideProps = async context => {
   const id = context.params?.id as string;
   const dealResponse = await getDeal({ id });
-  if (!dealResponse) {
+  if ('error' in dealResponse) {
     return {
       notFound: true,
     };

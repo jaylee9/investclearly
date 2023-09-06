@@ -20,7 +20,6 @@ export const globalSearch = async ({
       .json();
     return response;
   } catch (error) {
-    console.error(error);
     return { error: 'Failed to fetch data for global search' };
   }
 };

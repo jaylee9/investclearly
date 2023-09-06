@@ -148,7 +148,9 @@ const DealsComponent = ({
     () => getAllDeals(payload),
     {
       onSuccess: data => {
-        setDealsData(data);
+        if (!('error' in data)) {
+          setDealsData(data);
+        }
       },
       keepPreviousData: true,
     }

@@ -2,6 +2,7 @@ import { DealInterface } from '@/backend/services/deals/interfaces/deal.interfac
 import { IFilters } from '@/components/page/List/Deals/DealsFilters';
 import api from '@/config/ky';
 import queryString from 'query-string';
+import { toast } from 'react-toastify';
 
 interface IDealFilters extends IFilters {
   page: number;
@@ -20,7 +21,7 @@ export interface GetAllDealsResponse {
 
 export const getAllDeals = async (
   filters: IDealFilters
-): Promise<GetAllDealsResponse> => {
+): Promise<GetAllDealsResponse | { error: string }> => {
   const ratings = filters.ratings || [];
   let minRating: number | undefined;
   let maxRating: number | undefined;
@@ -65,17 +66,23 @@ export const getAllDeals = async (
     const response: GetAllDealsResponse = await api.get(url).json();
     return response;
   } catch (error) {
-    console.error('Error fetching deals', error);
-    throw error;
+    const errorMessage = 'Failed to fetch deals';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
 
-export const getDeal = async ({ id }: { id: string }) => {
+export const getDeal = async ({
+  id,
+}: {
+  id: string;
+}): Promise<DealInterface | { error: string }> => {
   try {
     const response: DealInterface = await api.get(`deals/${id}`).json();
     return response;
   } catch (error) {
-    console.error('Error fetching deal', error);
-    throw error;
+    const errorMessage = 'Error fetching deal';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
