@@ -1,6 +1,7 @@
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
 import api from '@/config/ky';
 import queryString from 'query-string';
+import { toast } from 'react-toastify';
 
 interface GetUserPayload {
   id: string;
@@ -12,7 +13,7 @@ export const getUser = async ({
   id,
   reviewsLimit,
   investmentsLimit,
-}: GetUserPayload) => {
+}: GetUserPayload): Promise<PublicUserInterface | { error: string }> => {
   try {
     const stringifiedParameters = queryString.stringify(
       { reviewsLimit, investmentsLimit },
@@ -27,7 +28,8 @@ export const getUser = async ({
       .json();
     return response;
   } catch (error) {
-    console.error('Error fetching user', error);
-    throw error;
+    const errorMessage = 'Failed to fetch user';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };

@@ -14,7 +14,7 @@ export type UpdateProfileSettingPayload = Omit<
 
 export const updateProfileSettings = async (
   payload: UpdateProfileSettingPayload
-): Promise<PublicUserInterface> => {
+): Promise<PublicUserInterface | { error: string }> => {
   const formData = new FormData();
 
   for (const key in payload) {
@@ -35,12 +35,13 @@ export const updateProfileSettings = async (
   }
 
   try {
-    const response = await api.put('profile-settings', {
-      body: formData,
-    });
-    return response.json();
+    const response: PublicUserInterface = await api
+      .put('profile-settings', {
+        body: formData,
+      })
+      .json();
+    return response;
   } catch (error) {
-    console.error('Error updating profile settings', error);
-    throw error;
+    return { error: 'Failed to update profile settings' };
   }
 };
