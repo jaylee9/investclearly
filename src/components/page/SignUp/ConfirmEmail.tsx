@@ -14,8 +14,8 @@ const ConfirmEmail = ({ email }: ConfirmEmailProps) => {
   const classes = useConfirmEmailStyles();
   const router = useRouter();
   const onComplete = async (confirmationCode: string) => {
-    const { isError } = await confirmEmail({ confirmationCode });
-    if (isError) {
+    const { error } = await confirmEmail({ confirmationCode });
+    if (!!error) {
       setError(true);
       setTimeout(() => {
         setError(false);

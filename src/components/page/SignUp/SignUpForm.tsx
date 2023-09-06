@@ -49,8 +49,8 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
 
   const onSubmit = async (data: ValidationSchema) => {
     const { email, password, firstName, lastName } = data;
-    const { isError } = await signUp({ email, password, firstName, lastName });
-    if (!isError) {
+    const { error } = await signUp({ email, password, firstName, lastName });
+    if (!error) {
       setEmail(data.email);
     }
   };
