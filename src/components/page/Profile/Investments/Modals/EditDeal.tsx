@@ -53,7 +53,7 @@ const EditDealModal = ({
       totalInvested: data.totalInvested,
     };
     const response = await updateInvestment(payload);
-    if (!response.isError) {
+    if (!('error' in response)) {
       onSubmitClose();
     }
   });

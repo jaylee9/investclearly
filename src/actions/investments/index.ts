@@ -3,6 +3,7 @@ import { InvestmentInterface } from '@/backend/services/investments/interfaces/i
 import { TPaginationInfo } from '@/backend/utils/pagination/paginate-info.type';
 import api from '@/config/ky';
 import queryString from 'query-string';
+import { toast } from 'react-toastify';
 
 export interface GetAllInvestmentsResponse extends TPaginationInfo {
   deals: InvestmentInterface[];
@@ -15,7 +16,9 @@ export const getAllInvestments = async ({
   orderDirection,
   status,
   search,
-}: FindAllInvestmentsInterface) => {
+}: FindAllInvestmentsInterface): Promise<
+  GetAllInvestmentsResponse | { error: string }
+> => {
   try {
     const stringifiedParameters = queryString.stringify(
       { page, pageSize, orderDirection, status, search },
@@ -30,8 +33,9 @@ export const getAllInvestments = async ({
       .json();
     return response;
   } catch (error) {
-    console.error('Error fetching investments', error);
-    throw error;
+    const errorMessage = 'Failed to fetch investments';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
 
@@ -45,22 +49,34 @@ export const updateInvestment = async ({
   dateOfInvestment,
   totalInvested,
   id,
-}: UpdateInvestment) => {
+}: UpdateInvestment): Promise<InvestmentInterface | { error: string }> => {
   try {
-    await api.put(`investments/${id}`, {
-      json: { dateOfInvestment, totalInvested },
-    });
-    return { isError: false };
+    const response: InvestmentInterface = await api
+      .put(`investments/${id}`, {
+        json: { dateOfInvestment, totalInvested },
+      })
+      .json();
+    return response;
   } catch (error) {
-    return { isError: true };
+    const errorMessage = 'Failed to update investment';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };
 
-export const deleteInvestment = async ({ id }: { id: number }) => {
+export const deleteInvestment = async ({
+  id,
+}: {
+  id: number;
+}): Promise<{ message: string } | { error: string }> => {
   try {
-    await api.delete(`investments/${id}`);
-    return { isError: false };
+    const response: { message: string } = await api
+      .delete(`investments/${id}`)
+      .json();
+    return response;
   } catch (error) {
-    return { isError: true };
+    const errorMessage = 'Failed to delete investment';
+    toast.error(errorMessage);
+    return { error: errorMessage };
   }
 };

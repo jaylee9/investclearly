@@ -21,7 +21,7 @@ const DeleteDealModal = ({
   const handleDelete = async () => {
     setIsLoading(true);
     const response = await deleteInvestment({ id });
-    if (!response.isError) {
+    if (!('error' in response)) {
       onSubmitClose();
     }
     setIsLoading(false);

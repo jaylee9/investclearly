@@ -1,4 +1,7 @@
-import { getAllInvestments } from '@/actions/investments';
+import {
+  GetAllInvestmentsResponse,
+  getAllInvestments,
+} from '@/actions/investments';
 import { OrderDirectionConstants } from '@/backend/constants/order-direction-constants';
 import CustomTabs from '@/components/common/CustomTabs';
 import Loading from '@/components/common/Loading';
@@ -59,7 +62,7 @@ const ProfileInvestments = () => {
   const classes = useInvestmentsStyles();
 
   const [page, setPage] = useState(1);
-  const { data, isLoading, refetch } = useQuery(
+  const { data, isLoading, refetch } = useQuery<GetAllInvestmentsResponse>(
     ['allInvestments', activeTab, page, searchTerm],
     () =>
       getAllInvestments({
@@ -69,7 +72,7 @@ const ProfileInvestments = () => {
         status:
           activeTab === 'all' ? undefined : (activeTab as InvestmentStatuses),
         search: searchTerm,
-      }),
+      }) as Promise<GetAllInvestmentsResponse>,
     {
       keepPreviousData: true,
     }
