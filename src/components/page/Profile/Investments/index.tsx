@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { debounce } from 'lodash';
 import EditDealModal, { DealToEdit } from './Modals/EditDeal';
 import DeleteDealModal from './Modals/DeleteDeal';
+import EllipsisText from '@/components/common/EllipsisText';
 
 const tabs = [
   {
@@ -78,9 +79,10 @@ const ProfileInvestments = () => {
     {
       label: 'Deal',
       accessor: data => (
-        <p style={{ ...classes.dealName, whiteSpace: 'nowrap' }}>
-          {data.deal.dealLegalName}
-        </p>
+        <EllipsisText
+          sx={classes.dealName}
+          text={data.deal.dealLegalName as string}
+        />
       ),
       width: '20%',
     },

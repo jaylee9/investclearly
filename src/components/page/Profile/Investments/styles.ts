@@ -18,8 +18,6 @@ export const useInvestmentsStyles = () => {
     },
     dealName: {
       maxWidth: '260px',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
       margin: 0,
     },
     editIcon: {

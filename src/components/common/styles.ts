@@ -215,9 +215,6 @@ export const useDealCardStyles = () => {
     },
     baseDealName: {
       fontWeight: 600,
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
       maxWidth: '190px',
     },
     baseDealLocation: {
@@ -260,19 +257,13 @@ export const useDealCardStyles = () => {
         color: palette.text.secondary,
         cursor: 'pointer',
       },
-      '& h5': {
-        fontWeight: 600,
-        maxWidth: '700px',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-      },
     },
     largeHeaderLeftColumn: {
       display: 'flex',
       flexDirection: 'column',
       gap: '4px',
     },
+    largeDealTitle: { fontWeight: 600, maxWidth: '700px' },
     promoted: {
       padding: '4px 12px',
       color: palette.common.white,
@@ -540,7 +531,10 @@ export const useSponsorCardStyles = () => {
       borderRadius: '12px',
       boxShadow: theme.customShadows.header,
       border: `1px solid ${theme.palette.background.paper}`,
-      height: '202px',
+      height: '218px',
+    },
+    baseTitle: {
+      maxWidth: '250px',
     },
     baseImage: {
       borderRadius: '100px',
@@ -1123,6 +1117,16 @@ export const useTableStyles = () => {
       '& span': {
         color: palette.text.secondary,
       },
+    },
+  };
+};
+
+export const useEllipsisTextStyles = () => {
+  return {
+    root: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      display: 'block',
     },
   };
 };

@@ -1,5 +1,6 @@
 import { ImageProps } from 'next/image';
 import SkeletonImage from './SkeletonImage';
+import { useState } from 'react';
 
 interface SkeletonImageProps extends Omit<ImageProps, 'onLoadingComplete'> {
   alt: string;
@@ -11,8 +12,15 @@ const PlaceholderImage: React.FC<SkeletonImageProps> = ({
   ...props
 }) => {
   const { alt, src, ...rest } = props;
+  const [srcState, setSrcState] = useState(src || defaultImage);
   return (
-    <SkeletonImage alt={alt} quality={90} src={src || defaultImage} {...rest} />
+    <SkeletonImage
+      alt={alt}
+      quality={90}
+      src={srcState}
+      onError={() => setSrcState(defaultImage)}
+      {...rest}
+    />
   );
 };
 
