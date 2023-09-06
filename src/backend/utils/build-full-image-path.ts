@@ -6,5 +6,5 @@ export const buildFullImagePath = (fileName: string): string => {
   if (fileName.startsWith('https://')) {
     return fileName;
   }
-  return `https://${process.env.AWS_PUBLIC_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+  return `${process.env.SUPABASE_URL}/storage/v1/object/public/${process.env.SUPABASE_BUCKET_NAME}/${fileName}`;
 };
