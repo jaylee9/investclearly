@@ -42,11 +42,11 @@ const ResetPassword = () => {
   const onSubmit = async (data: ValidationSchema) => {
     const { new_password } = data;
     const resetPasswordToken = router.query.token as string;
-    const { error } = await resetPassword({
+    const response = await resetPassword({
       newPassword: new_password,
       resetPasswordToken,
     });
-    if (!error) {
+    if (!('error' in response)) {
       setIsChanged(true);
     }
   };
