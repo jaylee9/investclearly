@@ -5,6 +5,7 @@ import { TPaginationInfo } from '@/backend/utils/pagination/paginate-info.type';
 import api from '@/config/ky';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
+import { serialize } from 'object-to-formdata';
 
 export type OptionalCreateReviewInterface = Partial<CreateReviewInterface>;
 
@@ -16,30 +17,16 @@ export interface CreateReviewPayloadInterface
 export const createReview = async (
   payload: CreateReviewPayloadInterface
 ): Promise<ReviewInterface | { error: string }> => {
-  const formData = new FormData();
-
-  for (const key in payload) {
-    if (payload.hasOwnProperty(key)) {
-      const valueKey = key as keyof CreateReviewPayloadInterface;
-      const value = payload[valueKey];
-      if (value === undefined) continue;
-      if (typeof value === 'string' || value instanceof File) {
-        formData.append(key, value);
-      } else if (typeof value === 'number' || typeof value === 'boolean') {
-        formData.append(key, value.toString());
-      } else if (Array.isArray(value)) {
-        for (let i = 0; i < value.length; i++) {
-          formData.append(`${key}[]`, value[i]);
-        }
-      }
-    }
-  }
+  const formData = serialize(payload, {
+    indices: true,
+    nullsAsUndefineds: true,
+    booleansAsIntegers: true,
+  });
 
   try {
     const response = await api.post('reviews', {
       body: formData,
     });
-    toast.success('Review successfuly created');
     return response.json();
   } catch (error) {
     const errorMessage = 'Failed to create review';
@@ -110,16 +97,7 @@ export const uploadReviewProofs = async ({
   file,
   reviewId,
 }: UploadProofPayloadInterface): Promise<ReviewInterface> => {
-  const formData = new FormData();
-
-  const fileValue = file;
-  if (fileValue instanceof File) {
-    formData.append('file', fileValue);
-  } else if (Array.isArray(fileValue)) {
-    for (let i = 0; i < fileValue.length; i++) {
-      formData.append('file[]', fileValue[i]);
-    }
-  }
+  const formData = serialize({ file: file }, { indices: true });
 
   try {
     const response = await api.put(`reviews/${reviewId}`, {
