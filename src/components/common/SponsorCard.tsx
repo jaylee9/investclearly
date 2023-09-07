@@ -57,7 +57,7 @@ const SponsorCard = ({
         alt="sponsor image"
         width={96}
         height={96}
-        style={{ borderRadius: '1230px' }}
+        style={{ borderRadius: '1230px', maxHeight: '96px' }}
         defaultImage={DEFAULT_SPONSOR_IMAGE}
       />
       <Box sx={classes.largeContent}>

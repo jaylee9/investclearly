@@ -552,6 +552,8 @@ export const useSponsorCardStyles = () => {
     baseImage: {
       borderRadius: '100px',
       marginBottom: '12px',
+      maxHeight: '72px',
+      maxWidth: '72px',
     },
     baseRating: {
       color: theme.palette.secondary.main,
