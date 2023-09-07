@@ -45,7 +45,7 @@ const filtersLabels: Record<FilterLabelKeys, string> = {
   actualIRR: 'Actual IRR, %',
   targetIRR: 'Target IRR, %',
   fees: 'Fees, %',
-  preffered_return: 'Preffered return, USD',
+  preffered_return: 'Preffered return, %',
   min_investment: 'Min investment, USD',
 };
 
@@ -80,24 +80,24 @@ const DealsComponent = ({
     investment_structure: [],
     exemptions: [],
     targetIRR: {
-      from: 2,
-      to: 12,
+      from: dealsResponse.rangeData.minTargetIRR,
+      to: dealsResponse.rangeData.maxTargetIRR,
     },
     actualIRR: {
-      from: 2,
-      to: 12,
+      from: dealsResponse.rangeData.minActualIRR,
+      to: dealsResponse.rangeData.maxActualIRR,
     },
     fees: {
-      from: 2,
-      to: 12,
+      from: dealsResponse.rangeData.minFee,
+      to: dealsResponse.rangeData.maxFee,
     },
     min_investment: {
-      from: 5000,
-      to: 25000,
+      from: dealsResponse.rangeData.minInvestment,
+      to: dealsResponse.rangeData.maxInvestment,
     },
     preffered_return: {
-      from: 5000,
-      to: 25000,
+      from: dealsResponse.rangeData.minPreferredReturn,
+      to: dealsResponse.rangeData.maxPreferredReturn,
     },
   };
   const assetClassesArray = Object.values(AssetClasses);
@@ -285,6 +285,7 @@ const DealsComponent = ({
             filters={filters}
             handleApplyFilters={handleApplyFilters}
             disabledApplyFilters={!isDirtyFilters}
+            rangeData={dealsResponse.rangeData}
           />
         }
         rightColumnHeaderTitle={
