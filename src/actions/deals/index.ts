@@ -12,11 +12,24 @@ interface IDealFilters extends IFilters {
   sponsorId?: number;
 }
 
+export interface RangeData {
+  minInvestment: number;
+  maxInvestment: number;
+  minTargetIRR: number;
+  maxTargetIRR: number;
+  minActualIRR: number;
+  maxActualIRR: number;
+  minFee: number;
+  maxFee: number;
+  minPreferredReturn: number;
+  maxPreferredReturn: number;
+}
 export interface GetAllDealsResponse {
   deals: DealInterface[];
   total: number;
   currentPage: number;
   lastPage: number;
+  rangeData: RangeData;
 }
 
 export const getAllDeals = async (
@@ -52,6 +65,8 @@ export const getAllDeals = async (
     minRating,
     maxRating,
     sponsorId: filters.sponsorId,
+    preferredReturnMin: filters.preffered_return?.from,
+    preferredReturnMax: filters.preffered_return?.to,
   };
 
   const stringifiedParameters = queryString.stringify(parameters, {
