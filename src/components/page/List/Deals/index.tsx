@@ -1,4 +1,9 @@
-import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
+import {
+  GetAllDealsResponse,
+  addDealToBookmark,
+  deleteDealFromBookmarks,
+  getAllDeals,
+} from '@/actions/deals';
 import DealCard, { DealCardVariant } from '@/components/common/DealCard';
 import Loading from '@/components/common/Loading';
 import CustomPagination from '@/components/common/Pagination';
@@ -263,6 +268,54 @@ const DealsComponent = ({
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     setPage(page);
   };
+
+  const handleAddBookmark = async (entityId: number) => {
+    setDealsData(prevDeals => {
+      const formattedDeals = prevDeals.deals.map(deal => {
+        if (deal.id === entityId) {
+          return { ...deal, isInBookmarks: true };
+        }
+        return deal;
+      });
+      return { ...prevDeals, deals: formattedDeals };
+    });
+    const response = await addDealToBookmark({ entityId });
+    if ('error' in response) {
+      setDealsData(prevDeals => {
+        const formattedDeals = prevDeals.deals.map(deal => {
+          if (deal.id === entityId) {
+            return { ...deal, isInBookmarks: false };
+          }
+          return deal;
+        });
+        return { ...prevDeals, deals: formattedDeals };
+      });
+    }
+  };
+
+  const handleDeleteBookmark = async (entityId: number) => {
+    setDealsData(prevDeals => {
+      const formattedDeals = prevDeals.deals.map(deal => {
+        if (deal.id === entityId) {
+          return { ...deal, isInBookmarks: false };
+        }
+        return deal;
+      });
+      return { ...prevDeals, deals: formattedDeals };
+    });
+    const response = await deleteDealFromBookmarks({ entityId });
+    if ('error' in response) {
+      setDealsData(prevDeals => {
+        const formattedDeals = prevDeals.deals.map(deal => {
+          if (deal.id === entityId) {
+            return { ...deal, isInBookmarks: true };
+          }
+          return deal;
+        });
+        return { ...prevDeals, deals: formattedDeals };
+      });
+    }
+  };
   return (
     <>
       <ColumnsComponent
@@ -332,6 +385,9 @@ const DealsComponent = ({
                   key={deal.id}
                   deal={deal}
                   variant={DealCardVariant.Large}
+                  isBookmarked={deal.isInBookmarks}
+                  addBookmark={handleAddBookmark}
+                  deleteBookmark={handleDeleteBookmark}
                 />
               ))}
             </Box>

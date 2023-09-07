@@ -7,6 +7,8 @@ import Link from 'next/link';
 import PlaceholderImage from './PlaceholderImage';
 import { DEFAULT_DEAL_IMAGE } from '@/config/constants';
 import EllipsisText from './EllipsisText';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 export enum DealCardVariant {
   Base = 'base',
@@ -16,14 +18,30 @@ export enum DealCardVariant {
 interface DealCardProps extends BoxProps {
   variant?: DealCardVariant;
   deal: DealInterface;
+  isBookmarked?: boolean;
+  addBookmark?: (value: number) => void;
+  deleteBookmark?: (value: number) => void;
 }
 
 const DealCard = ({
   variant = DealCardVariant.Base,
   deal,
+  isBookmarked,
+  addBookmark,
+  deleteBookmark,
   ...props
 }: DealCardProps) => {
   const classes = useDealCardStyles();
+  const handleAddBookmark = (value: number) => {
+    if (addBookmark) {
+      addBookmark(value);
+    }
+  };
+  const handleDeleteBookmark = (value: number) => {
+    if (deleteBookmark) {
+      deleteBookmark(value);
+    }
+  };
   return variant === DealCardVariant.Base ? (
     <Box
       sx={{
@@ -113,7 +131,17 @@ const DealCard = ({
             </Box>
           </Box>
           <div>
-            <i className="icon-Saved"></i>
+            {isBookmarked ? (
+              <BookmarkIcon
+                sx={classes.filledBookmarkIcon}
+                onClick={() => handleDeleteBookmark(deal.id)}
+              />
+            ) : (
+              <BookmarkBorderIcon
+                sx={classes.bookmarkIcon}
+                onClick={() => handleAddBookmark(deal.id)}
+              />
+            )}
           </div>
         </Box>
         <Box sx={classes.sponsorProperties}>

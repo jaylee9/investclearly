@@ -49,11 +49,6 @@ const useDealPageStyles = () => {
       '& p': {
         color: palette.text.secondary,
       },
-      '& .icon-Saved': {
-        fontSize: '24px',
-        color: palette.text.secondary,
-        cursor: 'pointer',
-      },
     },
     infoContent: {
       display: 'flex',
