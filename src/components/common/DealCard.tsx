@@ -32,6 +32,7 @@ const DealCard = ({
   ...props
 }: DealCardProps) => {
   const classes = useDealCardStyles();
+
   const handleAddBookmark = (value: number) => {
     if (addBookmark) {
       addBookmark(value);
