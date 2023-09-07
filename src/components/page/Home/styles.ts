@@ -96,6 +96,8 @@ export const useGlobalSearchStyles = ({
     searchInputWrapper: {
       height: '100%',
       position: 'relative',
+      display: 'flex',
+      justifyContent: 'center',
     },
     searchInput: {
       width: {
