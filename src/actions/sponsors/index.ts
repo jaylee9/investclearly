@@ -89,3 +89,41 @@ export const getSponsor = async ({
     return { error: errorMessage };
   }
 };
+
+export const addSponsorToBookmark = async ({
+  entityId,
+}: {
+  entityId: number;
+}): Promise<{ message: string } | { error: string }> => {
+  try {
+    const response: { message: string } = await api
+      .post('bookmarks', { json: { entityType: 'Sponsor', entityId } })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to save sponsor';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};
+
+export const deleteSponsorFromBookmarks = async ({
+  entityId,
+}: {
+  entityId: number;
+}): Promise<{ message: string } | { error: string }> => {
+  try {
+    const stringifiedParameters = queryString.stringify({
+      entityId,
+      entityType: 'Sponsor',
+    });
+    const response: { message: string } = await api
+      .delete('bookmarks', { searchParams: stringifiedParameters })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to delete sponsor from saved';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};

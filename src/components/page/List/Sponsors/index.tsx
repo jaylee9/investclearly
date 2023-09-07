@@ -6,7 +6,12 @@ import CustomCheckbox from '@/components/common/CustomCheckbox';
 import { useSponsorComponentStyles } from './styles';
 import filterDifferences from '@/helpers/filterDifferences';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
-import { GetAllSponsorsResponse, getAllSponsors } from '@/actions/sponsors';
+import {
+  GetAllSponsorsResponse,
+  addSponsorToBookmark,
+  deleteSponsorFromBookmarks,
+  getAllSponsors,
+} from '@/actions/sponsors';
 import { useQuery } from 'react-query';
 import Loading from '@/components/common/Loading';
 import SponsorCard, {
@@ -199,6 +204,55 @@ const SponsorsComponent = ({
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     setPage(page);
   };
+
+  const handleAddBookmark = async (entityId: number) => {
+    setSponsorsData(prevSponsors => {
+      const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
+        if (sponsor.id === entityId) {
+          return { ...sponsor, isInBookmarks: true };
+        }
+        return sponsor;
+      });
+      return { ...prevSponsors, sponsors: formattedSponsors };
+    });
+    const response = await addSponsorToBookmark({ entityId });
+    if ('error' in response) {
+      setSponsorsData(prevSponsors => {
+        const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
+          if (sponsor.id === entityId) {
+            return { ...sponsor, isInBookmarks: false };
+          }
+          return sponsor;
+        });
+        return { ...prevSponsors, deals: formattedSponsors };
+      });
+    }
+  };
+
+  const handleDeleteBookmark = async (entityId: number) => {
+    setSponsorsData(prevSponsors => {
+      const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
+        if (sponsor.id === entityId) {
+          return { ...sponsor, isInBookmarks: false };
+        }
+        return sponsor;
+      });
+      return { ...prevSponsors, sponsors: formattedSponsors };
+    });
+    const response = await deleteSponsorFromBookmarks({ entityId });
+    if ('error' in response) {
+      setSponsorsData(prevSponsors => {
+        const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
+          if (sponsor.id === entityId) {
+            return { ...sponsor, isInBookmarks: true };
+          }
+          return sponsor;
+        });
+        return { ...prevSponsors, deals: formattedSponsors };
+      });
+    }
+  };
+
   return (
     <ColumnsComponent
       count={sponsorsData.total}
@@ -281,6 +335,9 @@ const SponsorsComponent = ({
                 key={sponsor.id}
                 sponsor={sponsor}
                 variant={SponsorCardVariant.Large}
+                isBookmarked={sponsor.isInBookmarks}
+                addBookmark={handleAddBookmark}
+                deleteBookmark={handleDeleteBookmark}
               />
             ))}
           </Box>

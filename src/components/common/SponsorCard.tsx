@@ -6,6 +6,8 @@ import PlaceholderImage from './PlaceholderImage';
 import Link from 'next/link';
 import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 import EllipsisText from './EllipsisText';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 export enum SponsorCardVariant {
   Base = 'base',
@@ -15,13 +17,30 @@ export enum SponsorCardVariant {
 interface SponsorCardProps extends BoxProps {
   variant?: SponsorCardVariant;
   sponsor: SponsorInterface;
+  isBookmarked?: boolean;
+  addBookmark?: (value: number) => void;
+  deleteBookmark?: (value: number) => void;
 }
 
 const SponsorCard = ({
   variant = SponsorCardVariant.Base,
   sponsor,
+  isBookmarked,
+  addBookmark,
+  deleteBookmark,
 }: SponsorCardProps) => {
   const classes = useSponsorCardStyles();
+
+  const handleAddBookmark = (value: number) => {
+    if (addBookmark) {
+      addBookmark(value);
+    }
+  };
+  const handleDeleteBookmark = (value: number) => {
+    if (deleteBookmark) {
+      deleteBookmark(value);
+    }
+  };
   return variant === SponsorCardVariant.Base ? (
     <Box sx={classes.baseWrapper}>
       <PlaceholderImage
@@ -82,7 +101,17 @@ const SponsorCard = ({
             </Box>
           </Box>
           <div>
-            <i className="icon-Saved"></i>
+            {isBookmarked ? (
+              <BookmarkIcon
+                sx={classes.filledBookmarkIcon}
+                onClick={() => handleDeleteBookmark(sponsor.id)}
+              />
+            ) : (
+              <BookmarkBorderIcon
+                sx={classes.bookmarkIcon}
+                onClick={() => handleAddBookmark(sponsor.id)}
+              />
+            )}
           </div>
         </Box>
         <Box sx={classes.sponsorProperties}>
