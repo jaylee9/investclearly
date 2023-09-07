@@ -1,12 +1,25 @@
+import { GlobalSearchVariant } from '@/components/page/Home/GlobalSearch/GlobalSearch';
 import theme from '@/config/theme';
 import { HeaderType } from '@/hooks/useHeaderProps';
 
 interface HeaderStylesProps {
   type?: HeaderType;
   isShadow?: boolean;
+  variant?: GlobalSearchVariant;
+  isSticky?: boolean;
 }
 
-const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
+const getStyles = ({
+  type = 'dark',
+  isShadow,
+  variant,
+  isSticky,
+}: HeaderStylesProps) => {
+  const rootPositionLightVariant = type?.toString().includes('light')
+    ? 'absolute'
+    : 'initial';
+  const rootPosition = isSticky ? 'sticky' : rootPositionLightVariant;
+
   return {
     root: {
       display: 'flex',
@@ -22,6 +35,10 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
       boxShadow: isShadow ? theme.customShadows.header : 'none',
       background: type.includes('search') ? theme.palette.common.white : '',
       zIndex: 1,
+      position: rootPosition,
+      top: 0,
+      right: 0,
+      width: '100%',
     },
     dealsPopover: {
       display: 'flex',
@@ -129,6 +146,11 @@ const getStyles = ({ type = 'dark', isShadow }: HeaderStylesProps) => {
     leftSideWrapper: {
       display: 'flex',
       gap: '32px',
+      height: '44px',
+      alignItems: 'center',
+      width: variant === GlobalSearchVariant.SMALL ? '100%' : 'auto',
+      justifyContent:
+        variant === GlobalSearchVariant.SMALL ? 'space-between' : 'flex-start',
     },
     avatarWrapper: {
       cursor: 'pointer',

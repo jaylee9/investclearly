@@ -1,6 +1,6 @@
 import { useHeadBlockStyles } from './styles';
 import { Box, Typography } from '@mui/material';
-import GlobalSearch from './GlobalSearch';
+import GlobalSearch from './GlobalSearch/GlobalSearch';
 import { GlobalSearchResponse } from '@/actions/common';
 
 interface HeadBlockProps {

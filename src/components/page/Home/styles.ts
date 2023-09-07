@@ -1,4 +1,5 @@
 import theme from '@/config/theme';
+import { GlobalSearchVariant } from './GlobalSearch/GlobalSearch';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { HeaderType } from '@/hooks/useHeaderProps';
 
@@ -49,19 +50,48 @@ export const useHeadBlockStyles = () => {
 };
 
 export const useGlobalSearchStyles = ({
+  variant,
+  isMobileSearchInput,
   type = 'light',
 }: {
+  variant: GlobalSearchVariant;
+  isMobileSearchInput?: boolean;
   type?: HeaderType;
 }) => {
+  const rootWidthMobile = isMobileSearchInput ? '100%' : 'max-content';
+  const rootWidth =
+    variant === GlobalSearchVariant.SMALL
+      ? rootWidthMobile
+      : { xs: '100%', lg: 'auto' };
+  const rootMaxWidth =
+    (type.includes('dark') && { xs: '100%', md: '320px' }) || '100%';
+  const rootMinWidth =
+    (type.includes('dark') && {
+      xs: isMobileSearchInput ? '100%' : '',
+      md: '320px',
+    }) ||
+    '100%';
+  const rootHeight =
+    (type.includes('dark') && '44px') ||
+    (type.includes('light') && '56px') ||
+    '';
+  const rootPosition = {
+    xs:
+      (type.includes('dark') && 'initial') ||
+      (type.includes('light') && 'absolute'),
+    lg: 'initial',
+  };
+  const rootBottom =
+    (type.includes('dark') && 0) || (type.includes('light') && '-25px') || '';
+
   return {
     root: {
-      width: { xs: '100%', lg: 'auto' },
-      height:
-        (type.includes('dark') && '44px') ||
-        (type.includes('light') && '56px') ||
-        '',
-      position: { xs: 'absolute', lg: 'initial' },
-      bottom: '-25px',
+      width: rootWidth,
+      maxWidth: rootMaxWidth,
+      minWidth: rootMinWidth,
+      height: rootHeight,
+      position: rootPosition,
+      bottom: rootBottom,
     },
     searchInputWrapper: {
       height: '100%',
@@ -94,11 +124,13 @@ export const useGlobalSearchStyles = ({
       overflow: 'auto',
       maxHeight: '410px',
       background: theme.palette.common.white,
-      width: {
-        xs: 'calc(100vw - 32px)',
-        md: 'calc(100vw - 80px)',
-        lg: '736px',
-      },
+      width:
+        (type.includes('dark') && '100%') ||
+        (type.includes('light') && {
+          xs: 'calc(100vw - 32px)',
+          md: 'calc(100vw - 80px)',
+          lg: '736px',
+        }),
       margin: '0 auto',
       borderRadius: '16px',
       border: `1px solid ${theme.palette.background.paper}`,
@@ -165,8 +197,9 @@ export const useGlobalSearchStyles = ({
     noResults: {
       color: theme.palette.text.secondary,
     },
-    baseSearchInput: {
-      marginBottom: '8px',
+    globalSearchMobileInputWrapper: {
+      display: 'flex',
+      justifyContent: 'center',
     },
   };
 };

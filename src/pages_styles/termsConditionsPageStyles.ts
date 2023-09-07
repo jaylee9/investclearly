@@ -4,7 +4,7 @@ const useTermsConditionPageStyles = () => {
   const { palette, customShadows } = theme;
   return {
     root: {
-      padding: '32px 0px',
+      padding: { xs: '16px', lg: '32px 0px' },
       display: 'flex',
       justifyContent: 'center',
     },
@@ -19,6 +19,11 @@ const useTermsConditionPageStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       gap: '40px',
+    },
+    contentWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '24px',
     },
     mainTitle: {
       fontWeight: 600,

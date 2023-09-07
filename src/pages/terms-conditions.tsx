@@ -32,16 +32,12 @@ const TermsConditionsPage = () => {
                 Vitae placerat sit sollicitudin tellus.
               </Typography>
             </Box>
-            <Box>
+            <Box sx={classes.contentWrapper}>
               <Box>
                 <Typography variant="h4" sx={classes.blockTitle}>
                   1.Definitions
                 </Typography>
-                <Typography
-                  variant="body1"
-                  sx={classes.text}
-                  marginBottom="40px"
-                >
+                <Typography variant="body1" sx={classes.text}>
                   Lorem ipsum dolor sit amet consectetur. Nisi orci tincidunt
                   sed molestie eget enim rhoncus morbi molestie. Augue varius
                   arcu accumsan tincidunt pretium a suspendisse et pellentesque.
@@ -111,16 +107,12 @@ const TermsConditionsPage = () => {
                 </Box>
               </Box>
             </Box>
-            <Box>
+            <Box sx={classes.contentWrapper}>
               <Box>
                 <Typography variant="h4" sx={classes.blockTitle}>
                   1.Definitions
                 </Typography>
-                <Typography
-                  variant="body1"
-                  sx={classes.text}
-                  marginBottom="40px"
-                >
+                <Typography variant="body1" sx={classes.text}>
                   Lorem ipsum dolor sit amet consectetur. Nisi orci tincidunt
                   sed molestie eget enim rhoncus morbi molestie. Augue varius
                   arcu accumsan tincidunt pretium a suspendisse et pellentesque.

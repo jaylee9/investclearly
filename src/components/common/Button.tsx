@@ -8,7 +8,7 @@ import { useButtonStyles } from './styles';
 import { CSSProperties } from 'react';
 
 interface IButtonProps extends Omit<MUIButtonProps, 'color' | 'variant'> {
-  variant?: 'main' | 'secondary' | 'tertiary' | 'white' | 'auth';
+  variant?: 'main' | 'secondary' | 'tertiary' | 'white' | 'auth' | 'dark';
   color?: 'primary' | 'error';
   customStyles?: CSSProperties;
   sxCustomStyles?: SxProps<Theme>;
