@@ -353,6 +353,16 @@ export const useDealCardStyles = () => {
         color: palette.primary.light,
       },
     },
+    bookmarkIcon: {
+      color: palette.text.secondary,
+      cursor: 'pointer',
+      width: '24px',
+    },
+    filledBookmarkIcon: {
+      color: palette.primary.light,
+      cursor: 'pointer',
+      width: '24px',
+    },
   };
 };
 
