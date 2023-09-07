@@ -1,13 +1,15 @@
 import CustomAccordion from '@/components/common/Accordion';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
 import { RATINGS } from '@/config/constants';
-import { Box, Typography } from '@mui/material';
-import { useState } from 'react';
-import { useSponsorsFiltersStyles } from './styles';
+import { Box, Fade, Typography } from '@mui/material';
+import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { useSponsorComponentStyles, useSponsorsFiltersStyles } from './styles';
 import { Regions } from '@/backend/constants/enums/regions';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import Button from '@/components/common/Button';
 import theme from '@/config/theme';
+import { Close } from '@mui/icons-material';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 
 export interface ISponsorFilters {
   ratings?: number[];
@@ -17,19 +19,24 @@ export interface ISponsorFilters {
 }
 
 interface SponsorsFiltersProps {
-  setFilters: React.Dispatch<React.SetStateAction<ISponsorFilters>>;
+  setFilters: Dispatch<SetStateAction<ISponsorFilters>>;
   filters: ISponsorFilters;
   handleApplyFilters: () => void;
   disabledApplyFilters: boolean;
+  isChangedFilters?: boolean;
+  handleClearFilters?: () => void;
 }
 
-const SponsorsFilters = ({
+export const SponsorsFilters: FC<SponsorsFiltersProps> = ({
   setFilters,
   filters,
   handleApplyFilters,
   disabledApplyFilters,
-}: SponsorsFiltersProps) => {
+  isChangedFilters,
+  handleClearFilters,
+}) => {
   const classes = useSponsorsFiltersStyles();
+  const { isDesktop } = useBreakpoints();
 
   const [showAll, setShowAll] = useState({
     asset_classes: false,
@@ -144,7 +151,17 @@ const SponsorsFilters = ({
           ))}
         </Box>
       </CustomAccordion>
-      <Box sx={classes.buttonWrapper}>
+      <Box sx={isDesktop ? classes.buttonWrapper : classes.mobileButtonWrapper}>
+        <Fade in={isChangedFilters}>
+          <Typography
+            sx={classes.mobileClearButton}
+            variant="body1"
+            color={theme.palette.primary.light}
+            onClick={handleClearFilters}
+          >
+            Clear filters
+          </Typography>
+        </Fade>
         <Button onClick={handleApplyFilters} disabled={disabledApplyFilters}>
           Apply filters
         </Button>
@@ -153,4 +170,55 @@ const SponsorsFilters = ({
   );
 };
 
-export default SponsorsFilters;
+interface SponsorsFiltersHeaderProps {
+  isChangedFilters: boolean;
+  handleClearFilters: () => void;
+  setFilters: Dispatch<SetStateAction<ISponsorFilters>>;
+  filters: ISponsorFilters;
+  onClose?: () => void;
+}
+
+export const SponsorsFiltersHeader: FC<SponsorsFiltersHeaderProps> = ({
+  isChangedFilters,
+  handleClearFilters,
+  setFilters,
+  filters,
+  onClose,
+}) => {
+  const classes = useSponsorComponentStyles();
+  const { isDesktop } = useBreakpoints();
+
+  return (
+    <Box sx={classes.filtersHeaderWrapper}>
+      <Box sx={classes.filtersHeaderTitleWrapper}>
+        <Typography variant="h5">Filters</Typography>
+        {isDesktop ? (
+          isChangedFilters && (
+            <Fade in={isChangedFilters}>
+              <Typography variant="body1" onClick={handleClearFilters}>
+                Clear filters
+              </Typography>
+            </Fade>
+          )
+        ) : (
+          <Button
+            variant="transparent"
+            onClick={onClose}
+            sxCustomStyles={classes.mobileHeaderIcon}
+          >
+            <Close />
+          </Button>
+        )}
+      </Box>
+      <Box>
+        <CustomCheckbox
+          onChange={e =>
+            setFilters({ ...filters, activelyRising: e.target.checked })
+          }
+          checked={filters.activelyRising}
+          label="Actively rising"
+        />
+      </Box>
+    </Box>
+  );
+};

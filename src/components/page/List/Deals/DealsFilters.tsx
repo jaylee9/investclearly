@@ -1,8 +1,8 @@
 import CustomAccordion from '@/components/common/Accordion';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
 import { RATINGS } from '@/config/constants';
-import { Box, Typography } from '@mui/material';
-import { useState } from 'react';
+import { Box, Fade, Typography } from '@mui/material';
+import { FC, useState } from 'react';
 import { useDealsFiltersStyles } from './styles';
 import CustomSlider from '@/components/common/Slider';
 import { Regions } from '@/backend/constants/enums/regions';
@@ -13,6 +13,9 @@ import { Exemptions } from '@/backend/constants/enums/exemptions';
 import Button from '@/components/common/Button';
 import { Regulations } from '@/backend/constants/enums/regulations';
 import { RangeData } from '@/actions/deals';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { Close } from '@mui/icons-material';
+import theme from '@/config/theme';
 
 interface Range {
   from: number;
@@ -40,15 +43,20 @@ interface DealsFiltersProps {
   handleApplyFilters: () => void;
   disabledApplyFilters: boolean;
   rangeData: RangeData;
+  isChangedFilters?: boolean;
+  handleClearFilters?: () => void;
 }
 
-const DealsFilters = ({
+export const DealsFilters: FC<DealsFiltersProps> = ({
   setFilters,
   filters,
   handleApplyFilters,
   disabledApplyFilters,
   rangeData,
-}: DealsFiltersProps) => {
+  isChangedFilters,
+  handleClearFilters,
+}) => {
+  const { isDesktop } = useBreakpoints();
   const classes = useDealsFiltersStyles();
 
   const [showAll, setShowAll] = useState({
@@ -311,7 +319,17 @@ const DealsFilters = ({
           ))}
         </Box>
       </CustomAccordion>
-      <Box sx={classes.buttonWrapper}>
+      <Box sx={isDesktop ? classes.buttonWrapper : classes.mobileButtonWrapper}>
+        <Fade in={isChangedFilters}>
+          <Typography
+            sx={classes.mobileClearButton}
+            variant="body1"
+            color={theme.palette.primary.light}
+            onClick={handleClearFilters}
+          >
+            Clear filters
+          </Typography>
+        </Fade>
         <Button onClick={handleApplyFilters} disabled={disabledApplyFilters}>
           Apply filters
         </Button>
@@ -320,4 +338,42 @@ const DealsFilters = ({
   );
 };
 
-export default DealsFilters;
+interface FilterDesktopHeaderProps {
+  isChangedFilters?: boolean;
+  handleClearFilters?: () => void;
+  onClose?: () => void;
+}
+
+export const DealsFiltersHeader: FC<FilterDesktopHeaderProps> = ({
+  isChangedFilters,
+  handleClearFilters,
+  onClose,
+}) => {
+  const { isDesktop } = useBreakpoints();
+  const classes = useDealsFiltersStyles();
+
+  return (
+    <Box sx={classes.mobileHeader}>
+      <Typography variant="h5" sx={classes.mobileHeaderTitle}>
+        Filters
+      </Typography>
+      {isDesktop ? (
+        isChangedFilters && (
+          <Fade in={isChangedFilters}>
+            <Typography variant="body1" onClick={handleClearFilters}>
+              Clear filters
+            </Typography>
+          </Fade>
+        )
+      ) : (
+        <Button
+          variant="transparent"
+          onClick={onClose}
+          customStyles={classes.mobileHeaderIcon}
+        >
+          <Close />
+        </Button>
+      )}
+    </Box>
+  );
+};

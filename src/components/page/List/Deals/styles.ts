@@ -32,11 +32,50 @@ export const useDealsFiltersStyles = () => {
       padding: '12px 16px',
       textAlign: 'end',
     },
+    mobileButtonWrapper: {
+      display: 'flex',
+      padding: '16px',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      position: 'fixed',
+      bottom: 0,
+      width: '100%',
+      backgroundColor: 'white',
+      borderTop: `1px solid ${palette.background.paper}`,
+    },
+    mobileClearButton: {
+      cursor: 'pointer',
+    },
+    mobileHeader: {
+      gap: '16px',
+      display: 'flex',
+      padding: '8px 16px',
+      alignItems: 'center',
+      backgroundColor: 'white',
+    },
+    mobileHeaderTitle: {
+      order: { xs: 1, lg: 0 },
+      margin: '8px 0',
+    },
+    mobileHeaderIcon: { padding: 0, minWidth: 'auto' },
   };
 };
 
 export const useDealsComponentStyles = () => {
   return {
+    filterMobileHeaderWrapper: {
+      gap: '8px',
+      width: '100%',
+      display: 'flex',
+      flexDirection: { xs: 'column', md: 'row' },
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    filterButton: {
+      gap: '8px',
+      width: { xs: '100%', md: 'auto' },
+      maxWidth: { xs: '311px', md: 'unset' },
+    },
     selectWrapper: {
       display: 'flex',
       alignItems: 'center',
@@ -67,15 +106,22 @@ export const useDealsComponentStyles = () => {
         cursor: 'pointer',
       },
     },
+    mobileFilterWrapper: {
+      height: '100%',
+      padding: '0 0 4.5rem',
+      background: 'white',
+      overflowY: 'auto',
+    },
   };
 };
 
 export const useColumnsComponentStyles = () => {
   return {
     root: {
-      display: 'flex',
+      display: 'grid',
+      gridTemplateColumns: { xs: '100%', lg: '25% 75%' },
       gap: '16px',
-      padding: '32px 48px',
+      padding: { xs: '16px', lg: '32px 48px' },
     },
     leftColumn: {
       flex: '25%',

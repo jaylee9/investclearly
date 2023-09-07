@@ -6,6 +6,7 @@ import PlaceholderImage from './PlaceholderImage';
 import Link from 'next/link';
 import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 import EllipsisText from './EllipsisText';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 
 export enum SponsorCardVariant {
   Base = 'base',
@@ -22,6 +23,8 @@ const SponsorCard = ({
   sponsor,
 }: SponsorCardProps) => {
   const classes = useSponsorCardStyles();
+  const { isMobile } = useBreakpoints();
+
   return variant === SponsorCardVariant.Base ? (
     <Box sx={classes.baseWrapper}>
       <PlaceholderImage
@@ -57,7 +60,12 @@ const SponsorCard = ({
         alt="sponsor image"
         width={96}
         height={96}
-        style={{ borderRadius: '1230px', maxHeight: '96px' }}
+        style={{
+          borderRadius: '1230px',
+          maxHeight: '96px',
+          width: isMobile ? '56px' : '96px',
+          height: isMobile ? '56px' : '96px',
+        }}
         defaultImage={DEFAULT_SPONSOR_IMAGE}
       />
       <Box sx={classes.largeContent}>
@@ -81,9 +89,9 @@ const SponsorCard = ({
               </Typography>
             </Box>
           </Box>
-          <div>
+          <Box sx={classes.sponsorSaved}>
             <i className="icon-Saved"></i>
-          </div>
+          </Box>
         </Box>
         <Box sx={classes.sponsorProperties}>
           <Box sx={classes.sponsorPropertiesColumn}>

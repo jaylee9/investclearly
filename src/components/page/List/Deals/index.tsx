@@ -3,9 +3,13 @@ import DealCard, { DealCardVariant } from '@/components/common/DealCard';
 import Loading from '@/components/common/Loading';
 import CustomPagination from '@/components/common/Pagination';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
-import DealsFilters, { IFilters } from './DealsFilters';
+import {
+  type IFilters,
+  DealsFilters,
+  DealsFiltersHeader,
+} from './DealsFilters';
 import BannerBlock from '@/components/page/Home/BannerBlock';
-import { Box, Fade, SelectChangeEvent, Typography } from '@mui/material';
+import { Box, Modal, SelectChangeEvent, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useRouter } from 'next/router';
@@ -14,6 +18,9 @@ import { useDealsComponentStyles } from './styles';
 import ColumnsComponent from '../ColumnsComponent';
 import filterDifferences from '@/helpers/filterDifferences';
 import { Regions } from '@/backend/constants/enums/regions';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
+import Button from '@/components/common/Button';
+import { FilterIcon } from '@/assets/components/FilterIcon';
 
 const sortOptions = [
   { label: 'Newest Deals', value: 'DESC' },
@@ -62,6 +69,8 @@ const DealsComponent = ({
 }: DealsComponentProps) => {
   const classes = useDealsComponentStyles();
   const router = useRouter();
+  const { isMobile, isDesktop } = useBreakpoints();
+  const [isDealsFilterMobile, setIsDealsFilterMobile] = useState(false);
   const [dealsData, setDealsData] = useState(dealsResponse);
   const [orderDirection, setOrderDirection] = useState<'DESC' | 'ASC'>('DESC');
   const handleChangeSelect = (e: SelectChangeEvent<unknown>) => {
@@ -160,6 +169,7 @@ const DealsComponent = ({
     setPage(1);
     setAppliedFilters(filters);
     refetch();
+    closeDealsFilterMobileHandler();
   };
 
   const handleClearFilters = () => {
@@ -263,37 +273,73 @@ const DealsComponent = ({
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     setPage(page);
   };
+
+  const closeDealsFilterMobileHandler = () => {
+    setIsDealsFilterMobile(false);
+  };
+
   return (
     <>
       <ColumnsComponent
         count={dealsData.total}
         leftColumnHeader={
-          <>
-            <Typography variant="h5">Filters</Typography>
-            {isChangedFilters && (
-              <Fade in={isChangedFilters}>
-                <Typography variant="body1" onClick={handleClearFilters}>
-                  Clear filters
-                </Typography>
-              </Fade>
-            )}
-          </>
+          isDesktop && (
+            <DealsFiltersHeader
+              isChangedFilters={isChangedFilters}
+              handleClearFilters={handleClearFilters}
+            />
+          )
         }
         leftColumnContent={
-          <DealsFilters
-            setFilters={setFilters}
-            filters={filters}
-            handleApplyFilters={handleApplyFilters}
-            disabledApplyFilters={!isDirtyFilters}
-            rangeData={dealsResponse.rangeData}
-          />
+          isDesktop && (
+            <DealsFilters
+              setFilters={setFilters}
+              filters={filters}
+              handleApplyFilters={handleApplyFilters}
+              disabledApplyFilters={!isDirtyFilters}
+              rangeData={dealsResponse.rangeData}
+            />
+          )
         }
         rightColumnHeaderTitle={
-          <>
-            <Typography variant="body1">
-              <span style={{ fontWeight: 600 }}>{dealsData.total} Deals</span>{' '}
-              found {!!searchValue && `for ${searchValue}`}
-            </Typography>
+          <Box sx={classes.filterMobileHeaderWrapper}>
+            {isDesktop ? (
+              <Typography variant="body1">
+                <span style={{ fontWeight: 600 }}>{dealsData.total} Deals</span>{' '}
+                found {!!searchValue && `for ${searchValue}`}
+              </Typography>
+            ) : (
+              <Button
+                variant="secondary"
+                sxCustomStyles={classes.filterButton}
+                onClick={() => setIsDealsFilterMobile(!isDealsFilterMobile)}
+              >
+                <FilterIcon />
+                Filters{' '}
+                {formattedAppliedFilters.length
+                  ? `+${formattedAppliedFilters.length}`
+                  : ''}
+              </Button>
+            )}
+            <Modal
+              open={isDealsFilterMobile}
+              onClose={closeDealsFilterMobileHandler}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={classes.mobileFilterWrapper}>
+                <DealsFiltersHeader onClose={closeDealsFilterMobileHandler} />
+                <DealsFilters
+                  setFilters={setFilters}
+                  filters={filters}
+                  handleApplyFilters={handleApplyFilters}
+                  disabledApplyFilters={!isDirtyFilters}
+                  isChangedFilters={isChangedFilters}
+                  handleClearFilters={handleClearFilters}
+                  rangeData={dealsResponse.rangeData}
+                />
+              </Box>
+            </Modal>
             <Box sx={classes.selectWrapper}>
               <Typography variant="body1">Sort by:</Typography>
               <Box sx={classes.selectContent}>
@@ -305,22 +351,24 @@ const DealsComponent = ({
                 />
               </Box>
             </Box>
-          </>
+          </Box>
         }
         rightColumnHeaderContent={
-          <>
-            {formattedAppliedFilters.map((filter, index) => (
-              <Box sx={classes.appliedFilter} key={index}>
-                <Typography variant="caption">{filter.label}</Typography>
-                <span
-                  className="icon-Cross"
-                  onClick={() =>
-                    handleFilterRemove(filter.label, filter.key, filter.type)
-                  }
-                />
-              </Box>
-            ))}
-          </>
+          isDesktop && (
+            <>
+              {formattedAppliedFilters.map((filter, index) => (
+                <Box sx={classes.appliedFilter} key={index}>
+                  <Typography variant="caption">{filter.label}</Typography>
+                  <span
+                    className="icon-Cross"
+                    onClick={() =>
+                      handleFilterRemove(filter.label, filter.key, filter.type)
+                    }
+                  />
+                </Box>
+              ))}
+            </>
+          )
         }
         rightColumnContent={
           isLoading ? (
@@ -339,9 +387,11 @@ const DealsComponent = ({
         }
         paginationComponent={
           <>
-            <Typography variant="caption">
-              Showing {firstItem}-{lastItem} of {dealsData.total} results
-            </Typography>
+            {!isMobile && (
+              <Typography variant="caption">
+                Showing {firstItem}-{lastItem} of {dealsData.total} results
+              </Typography>
+            )}
             <CustomPagination
               count={dealsData.lastPage}
               page={page}

@@ -116,7 +116,14 @@ export const useCheckboxStyles = ({ error }: UseCheckboxProps) => {
 
 interface UseButtonStylesProps {
   color: 'primary' | 'error';
-  variant: 'main' | 'secondary' | 'tertiary' | 'white' | 'auth' | 'dark';
+  variant:
+    | 'main'
+    | 'secondary'
+    | 'tertiary'
+    | 'white'
+    | 'auth'
+    | 'dark'
+    | 'transparent';
 }
 
 const disabledButtonBackground = {
@@ -124,6 +131,7 @@ const disabledButtonBackground = {
   secondary: palette.background.default,
   tertiary: 'transparent',
   dark: 'transparent',
+  transparent: 'transparent',
   white: palette.common.white,
   auth: 'transparent',
 };
@@ -132,6 +140,7 @@ const disabledButtonColor = {
   secondary: palette.text.disabled,
   tertiary: palette.text.disabled,
   dark: palette.text.disabled,
+  transparent: palette.text.disabled,
   white: palette.common.white,
   auth: palette.text.disabled,
 };
@@ -179,6 +188,13 @@ export const useButtonStyles = ({ color, variant }: UseButtonStylesProps) => {
       },
       '&:active': {
         color: palette['text'].disabled,
+      },
+    },
+    transparent: {
+      background: 'transparent',
+      color: palette['text'].secondary,
+      '&:hover': {
+        background: 'transparent',
       },
     },
     white: {
@@ -246,6 +262,7 @@ export const useDealCardStyles = () => {
     },
     largeRoot: {
       display: 'flex',
+      flexDirection: { xs: 'column', md: 'row' },
       borderRadius: '12px',
       width: '100%',
       background: palette.common.white,
@@ -257,7 +274,7 @@ export const useDealCardStyles = () => {
       },
     },
     largeContent: {
-      padding: '24px 24px 24px 0px',
+      padding: { xs: '16px 20px', md: '24px 24px 24px 0px' },
       boxSizing: 'border-box',
       width: '100%',
     },
@@ -269,6 +286,13 @@ export const useDealCardStyles = () => {
         fontSize: '24px',
         color: palette.text.secondary,
         cursor: 'pointer',
+      },
+      '& h5': {
+        fontWeight: 600,
+        maxWidth: { xs: '60vw', md: '50vw', lg: '40vw', xl: '700px' },
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
       },
     },
     largeHeaderLeftColumn: {
@@ -310,10 +334,12 @@ export const useDealCardStyles = () => {
       },
     },
     sponsorProperties: {
+      gap: '8px',
       display: 'flex',
+      flexDirection: { xs: 'column', md: 'row' },
     },
     sponsorPropertiesColumn: {
-      width: '50%',
+      width: { xs: '100%', md: '50%' },
       display: 'flex',
       flexDirection: 'column',
       gap: '8px',
@@ -465,6 +491,7 @@ export const useSliderStyles = () => {
 export const usePaginationStyles = () => {
   return {
     root: {
+      margin: { xs: '0 auto', md: 'unset' },
       '& .MuiPaginationItem-page.Mui-selected': {
         color: theme.palette.common.black,
         backgroundColor: 'transparent',
@@ -566,12 +593,14 @@ export const useSponsorCardStyles = () => {
     },
     largeRoot: {
       display: 'flex',
+      flexDirection: { xs: 'column', md: 'row' },
       borderRadius: '12px',
       width: '100%',
       background: palette.common.white,
       gap: '16px',
       alignItems: 'stretch',
       padding: '24px',
+      position: { xs: 'relative', md: 'initial' },
     },
     largeContent: {
       boxSizing: 'border-box',
@@ -609,6 +638,11 @@ export const useSponsorCardStyles = () => {
       gap: '8px',
       color: palette.text.secondary,
     },
+    sponsorSaved: {
+      position: { xs: 'absolute', md: 'initial' },
+      top: '16px',
+      right: '16px',
+    },
     sponsorRating: {
       display: 'flex',
       gap: '4px',
@@ -625,10 +659,12 @@ export const useSponsorCardStyles = () => {
       },
     },
     sponsorProperties: {
+      gap: '8px',
       display: 'flex',
+      flexDirection: { xs: 'column', md: 'row' },
     },
     sponsorPropertiesColumn: {
-      width: '50%',
+      width: { xs: '100%', md: '50%' },
       display: 'flex',
       flexDirection: 'column',
       gap: '8px',

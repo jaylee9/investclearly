@@ -1,8 +1,11 @@
-import { Box, Fade, Typography } from '@mui/material';
+import { Box, Modal, Typography } from '@mui/material';
 import ColumnsComponent from '../ColumnsComponent';
-import SponsorsFilters, { ISponsorFilters } from './SponsorsFilters';
+import {
+  type ISponsorFilters,
+  SponsorsFilters,
+  SponsorsFiltersHeader,
+} from './SponsorsFilters';
 import { useEffect, useState } from 'react';
-import CustomCheckbox from '@/components/common/CustomCheckbox';
 import { useSponsorComponentStyles } from './styles';
 import filterDifferences from '@/helpers/filterDifferences';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
@@ -13,6 +16,9 @@ import SponsorCard, {
   SponsorCardVariant,
 } from '@/components/common/SponsorCard';
 import CustomPagination from '@/components/common/Pagination';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { FilterIcon } from '@/assets/components/FilterIcon';
+import Button from '@/components/common/Button';
 
 const sortOptions = [
   { label: 'Newest Sponsors', value: 'DESC' },
@@ -42,6 +48,7 @@ const SponsorsComponent = ({
   setSponsorsCount,
 }: SponsorsComponentProps) => {
   const classes = useSponsorComponentStyles();
+  const { isMobile, isDesktop } = useBreakpoints();
   const defaultFilters = {
     ratings: [],
     primaryAssetClasses: [],
@@ -49,6 +56,7 @@ const SponsorsComponent = ({
     activelyRising: false,
   };
   const [sponsorsData, setSponsorsData] = useState(sponsorsResponse);
+  const [isSponsorsFilterMobile, setIsSponsorsFilterMobile] = useState(false);
   const [filters, setFilters] = useState<ISponsorFilters>(defaultFilters);
   const [appliedFilters, setAppliedFilters] =
     useState<ISponsorFilters>(defaultFilters);
@@ -180,6 +188,7 @@ const SponsorsComponent = ({
     setPage(1);
     setAppliedFilters(filters);
     refetch();
+    closeSponsorsFilterMobileHandler();
   };
 
   const handleClearFilters = () => {
@@ -199,48 +208,80 @@ const SponsorsComponent = ({
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     setPage(page);
   };
+
+  const closeSponsorsFilterMobileHandler = () => {
+    setIsSponsorsFilterMobile(false);
+  };
+
   return (
     <ColumnsComponent
       count={sponsorsData.total}
       leftColumnHeader={
-        <Box sx={classes.filtersHeaderWrapper}>
-          <Box sx={classes.filtersHeaderTitleWrapper}>
-            <Typography variant="h5">Filters</Typography>
-            {isChangedFilters && (
-              <Fade in={isChangedFilters}>
-                <Typography variant="body1" onClick={handleClearFilters}>
-                  Clear filters
-                </Typography>
-              </Fade>
-            )}
-          </Box>
-          <Box>
-            <CustomCheckbox
-              onChange={e =>
-                setFilters({ ...filters, activelyRising: e.target.checked })
-              }
-              checked={filters.activelyRising}
-              label="Actively rising"
-            />
-          </Box>
-        </Box>
+        isDesktop && (
+          <SponsorsFiltersHeader
+            isChangedFilters={isChangedFilters}
+            handleClearFilters={handleClearFilters}
+            setFilters={setFilters}
+            filters={filters}
+          />
+        )
       }
       leftColumnContent={
-        <SponsorsFilters
-          filters={filters}
-          setFilters={setFilters}
-          handleApplyFilters={handleApplyFilters}
-          disabledApplyFilters={!isDirtyFilters}
-        />
+        isDesktop && (
+          <SponsorsFilters
+            filters={filters}
+            setFilters={setFilters}
+            handleApplyFilters={handleApplyFilters}
+            disabledApplyFilters={!isDirtyFilters}
+          />
+        )
       }
       rightColumnHeaderTitle={
-        <>
-          <Typography variant="body1">
-            <span style={{ fontWeight: 600 }}>
-              {sponsorsData.total} Sponsors
-            </span>{' '}
-            found {!!searchValue && `for ${searchValue}`}
-          </Typography>
+        <Box sx={classes.filterMobileHeaderWrapper}>
+          {isDesktop ? (
+            <Typography variant="body1">
+              <span style={{ fontWeight: 600 }}>
+                {sponsorsData.total} Sponsors
+              </span>{' '}
+              found {!!searchValue && `for ${searchValue}`}
+            </Typography>
+          ) : (
+            <Button
+              variant="secondary"
+              sxCustomStyles={classes.filterButton}
+              onClick={() => setIsSponsorsFilterMobile(!isSponsorsFilterMobile)}
+            >
+              <FilterIcon />
+              Filters{' '}
+              {formattedAppliedFilters.length
+                ? `+${formattedAppliedFilters.length}`
+                : ''}
+            </Button>
+          )}
+          <Modal
+            open={isSponsorsFilterMobile}
+            onClose={closeSponsorsFilterMobileHandler}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={classes.mobileFilterWrapper}>
+              <SponsorsFiltersHeader
+                isChangedFilters={isChangedFilters}
+                handleClearFilters={handleClearFilters}
+                setFilters={setFilters}
+                filters={filters}
+                onClose={closeSponsorsFilterMobileHandler}
+              />
+              <SponsorsFilters
+                setFilters={setFilters}
+                filters={filters}
+                handleApplyFilters={handleApplyFilters}
+                disabledApplyFilters={!isDirtyFilters}
+                isChangedFilters={isChangedFilters}
+                handleClearFilters={handleClearFilters}
+              />
+            </Box>
+          </Modal>
           <Box sx={classes.selectWrapper}>
             <Typography variant="body1">Sort by:</Typography>
             <Box sx={classes.selectContent}>
@@ -254,22 +295,24 @@ const SponsorsComponent = ({
               />
             </Box>
           </Box>
-        </>
+        </Box>
       }
       rightColumnHeaderContent={
-        <>
-          {formattedAppliedFilters.map((filter, index) => (
-            <Box sx={classes.appliedFilter} key={index}>
-              <Typography variant="caption">{filter.label}</Typography>
-              <span
-                className="icon-Cross"
-                onClick={() =>
-                  handleFilterRemove(filter.label, filter.key, filter.type)
-                }
-              />
-            </Box>
-          ))}
-        </>
+        isDesktop && (
+          <>
+            {formattedAppliedFilters.map((filter, index) => (
+              <Box sx={classes.appliedFilter} key={index}>
+                <Typography variant="caption">{filter.label}</Typography>
+                <span
+                  className="icon-Cross"
+                  onClick={() =>
+                    handleFilterRemove(filter.label, filter.key, filter.type)
+                  }
+                />
+              </Box>
+            ))}
+          </>
+        )
       }
       rightColumnContent={
         isLoading ? (
@@ -288,9 +331,11 @@ const SponsorsComponent = ({
       }
       paginationComponent={
         <>
-          <Typography variant="caption">
-            Showing {firstItem}-{lastItem} of {sponsorsData.total} results
-          </Typography>
+          {!isMobile && (
+            <Typography variant="caption">
+              Showing {firstItem}-{lastItem} of {sponsorsData.total} results
+            </Typography>
+          )}
           <CustomPagination
             count={sponsorsData.lastPage}
             page={page}

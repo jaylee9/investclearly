@@ -5,6 +5,7 @@ import Layout from '@/components/common/Layout';
 import DealsComponent from '@/components/page/List/Deals';
 import SponsorsComponent from '@/components/page/List/Sponsors';
 import theme from '@/config/theme';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
@@ -17,6 +18,7 @@ interface ListPageProps {
 
 const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
   const router = useRouter();
+  const { isDesktop } = useBreakpoints();
   const [searchValue, setSearchValue] = useState(
     (router.query.search as string) || ''
   );
@@ -75,7 +77,7 @@ const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
         value={router.query.type as string}
         customStyles={{
           background: theme.palette.common.white,
-          padding: '0px 48px',
+          padding: isDesktop ? '0px 48px' : '',
         }}
       />
     </Layout>
