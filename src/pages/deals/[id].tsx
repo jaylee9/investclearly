@@ -6,11 +6,11 @@ import {
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import Button from '@/components/common/Button';
 import Layout from '@/components/common/Layout';
-import PlaceholderImage from '@/components/common/PlaceholderImage';
 import SkeletonImage from '@/components/common/SkeletonImage';
 import AddDealModal from '@/components/page/Deal/Modals/AddDeal';
-import ClaimDealModal from '@/components/page/Deal/Modals/ClaimDeal';
 import SuggestEditModal from '@/components/page/Deal/Modals/SuggestEdit';
+import { DealSponsor } from '@/components/page/Deal/Sponsor';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealPageStyles from '@/pages_styles/dealPageStyles';
 import { Box, Typography } from '@mui/material';
@@ -24,22 +24,31 @@ interface DealPageProps {
   deal: DealInterface;
 }
 
+export interface OpenModalsProps {
+  claimDeal: boolean;
+  addDeal: boolean;
+  suggestEdit: boolean;
+}
+
+export type ModalKeyType = 'claimDeal' | 'addDeal' | 'suggestEdit';
+
 const DealPage = ({ deal }: DealPageProps) => {
   const classes = useDealPageStyles();
+  const { isDesktop } = useBreakpoints();
   const [isInBookmarks, setIsInBookmarks] = useState(deal.isInBookmarks);
-  const [openModals, setOpenModals] = useState({
+  const [openModals, setOpenModals] = useState<OpenModalsProps>({
     claimDeal: false,
     addDeal: false,
     suggestEdit: false,
   });
 
-  const handleOpenModal = (key: 'claimDeal' | 'addDeal' | 'suggestEdit') => {
+  const handleOpenModal = (key: ModalKeyType) => {
     setOpenModals(prevModals => {
       return { ...prevModals, [key]: true };
     });
   };
 
-  const handleCloseModal = (key: 'claimDeal' | 'addDeal' | 'suggestEdit') => {
+  const handleCloseModal = (key: ModalKeyType) => {
     setOpenModals(prevModals => {
       return { ...prevModals, [key]: false };
     });
@@ -51,7 +60,6 @@ const DealPage = ({ deal }: DealPageProps) => {
     isSignIn: true,
     isSearch: true,
   });
-  const defaultSponsorImage = '/assets/Sponsor-placeholder.png';
 
   const handleAddBookmark = async (entityId: number) => {
     setIsInBookmarks(true);
@@ -147,6 +155,15 @@ const DealPage = ({ deal }: DealPageProps) => {
               </Box>
             </Box>
 
+            {!isDesktop && (
+              <DealSponsor
+                deal={deal}
+                openModals={openModals}
+                handleOpenModal={handleOpenModal}
+                handleCloseModal={handleCloseModal}
+              />
+            )}
+
             <Box sx={classes.overview}>
               <Box sx={classes.overviewHeader}>
                 <Typography variant="h3">Overview</Typography>
@@ -193,43 +210,14 @@ const DealPage = ({ deal }: DealPageProps) => {
           </Box>
 
           <Box sx={classes.rightColumn}>
-            <Box>
-              {!deal.sponsor ? (
-                <Box sx={classes.textWithButton}>
-                  <Typography variant="body1">
-                    Sponsor is not currently aligned.
-                  </Typography>
-                  <Button onClick={() => handleOpenModal('claimDeal')}>
-                    Claim deal
-                  </Button>
-                  <ClaimDealModal
-                    open={openModals.claimDeal}
-                    handleClose={() => handleCloseModal('claimDeal')}
-                    onSubmit={data => console.log(data)}
-                  />
-                </Box>
-              ) : (
-                <Box sx={classes.sponsor}>
-                  <PlaceholderImage
-                    alt="sponsor avatar"
-                    width={58}
-                    height={58}
-                    src={deal.sponsor.businessAvatar as string}
-                    defaultImage={defaultSponsorImage}
-                  />
-                  <Box>
-                    <Typography variant="h5">
-                      {deal.sponsor.legalName}
-                    </Typography>
-                    <Typography variant="body1" sx={classes.sponsorRating}>
-                      <i className="icon-Star"></i>
-                      {deal.sponsor.avgTotalRating}{' '}
-                      <span>({deal.sponsor.reviewsCount})</span>
-                    </Typography>
-                  </Box>
-                </Box>
-              )}
-            </Box>
+            {isDesktop && (
+              <DealSponsor
+                deal={deal}
+                openModals={openModals}
+                handleOpenModal={handleOpenModal}
+                handleCloseModal={handleCloseModal}
+              />
+            )}
 
             <Box sx={classes.sponsorInfo}>
               <Box sx={classes.sponsorInfoRow}>

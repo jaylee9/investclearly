@@ -4,13 +4,14 @@ const useDealPageStyles = () => {
   const { palette } = theme;
   return {
     root: {
-      padding: '0px 48px 32px',
+      padding: { xs: 0, md: '0 16px', lg: '0 48px 32px' },
       display: 'flex',
       gap: '16px',
+      flexDirection: { xs: 'column', lg: 'row' },
     },
     imageWrapper: {
-      marginBottom: '40px',
-      padding: '0px 48px',
+      marginBottom: { xs: '16px', lg: '40px' },
+      padding: { xs: 0, md: '0 16px', lg: '0 48px' },
       '& img': {
         width: '100%',
         objectFit: 'cover',
@@ -20,22 +21,23 @@ const useDealPageStyles = () => {
       },
     },
     leftColumn: {
-      width: '78%',
+      width: { xs: '100%', lg: '78%' },
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
     },
     rightColumn: {
-      width: '22%',
+      width: { xs: '100%', lg: '22%' },
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
+      marginBottom: { xs: '32px', lg: 0 },
     },
     info: {
       width: '100%',
       background: palette.common.white,
-      padding: '40px 40px 0px',
-      borderRadius: '12px',
+      padding: { xs: '24px 16px 0', lg: '40px 40px 0px' },
+      borderRadius: { xs: 'unset', md: '12px' },
     },
     infoHeader: {
       display: 'flex',
@@ -52,8 +54,9 @@ const useDealPageStyles = () => {
     },
     infoContent: {
       display: 'flex',
+      flexDirection: { xs: 'column', md: 'row' },
       justifyContent: 'space-between',
-      width: '70%',
+      width: { xs: '100%', lg: '70%' },
       marginBottom: '24px',
     },
     infoContentColumn: {
@@ -78,9 +81,9 @@ const useDealPageStyles = () => {
       },
     },
     overview: {
-      padding: '40px',
+      padding: { xs: '24px 16px', lg: '40px' },
       background: palette.common.white,
-      borderRadius: '12px',
+      borderRadius: { xs: 'unset', md: '12px' },
     },
     overviewHeader: {
       '& h3': {
@@ -101,8 +104,9 @@ const useDealPageStyles = () => {
       gap: '16px',
     },
     overviewDetails: {
-      width: '70%',
+      width: { xs: '100%', lg: '70%' },
       display: 'flex',
+      flexDirection: { xs: 'column', lg: 'row' },
       justifyContent: 'space-between',
     },
     overviewDetailsColumn: {
@@ -123,7 +127,7 @@ const useDealPageStyles = () => {
       flexDirection: 'column',
       gap: '16px',
       background: palette.primary.contrastText,
-      borderRadius: '12px',
+      borderRadius: { xs: 'unset', md: '12px' },
       border: `1px solid ${palette.background.paper}`,
       '& p': {
         fontWeight: 600,
@@ -134,7 +138,7 @@ const useDealPageStyles = () => {
       display: 'flex',
       gap: '16px',
       background: palette.common.white,
-      borderRadius: '12px',
+      borderRadius: { xs: 'unset', md: '12px' },
       '& img': {
         borderRadius: '12px',
       },
@@ -146,7 +150,7 @@ const useDealPageStyles = () => {
     sponsorInfo: {
       padding: '24px 28px',
       background: palette.common.white,
-      borderRadius: '12px',
+      borderRadius: { xs: 'unset', md: '12px' },
       display: 'flex',
       flexDirection: 'column',
       gap: '20px',
@@ -158,7 +162,8 @@ const useDealPageStyles = () => {
       },
     },
     sponsorInfoRow: {
-      display: 'flex',
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
       gap: '16px',
     },
     sponsorRating: {
