@@ -8,8 +8,7 @@ import PlaceholderImage from './PlaceholderImage';
 import { DEFAULT_DEAL_IMAGE } from '@/config/constants';
 import EllipsisText from './EllipsisText';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import Bookmark from './Bookmark';
 
 export enum DealCardVariant {
   Base = 'base',
@@ -131,19 +130,11 @@ const DealCard = ({
               </Typography>
             </Box>
           </Box>
-          <div>
-            {deal.isInBookmarks ? (
-              <BookmarkIcon
-                sx={classes.filledBookmarkIcon}
-                onClick={() => handleDeleteBookmark(deal.id)}
-              />
-            ) : (
-              <BookmarkBorderIcon
-                sx={classes.bookmarkIcon}
-                onClick={() => handleAddBookmark(deal.id)}
-              />
-            )}
-          </div>
+          <Bookmark
+            addBookmark={() => handleAddBookmark(deal.id)}
+            deleteBookmark={() => handleDeleteBookmark(deal.id)}
+            isInBookmarks={deal.isInBookmarks}
+          />
         </Box>
         <Box sx={classes.sponsorProperties}>
           <Box sx={classes.sponsorPropertiesColumn}>

@@ -7,8 +7,7 @@ import Link from 'next/link';
 import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 import EllipsisText from './EllipsisText';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import Bookmark from './Bookmark';
 
 export enum SponsorCardVariant {
   Base = 'base',
@@ -107,17 +106,11 @@ const SponsorCard = ({
             </Box>
           </Box>
           <div>
-            {sponsor.isInBookmarks ? (
-              <BookmarkIcon
-                sx={classes.filledBookmarkIcon}
-                onClick={() => handleDeleteBookmark(sponsor.id)}
-              />
-            ) : (
-              <BookmarkBorderIcon
-                sx={classes.bookmarkIcon}
-                onClick={() => handleAddBookmark(sponsor.id)}
-              />
-            )}
+            <Bookmark
+              isInBookmarks={sponsor.isInBookmarks}
+              addBookmark={() => handleAddBookmark(sponsor.id)}
+              deleteBookmark={() => handleDeleteBookmark(sponsor.id)}
+            />
           </div>
         </Box>
         <Box sx={classes.sponsorProperties}>
