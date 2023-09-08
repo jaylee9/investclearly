@@ -5,7 +5,6 @@ import {
   getSponsorsBookmarks,
 } from '@/actions/bookmarks';
 import CustomTabs from '@/components/common/CustomTabs';
-import Loading from '@/components/common/Loading';
 import { Box } from '@mui/material';
 import { SyntheticEvent, useState } from 'react';
 import { useQuery } from 'react-query';
@@ -14,6 +13,8 @@ import SavedSponsors from './Sponsors';
 
 const ProfileSaved = () => {
   const [activeTab, setActiveTab] = useState('deals');
+  const [dealCountChanged, setDealCountChanged] = useState(0);
+  const [sponsorCountChanged, setSponsorCountChanged] = useState(0);
   const handleChangeTab = (
     event: SyntheticEvent<Element, Event>,
     newValue: string | number
@@ -21,35 +22,31 @@ const ProfileSaved = () => {
     setActiveTab(newValue as string);
   };
 
-  const { data: savedDeals, isLoading: isLoadingSavedDealsTotal } =
-    useQuery<GetDealsBookmarksResponse>(
-      ['savedDealsTotal'],
-      () => getDealsBookmarks({}) as Promise<GetDealsBookmarksResponse>
-    );
-  const { data: savedSponsors, isLoading: isLoadingSavedSponsorsTotal } =
-    useQuery<GetSponsorsBookmarksResponse>(
-      ['savedSponsorsTotal'],
-      () => getSponsorsBookmarks({}) as Promise<GetSponsorsBookmarksResponse>
-    );
+  const { data: savedDeals } = useQuery<GetDealsBookmarksResponse>(
+    ['savedDealsTotal', dealCountChanged],
+    () => getDealsBookmarks({}) as Promise<GetDealsBookmarksResponse>
+  );
+  const { data: savedSponsors } = useQuery<GetSponsorsBookmarksResponse>(
+    ['savedSponsorsTotal', sponsorCountChanged],
+    () => getSponsorsBookmarks({}) as Promise<GetSponsorsBookmarksResponse>
+  );
 
   const tabs = [
     {
       value: 'deals',
       label: 'Deals',
       count: savedDeals?.total,
-      content: <SavedDeals />,
+      content: <SavedDeals setDealCountChanged={setDealCountChanged} />,
     },
     {
       value: 'sponsors',
       label: 'Sponsors',
       count: savedSponsors?.total,
-      content: <SavedSponsors />,
+      content: (
+        <SavedSponsors setSponsorCountChanged={setSponsorCountChanged} />
+      ),
     },
   ];
-
-  if (isLoadingSavedDealsTotal || isLoadingSavedSponsorsTotal) {
-    return <Loading />;
-  }
 
   return (
     <Box>
