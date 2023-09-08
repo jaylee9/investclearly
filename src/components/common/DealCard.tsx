@@ -8,6 +8,7 @@ import PlaceholderImage from './PlaceholderImage';
 import { DEFAULT_DEAL_IMAGE } from '@/config/constants';
 import EllipsisText from './EllipsisText';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
+import Bookmark from './Bookmark';
 
 export enum DealCardVariant {
   Base = 'base',
@@ -17,16 +18,30 @@ export enum DealCardVariant {
 interface DealCardProps extends BoxProps {
   variant?: DealCardVariant;
   deal: DealInterface;
+  addBookmark?: (value: number) => void;
+  deleteBookmark?: (value: number) => void;
 }
 
 const DealCard = ({
   variant = DealCardVariant.Base,
   deal,
+  addBookmark,
+  deleteBookmark,
   ...props
 }: DealCardProps) => {
   const classes = useDealCardStyles();
   const { isMobile } = useBreakpoints();
 
+  const handleAddBookmark = (value: number) => {
+    if (addBookmark) {
+      addBookmark(value);
+    }
+  };
+  const handleDeleteBookmark = (value: number) => {
+    if (deleteBookmark) {
+      deleteBookmark(value);
+    }
+  };
   return variant === DealCardVariant.Base ? (
     <Box
       sx={{
@@ -77,7 +92,7 @@ const DealCard = ({
       </Box>
     </Box>
   ) : (
-    <Box sx={classes.largeRoot}>
+    <Box sx={{ ...props.sx, ...classes.largeRoot }}>
       <PlaceholderImage
         src={deal.attachments?.[0]?.path}
         alt="deal image"
@@ -115,9 +130,11 @@ const DealCard = ({
               </Typography>
             </Box>
           </Box>
-          <div>
-            <i className="icon-Saved"></i>
-          </div>
+          <Bookmark
+            addBookmark={() => handleAddBookmark(deal.id)}
+            deleteBookmark={() => handleDeleteBookmark(deal.id)}
+            isInBookmarks={deal.isInBookmarks}
+          />
         </Box>
         <Box sx={classes.sponsorProperties}>
           <Box sx={classes.sponsorPropertiesColumn}>

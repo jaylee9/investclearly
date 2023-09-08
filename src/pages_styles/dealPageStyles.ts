@@ -49,11 +49,6 @@ const useDealPageStyles = () => {
       '& p': {
         color: palette.text.secondary,
       },
-      '& .icon-Saved': {
-        fontSize: '24px',
-        color: palette.text.secondary,
-        cursor: 'pointer',
-      },
     },
     infoContent: {
       display: 'flex',
@@ -223,6 +218,16 @@ const useDealPageStyles = () => {
       '& i': {
         fontSize: '24px',
       },
+    },
+    bookmarkIcon: {
+      color: palette.text.secondary,
+      cursor: 'pointer',
+      width: '24px',
+    },
+    filledBookmarkIcon: {
+      color: palette.primary.light,
+      cursor: 'pointer',
+      width: '24px',
     },
   };
 };

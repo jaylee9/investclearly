@@ -1,4 +1,8 @@
-import { getDeal } from '@/actions/deals';
+import {
+  addDealToBookmark,
+  deleteDealFromBookmarks,
+  getDeal,
+} from '@/actions/deals';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import Button from '@/components/common/Button';
 import Layout from '@/components/common/Layout';
@@ -12,6 +16,9 @@ import useDealPageStyles from '@/pages_styles/dealPageStyles';
 import { Box, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
 import { useState } from 'react';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import parseCookies from 'next-cookies';
 
 interface DealPageProps {
   deal: DealInterface;
@@ -19,7 +26,7 @@ interface DealPageProps {
 
 const DealPage = ({ deal }: DealPageProps) => {
   const classes = useDealPageStyles();
-
+  const [isInBookmarks, setIsInBookmarks] = useState(deal.isInBookmarks);
   const [openModals, setOpenModals] = useState({
     claimDeal: false,
     addDeal: false,
@@ -45,6 +52,23 @@ const DealPage = ({ deal }: DealPageProps) => {
     isSearch: true,
   });
   const defaultSponsorImage = '/assets/Sponsor-placeholder.png';
+
+  const handleAddBookmark = async (entityId: number) => {
+    setIsInBookmarks(true);
+    const response = await addDealToBookmark({ entityId });
+    if ('error' in response) {
+      setIsInBookmarks(false);
+    }
+  };
+
+  const handleDeleteBookmark = async (entityId: number) => {
+    setIsInBookmarks(false);
+    const response = await deleteDealFromBookmarks({ entityId });
+    if ('error' in response) {
+      setIsInBookmarks(true);
+    }
+  };
+
   return (
     <Layout {...headerProps}>
       <Box>
@@ -68,7 +92,17 @@ const DealPage = ({ deal }: DealPageProps) => {
                   <Typography variant="body1">{deal.dealAddress}</Typography>
                 </Box>
                 <div>
-                  <i className="icon-Saved"></i>
+                  {isInBookmarks ? (
+                    <BookmarkIcon
+                      sx={classes.filledBookmarkIcon}
+                      onClick={() => handleDeleteBookmark(deal.id)}
+                    />
+                  ) : (
+                    <BookmarkBorderIcon
+                      sx={classes.bookmarkIcon}
+                      onClick={() => handleAddBookmark(deal.id)}
+                    />
+                  )}
                 </div>
               </Box>
               <Box sx={classes.infoContent}>
@@ -293,7 +327,9 @@ const DealPage = ({ deal }: DealPageProps) => {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const id = context.params?.id as string;
-  const dealResponse = await getDeal({ id });
+  const cookies = parseCookies(context);
+  const token = cookies.accessToken;
+  const dealResponse = await getDeal({ id, token });
   if ('error' in dealResponse) {
     return {
       notFound: true,

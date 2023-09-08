@@ -573,6 +573,10 @@ export const useSponsorCardStyles = () => {
       border: `1px solid ${palette.background.paper}`,
       height: '218px',
     },
+    baseHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
     baseTitle: {
       maxWidth: '250px',
     },
@@ -677,6 +681,16 @@ export const useSponsorCardStyles = () => {
         fontSize: '24px',
         color: palette.primary.light,
       },
+    },
+    bookmarkIcon: {
+      color: palette.text.secondary,
+      cursor: 'pointer',
+      width: '24px',
+    },
+    filledBookmarkIcon: {
+      color: palette.primary.light,
+      cursor: 'pointer',
+      width: '24px',
     },
   };
 };
@@ -1178,6 +1192,21 @@ export const useEllipsisTextStyles = () => {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       display: 'block',
+    },
+  };
+};
+
+export const useBookmarkStyles = () => {
+  return {
+    bookmarkIcon: {
+      color: palette.text.secondary,
+      cursor: 'pointer',
+      width: '24px',
+    },
+    filledBookmarkIcon: {
+      color: palette.primary.light,
+      cursor: 'pointer',
+      width: '24px',
     },
   };
 };

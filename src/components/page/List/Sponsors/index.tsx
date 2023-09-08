@@ -5,11 +5,16 @@ import {
   SponsorsFilters,
   SponsorsFiltersHeader,
 } from './SponsorsFilters';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSponsorComponentStyles } from './styles';
 import filterDifferences from '@/helpers/filterDifferences';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
-import { GetAllSponsorsResponse, getAllSponsors } from '@/actions/sponsors';
+import {
+  GetAllSponsorsResponse,
+  addSponsorToBookmark,
+  deleteSponsorFromBookmarks,
+  getAllSponsors,
+} from '@/actions/sponsors';
 import { useQuery } from 'react-query';
 import Loading from '@/components/common/Loading';
 import SponsorCard, {
@@ -212,6 +217,54 @@ const SponsorsComponent = ({
     setIsSponsorsFilterMobile(false);
   };
 
+  const handleAddBookmark = useCallback(async (entityId: number) => {
+    setSponsorsData(prevSponsors => {
+      const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
+        if (sponsor.id === entityId) {
+          return { ...sponsor, isInBookmarks: true };
+        }
+        return sponsor;
+      });
+      return { ...prevSponsors, sponsors: formattedSponsors };
+    });
+    const response = await addSponsorToBookmark({ entityId });
+    if ('error' in response) {
+      setSponsorsData(prevSponsors => {
+        const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
+          if (sponsor.id === entityId) {
+            return { ...sponsor, isInBookmarks: false };
+          }
+          return sponsor;
+        });
+        return { ...prevSponsors, deals: formattedSponsors };
+      });
+    }
+  }, []);
+
+  const handleDeleteBookmark = useCallback(async (entityId: number) => {
+    setSponsorsData(prevSponsors => {
+      const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
+        if (sponsor.id === entityId) {
+          return { ...sponsor, isInBookmarks: false };
+        }
+        return sponsor;
+      });
+      return { ...prevSponsors, sponsors: formattedSponsors };
+    });
+    const response = await deleteSponsorFromBookmarks({ entityId });
+    if ('error' in response) {
+      setSponsorsData(prevSponsors => {
+        const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
+          if (sponsor.id === entityId) {
+            return { ...sponsor, isInBookmarks: true };
+          }
+          return sponsor;
+        });
+        return { ...prevSponsors, deals: formattedSponsors };
+      });
+    }
+  }, []);
+
   return (
     <ColumnsComponent
       count={sponsorsData.total}
@@ -325,6 +378,8 @@ const SponsorsComponent = ({
                 key={sponsor.id}
                 sponsor={sponsor}
                 variant={SponsorCardVariant.Large}
+                addBookmark={handleAddBookmark}
+                deleteBookmark={handleDeleteBookmark}
               />
             ))}
           </Box>

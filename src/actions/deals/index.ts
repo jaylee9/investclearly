@@ -89,14 +89,60 @@ export const getAllDeals = async (
 
 export const getDeal = async ({
   id,
+  token,
 }: {
   id: string;
+  token?: string;
 }): Promise<DealInterface | { error: string }> => {
   try {
-    const response: DealInterface = await api.get(`deals/${id}`).json();
+    const response: DealInterface = await api
+      .get(`deals/${id}`, {
+        headers: {
+          Cookie: `accessToken=${token}`,
+        },
+      })
+      .json();
     return response;
   } catch (error) {
     const errorMessage = 'Error fetching deal';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};
+
+export const addDealToBookmark = async ({
+  entityId,
+}: {
+  entityId: number;
+}): Promise<{ message: string } | { error: string }> => {
+  try {
+    const response: { message: string } = await api
+      .post('bookmarks', { json: { entityType: 'Deal', entityId } })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to save deal';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};
+
+export const deleteDealFromBookmarks = async ({
+  entityId,
+}: {
+  entityId: number;
+}): Promise<{ message: string } | { error: string }> => {
+  try {
+    const stringifiedParameters = queryString.stringify({
+      entityId,
+      entityType: 'Deal',
+    });
+    const response: { message: string } = await api
+      .delete('bookmarks', { searchParams: stringifiedParameters })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to delete deal from saved';
     toast.error(errorMessage);
     return { error: errorMessage };
   }

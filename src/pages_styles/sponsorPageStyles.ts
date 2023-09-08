@@ -271,6 +271,16 @@ const useSponsorPageStyles = () => {
         fontSize: '24px',
       },
     },
+    bookmarkIcon: {
+      color: palette.text.secondary,
+      cursor: 'pointer',
+      width: '24px',
+    },
+    filledBookmarkIcon: {
+      color: palette.primary.light,
+      cursor: 'pointer',
+      width: '24px',
+    },
   };
 };
 

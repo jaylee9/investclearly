@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import ProfileInvestments from '@/components/page/Profile/Investments';
 import withPrivateRoute from '@/HOC/withPrivateRoute';
 import ProfileReviews from '@/components/page/Profile/Reviews';
+import ProfileSaved from '@/components/page/Profile/Saved';
 
 const sections = [
   {
@@ -21,7 +22,12 @@ const sections = [
     href: 'reviews',
     component: <ProfileReviews />,
   },
-  { label: 'Saved', icon: 'icon-Saved', href: 'saved' },
+  {
+    label: 'Saved',
+    icon: 'icon-Saved',
+    href: 'saved',
+    component: <ProfileSaved />,
+  },
   {
     label: 'Profile Settings',
     icon: 'icon-Settings',

@@ -1,4 +1,9 @@
-import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
+import {
+  GetAllDealsResponse,
+  addDealToBookmark,
+  deleteDealFromBookmarks,
+  getAllDeals,
+} from '@/actions/deals';
 import DealCard, { DealCardVariant } from '@/components/common/DealCard';
 import Loading from '@/components/common/Loading';
 import CustomPagination from '@/components/common/Pagination';
@@ -10,7 +15,7 @@ import {
 } from './DealsFilters';
 import BannerBlock from '@/components/page/Home/BannerBlock';
 import { Box, Modal, SelectChangeEvent, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { useRouter } from 'next/router';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
@@ -277,6 +282,54 @@ const DealsComponent = ({
     setIsDealsFilterMobile(false);
   };
 
+  const handleAddBookmark = useCallback(async (entityId: number) => {
+    setDealsData(prevDeals => {
+      const formattedDeals = prevDeals.deals.map(deal => {
+        if (deal.id === entityId) {
+          return { ...deal, isInBookmarks: true };
+        }
+        return deal;
+      });
+      return { ...prevDeals, deals: formattedDeals };
+    });
+    const response = await addDealToBookmark({ entityId });
+    if ('error' in response) {
+      setDealsData(prevDeals => {
+        const formattedDeals = prevDeals.deals.map(deal => {
+          if (deal.id === entityId) {
+            return { ...deal, isInBookmarks: false };
+          }
+          return deal;
+        });
+        return { ...prevDeals, deals: formattedDeals };
+      });
+    }
+  }, []);
+
+  const handleDeleteBookmark = useCallback(async (entityId: number) => {
+    setDealsData(prevDeals => {
+      const formattedDeals = prevDeals.deals.map(deal => {
+        if (deal.id === entityId) {
+          return { ...deal, isInBookmarks: false };
+        }
+        return deal;
+      });
+      return { ...prevDeals, deals: formattedDeals };
+    });
+    const response = await deleteDealFromBookmarks({ entityId });
+    if ('error' in response) {
+      setDealsData(prevDeals => {
+        const formattedDeals = prevDeals.deals.map(deal => {
+          if (deal.id === entityId) {
+            return { ...deal, isInBookmarks: true };
+          }
+          return deal;
+        });
+        return { ...prevDeals, deals: formattedDeals };
+      });
+    }
+  }, []);
+
   return (
     <>
       <ColumnsComponent
@@ -381,6 +434,8 @@ const DealsComponent = ({
                   key={deal.id}
                   deal={deal}
                   variant={DealCardVariant.Large}
+                  addBookmark={handleAddBookmark}
+                  deleteBookmark={handleDeleteBookmark}
                 />
               ))}
             </Box>

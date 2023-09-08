@@ -4,4 +4,5 @@ export interface GetAllEntriesFromBookmarksInterface {
   page?: number;
   search?: string;
   entityIds?: number[];
+  currentUserId?: number;
 }
