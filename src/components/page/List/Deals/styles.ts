@@ -61,6 +61,8 @@ export const useDealsFiltersStyles = () => {
     mobileHeader: {
       gap: '16px',
       display: 'flex',
+      width: { xs: 'max-content', lg: '100%' },
+      justifyContent: 'space-between',
       padding: '8px 16px',
       alignItems: 'center',
       backgroundColor: 'white',
@@ -170,6 +172,9 @@ export const useColumnsComponentStyles = () => {
       flexDirection: 'column',
     },
     rightColumnHeader: {
+      rowGap: '8px',
+      display: 'flex',
+      flexDirection: 'column',
       background: palette.common.white,
       padding: '12px 24px',
       borderRadius: '12px',
@@ -187,6 +192,7 @@ export const useColumnsComponentStyles = () => {
       display: 'flex',
       alignItems: 'center',
       gap: '4px',
+      flexWrap: 'wrap',
     },
     paggination: {
       display: 'flex',

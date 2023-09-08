@@ -10,6 +10,7 @@ const Loading = () => {
       alignItems="center"
       height="100%"
       width="100%"
+      marginBottom="16px"
     >
       <CircularProgress sx={classes.root} size={48} />
     </Box>
