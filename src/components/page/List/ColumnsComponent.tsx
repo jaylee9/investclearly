@@ -24,10 +24,12 @@ const ColumnsComponent = ({
   const classes = useColumnsComponentStyles();
   return (
     <Box sx={classes.root}>
-      <Box sx={classes.leftColumn}>
-        <Box sx={classes.leftColumnHeader}>{leftColumnHeader}</Box>
-        {leftColumnContent}
-      </Box>
+      {leftColumnContent && (
+        <Box sx={classes.leftColumn}>
+          <Box sx={classes.leftColumnHeader}>{leftColumnHeader}</Box>
+          {leftColumnContent}
+        </Box>
+      )}
       <Box sx={classes.rightColumn}>
         <Box sx={classes.rightColumnHeader}>
           <Box sx={classes.rightColumnHeaderTitle}>

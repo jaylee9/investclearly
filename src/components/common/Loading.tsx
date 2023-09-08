@@ -1,7 +1,12 @@
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, SxProps, Theme } from '@mui/material';
 import { useLoadingStyles } from './styles';
+import type { FC } from 'react';
 
-const Loading = () => {
+interface LoadingProps {
+  sxCustomStyles?: SxProps<Theme>;
+}
+
+const Loading: FC<LoadingProps> = ({ sxCustomStyles }) => {
   const classes = useLoadingStyles();
   return (
     <Box
@@ -10,6 +15,7 @@ const Loading = () => {
       alignItems="center"
       height="100%"
       width="100%"
+      sx={sxCustomStyles}
     >
       <CircularProgress sx={classes.root} size={48} />
     </Box>

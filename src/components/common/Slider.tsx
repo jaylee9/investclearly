@@ -7,10 +7,17 @@ interface CustomSliderProps
   extends Omit<SliderProps, 'min' | 'max' | 'onChange'> {
   min: number;
   max: number;
+  inputWidth?: string;
   onChange: (value: number[] | number) => void;
 }
 
-const CustomSlider = ({ min, max, onChange, ...props }: CustomSliderProps) => {
+const CustomSlider = ({
+  min,
+  max,
+  inputWidth,
+  onChange,
+  ...props
+}: CustomSliderProps) => {
   const classes = useSliderStyles();
   const [value, setValue] = useState<number[]>(props.value as number[]);
 
@@ -41,12 +48,14 @@ const CustomSlider = ({ min, max, onChange, ...props }: CustomSliderProps) => {
     <Box>
       <Box sx={classes.inputsWrapper}>
         <Input
+          sxCustomStyles={{ width: inputWidth }}
           value={Array.isArray(value) ? String(value[0]) : ''}
           onChange={e => handleInputChange(0, e.target.value)}
           showClearOption={false}
         />
         <Typography variant="body1">-</Typography>
         <Input
+          sxCustomStyles={{ width: inputWidth }}
           value={Array.isArray(value) ? String(value[1]) : ''}
           onChange={e => handleInputChange(1, e.target.value)}
           showClearOption={false}

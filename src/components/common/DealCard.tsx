@@ -7,6 +7,7 @@ import Link from 'next/link';
 import PlaceholderImage from './PlaceholderImage';
 import { DEFAULT_DEAL_IMAGE } from '@/config/constants';
 import EllipsisText from './EllipsisText';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 
 export enum DealCardVariant {
   Base = 'base',
@@ -24,6 +25,8 @@ const DealCard = ({
   ...props
 }: DealCardProps) => {
   const classes = useDealCardStyles();
+  const { isMobile } = useBreakpoints();
+
   return variant === DealCardVariant.Base ? (
     <Box
       sx={{
@@ -82,9 +85,9 @@ const DealCard = ({
         height={170}
         style={{
           height: '170px',
-          borderRadius: '12px 0px 0px 12px',
+          borderRadius: isMobile ? '12px 12px 0 0' : '12px 0px 0px 12px',
           objectFit: 'cover',
-          minWidth: '200px',
+          width: isMobile ? '100%' : '200px',
         }}
         defaultImage={DEFAULT_DEAL_IMAGE}
       />
