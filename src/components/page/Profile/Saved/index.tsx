@@ -9,6 +9,8 @@ import Loading from '@/components/common/Loading';
 import { Box } from '@mui/material';
 import { SyntheticEvent, useState } from 'react';
 import { useQuery } from 'react-query';
+import SavedDeals from './Deals';
+import SavedSponsors from './Sponsors';
 
 const ProfileSaved = () => {
   const [activeTab, setActiveTab] = useState('deals');
@@ -35,11 +37,13 @@ const ProfileSaved = () => {
       value: 'deals',
       label: 'Deals',
       count: savedDeals?.total,
+      content: <SavedDeals />,
     },
     {
       value: 'sponsors',
       label: 'Sponsors',
       count: savedSponsors?.total,
+      content: <SavedSponsors />,
     },
   ];
 
