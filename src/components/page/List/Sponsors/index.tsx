@@ -17,7 +17,6 @@ import SponsorCard, {
 } from '@/components/common/SponsorCard';
 import CustomPagination from '@/components/common/Pagination';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import { FilterIcon } from '@/assets/components/FilterIcon';
 import Button from '@/components/common/Button';
 
 const sortOptions = [
@@ -251,7 +250,7 @@ const SponsorsComponent = ({
               sxCustomStyles={classes.filterButton}
               onClick={() => setIsSponsorsFilterMobile(!isSponsorsFilterMobile)}
             >
-              <FilterIcon />
+              <i className="icon-Filter"></i>
               Filters{' '}
               {formattedAppliedFilters.length
                 ? `+${formattedAppliedFilters.length}`
@@ -283,7 +282,9 @@ const SponsorsComponent = ({
             </Box>
           </Modal>
           <Box sx={classes.selectWrapper}>
-            <Typography variant="body1">Sort by:</Typography>
+            <Typography variant="body1" noWrap>
+              Sort by:
+            </Typography>
             <Box sx={classes.selectContent}>
               <CustomSelect
                 options={sortOptions}

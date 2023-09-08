@@ -20,7 +20,6 @@ import filterDifferences from '@/helpers/filterDifferences';
 import { Regions } from '@/backend/constants/enums/regions';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import Button from '@/components/common/Button';
-import { FilterIcon } from '@/assets/components/FilterIcon';
 
 const sortOptions = [
   { label: 'Newest Deals', value: 'DESC' },
@@ -314,7 +313,7 @@ const DealsComponent = ({
                 sxCustomStyles={classes.filterButton}
                 onClick={() => setIsDealsFilterMobile(!isDealsFilterMobile)}
               >
-                <FilterIcon />
+                <i className="icon-Filter"></i>
                 Filters{' '}
                 {formattedAppliedFilters.length
                   ? `+${formattedAppliedFilters.length}`
@@ -341,7 +340,9 @@ const DealsComponent = ({
               </Box>
             </Modal>
             <Box sx={classes.selectWrapper}>
-              <Typography variant="body1">Sort by:</Typography>
+              <Typography variant="body1" noWrap>
+                Sort by:
+              </Typography>
               <Box sx={classes.selectContent}>
                 <CustomSelect
                   options={sortOptions}

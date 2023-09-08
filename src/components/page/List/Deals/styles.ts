@@ -9,6 +9,18 @@ export const useDealsFiltersStyles = () => {
     },
     ratingCheckbox: {
       padding: '4px 0px',
+      '& .Mui-checked .MuiSvgIcon-root': {
+        fill: palette.primary.light,
+      },
+      '&:hover .Mui-checked .MuiSvgIcon-root': {
+        fill: palette.primary.dark,
+      },
+      '& .MuiSvgIcon-root': {
+        fill: palette.text.disabled,
+      },
+      '&:hover .MuiSvgIcon-root': {
+        fill: palette.secondary.dark,
+      },
     },
     accordionContent: {
       display: 'flex',
@@ -75,6 +87,9 @@ export const useDealsComponentStyles = () => {
       gap: '8px',
       width: { xs: '100%', md: 'auto' },
       maxWidth: { xs: '311px', md: 'unset' },
+      '& .icon-Filter': {
+        fontSize: '24px',
+      },
     },
     selectWrapper: {
       display: 'flex',
@@ -151,6 +166,8 @@ export const useColumnsComponentStyles = () => {
     },
     rightColumn: {
       flex: '75%',
+      display: 'flex',
+      flexDirection: 'column',
     },
     rightColumnHeader: {
       background: palette.common.white,
