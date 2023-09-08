@@ -1,4 +1,8 @@
-import { getSponsor } from '@/actions/sponsors';
+import {
+  addSponsorToBookmark,
+  deleteSponsorFromBookmarks,
+  getSponsor,
+} from '@/actions/sponsors';
 import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.interface';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import Button from '@/components/common/Button';
@@ -18,6 +22,8 @@ import ClaimCompanyModal from '@/components/page/Sponsor/Modals/ClaimCompany';
 import CreateReviewForm from '@/components/common/CreateReview';
 import { useQuery } from 'react-query';
 import Loading from '@/components/common/Loading';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -39,6 +45,24 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
   const [reviewsData, setReviewsData] = useState(reviews);
   const [dealsData, setDealsData] = useState(deals);
   const [reviewsLimit, setReviewsLimit] = useState(3);
+  const [isInBookmarks, setIsInBookmarks] = useState(sponsor.isInBookmarks);
+
+  const handleAddBookmark = async (entityId: number) => {
+    setIsInBookmarks(true);
+    const response = await addSponsorToBookmark({ entityId });
+    if ('error' in response) {
+      setIsInBookmarks(false);
+    }
+  };
+
+  const handleDeleteBookmark = async (entityId: number) => {
+    setIsInBookmarks(false);
+    const response = await deleteSponsorFromBookmarks({ entityId });
+    if ('error' in response) {
+      setIsInBookmarks(true);
+    }
+  };
+
   const fetchReviews = async () => {
     const response = (await getSponsor({
       id: String(sponsor.id),
@@ -175,7 +199,17 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
             value={activeTab}
           />
           <Box sx={classes.infoHeaderActions}>
-            <i className="icon-Saved"></i>
+            {isInBookmarks ? (
+              <BookmarkIcon
+                sx={classes.filledBookmarkIcon}
+                onClick={() => handleDeleteBookmark(sponsor.id)}
+              />
+            ) : (
+              <BookmarkBorderIcon
+                sx={classes.bookmarkIcon}
+                onClick={() => handleAddBookmark(sponsor.id)}
+              />
+            )}
             <Button variant="secondary">
               <Box sx={classes.websiteButton}>
                 <i className="icon-Link"></i>Website
@@ -210,7 +244,17 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
               </Box>
             </Box>
             <Box sx={classes.infoHeaderActions}>
-              <i className="icon-Saved"></i>
+              {isInBookmarks ? (
+                <BookmarkIcon
+                  sx={classes.filledBookmarkIcon}
+                  onClick={() => handleDeleteBookmark(sponsor.id)}
+                />
+              ) : (
+                <BookmarkBorderIcon
+                  sx={classes.bookmarkIcon}
+                  onClick={() => handleAddBookmark(sponsor.id)}
+                />
+              )}
               <Button variant="secondary">
                 <Box sx={classes.websiteButton}>
                   <i className="icon-Link"></i>Website
