@@ -247,17 +247,17 @@ export const useDealCardStyles = () => {
       maxWidth: '190px',
     },
     baseDealLocation: {
-      color: theme.palette.text.secondary,
+      color: palette.text.secondary,
       marginBottom: '12px',
     },
     baseDealDetail: {
       display: 'flex',
       alignItems: 'center',
       gap: '8px',
-      color: theme.palette.text.secondary,
+      color: palette.text.secondary,
       '& i': {
         fontSize: '24px',
-        color: theme.palette.primary.light,
+        color: palette.primary.light,
       },
     },
     largeRoot: {
@@ -384,7 +384,7 @@ export const useSelectStyles = ({ variant }: UseSelectStylesProps) => {
         borderColor: palette.primary.light,
       },
       '& .MuiOutlinedInput-notchedOutline': {
-        border: `1px solid ${theme.palette.background.paper}`,
+        border: `1px solid ${palette.background.paper}`,
       },
     },
     menuPaper: {
@@ -493,14 +493,14 @@ export const usePaginationStyles = () => {
     root: {
       margin: { xs: '0 auto', md: 'unset' },
       '& .MuiPaginationItem-page.Mui-selected': {
-        color: theme.palette.common.black,
+        color: palette.common.black,
         backgroundColor: 'transparent',
         '&:active': {
           backgroundColor: 'transparent',
         },
       },
       '& .MuiPaginationItem-page': {
-        color: theme.palette.text.secondary,
+        color: palette.text.secondary,
       },
       '& .MuiPaginationItem-root': {
         '& i': {
@@ -569,8 +569,8 @@ export const useSponsorCardStyles = () => {
     baseWrapper: {
       padding: '16px 20px',
       borderRadius: '12px',
-      boxShadow: theme.customShadows.header,
-      border: `1px solid ${theme.palette.background.paper}`,
+      boxShadow: customShadows.header,
+      border: `1px solid ${palette.background.paper}`,
       height: '218px',
     },
     baseHeader: {
@@ -587,12 +587,12 @@ export const useSponsorCardStyles = () => {
       maxWidth: '72px',
     },
     baseRating: {
-      color: theme.palette.secondary.main,
+      color: palette.secondary.main,
       '& i': {
         fontSize: '16px',
       },
       '& span': {
-        color: theme.palette.text.secondary,
+        color: palette.text.secondary,
       },
     },
     largeRoot: {
@@ -1005,11 +1005,11 @@ export const useTagSelectorStyles = () => {
       overflow: 'auto',
       maxHeight: '475px',
       padding: '8px 24px',
-      background: theme.palette.common.white,
+      background: palette.common.white,
       width: '100%',
       borderRadius: '16px',
-      border: `1px solid ${theme.palette.background.paper}`,
-      boxShadow: theme.customShadows.base,
+      border: `1px solid ${palette.background.paper}`,
+      boxShadow: customShadows.base,
       boxSizing: 'border-box',
       position: 'absolute',
       zIndex: 10,
@@ -1207,6 +1207,93 @@ export const useBookmarkStyles = () => {
       color: palette.primary.light,
       cursor: 'pointer',
       width: '24px',
+    },
+  };
+};
+
+export const useLoginFormStyles = () => {
+  return {
+    root: {
+      width: '420px',
+      '& h2': {
+        textAlign: 'center',
+      },
+      '& button': {
+        width: '100%',
+      },
+      '& .MuiFormControl-root': {
+        width: '100%',
+        marginBottom: '20px',
+      },
+      '& a': {
+        color: palette.primary.light,
+      },
+    },
+    dividerWrapper: {
+      display: 'flex',
+      gap: '8px',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '32px 0px',
+      '& .divider': {
+        height: '1px',
+        width: '33%',
+        background: palette.background.paper,
+      },
+    },
+    forgotPasswordLink: {
+      fontWeight: 600,
+      marginBottom: '32px',
+    },
+    googleLoginWrapper: {
+      '& iframe': {
+        width: '100% !important',
+        margin: '0 !important',
+      },
+    },
+  };
+};
+
+export const useForgotPasswordFormStyles = () => {
+  return {
+    root: {
+      textAlign: 'center',
+    },
+    infoText: {
+      marginBottom: '40px',
+      color: palette.text.secondary,
+    },
+    formWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '32px',
+      width: '420px',
+      marginBottom: '16px',
+    },
+    rememberPassword: {
+      '& a': {
+        color: palette.primary.light,
+      },
+    },
+  };
+};
+
+export const useResetPasswordFormStyles = () => {
+  return {
+    formWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      width: '420px',
+      marginBottom: '16px',
+    },
+  };
+};
+
+export const usePasswordChangedSuccessfullyStyles = () => {
+  return {
+    text: {
+      marginBottom: '40px',
+      color: palette.text.secondary,
     },
   };
 };
