@@ -17,9 +17,3 @@ export const useAuthStyles = () => {
     },
   };
 };
-
-export const useDefaultStyles = () => {
-  return {
-    root: {},
-  };
-};
