@@ -327,16 +327,6 @@ export const useDealCardStyles = () => {
         color: palette.primary.light,
       },
     },
-    bookmarkIcon: {
-      color: palette.text.secondary,
-      cursor: 'pointer',
-      width: '24px',
-    },
-    filledBookmarkIcon: {
-      color: palette.primary.light,
-      cursor: 'pointer',
-      width: '24px',
-    },
   };
 };
 
@@ -1166,6 +1156,21 @@ export const useEllipsisTextStyles = () => {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       display: 'block',
+    },
+  };
+};
+
+export const useBookmarkStyles = () => {
+  return {
+    bookmarkIcon: {
+      color: palette.text.secondary,
+      cursor: 'pointer',
+      width: '24px',
+    },
+    filledBookmarkIcon: {
+      color: palette.primary.light,
+      cursor: 'pointer',
+      width: '24px',
     },
   };
 };
