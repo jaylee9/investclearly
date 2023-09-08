@@ -27,6 +27,7 @@ const SponsorCard = ({
   sponsor,
   addBookmark,
   deleteBookmark,
+  ...props
 }: SponsorCardProps) => {
   const classes = useSponsorCardStyles();
   const { isMobile } = useBreakpoints();
@@ -70,7 +71,7 @@ const SponsorCard = ({
       </Typography>
     </Box>
   ) : (
-    <Box sx={classes.largeRoot}>
+    <Box sx={{ ...props.sx, ...classes.largeRoot }}>
       <PlaceholderImage
         src={sponsor.businessAvatar as string}
         alt="sponsor image"

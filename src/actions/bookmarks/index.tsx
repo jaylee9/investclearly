@@ -72,3 +72,45 @@ export const getSponsorsBookmarks = async ({
     return { error: errorMessage };
   }
 };
+
+export const deleteDealBookmark = async ({
+  entityId,
+}: {
+  entityId: number;
+}): Promise<{ message: string } | { error: string }> => {
+  try {
+    const stringifiedParameters = queryString.stringify({
+      entityType: 'Deal',
+      entityId,
+    });
+    const response: { message: string } = await api
+      .delete(`bookmarks?${stringifiedParameters}`)
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to remove deal from saved';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};
+
+export const deleteSponsorBookmark = async ({
+  entityId,
+}: {
+  entityId: number;
+}): Promise<{ message: string } | { error: string }> => {
+  try {
+    const stringifiedParameters = queryString.stringify({
+      entityType: 'Sponsor',
+      entityId,
+    });
+    const response: { message: string } = await api
+      .delete(`bookmarks?${stringifiedParameters}`)
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to remove sponsor from saved';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};
