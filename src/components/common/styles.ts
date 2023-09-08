@@ -231,17 +231,17 @@ export const useDealCardStyles = () => {
       maxWidth: '190px',
     },
     baseDealLocation: {
-      color: theme.palette.text.secondary,
+      color: palette.text.secondary,
       marginBottom: '12px',
     },
     baseDealDetail: {
       display: 'flex',
       alignItems: 'center',
       gap: '8px',
-      color: theme.palette.text.secondary,
+      color: palette.text.secondary,
       '& i': {
         fontSize: '24px',
-        color: theme.palette.primary.light,
+        color: palette.primary.light,
       },
     },
     largeRoot: {
@@ -358,7 +358,7 @@ export const useSelectStyles = ({ variant }: UseSelectStylesProps) => {
         borderColor: palette.primary.light,
       },
       '& .MuiOutlinedInput-notchedOutline': {
-        border: `1px solid ${theme.palette.background.paper}`,
+        border: `1px solid ${palette.background.paper}`,
       },
     },
     menuPaper: {
@@ -466,14 +466,14 @@ export const usePaginationStyles = () => {
   return {
     root: {
       '& .MuiPaginationItem-page.Mui-selected': {
-        color: theme.palette.common.black,
+        color: palette.common.black,
         backgroundColor: 'transparent',
         '&:active': {
           backgroundColor: 'transparent',
         },
       },
       '& .MuiPaginationItem-page': {
-        color: theme.palette.text.secondary,
+        color: palette.text.secondary,
       },
       '& .MuiPaginationItem-root': {
         '& i': {
@@ -542,8 +542,8 @@ export const useSponsorCardStyles = () => {
     baseWrapper: {
       padding: '16px 20px',
       borderRadius: '12px',
-      boxShadow: theme.customShadows.header,
-      border: `1px solid ${theme.palette.background.paper}`,
+      boxShadow: customShadows.header,
+      border: `1px solid ${palette.background.paper}`,
       height: '218px',
     },
     baseTitle: {
@@ -556,12 +556,12 @@ export const useSponsorCardStyles = () => {
       maxWidth: '72px',
     },
     baseRating: {
-      color: theme.palette.secondary.main,
+      color: palette.secondary.main,
       '& i': {
         fontSize: '16px',
       },
       '& span': {
-        color: theme.palette.text.secondary,
+        color: palette.text.secondary,
       },
     },
     largeRoot: {
@@ -955,11 +955,11 @@ export const useTagSelectorStyles = () => {
       overflow: 'auto',
       maxHeight: '475px',
       padding: '8px 24px',
-      background: theme.palette.common.white,
+      background: palette.common.white,
       width: '100%',
       borderRadius: '16px',
-      border: `1px solid ${theme.palette.background.paper}`,
-      boxShadow: theme.customShadows.base,
+      border: `1px solid ${palette.background.paper}`,
+      boxShadow: customShadows.base,
       boxSizing: 'border-box',
       position: 'absolute',
       zIndex: 10,
@@ -1161,7 +1161,7 @@ export const useLoginFormStyles = () => {
         marginBottom: '20px',
       },
       '& a': {
-        color: theme.palette.primary.light,
+        color: palette.primary.light,
       },
     },
     dividerWrapper: {
@@ -1173,7 +1173,7 @@ export const useLoginFormStyles = () => {
       '& .divider': {
         height: '1px',
         width: '33%',
-        background: theme.palette.background.paper,
+        background: palette.background.paper,
       },
     },
     forgotPasswordLink: {
@@ -1196,7 +1196,7 @@ export const useForgotPasswordFormStyles = () => {
     },
     infoText: {
       marginBottom: '40px',
-      color: theme.palette.text.secondary,
+      color: palette.text.secondary,
     },
     formWrapper: {
       display: 'flex',
@@ -1207,7 +1207,7 @@ export const useForgotPasswordFormStyles = () => {
     },
     rememberPassword: {
       '& a': {
-        color: theme.palette.primary.light,
+        color: palette.primary.light,
       },
     },
   };
@@ -1228,7 +1228,7 @@ export const usePasswordChangedSuccessfullyStyles = () => {
   return {
     text: {
       marginBottom: '40px',
-      color: theme.palette.text.secondary,
+      color: palette.text.secondary,
     },
   };
 };
