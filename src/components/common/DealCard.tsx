@@ -21,7 +21,6 @@ interface DealCardProps extends BoxProps {
   deal: DealInterface;
   addBookmark?: (value: number) => void;
   deleteBookmark?: (value: number) => void;
-  showBookmarkOption?: boolean;
 }
 
 const DealCard = ({
@@ -29,7 +28,6 @@ const DealCard = ({
   deal,
   addBookmark,
   deleteBookmark,
-  showBookmarkOption,
   ...props
 }: DealCardProps) => {
   const classes = useDealCardStyles();
@@ -57,23 +55,7 @@ const DealCard = ({
       flexDirection="column"
       borderRadius="0px 0px 12px 12px"
       boxShadow={theme.customShadows.header}
-      position="relative"
     >
-      {showBookmarkOption && (
-        <Box sx={classes.bookmarkWrapper}>
-          {deal.isInBookmarks ? (
-            <BookmarkIcon
-              sx={classes.filledWhiteBookmarkIcon}
-              onClick={() => handleDeleteBookmark(deal.id)}
-            />
-          ) : (
-            <BookmarkBorderIcon
-              sx={classes.bookmarkIcon}
-              onClick={() => handleAddBookmark(deal.id)}
-            />
-          )}
-        </Box>
-      )}
       <PlaceholderImage
         src={deal.attachments?.[0]?.path}
         alt="deal image"

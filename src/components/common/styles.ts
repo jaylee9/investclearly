@@ -363,23 +363,6 @@ export const useDealCardStyles = () => {
       cursor: 'pointer',
       width: '24px',
     },
-    filledWhiteBookmarkIcon: {
-      color: palette.common.white,
-      cursor: 'pointer',
-      width: '24px',
-    },
-    bookmarkWrapper: {
-      position: 'absolute',
-      top: '12px',
-      right: '12px',
-      borderRadius: '8px',
-      background: 'rgba(26, 31, 40, 0.70)',
-      width: '40px',
-      height: '40px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
   };
 };
 
@@ -599,6 +582,10 @@ export const useSponsorCardStyles = () => {
       boxShadow: theme.customShadows.header,
       border: `1px solid ${theme.palette.background.paper}`,
       height: '218px',
+    },
+    baseHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
     },
     baseTitle: {
       maxWidth: '250px',
