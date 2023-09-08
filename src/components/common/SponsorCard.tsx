@@ -17,7 +17,6 @@ export enum SponsorCardVariant {
 interface SponsorCardProps extends BoxProps {
   variant?: SponsorCardVariant;
   sponsor: SponsorInterface;
-  isBookmarked?: boolean;
   addBookmark?: (value: number) => void;
   deleteBookmark?: (value: number) => void;
 }
@@ -25,7 +24,6 @@ interface SponsorCardProps extends BoxProps {
 const SponsorCard = ({
   variant = SponsorCardVariant.Base,
   sponsor,
-  isBookmarked,
   addBookmark,
   deleteBookmark,
 }: SponsorCardProps) => {
@@ -101,7 +99,7 @@ const SponsorCard = ({
             </Box>
           </Box>
           <div>
-            {isBookmarked ? (
+            {sponsor.isInBookmarks ? (
               <BookmarkIcon
                 sx={classes.filledBookmarkIcon}
                 onClick={() => handleDeleteBookmark(sponsor.id)}

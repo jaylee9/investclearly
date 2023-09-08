@@ -335,7 +335,6 @@ const SponsorsComponent = ({
                 key={sponsor.id}
                 sponsor={sponsor}
                 variant={SponsorCardVariant.Large}
-                isBookmarked={sponsor.isInBookmarks}
                 addBookmark={handleAddBookmark}
                 deleteBookmark={handleDeleteBookmark}
               />

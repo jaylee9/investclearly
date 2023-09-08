@@ -18,7 +18,6 @@ export enum DealCardVariant {
 interface DealCardProps extends BoxProps {
   variant?: DealCardVariant;
   deal: DealInterface;
-  isBookmarked?: boolean;
   addBookmark?: (value: number) => void;
   deleteBookmark?: (value: number) => void;
 }
@@ -26,7 +25,6 @@ interface DealCardProps extends BoxProps {
 const DealCard = ({
   variant = DealCardVariant.Base,
   deal,
-  isBookmarked,
   addBookmark,
   deleteBookmark,
   ...props
@@ -132,7 +130,7 @@ const DealCard = ({
             </Box>
           </Box>
           <div>
-            {isBookmarked ? (
+            {deal.isInBookmarks ? (
               <BookmarkIcon
                 sx={classes.filledBookmarkIcon}
                 onClick={() => handleDeleteBookmark(deal.id)}
