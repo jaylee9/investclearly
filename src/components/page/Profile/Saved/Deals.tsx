@@ -13,7 +13,11 @@ import Input from '@/components/common/Input';
 import { debounce } from 'lodash';
 import CustomPagination from '@/components/common/Pagination';
 
-const SavedDeals = () => {
+interface SavedDealsProps {
+  setDealCountChanged: (value: number) => void;
+}
+
+const SavedDeals = ({ setDealCountChanged }: SavedDealsProps) => {
   const classes = useSavedDealsStyles();
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
@@ -40,6 +44,7 @@ const SavedDeals = () => {
   const handleDeleteBookmark = async (entityId: number) => {
     const response = await deleteDealBookmark({ entityId });
     if (!('error' in response)) {
+      setDealCountChanged(entityId);
       refetch();
     }
   };

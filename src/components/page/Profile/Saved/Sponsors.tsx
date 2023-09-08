@@ -15,7 +15,11 @@ import SponsorCard, {
   SponsorCardVariant,
 } from '@/components/common/SponsorCard';
 
-const SavedSponsors = () => {
+interface SavedSponsorsProps {
+  setSponsorCountChanged: (value: number) => void;
+}
+
+const SavedSponsors = ({ setSponsorCountChanged }: SavedSponsorsProps) => {
   const classes = useSavedSponsorsStyles();
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
@@ -42,6 +46,7 @@ const SavedSponsors = () => {
   const handleDeleteBookmark = async (entityId: number) => {
     const response = await deleteSponsorBookmark({ entityId });
     if (!('error' in response)) {
+      setSponsorCountChanged(entityId);
       refetch();
     }
   };
