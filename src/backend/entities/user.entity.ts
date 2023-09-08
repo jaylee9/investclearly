@@ -8,6 +8,7 @@ import {
   OneToMany,
   Relation,
 } from 'typeorm';
+import { PolymorphicParent } from 'typeorm-polymorphic';
 import * as bcrypt from 'bcryptjs';
 import { Sponsor } from './sponsors.entity';
 import { Review } from './reviews.entity';
@@ -125,4 +126,7 @@ export class User {
 
   @OneToMany(() => Bookmark, bookmarks => bookmarks.user)
   bookmarks: Relation<Bookmark>[];
+
+  @PolymorphicParent(() => Location, { eager: false, cascade: true })
+  locations: Relation<Location[]>;
 }

@@ -124,6 +124,9 @@ export class Deal {
   @PolymorphicParent(() => Attachment, { eager: false, cascade: true })
   attachments: Relation<Attachment[]>;
 
+  @PolymorphicParent(() => Location, { eager: false, cascade: true })
+  locations: Relation<Location[]>;
+
   @OneToMany(() => Investment, investments => investments.deal)
   investments: Relation<Investment>[];
 

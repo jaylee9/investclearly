@@ -146,4 +146,7 @@ export class Sponsor {
 
   @PolymorphicParent(() => Bookmark, { eager: false, cascade: true })
   bookmarks: Relation<Bookmark[]>;
+
+  @PolymorphicParent(() => Location, { eager: false, cascade: true })
+  locations: Relation<Location[]>;
 }
