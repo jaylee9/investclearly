@@ -18,6 +18,7 @@ import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import parseCookies from 'next-cookies';
 
 interface DealPageProps {
   deal: DealInterface;
@@ -26,7 +27,6 @@ interface DealPageProps {
 const DealPage = ({ deal }: DealPageProps) => {
   const classes = useDealPageStyles();
   const [isInBookmarks, setIsInBookmarks] = useState(deal.isInBookmarks);
-
   const [openModals, setOpenModals] = useState({
     claimDeal: false,
     addDeal: false,
@@ -327,7 +327,9 @@ const DealPage = ({ deal }: DealPageProps) => {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const id = context.params?.id as string;
-  const dealResponse = await getDeal({ id });
+  const cookies = parseCookies(context);
+  const token = cookies.accessToken;
+  const dealResponse = await getDeal({ id, token });
   if ('error' in dealResponse) {
     return {
       notFound: true,

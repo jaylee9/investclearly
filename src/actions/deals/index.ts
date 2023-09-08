@@ -89,11 +89,19 @@ export const getAllDeals = async (
 
 export const getDeal = async ({
   id,
+  token,
 }: {
   id: string;
+  token?: string;
 }): Promise<DealInterface | { error: string }> => {
   try {
-    const response: DealInterface = await api.get(`deals/${id}`).json();
+    const response: DealInterface = await api
+      .get(`deals/${id}`, {
+        headers: {
+          Cookie: `accessToken=${token}`,
+        },
+      })
+      .json();
     return response;
   } catch (error) {
     const errorMessage = 'Error fetching deal';

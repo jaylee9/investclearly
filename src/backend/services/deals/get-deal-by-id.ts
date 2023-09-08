@@ -54,7 +54,7 @@ export const getDealById = async (id: number, userId?: number) => {
   }
 
   const deal = await dealQuery.getOne();
-
+  console.log(deal);
   if (!deal) {
     throw new createHttpError.NotFound(DealConstants.dealNotFound);
   }
