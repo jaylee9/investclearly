@@ -373,7 +373,7 @@ const DealsComponent = ({
         }
         rightColumnContent={
           isLoading ? (
-            <Loading />
+            <Loading sxCustomStyles={{ marginBottom: '16px' }} />
           ) : (
             <Box sx={classes.dealsWrapper}>
               {dealsData.deals.map(deal => (

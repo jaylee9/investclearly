@@ -317,7 +317,7 @@ const SponsorsComponent = ({
       }
       rightColumnContent={
         isLoading ? (
-          <Loading />
+          <Loading sxCustomStyles={{ marginBottom: '16px' }} />
         ) : (
           <Box sx={classes.sponsorsWrapper}>
             {sponsorsData.sponsors.map(sponsor => (
