@@ -5,8 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Relation,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { PolymorphicParent } from 'typeorm-polymorphic';
+import { Deal } from './deals.entity';
 
 @Entity({ name: 'related_persons' })
 export class RelatedPerson {
@@ -36,4 +39,21 @@ export class RelatedPerson {
 
   @PolymorphicParent(() => Location, { eager: false, cascade: true })
   locations: Relation<Location[]>;
+
+  @ManyToMany(() => Deal, Deal => Deal.relatedPersons, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinTable({
+    name: 'deal_related_persons',
+    joinColumn: {
+      name: 'related_person_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'deal_id',
+      referencedColumnName: 'id',
+    },
+  })
+  deals: Deal[];
 }

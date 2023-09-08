@@ -7,6 +7,7 @@ import {
   ManyToOne,
   Relation,
   OneToMany,
+  ManyToMany,
 } from 'typeorm';
 import { PolymorphicParent } from 'typeorm-polymorphic';
 import { DealStatuses } from '../constants/enums/deal-statuses';
@@ -21,6 +22,7 @@ import { SecIndustries } from '../constants/enums/sec-industries';
 import { Regulations } from '../constants/enums/regulations';
 import { Investment } from './investments.entity';
 import { Bookmark } from './bookmark.entity';
+import { RelatedPerson } from './relatedPersons.entity';
 
 @Entity({ name: 'deals' })
 export class Deal {
@@ -109,6 +111,39 @@ export class Deal {
 
   isInBookmarks: boolean;
 
+  @Column({ type: 'date', nullable: true })
+  fileDate: Date;
+
+  @Column({ type: 'varchar', nullable: true })
+  submissionType: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  cik: string;
+
+  @Column({ type: 'varchar', array: true, nullable: true })
+  previousNames: string[];
+
+  @Column({ type: 'varchar', nullable: true })
+  entityType: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  yearsOfIncorporation: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  issuerPhoneNumber: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  jurisdictionOfInc: string;
+
+  @Column({ type: 'date', nullable: true })
+  dateOfFirstSale: Date;
+
+  @Column({ type: 'boolean', nullable: false, default: false })
+  moreThanOneYear: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  isDealPublished: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -132,4 +167,9 @@ export class Deal {
 
   @PolymorphicParent(() => Bookmark, { eager: false, cascade: true })
   bookmarks: Relation<Bookmark[]>;
+
+  @ManyToMany(() => RelatedPerson, relatedPerson => relatedPerson.deals, {
+    onDelete: 'CASCADE',
+  })
+  relatedPersons: RelatedPerson[];
 }
