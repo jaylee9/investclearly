@@ -15,7 +15,7 @@ import {
 } from './DealsFilters';
 import BannerBlock from '@/components/page/Home/BannerBlock';
 import { Box, Modal, SelectChangeEvent, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { useRouter } from 'next/router';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
@@ -282,7 +282,7 @@ const DealsComponent = ({
     setIsDealsFilterMobile(false);
   };
 
-  const handleAddBookmark = async (entityId: number) => {
+  const handleAddBookmark = useCallback(async (entityId: number) => {
     setDealsData(prevDeals => {
       const formattedDeals = prevDeals.deals.map(deal => {
         if (deal.id === entityId) {
@@ -304,9 +304,9 @@ const DealsComponent = ({
         return { ...prevDeals, deals: formattedDeals };
       });
     }
-  };
+  }, []);
 
-  const handleDeleteBookmark = async (entityId: number) => {
+  const handleDeleteBookmark = useCallback(async (entityId: number) => {
     setDealsData(prevDeals => {
       const formattedDeals = prevDeals.deals.map(deal => {
         if (deal.id === entityId) {
@@ -328,7 +328,8 @@ const DealsComponent = ({
         return { ...prevDeals, deals: formattedDeals };
       });
     }
-  };
+  }, []);
+
   return (
     <>
       <ColumnsComponent

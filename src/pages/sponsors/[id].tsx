@@ -13,7 +13,13 @@ import useHeaderProps from '@/hooks/useHeaderProps';
 import useSponsorPageStyles from '@/pages_styles/sponsorPageStyles';
 import { Box, Fade, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import DealCard from '@/components/common/DealCard';
 import PlaceholderImage from '@/components/common/PlaceholderImage';
@@ -47,21 +53,21 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
   const [reviewsLimit, setReviewsLimit] = useState(3);
   const [isInBookmarks, setIsInBookmarks] = useState(sponsor.isInBookmarks);
 
-  const handleAddBookmark = async (entityId: number) => {
+  const handleAddBookmark = useCallback(async (entityId: number) => {
     setIsInBookmarks(true);
     const response = await addSponsorToBookmark({ entityId });
     if ('error' in response) {
       setIsInBookmarks(false);
     }
-  };
+  }, []);
 
-  const handleDeleteBookmark = async (entityId: number) => {
+  const handleDeleteBookmark = useCallback(async (entityId: number) => {
     setIsInBookmarks(false);
     const response = await deleteSponsorFromBookmarks({ entityId });
     if ('error' in response) {
       setIsInBookmarks(true);
     }
-  };
+  }, []);
 
   const fetchReviews = async () => {
     const response = (await getSponsor({

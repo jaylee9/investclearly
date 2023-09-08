@@ -5,7 +5,7 @@ import {
   SponsorsFilters,
   SponsorsFiltersHeader,
 } from './SponsorsFilters';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSponsorComponentStyles } from './styles';
 import filterDifferences from '@/helpers/filterDifferences';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
@@ -215,43 +215,8 @@ const SponsorsComponent = ({
 
   const closeSponsorsFilterMobileHandler = () => {
     setIsSponsorsFilterMobile(false);
-    
-  const handleAddBookmark = async (entityId: number) => {
-    setSponsorsData(prevSponsors => {
-      const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
-        if (sponsor.id === entityId) {
-          return { ...sponsor, isInBookmarks: true };
-        }
-        return sponsor;
-      });
-      return { ...prevSponsors, sponsors: formattedSponsors };
-    });
-    const response = await addSponsorToBookmark({ entityId });
-    if ('error' in response) {
-      setSponsorsData(prevSponsors => {
-        const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
-          if (sponsor.id === entityId) {
-            return { ...sponsor, isInBookmarks: false };
-          }
-          return sponsor;
-        });
-        return { ...prevSponsors, deals: formattedSponsors };
-      });
-    }
-  };
 
-  const handleDeleteBookmark = async (entityId: number) => {
-    setSponsorsData(prevSponsors => {
-      const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
-        if (sponsor.id === entityId) {
-          return { ...sponsor, isInBookmarks: false };
-        }
-        return sponsor;
-      });
-      return { ...prevSponsors, sponsors: formattedSponsors };
-    });
-    const response = await deleteSponsorFromBookmarks({ entityId });
-    if ('error' in response) {
+    const handleAddBookmark = useCallback(async (entityId: number) => {
       setSponsorsData(prevSponsors => {
         const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
           if (sponsor.id === entityId) {
@@ -259,147 +224,185 @@ const SponsorsComponent = ({
           }
           return sponsor;
         });
-        return { ...prevSponsors, deals: formattedSponsors };
+        return { ...prevSponsors, sponsors: formattedSponsors };
       });
-    }
-  };
+      const response = await addSponsorToBookmark({ entityId });
+      if ('error' in response) {
+        setSponsorsData(prevSponsors => {
+          const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
+            if (sponsor.id === entityId) {
+              return { ...sponsor, isInBookmarks: false };
+            }
+            return sponsor;
+          });
+          return { ...prevSponsors, deals: formattedSponsors };
+        });
+      }
+    }, []);
 
-  return (
-    <ColumnsComponent
-      count={sponsorsData.total}
-      leftColumnHeader={
-        isDesktop && (
-          <SponsorsFiltersHeader
-            isChangedFilters={isChangedFilters}
-            handleClearFilters={handleClearFilters}
-            setFilters={setFilters}
-            filters={filters}
-          />
-        )
+    const handleDeleteBookmark = useCallback(async (entityId: number) => {
+      setSponsorsData(prevSponsors => {
+        const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
+          if (sponsor.id === entityId) {
+            return { ...sponsor, isInBookmarks: false };
+          }
+          return sponsor;
+        });
+        return { ...prevSponsors, sponsors: formattedSponsors };
+      });
+      const response = await deleteSponsorFromBookmarks({ entityId });
+      if ('error' in response) {
+        setSponsorsData(prevSponsors => {
+          const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
+            if (sponsor.id === entityId) {
+              return { ...sponsor, isInBookmarks: true };
+            }
+            return sponsor;
+          });
+          return { ...prevSponsors, deals: formattedSponsors };
+        });
       }
-      leftColumnContent={
-        isDesktop && (
-          <SponsorsFilters
-            filters={filters}
-            setFilters={setFilters}
-            handleApplyFilters={handleApplyFilters}
-            disabledApplyFilters={!isDirtyFilters}
-          />
-        )
-      }
-      rightColumnHeaderTitle={
-        <Box sx={classes.filterMobileHeaderWrapper}>
-          {isDesktop ? (
-            <Typography variant="body1">
-              <span style={{ fontWeight: 600 }}>
-                {sponsorsData.total} Sponsors
-              </span>{' '}
-              found {!!searchValue && `for ${searchValue}`}
-            </Typography>
-          ) : (
-            <Button
-              variant="secondary"
-              sxCustomStyles={classes.filterButton}
-              onClick={() => setIsSponsorsFilterMobile(!isSponsorsFilterMobile)}
-            >
-              <i className="icon-Filter"></i>
-              Filters{' '}
-              {formattedAppliedFilters.length
-                ? `+${formattedAppliedFilters.length}`
-                : ''}
-            </Button>
-          )}
-          <Modal
-            open={isSponsorsFilterMobile}
-            onClose={closeSponsorsFilterMobileHandler}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={classes.mobileFilterWrapper}>
-              <SponsorsFiltersHeader
-                isChangedFilters={isChangedFilters}
-                handleClearFilters={handleClearFilters}
-                setFilters={setFilters}
-                filters={filters}
-                onClose={closeSponsorsFilterMobileHandler}
-              />
-              <SponsorsFilters
-                setFilters={setFilters}
-                filters={filters}
-                handleApplyFilters={handleApplyFilters}
-                disabledApplyFilters={!isDirtyFilters}
-                isChangedFilters={isChangedFilters}
-                handleClearFilters={handleClearFilters}
-              />
-            </Box>
-          </Modal>
-          <Box sx={classes.selectWrapper}>
-            <Typography variant="body1" noWrap>
-              Sort by:
-            </Typography>
-            <Box sx={classes.selectContent}>
-              <CustomSelect
-                options={sortOptions}
-                variant={SelectVariant.Dark}
-                onChange={e =>
-                  handleChangeSelect(e.target.value as 'DESC' | 'ASC')
+    }, []);
+
+    return (
+      <ColumnsComponent
+        count={sponsorsData.total}
+        leftColumnHeader={
+          isDesktop && (
+            <SponsorsFiltersHeader
+              isChangedFilters={isChangedFilters}
+              handleClearFilters={handleClearFilters}
+              setFilters={setFilters}
+              filters={filters}
+            />
+          )
+        }
+        leftColumnContent={
+          isDesktop && (
+            <SponsorsFilters
+              filters={filters}
+              setFilters={setFilters}
+              handleApplyFilters={handleApplyFilters}
+              disabledApplyFilters={!isDirtyFilters}
+            />
+          )
+        }
+        rightColumnHeaderTitle={
+          <Box sx={classes.filterMobileHeaderWrapper}>
+            {isDesktop ? (
+              <Typography variant="body1">
+                <span style={{ fontWeight: 600 }}>
+                  {sponsorsData.total} Sponsors
+                </span>{' '}
+                found {!!searchValue && `for ${searchValue}`}
+              </Typography>
+            ) : (
+              <Button
+                variant="secondary"
+                sxCustomStyles={classes.filterButton}
+                onClick={() =>
+                  setIsSponsorsFilterMobile(!isSponsorsFilterMobile)
                 }
-                value={orderDirection}
-              />
-            </Box>
-          </Box>
-        </Box>
-      }
-      rightColumnHeaderContent={
-        isDesktop && (
-          <>
-            {formattedAppliedFilters.map((filter, index) => (
-              <Box sx={classes.appliedFilter} key={index}>
-                <Typography variant="caption">{filter.label}</Typography>
-                <span
-                  className="icon-Cross"
-                  onClick={() =>
-                    handleFilterRemove(filter.label, filter.key, filter.type)
-                  }
+              >
+                <i className="icon-Filter"></i>
+                Filters{' '}
+                {formattedAppliedFilters.length
+                  ? `+${formattedAppliedFilters.length}`
+                  : ''}
+              </Button>
+            )}
+            <Modal
+              open={isSponsorsFilterMobile}
+              onClose={closeSponsorsFilterMobileHandler}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={classes.mobileFilterWrapper}>
+                <SponsorsFiltersHeader
+                  isChangedFilters={isChangedFilters}
+                  handleClearFilters={handleClearFilters}
+                  setFilters={setFilters}
+                  filters={filters}
+                  onClose={closeSponsorsFilterMobileHandler}
+                />
+                <SponsorsFilters
+                  setFilters={setFilters}
+                  filters={filters}
+                  handleApplyFilters={handleApplyFilters}
+                  disabledApplyFilters={!isDirtyFilters}
+                  isChangedFilters={isChangedFilters}
+                  handleClearFilters={handleClearFilters}
                 />
               </Box>
-            ))}
-          </>
-        )
-      }
-      rightColumnContent={
-        isLoading ? (
-          <Loading sxCustomStyles={{ marginBottom: '16px' }} />
-        ) : (
-          <Box sx={classes.sponsorsWrapper}>
-            {sponsorsData.sponsors.map(sponsor => (
-              <SponsorCard
-                key={sponsor.id}
-                sponsor={sponsor}
-                variant={SponsorCardVariant.Large}
-                addBookmark={handleAddBookmark}
-                deleteBookmark={handleDeleteBookmark}
-              />
-            ))}
+            </Modal>
+            <Box sx={classes.selectWrapper}>
+              <Typography variant="body1" noWrap>
+                Sort by:
+              </Typography>
+              <Box sx={classes.selectContent}>
+                <CustomSelect
+                  options={sortOptions}
+                  variant={SelectVariant.Dark}
+                  onChange={e =>
+                    handleChangeSelect(e.target.value as 'DESC' | 'ASC')
+                  }
+                  value={orderDirection}
+                />
+              </Box>
+            </Box>
           </Box>
-        )
-      }
-      paginationComponent={
-        <>
-          {!isMobile && (
-            <Typography variant="caption">
-              Showing {firstItem}-{lastItem} of {sponsorsData.total} results
-            </Typography>
-          )}
-          <CustomPagination
-            count={sponsorsData.lastPage}
-            page={page}
-            onChange={(event, value) => handleChangePaginate(value)}
-          />
-        </>
-      }
-    />
-  );
+        }
+        rightColumnHeaderContent={
+          isDesktop && (
+            <>
+              {formattedAppliedFilters.map((filter, index) => (
+                <Box sx={classes.appliedFilter} key={index}>
+                  <Typography variant="caption">{filter.label}</Typography>
+                  <span
+                    className="icon-Cross"
+                    onClick={() =>
+                      handleFilterRemove(filter.label, filter.key, filter.type)
+                    }
+                  />
+                </Box>
+              ))}
+            </>
+          )
+        }
+        rightColumnContent={
+          isLoading ? (
+            <Loading sxCustomStyles={{ marginBottom: '16px' }} />
+          ) : (
+            <Box sx={classes.sponsorsWrapper}>
+              {sponsorsData.sponsors.map(sponsor => (
+                <SponsorCard
+                  key={sponsor.id}
+                  sponsor={sponsor}
+                  variant={SponsorCardVariant.Large}
+                  addBookmark={handleAddBookmark}
+                  deleteBookmark={handleDeleteBookmark}
+                />
+              ))}
+            </Box>
+          )
+        }
+        paginationComponent={
+          <>
+            {!isMobile && (
+              <Typography variant="caption">
+                Showing {firstItem}-{lastItem} of {sponsorsData.total} results
+              </Typography>
+            )}
+            <CustomPagination
+              count={sponsorsData.lastPage}
+              page={page}
+              onChange={(event, value) => handleChangePaginate(value)}
+            />
+          </>
+        }
+      />
+    );
+  };
 };
 
 export default SponsorsComponent;
