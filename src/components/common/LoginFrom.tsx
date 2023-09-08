@@ -5,9 +5,7 @@ import { useForm } from 'react-hook-form';
 import Input from '@/components/common/Input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import Link from 'next/link';
-import { googleLogin, login } from '@/actions/auth';
-import { useRouter } from 'next/router';
+import Link, { LinkProps } from 'next/link';
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 
 const validationSchema = z.object({
@@ -20,9 +18,30 @@ const validationSchema = z.object({
 
 type ValidationSchema = z.infer<typeof validationSchema>;
 
-const LoginForm = () => {
-  const classes = useLoginFormStyles();
-  const router = useRouter();
+type LoginUserForm = {
+  isUser: true;
+  onSubmit: (data: ValidationSchema) => void;
+  handleGoogleLogin: (credenitals: CredentialResponse) => void;
+};
+
+type LoginAdminForm = {
+  isUser: false;
+  onSubmit: (data: ValidationSchema) => void;
+  handleGoogleLogin?: never;
+};
+
+type LoginFormProps = {
+  href: LinkProps['href'];
+} & (LoginUserForm | LoginAdminForm);
+
+const LoginForm = ({
+  isUser,
+  href,
+  onSubmit,
+  handleGoogleLogin,
+}: LoginFormProps): JSX.Element => {
+  const styles = useLoginFormStyles();
+
   const {
     register,
     handleSubmit,
@@ -31,38 +50,27 @@ const LoginForm = () => {
     resolver: zodResolver(validationSchema),
   });
 
-  const onSubmit = async (data: ValidationSchema) => {
-    const { email, password } = data;
-    const response = await login({ email, password });
-    if (!('error' in response)) {
-      router.push('/');
-    }
-  };
-  const handleGoogleLogin = async (credenitals: CredentialResponse) => {
-    const response = await googleLogin({
-      token: credenitals.credential as string,
-    });
-    if (!('error' in response)) {
-      router.push('/');
-    }
-  };
   return (
-    <Box sx={classes.root}>
+    <Box sx={styles.root}>
       <Typography variant="h2" fontWeight={600} marginBottom="40px">
         Log in
       </Typography>
-      <Box sx={classes.googleLoginWrapper}>
-        <GoogleLogin
-          width={500}
-          text="signup_with"
-          onSuccess={handleGoogleLogin}
-        />
-      </Box>
-      <Box sx={classes.dividerWrapper}>
-        <div className="divider" />
-        <Typography variant="body1">or</Typography>
-        <div className="divider" />
-      </Box>
+      {isUser && (
+        <>
+          <Box sx={styles.googleLoginWrapper}>
+            <GoogleLogin
+              width={500}
+              text="signup_with"
+              onSuccess={handleGoogleLogin}
+            />
+          </Box>
+          <Box sx={styles.dividerWrapper}>
+            <div className="divider" />
+            <Typography variant="body1">or</Typography>
+            <div className="divider" />
+          </Box>
+        </>
+      )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           variant="outlined"
@@ -79,17 +87,20 @@ const LoginForm = () => {
           errorText={errors.password?.message}
           isPassword
         />
-        <Link href="/forgot-password">
-          <Typography variant="body1" sx={classes.forgotPasswordLink}>
+        <Link href={href}>
+          <Typography variant="body1" sx={styles.forgotPasswordLink}>
             Forgot password?
           </Typography>
         </Link>
         <Button type="submit" customStyles={{ marginBottom: '16px' }}>
           Log in
         </Button>
-        <Typography variant="body1" sx={{ textAlign: 'center' }}>
-          New to Invest Clearly? <Link href="/sign-up">Create an Account</Link>
-        </Typography>
+        {isUser && (
+          <Typography variant="body1" sx={{ textAlign: 'center' }}>
+            New to Invest Clearly?{' '}
+            <Link href="/sign-up">Create an Account</Link>
+          </Typography>
+        )}
       </form>
     </Box>
   );
