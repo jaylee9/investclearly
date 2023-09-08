@@ -15,7 +15,7 @@ import useHeaderProps from '@/hooks/useHeaderProps';
 import useDealPageStyles from '@/pages_styles/dealPageStyles';
 import { Box, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import parseCookies from 'next-cookies';
@@ -53,21 +53,21 @@ const DealPage = ({ deal }: DealPageProps) => {
   });
   const defaultSponsorImage = '/assets/Sponsor-placeholder.png';
 
-  const handleAddBookmark = async (entityId: number) => {
+  const handleAddBookmark = useCallback(async (entityId: number) => {
     setIsInBookmarks(true);
     const response = await addDealToBookmark({ entityId });
     if ('error' in response) {
       setIsInBookmarks(false);
     }
-  };
+  }, []);
 
-  const handleDeleteBookmark = async (entityId: number) => {
+  const handleDeleteBookmark = useCallback(async (entityId: number) => {
     setIsInBookmarks(false);
     const response = await deleteDealFromBookmarks({ entityId });
     if ('error' in response) {
       setIsInBookmarks(true);
     }
-  };
+  }, []);
 
   return (
     <Layout {...headerProps}>

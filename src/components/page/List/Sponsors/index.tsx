@@ -1,7 +1,7 @@
 import { Box, Fade, Typography } from '@mui/material';
 import ColumnsComponent from '../ColumnsComponent';
 import SponsorsFilters, { ISponsorFilters } from './SponsorsFilters';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
 import { useSponsorComponentStyles } from './styles';
 import filterDifferences from '@/helpers/filterDifferences';
@@ -205,7 +205,7 @@ const SponsorsComponent = ({
     setPage(page);
   };
 
-  const handleAddBookmark = async (entityId: number) => {
+  const handleAddBookmark = useCallback(async (entityId: number) => {
     setSponsorsData(prevSponsors => {
       const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
         if (sponsor.id === entityId) {
@@ -227,9 +227,9 @@ const SponsorsComponent = ({
         return { ...prevSponsors, deals: formattedSponsors };
       });
     }
-  };
+  }, []);
 
-  const handleDeleteBookmark = async (entityId: number) => {
+  const handleDeleteBookmark = useCallback(async (entityId: number) => {
     setSponsorsData(prevSponsors => {
       const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
         if (sponsor.id === entityId) {
@@ -251,7 +251,7 @@ const SponsorsComponent = ({
         return { ...prevSponsors, deals: formattedSponsors };
       });
     }
-  };
+  }, []);
 
   return (
     <ColumnsComponent
