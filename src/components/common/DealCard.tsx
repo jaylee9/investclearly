@@ -91,7 +91,7 @@ const DealCard = ({
       </Box>
     </Box>
   ) : (
-    <Box sx={classes.largeRoot}>
+    <Box sx={{ ...props.sx, ...classes.largeRoot }}>
       <PlaceholderImage
         src={deal.attachments?.[0]?.path}
         alt="deal image"

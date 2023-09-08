@@ -16,6 +16,7 @@ export const getAllEntriesFromBookmarks = async (
   });
 
   params.entityIds = bookmarks.map(record => record.entityId);
+  params.currentUserId = userId;
   let entities = null;
 
   if (params.entityIds?.length) {
