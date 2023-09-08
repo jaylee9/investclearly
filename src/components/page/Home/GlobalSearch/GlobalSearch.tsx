@@ -100,7 +100,7 @@ const GlobalSearch = ({
 
   const hasSponsors = data?.sponsors?.length;
   const searchType =
-    hasSponsors && queryType === 'sponsors' ? 'sponsors' : 'deals';
+    hasSponsors || queryType === 'sponsors' ? 'sponsors' : 'deals';
 
   const searchLink = `/list?type=${
     searchType || 'sponsors'
