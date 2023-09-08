@@ -11,6 +11,8 @@ import { Review } from '../../../backend/entities/reviews.entity';
 import { Deal } from '../../../backend/entities/deals.entity';
 import { Attachment } from '../../../backend/entities/attachments.entity';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
+import { Location } from '../../entities/locations.entity';
+import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 
 export const getSponsorById = async (
   id: number,
@@ -25,7 +27,14 @@ export const getSponsorById = async (
     .select('sponsor')
     .from(Sponsor, 'sponsor')
     .where('sponsor.id = :id', { id })
-    .leftJoinAndSelect('sponsor.user', 'user');
+    .leftJoinAndSelect('sponsor.user', 'user')
+    .leftJoinAndMapMany(
+      'sponsor.locations',
+      Location,
+      'locations',
+      'locations.entityId = sponsor.id AND locations.entityType = :sponsorEntityType',
+      { sponsorEntityType: LocationTargetTypesConstants.sponsor }
+    );
 
   const reviewsQuery = connection.manager
     .createQueryBuilder(Review, 'reviews')
