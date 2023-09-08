@@ -2,6 +2,7 @@ import { Sponsor } from '../entities/sponsors.entity';
 import { SponsorInterface } from '../services/sponsors/interfaces/sponsor.interface';
 import { buildFullImagePath } from '../utils/build-full-image-path';
 import { dealMapper } from './deal.mapper';
+import { locationMapper } from './locations.mapper';
 import { reviewMapper } from './review.mapper';
 import { userMapper } from './user.mapper';
 
@@ -45,6 +46,7 @@ export const sponsorMapper = (sponsor: Sponsor): SponsorInterface => {
     reviewsCount: sponsor.reviewsCount || 0,
     avgTotalRating: sponsor.avgTotalRating || 0,
     reviews: sponsor.reviews ? sponsor.reviews.map(reviewMapper) : [],
+    locations: sponsor.locations ? sponsor.locations.map(locationMapper) : [],
     isInBookmarks: sponsor.isInBookmarks || false,
     createdAt: sponsor.createdAt,
     updatedAt: sponsor.updatedAt,

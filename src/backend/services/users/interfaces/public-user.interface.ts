@@ -3,6 +3,7 @@ import { UserInterface } from './user.interface';
 import { AssetClasses } from '../../../../backend/constants/enums/asset-classes';
 import { Regions } from '../../../../backend/constants/enums/regions';
 import { InvestmentInterface } from '../../investments/interfaces/investment.interface';
+import { LocationInterface } from '../../locations/interfaces/location.interface';
 
 export interface PublicUserInterface extends UserInterface {
   reviews?: ReviewInterface[] | null;
@@ -26,4 +27,5 @@ export interface PublicUserInterface extends UserInterface {
   reviewsCount: number;
   investmentsCount: number;
   investments: InvestmentInterface[];
+  locations: LocationInterface[];
 }

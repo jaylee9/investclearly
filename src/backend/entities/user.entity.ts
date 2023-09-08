@@ -18,6 +18,7 @@ import { InvestorStatuses } from '../constants/enums/investor-statuses';
 import { IncomeAndNetWorth } from '../constants/enums/income-and-worth';
 import { Investment } from './investments.entity';
 import { Bookmark } from './bookmark.entity';
+import { Location } from './locations.entity';
 
 @Entity({ name: 'user' })
 export class User {

@@ -23,6 +23,7 @@ import { Regulations } from '../constants/enums/regulations';
 import { Investment } from './investments.entity';
 import { Bookmark } from './bookmark.entity';
 import { RelatedPerson } from './relatedPersons.entity';
+import { Location } from './locations.entity';
 
 @Entity({ name: 'deals' })
 export class Deal {

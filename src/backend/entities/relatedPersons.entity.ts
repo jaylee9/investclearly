@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { PolymorphicParent } from 'typeorm-polymorphic';
 import { Deal } from './deals.entity';
+import { Location } from './locations.entity';
 
 @Entity({ name: 'related_persons' })
 export class RelatedPerson {

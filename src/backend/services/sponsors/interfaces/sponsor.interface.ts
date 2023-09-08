@@ -1,4 +1,5 @@
 import { DealInterface } from '../../deals/interfaces/deal.interface';
+import { LocationInterface } from '../../locations/interfaces/location.interface';
 import { ReviewInterface } from '../../reviews/interfaces/review.interface';
 import { UserInterface } from '../../users/interfaces/user.interface';
 import { CreateSponsorInterface } from './create-sponsor.interface';
@@ -8,6 +9,7 @@ export interface SponsorInterface extends CreateSponsorInterface {
   admin?: UserInterface | null;
   deals?: DealInterface[];
   reviews?: ReviewInterface[];
+  locations: LocationInterface[];
   activelyRising: boolean;
   dealsCount?: number | 0;
   reviewsCount?: number | 0;
