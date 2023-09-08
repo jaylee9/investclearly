@@ -433,7 +433,6 @@ const DealsComponent = ({
                   key={deal.id}
                   deal={deal}
                   variant={DealCardVariant.Large}
-                  isBookmarked={deal.isInBookmarks}
                   addBookmark={handleAddBookmark}
                   deleteBookmark={handleDeleteBookmark}
                 />
