@@ -28,6 +28,12 @@ export interface UpdateSponsorInterface {
   fees?: number;
   regulations?: string;
   interests?: string;
+  street1?: string;
+  street2?: string;
+  city?: string;
+  stateOrCountry?: string;
+  stateOrCountryDescription?: string;
+  zipCode?: string;
   createdAt: Date;
   updatedAt: Date;
 }

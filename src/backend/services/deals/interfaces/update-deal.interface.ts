@@ -23,6 +23,12 @@ export interface UpdateDealInterface {
   secIndustry?: string;
   closeDate?: Date;
   regulation?: string;
+  street1?: string | null;
+  street2?: string | null;
+  city?: string | null;
+  stateOrCountry?: string | null;
+  stateOrCountryDescription?: string | null;
+  zipCode?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

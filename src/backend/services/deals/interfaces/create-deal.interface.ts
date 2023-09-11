@@ -21,4 +21,10 @@ export interface CreateDealInterface {
   secIndustry?: string | null;
   closeDate?: Date | null;
   regulation?: string | null;
+  street1?: string | '';
+  street2?: string | '';
+  city?: string | '';
+  stateOrCountry?: string | '';
+  stateOrCountryDescription?: string | '';
+  zipCode?: string | '';
 }

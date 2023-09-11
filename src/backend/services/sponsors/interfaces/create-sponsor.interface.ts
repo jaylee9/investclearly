@@ -27,4 +27,10 @@ export interface CreateSponsorInterface {
   fees?: number | null;
   regulations?: string | string[];
   interests?: string | string[];
+  street1?: string | null;
+  street2?: string | null;
+  city?: string | null;
+  stateOrCountry?: string | null;
+  stateOrCountryDescription?: string | null;
+  zipCode?: string | null;
 }
