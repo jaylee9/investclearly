@@ -11,7 +11,7 @@ import Button from '@/components/common/Button';
 import { updateProfileSettings } from '@/actions/user/profile-settings';
 import { useUser } from '@/contexts/User';
 import Loading from '@/components/common/Loading';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const isBrowser =
   typeof window !== 'undefined' && typeof window.File !== 'undefined';
@@ -29,7 +29,7 @@ type ValidationSchema = z.infer<typeof validationSchema>;
 const EditProfile = () => {
   const classes = useEditProfileStyles();
   const { user, setUser } = useUser();
-  console.log(user);
+  const [isLoading, setIsLoading] = useState(false);
   const {
     control,
     handleSubmit,
@@ -43,6 +43,7 @@ const EditProfile = () => {
   });
 
   const onSubmit = handleSubmit(async data => {
+    setIsLoading(true);
     const response = await updateProfileSettings({
       ...data,
       regions: data.regions as Regions[],
@@ -51,6 +52,7 @@ const EditProfile = () => {
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));
       reset();
+      setIsLoading(false);
     }
   });
 
@@ -125,7 +127,7 @@ const EditProfile = () => {
           </Box>
         </Box>
         <Box sx={classes.buttonsWrapper}>
-          <Button type="submit" disabled={!isDirty}>
+          <Button type="submit" disabled={!isDirty || isLoading}>
             Save
           </Button>
         </Box>
