@@ -1298,3 +1298,45 @@ export const usePasswordChangedSuccessfullyStyles = () => {
     },
   };
 };
+
+export const useProfilePictureUploaderStyles = () => {
+  return {
+    root: {
+      display: 'flex',
+      gap: '20px',
+    },
+    uploader: {
+      cursor: 'pointer',
+      width: 'fit-content',
+    },
+    uploadIconWrapper: {
+      display: 'flex',
+      justifyContent: 'end',
+      marginTop: '-50px',
+      '& .uploadIcon': {
+        background: palette.common.white,
+        borderRadius: '40px',
+        border: `1px solid ${palette.background.paper}`,
+        width: '40px',
+        height: '40px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      '& i': {
+        fontSize: '24px',
+        color: palette.text.secondary,
+      },
+    },
+    title: {
+      fontWeight: 600,
+      marginBottom: '4px',
+    },
+    rules: {
+      color: palette.text.secondary,
+      '& span': {
+        display: 'block',
+      },
+    },
+  };
+};
