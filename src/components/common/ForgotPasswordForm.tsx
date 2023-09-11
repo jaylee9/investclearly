@@ -11,11 +11,11 @@ const validationSchema = z.object({
   email: z.string().email({ message: 'Email must be a valid email' }),
 });
 
-type ValidationSchema = z.infer<typeof validationSchema>;
+export type ForgotPasswordValidationSchema = z.infer<typeof validationSchema>;
 
 type ForgotPasswordFormProps = {
   href: LinkProps['href'];
-  onSubmit: (data: ValidationSchema) => void;
+  onSubmit: (data: ForgotPasswordValidationSchema) => void;
 };
 
 const ForgotPasswordForm = ({
@@ -28,7 +28,7 @@ const ForgotPasswordForm = ({
     register,
     handleSubmit,
     formState: { isValid },
-  } = useForm<ValidationSchema>({
+  } = useForm<ForgotPasswordValidationSchema>({
     resolver: zodResolver(validationSchema),
   });
 
