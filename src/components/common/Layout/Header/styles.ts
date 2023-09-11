@@ -33,6 +33,7 @@ const getStyles = ({
       justifyContent: 'space-between',
       alignItems: 'center',
       boxShadow: isShadow ? theme.customShadows.header : 'none',
+      filter: isShadow ? `drop-shadow(${theme.customShadows.header})` : 'none',
       background: type.includes('search') ? theme.palette.common.white : '',
       zIndex: 1,
       position: rootPosition,

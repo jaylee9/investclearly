@@ -101,7 +101,7 @@ const theme = createTheme({
   },
   customShadows: {
     base: '0px 4px 12px 0px rgba(30, 43, 67, 0.06)',
-    header: '8px 12px 32px 0px rgba(113, 124, 137, 0.06)',
+    header: '8px 12px 32px rgba(113, 124, 137, 0.06)',
   },
   components: {
     MuiCssBaseline: {

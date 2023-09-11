@@ -1,5 +1,13 @@
 import React, { CSSProperties, ReactNode } from 'react';
-import { Tabs, Tab, TabsProps, Box, Typography } from '@mui/material';
+import {
+  Tabs,
+  Tab,
+  TabsProps,
+  Box,
+  Typography,
+  SxProps,
+  Theme,
+} from '@mui/material';
 import { useTabsStyles } from './styles';
 
 interface TabProps {
@@ -13,12 +21,14 @@ interface CustomTabsProps extends TabsProps {
   value: number | string;
   tabs: TabProps[];
   customStyles?: CSSProperties;
+  sxCustomRootStyles?: SxProps<Theme>;
 }
 
 const CustomTabs: React.FC<CustomTabsProps> = ({
   value,
   tabs,
   customStyles,
+  sxCustomRootStyles,
   ...props
 }) => {
   const classes = useTabsStyles();
@@ -28,7 +38,7 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
       <Tabs
         value={value}
         aria-label="custom tabs"
-        sx={classes.root}
+        sx={sxCustomRootStyles ?? classes.root}
         style={customStyles}
         {...props}
       >

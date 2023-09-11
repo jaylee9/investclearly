@@ -24,6 +24,7 @@ import { useQuery } from 'react-query';
 import Loading from '@/components/common/Loading';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -35,6 +36,7 @@ interface SponsorPageProps {
 
 const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
   const classes = useSponsorPageStyles();
+  const { isMobile, isDesktop } = useBreakpoints();
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('overview');
   const [openClaimModal, setOpenClaimModal] = useState(false);
@@ -169,53 +171,62 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
     isLinks: true,
     isSignIn: true,
     isSearch: true,
+    isShadow: true,
   });
+
+  const dealsDataSliceCondition =
+    isMobile && dealsData.length === 3 ? 1 : dealsData.length;
 
   return (
     <Layout {...headerProps}>
       <Fade in={isStickyHeader}>
         <Box sx={classes.fixedHeader}>
-          <Box sx={classes.fixedHeaderInfo}>
-            <PlaceholderImage
-              alt="sponsor image"
-              width={56}
-              height={56}
-              src={sponsor.businessAvatar as string}
-              defaultImage={DEFAULT_SPONSOR_IMAGE}
-              style={{ borderRadius: '1230px' }}
-            />
-            <Box>
-              <Typography variant="h5">{sponsor.legalName}</Typography>
-              <Typography variant="body1" sx={classes.sponsorRating}>
-                <i className="icon-Star"></i>
-                {sponsor.avgTotalRating}
-                <span>({sponsor.reviewsCount})</span>
-              </Typography>
+          {isDesktop && (
+            <Box sx={classes.fixedHeaderInfo}>
+              <PlaceholderImage
+                alt="sponsor image"
+                width={56}
+                height={56}
+                src={sponsor.businessAvatar as string}
+                defaultImage={DEFAULT_SPONSOR_IMAGE}
+                style={{ borderRadius: '1230px' }}
+              />
+              <Box>
+                <Typography variant="h5">{sponsor.legalName}</Typography>
+                <Typography variant="body1" sx={classes.sponsorRating}>
+                  <i className="icon-Star"></i>
+                  {sponsor.avgTotalRating}
+                  <span>({sponsor.reviewsCount})</span>
+                </Typography>
+              </Box>
             </Box>
-          </Box>
+          )}
           <CustomTabs
             tabs={tabs}
             onChange={handleTabChange}
             value={activeTab}
+            sxCustomRootStyles={classes.customTabs}
           />
-          <Box sx={classes.infoHeaderActions}>
-            {isInBookmarks ? (
-              <BookmarkIcon
-                sx={classes.filledBookmarkIcon}
-                onClick={() => handleDeleteBookmark(sponsor.id)}
-              />
-            ) : (
-              <BookmarkBorderIcon
-                sx={classes.bookmarkIcon}
-                onClick={() => handleAddBookmark(sponsor.id)}
-              />
-            )}
-            <Button variant="secondary">
-              <Box sx={classes.websiteButton}>
-                <i className="icon-Link"></i>Website
-              </Box>
-            </Button>
-          </Box>
+          {!isMobile && (
+            <Box sx={classes.infoHeaderActions}>
+              {isInBookmarks ? (
+                <BookmarkIcon
+                  sx={classes.filledBookmarkIcon}
+                  onClick={() => handleDeleteBookmark(sponsor.id)}
+                />
+              ) : (
+                <BookmarkBorderIcon
+                  sx={classes.bookmarkIcon}
+                  onClick={() => handleAddBookmark(sponsor.id)}
+                />
+              )}
+              <Button variant="secondary">
+                <Box sx={classes.websiteButton}>
+                  <i className="icon-Link"></i>Website
+                </Box>
+              </Button>
+            </Box>
+          )}
         </Box>
       </Fade>
       <Box sx={classes.wrapper}>
@@ -255,13 +266,22 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
                   onClick={() => handleAddBookmark(sponsor.id)}
                 />
               )}
-              <Button variant="secondary">
-                <Box sx={classes.websiteButton}>
-                  <i className="icon-Link"></i>Website
-                </Box>
-              </Button>
+              {!isMobile && (
+                <Button variant="secondary">
+                  <Box sx={classes.websiteButton}>
+                    <i className="icon-Link"></i>Website
+                  </Box>
+                </Button>
+              )}
             </Box>
           </Box>
+          {isMobile && (
+            <Button variant="secondary">
+              <Box sx={classes.websiteButton}>
+                <i className="icon-Link"></i>Website
+              </Box>
+            </Button>
+          )}
           <Box sx={classes.infoContent}>
             <Box sx={classes.infoContentColumn}>
               <Box sx={classes.infoContentDetail}>
@@ -333,15 +353,17 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
               </Box>
             </Box>
 
-            <Box ref={dealsRef} sx={classes.overview}>
+            <Box ref={dealsRef} sx={classes.dealsOverview}>
               <Box sx={classes.dealsBlockHeader}>
                 <Typography variant="h3">Deals</Typography>
                 <Typography variant="body1">{sponsor?.dealsCount}</Typography>
               </Box>
               <Box sx={classes.dealsBlockContent}>
-                {dealsData?.map(deal => (
-                  <DealCard key={deal.id} deal={deal} sx={classes.dealCard} />
-                ))}
+                {dealsData
+                  .slice(0, dealsDataSliceCondition)
+                  ?.map(deal => (
+                    <DealCard key={deal.id} deal={deal} sx={classes.dealCard} />
+                  ))}
               </Box>
               {!!sponsor.dealsCount &&
                 sponsor.dealsCount > dealsLimit &&
@@ -370,7 +392,7 @@ const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
                   </Typography>
                 </Box>
                 <Button onClick={handleShowCreateReviewForm}>
-                  Write a review
+                  <Typography variant="body1">Write a review</Typography>
                 </Button>
                 <CreateReviewForm
                   open={showCreateReviewForm}
