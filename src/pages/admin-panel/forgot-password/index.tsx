@@ -10,7 +10,10 @@ const ForgotPassword = () => {
   };
   return (
     <LayoutAdminPanel>
-      <ForgotPasswordForm href="/admin-panel/login" onSubmit={handleSubmit} />
+      <ForgotPasswordForm
+        backHref="/admin-panel/login"
+        onSubmit={handleSubmit}
+      />
     </LayoutAdminPanel>
   );
 };

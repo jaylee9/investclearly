@@ -7,7 +7,7 @@ const ForgotPassword = () => {
   return (
     <Layout variant={LayoutVariant.Entry}>
       <ForgotPasswordForm
-        href="/login"
+        backHref="/login"
         onSubmit={async data => {
           const { email } = data;
           await forgotPassword({ email });

@@ -14,12 +14,12 @@ const validationSchema = z.object({
 export type ForgotPasswordValidationSchema = z.infer<typeof validationSchema>;
 
 type ForgotPasswordFormProps = {
-  href: LinkProps['href'];
+  backHref: LinkProps['href'];
   onSubmit: (data: ForgotPasswordValidationSchema) => void;
 };
 
 const ForgotPasswordForm = ({
-  href,
+  backHref,
   onSubmit,
 }: ForgotPasswordFormProps): JSX.Element => {
   const styles = useForgotPasswordFormStyles();
@@ -54,7 +54,7 @@ const ForgotPasswordForm = ({
         </Box>
       </form>
       <Typography variant="body1" sx={styles.rememberPassword}>
-        Remembered password? <Link href={href}>Back to Log in</Link>
+        Remembered password? <Link href={backHref}>Back to Log in</Link>
       </Typography>
     </Box>
   );
