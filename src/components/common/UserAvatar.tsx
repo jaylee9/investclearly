@@ -1,7 +1,7 @@
 import getInitials from '@/helpers/getInitials';
 import { Box, Typography } from '@mui/material';
-import Image from 'next/image';
 import { useUserAvatarStyles } from './styles';
+import SkeletonImage from './SkeletonImage';
 
 interface UserAvatarProps {
   src?: string | null;
@@ -13,7 +13,7 @@ interface UserAvatarProps {
 const UserAvatar = ({ src, name, width, height }: UserAvatarProps) => {
   const classes = useUserAvatarStyles();
   return src ? (
-    <Image
+    <SkeletonImage
       src={src}
       width={width}
       height={height}
