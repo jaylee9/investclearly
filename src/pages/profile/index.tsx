@@ -8,6 +8,7 @@ import ProfileInvestments from '@/components/page/Profile/Investments';
 import withPrivateRoute from '@/HOC/withPrivateRoute';
 import ProfileReviews from '@/components/page/Profile/Reviews';
 import ProfileSaved from '@/components/page/Profile/Saved';
+import ProfileSettings from '@/components/page/Profile/Settings';
 
 const sections = [
   {
@@ -32,6 +33,7 @@ const sections = [
     label: 'Profile Settings',
     icon: 'icon-Settings',
     href: 'settings',
+    component: <ProfileSettings />,
   },
 ];
 
