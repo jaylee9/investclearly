@@ -12,15 +12,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '@/components/common/Input';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
 import { Regions } from '@/backend/constants/enums/regions';
+import Button from '@/components/common/Button';
+import { updateProfileSettings } from '@/actions/user/profile-settings';
 
 const isBrowser =
   typeof window !== 'undefined' && typeof window.File !== 'undefined';
 
 const validationSchema = z.object({
-  profilePicture: isBrowser ? z.instanceof(File) : z.any(),
+  profilePicture: isBrowser ? z.instanceof(File).optional() : z.any(),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   address: z.string().optional(),
+  regions: z.string().optional().array(),
 });
 
 type ValidationSchema = z.infer<typeof validationSchema>;
@@ -46,21 +49,37 @@ const EditProfile = () => {
     },
     {
       enabled: !!userId,
+      staleTime: Infinity,
       onSuccess: data => {
         setValue('firstName', data?.firstName || '');
         setValue('lastName', data?.lastName || '');
         setValue('address', data?.address || '');
+        setValue('regions', data.regions || []);
         setIsLoading(false);
       },
     }
   );
 
-  const { control, handleSubmit, register, setValue, watch } =
-    useForm<ValidationSchema>({
-      resolver: zodResolver(validationSchema),
-    });
+  const {
+    control,
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    formState: { isDirty },
+  } = useForm<ValidationSchema>({
+    resolver: zodResolver(validationSchema),
+  });
 
-  const onSubmit = handleSubmit(data => console.log(data));
+  const onSubmit = handleSubmit(async data => {
+    const response = await updateProfileSettings({
+      ...data,
+      regions: data.regions as Regions[],
+    });
+    if (!('error' in response)) {
+      localStorage.setItem('user', JSON.stringify(response));
+    }
+  });
 
   const regionsOptions = Object.values(Regions).map(item => {
     return { label: item, value: item };
@@ -71,7 +90,7 @@ const EditProfile = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} className="form">
           <Box sx={classes.uploaderWrapper}>
             <Controller
               control={control}
@@ -107,11 +126,26 @@ const EditProfile = () => {
                 register={register('address')}
                 value={watch('address')}
               />
-              <CustomSelect
-                options={regionsOptions}
-                variant={SelectVariant.Dark}
+              <Controller
+                control={control}
+                name="regions"
+                render={({ field: { onChange, value } }) => (
+                  <CustomSelect
+                    options={regionsOptions}
+                    variant={SelectVariant.Dark}
+                    multiple
+                    onChange={onChange}
+                    value={value || []}
+                    topLabel="State"
+                  />
+                )}
               />
             </Box>
+          </Box>
+          <Box sx={classes.buttonsWrapper}>
+            <Button type="submit" disabled={!isDirty}>
+              Save
+            </Button>
           </Box>
         </form>
       )}

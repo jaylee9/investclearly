@@ -22,7 +22,7 @@ const ProfileSettings = () => {
   };
 
   return (
-    <Box>
+    <Box height="90%">
       <CustomTabs tabs={tabs} onChange={handleChangeTab} value={activeTab} />
     </Box>
   );

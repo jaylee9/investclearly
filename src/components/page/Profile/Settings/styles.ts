@@ -2,6 +2,12 @@ export const useEditProfileStyles = () => {
   return {
     root: {
       padding: '24px',
+      height: '95%',
+      '& .form': {
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      },
     },
     uploaderWrapper: {
       marginBottom: '12px',
@@ -11,6 +17,7 @@ export const useEditProfileStyles = () => {
       flexDirection: 'column',
       gap: '12px',
       maxWidth: '600px',
+      flex: 1,
     },
     nameInputsWrapper: {
       display: 'flex',
@@ -19,6 +26,13 @@ export const useEditProfileStyles = () => {
     },
     singleInputsWrapper: {
       maxWidth: '560px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px',
+    },
+    buttonsWrapper: {
+      display: 'flex',
+      justifyContent: 'end',
     },
   };
 };

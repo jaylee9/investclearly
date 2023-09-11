@@ -42,11 +42,18 @@ const useUserProfilePageStyles = () => {
         transition: 'color 0.3s ease-in-out, background 0.3s ease-in-out',
       },
     },
-    content: {
+    contentWrapper: {
       padding: '24px',
       width: '80%',
       height: '100%',
+      overflow: 'hidden',
+    },
+    content: {
+      height: '100%',
       overflow: 'auto',
+      '&::-webkit-scrollbar': {
+        display: 'none',
+      },
     },
   };
 };

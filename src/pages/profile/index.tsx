@@ -76,11 +76,13 @@ const UserProfilePage = () => {
               </Typography>
             ))}
           </Box>
-          <Box sx={classes.content}>
-            <Typography variant="h3" fontWeight={600} marginBottom="20px">
-              {activeTab?.label}
-            </Typography>
-            {activeTab?.component}
+          <Box sx={classes.contentWrapper}>
+            <Box sx={classes.content}>
+              <Typography variant="h3" fontWeight={600} marginBottom="20px">
+                {activeTab?.label}
+              </Typography>
+              {activeTab?.component}
+            </Box>
           </Box>
         </Box>
       </Box>
