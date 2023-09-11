@@ -10,6 +10,8 @@ import { deleteFile } from '../files/delete-file';
 import { deleteAttachment } from '../attachments/delete-attachments';
 import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
 import { UpdateDealInterface } from './interfaces/update-deal.interface';
+import { createOrUpdateLocation } from '../locations/create-or-update-location';
+import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 
 export const update = async (
   id: number,
@@ -21,6 +23,12 @@ export const update = async (
     attachmentsIdsToDelete,
     investmentStructures,
     regions,
+    street1,
+    street2,
+    city,
+    stateOrCountry,
+    stateOrCountryDescription,
+    zipCode,
     ...updateDealData
   } = fields;
 
@@ -61,5 +69,19 @@ export const update = async (
       await deleteAttachment(attachment.id);
     }
   }
+
+  await createOrUpdateLocation(
+    {
+      street1,
+      street2,
+      city,
+      stateOrCountry,
+      stateOrCountryDescription,
+      zipCode,
+    },
+    LocationTargetTypesConstants.deal,
+    id
+  );
+
   return getDealById(id);
 };
