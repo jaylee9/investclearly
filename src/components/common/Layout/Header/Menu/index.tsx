@@ -118,7 +118,7 @@ export const Menu: FC<MenuProps> = ({
             <Divider />
             {menuProfileLinks.map(({ href, label, icon }) => (
               <Link
-                href={`profile?section=${href}`}
+                href={`/profile?section=${href}`}
                 passHref
                 style={linkStyle}
                 key={href}
