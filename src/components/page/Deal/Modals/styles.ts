@@ -67,8 +67,8 @@ export const useClaimDealModalStyles = () => {
 export const useSuggestEditModalStyles = () => {
   return {
     root: {
-      height: '376px',
-      width: '370px',
+      height: { xs: '100%', md: '376px' },
+      width: { xs: '100%', md: '370px' },
       boxSizing: 'border-box',
       '& h3': {
         fontWeight: 600,
@@ -80,7 +80,7 @@ export const useSuggestEditModalStyles = () => {
       flexDirection: 'column',
       gap: '20px',
       marginBottom: '24px',
-      width: '370px',
+      width: { xs: '100%', md: '370px' },
       '& .MuiBox-root': {
         width: '100%',
       },
