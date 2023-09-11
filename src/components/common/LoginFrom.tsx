@@ -16,17 +16,17 @@ const validationSchema = z.object({
     .min(8, { message: 'Password must be at least 8 characters long' }),
 });
 
-type ValidationSchema = z.infer<typeof validationSchema>;
+export type LoginFormValidationSchema = z.infer<typeof validationSchema>;
 
 type LoginUserForm = {
   isUser: true;
-  onSubmit: (data: ValidationSchema) => void;
+  onSubmit: (data: LoginFormValidationSchema) => void;
   handleGoogleLogin: (credenitals: CredentialResponse) => void;
 };
 
 type LoginAdminForm = {
   isUser: false;
-  onSubmit: (data: ValidationSchema) => void;
+  onSubmit: (data: LoginFormValidationSchema) => void;
   handleGoogleLogin?: never;
 };
 
@@ -46,7 +46,7 @@ const LoginForm = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ValidationSchema>({
+  } = useForm<LoginFormValidationSchema>({
     resolver: zodResolver(validationSchema),
   });
 

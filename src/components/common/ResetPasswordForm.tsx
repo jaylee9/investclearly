@@ -20,10 +20,12 @@ const validationSchema = z
     path: ['repeat_password'],
   });
 
-type ValidationSchema = z.infer<typeof validationSchema>;
+export type ResetPasswordFormValidationSchema = z.infer<
+  typeof validationSchema
+>;
 
 type ResetPasswordFormProps = {
-  onSubmit: (data: ValidationSchema) => void;
+  onSubmit: (data: ResetPasswordFormValidationSchema) => void;
 };
 
 const ResetPasswordForm = ({
@@ -35,7 +37,7 @@ const ResetPasswordForm = ({
     register,
     handleSubmit,
     formState: { isValid },
-  } = useForm<ValidationSchema>({
+  } = useForm<ResetPasswordFormValidationSchema>({
     resolver: zodResolver(validationSchema),
   });
 

@@ -11,15 +11,15 @@ const validationSchema = z.object({
   email: z.string().email({ message: 'Email must be a valid email' }),
 });
 
-type ValidationSchema = z.infer<typeof validationSchema>;
+export type ForgotPasswordValidationSchema = z.infer<typeof validationSchema>;
 
 type ForgotPasswordFormProps = {
-  href: LinkProps['href'];
-  onSubmit: (data: ValidationSchema) => void;
+  backHref: LinkProps['href'];
+  onSubmit: (data: ForgotPasswordValidationSchema) => void;
 };
 
 const ForgotPasswordForm = ({
-  href,
+  backHref,
   onSubmit,
 }: ForgotPasswordFormProps): JSX.Element => {
   const styles = useForgotPasswordFormStyles();
@@ -28,7 +28,7 @@ const ForgotPasswordForm = ({
     register,
     handleSubmit,
     formState: { isValid },
-  } = useForm<ValidationSchema>({
+  } = useForm<ForgotPasswordValidationSchema>({
     resolver: zodResolver(validationSchema),
   });
 
@@ -54,7 +54,7 @@ const ForgotPasswordForm = ({
         </Box>
       </form>
       <Typography variant="body1" sx={styles.rememberPassword}>
-        Remembered password? <Link href={href}>Back to Log in</Link>
+        Remembered password? <Link href={backHref}>Back to Log in</Link>
       </Typography>
     </Box>
   );

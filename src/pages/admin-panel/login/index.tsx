@@ -1,20 +1,19 @@
 import LayoutAdminPanel from '../../../components/common/LayoutAdminPanel';
-import LoginForm from '@/components/common/LoginFrom';
+import LoginForm, {
+  LoginFormValidationSchema,
+} from '@/components/common/LoginFrom';
 
 const Login = () => {
+  const handleSubmit = async (data: LoginFormValidationSchema) => {
+    const { email, password } = data;
+    console.log(email, password);
+  };
   return (
     <LayoutAdminPanel>
       <LoginForm
         isUser={false}
         href="/admin-panel/forgot-password"
-        onSubmit={async data => {
-          const { email, password } = data;
-          /* TODO: add request */
-          console.log(`
-          - email: ${email}
-          - password: ${password}
-          `);
-        }}
+        onSubmit={handleSubmit}
       />
     </LayoutAdminPanel>
   );
