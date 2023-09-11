@@ -1,9 +1,10 @@
 import CustomTabs from '@/components/common/CustomTabs';
 import { Box } from '@mui/material';
 import { SyntheticEvent, useState } from 'react';
+import EditProfile from './Edit';
 
 const tabs = [
-  { value: 'edit', label: 'Edit Profile' },
+  { value: 'edit', label: 'Edit Profile', content: <EditProfile /> },
   { value: 'privacy', label: 'Privacy Settings' },
   { value: 'notifications', label: 'Notifications' },
   { value: 'investment-preferences', label: 'Investment Preferences' },
