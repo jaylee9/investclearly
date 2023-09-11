@@ -6,6 +6,8 @@ import { Sponsor } from '../../../backend/entities/sponsors.entity';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { uploadFile } from '../files/upload-file';
 import { getSponsorById } from './get-sponsor-by-id';
+import { createLocation } from '../locations/create-location';
+import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 
 export const createSponsorRecord = async (
   data: DeepPartial<Sponsor>,
@@ -19,6 +21,12 @@ export const createSponsorRecord = async (
     regions,
     regulations,
     interests,
+    street1,
+    street2,
+    city,
+    stateOrCountry,
+    stateOrCountryDescription,
+    zipCode,
     ...createSponsorData
   } = data;
 
@@ -43,8 +51,21 @@ export const createSponsorRecord = async (
     ...transformedData,
     ...createSponsorData,
     businessAvatar,
-  }) as SponsorInterface;
+  }) as unknown as SponsorInterface;
   await connection.manager.save(sponsor);
+
+  await createLocation(
+    {
+      street1,
+      street2,
+      city,
+      stateOrCountry,
+      stateOrCountryDescription,
+      zipCode,
+    },
+    LocationTargetTypesConstants.sponsor,
+    sponsor.id
+  );
 
   return getSponsorById(sponsor.id);
 };
