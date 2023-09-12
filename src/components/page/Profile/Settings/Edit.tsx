@@ -8,10 +8,15 @@ import Input from '@/components/common/Input';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
 import { Regions } from '@/backend/constants/enums/regions';
 import Button from '@/components/common/Button';
-import { updateProfileSettings } from '@/actions/user/profile-settings';
+import {
+  UpdateProfileSettingPayload,
+  updateProfileSettings,
+} from '@/actions/user/profile-settings';
 import { useUser } from '@/contexts/User';
 import Loading from '@/components/common/Loading';
 import { useEffect, useState } from 'react';
+import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
+import sanitizeUserUpdatePayload from '@/helpers/sanitizeUserUpdatePayload';
 
 const isBrowser =
   typeof window !== 'undefined' && typeof window.File !== 'undefined';
@@ -51,12 +56,16 @@ const EditProfile = () => {
     setIsLoading(true);
     //that will be replaced by data after backend add address fields
     const { profilePicture, regions, firstName, lastName } = data;
+    const formattedUser = sanitizeUserUpdatePayload(
+      user as PublicUserInterface
+    );
     const response = await updateProfileSettings({
+      ...formattedUser,
       profilePicture,
       firstName,
       lastName,
       regions: regions as Regions[],
-    });
+    } as UpdateProfileSettingPayload);
     if (!('error' in response)) {
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));

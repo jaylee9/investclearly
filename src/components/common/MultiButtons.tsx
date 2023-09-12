@@ -20,6 +20,7 @@ const MultiButtons = ({
   label,
   ...props
 }: MultiButtonsProps) => {
+  console.log(activeValues);
   const classes = useMultiButtonsStyles();
   const multiButtonSx = (active: boolean) =>
     active

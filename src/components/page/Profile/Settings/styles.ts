@@ -89,3 +89,38 @@ export const useBooleanSettingsStyles = () => {
     },
   };
 };
+
+export const useInvestmentPreferencesStyles = () => {
+  return {
+    root: {
+      padding: '24px',
+    },
+    sectionTitle: {
+      fontWeight: 600,
+      marginBottom: '24px',
+    },
+    section: {
+      marginBottom: '32px',
+    },
+    description: {
+      marginBottom: '16px',
+    },
+    list: {
+      maxWidth: '600px',
+    },
+    bold: { fontWeight: 600 },
+    investmentPreferencesSection: {
+      maxWidth: '600px',
+    },
+    multiButtonWrapper: {
+      marginBottom: '24px',
+    },
+    sliderWrapper: {
+      marginBottom: '24px',
+    },
+    sliderTitle: {
+      marginBottom: '8px',
+      fontWeight: 600,
+    },
+  };
+};

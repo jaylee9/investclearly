@@ -4,6 +4,7 @@ import { SyntheticEvent, useState } from 'react';
 import EditProfile from './Edit';
 import PrivacySettings from './Privacy';
 import Notifications from './Notifications';
+import InvestmentPreferences from './InvestmentPreferences';
 
 const tabs = [
   { value: 'edit', label: 'Edit Profile', content: <EditProfile /> },
@@ -13,7 +14,11 @@ const tabs = [
     label: 'Notifications',
     content: <Notifications />,
   },
-  { value: 'investment-preferences', label: 'Investment Preferences' },
+  {
+    value: 'investment-preferences',
+    label: 'Investment Preferences',
+    content: <InvestmentPreferences />,
+  },
   { value: 'settings', label: 'Settings' },
 ];
 

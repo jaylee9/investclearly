@@ -7,8 +7,13 @@ import CustomCheckbox from '@/components/common/CustomCheckbox';
 import { useUser } from '@/contexts/User';
 import Loading from '@/components/common/Loading';
 import { useState } from 'react';
-import { updateProfileSettings } from '@/actions/user/profile-settings';
+import {
+  UpdateProfileSettingPayload,
+  updateProfileSettings,
+} from '@/actions/user/profile-settings';
 import Button from '@/components/common/Button';
+import sanitizeUserUpdatePayload from '@/helpers/sanitizeUserUpdatePayload';
+import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
 
 const headerLabels = ['Email', 'Notifications'];
 
@@ -87,9 +92,13 @@ const Notifications = () => {
 
   const onSubmit = handleSubmit(async data => {
     setIsLoading(true);
+    const formattedUser = sanitizeUserUpdatePayload(
+      user as PublicUserInterface
+    );
     const response = await updateProfileSettings({
+      ...formattedUser,
       ...data,
-    });
+    } as UpdateProfileSettingPayload);
     if (!('error' in response)) {
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));
