@@ -395,17 +395,53 @@ export const useSelectStyles = ({ variant }: UseSelectStylesProps) => {
         marginTop: '4px',
         '& ul': {
           padding: '0px',
+          maxHeight: '120px',
         },
         '& li': {
           padding: '6px 24px',
           '&:hover': {
-            background: palette.background.default,
+            background: palette.common.white,
           },
         },
         '& .Mui-disabled': {
           display: 'none',
         },
       },
+    },
+    menuItem: {
+      background: palette.common.white,
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      fontSize: typography.body1,
+      '&.Mui-selected': {
+        background: palette.common.white,
+      },
+      '& .icon-Check': {
+        fontSize: '24px',
+        color: palette.text.secondary,
+      },
+    },
+    tagsWrapper: {
+      display: 'flex',
+      gap: '4px',
+      alignItems: 'center',
+    },
+    tag: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '4px',
+      padding: '4px 12px',
+      borderRadius: '20px',
+      border: `1px solid ${palette.background.paper}`,
+      '& .icon-Cross': {
+        fontSize: '16px',
+        color: palette.text.disabled,
+        cursor: 'pointer',
+      },
+    },
+    singleSelectedItem: {
+      color: `${palette.common.black} !important`,
     },
   };
 };

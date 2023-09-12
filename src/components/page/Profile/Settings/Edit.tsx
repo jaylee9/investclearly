@@ -20,7 +20,12 @@ const validationSchema = z.object({
   profilePicture: isBrowser ? z.instanceof(File).optional() : z.any(),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
-  address: z.string().optional(),
+  street1: z.string().optional(),
+  street2: z.string().optional(),
+  city: z.string().optional(),
+  zipCode: z.string().optional(),
+  stateOrCountry: z.string().optional(),
+  stateOrCountryDescription: z.string().optional(),
   regions: z.string().optional().array(),
 });
 
@@ -44,16 +49,20 @@ const EditProfile = () => {
 
   const onSubmit = handleSubmit(async data => {
     setIsLoading(true);
+    //that will be replaced by data after backend add address fields
+    const { profilePicture, regions, firstName, lastName } = data;
     const response = await updateProfileSettings({
-      ...data,
-      regions: data.regions as Regions[],
+      profilePicture,
+      firstName,
+      lastName,
+      regions: regions as Regions[],
     });
     if (!('error' in response)) {
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));
       reset();
-      setIsLoading(false);
     }
+    setIsLoading(false);
   });
 
   const regionsOptions = Object.values(Regions).map(item => {
@@ -64,7 +73,6 @@ const EditProfile = () => {
     if (user) {
       setValue('firstName', user.firstName);
       setValue('lastName', user.lastName);
-      setValue('address', user.address);
       setValue('regions', user.regions);
     }
   }, [user, setValue]);
@@ -89,7 +97,7 @@ const EditProfile = () => {
           />
         </Box>
         <Box sx={classes.content}>
-          <Box sx={classes.nameInputsWrapper}>
+          <Box sx={classes.doubleInputsWrapper}>
             <Input
               topLabel="First Name"
               showClearOption={false}
@@ -105,11 +113,47 @@ const EditProfile = () => {
           </Box>
           <Box sx={classes.singleInputsWrapper}>
             <Input
-              topLabel="Address"
+              topLabel="Address line 1"
               showClearOption={false}
-              register={register('address')}
-              value={watch('address')}
+              register={register('street1')}
+              value={watch('street1')}
             />
+            <Input
+              topLabel="Address line 2"
+              showClearOption={false}
+              register={register('street2')}
+              value={watch('street2')}
+            />
+          </Box>
+          <Box sx={classes.doubleInputsWrapper}>
+            <Input
+              topLabel="City"
+              showClearOption={false}
+              register={register('city')}
+              value={watch('city')}
+            />
+            <Input
+              topLabel="ZIP Code"
+              showClearOption={false}
+              register={register('zipCode')}
+              value={watch('zipCode')}
+            />
+          </Box>
+          <Box sx={classes.doubleInputsWrapper}>
+            <Input
+              topLabel="State or Country"
+              showClearOption={false}
+              register={register('stateOrCountry')}
+              value={watch('stateOrCountry')}
+            />
+            <Input
+              topLabel="State or Country Description"
+              showClearOption={false}
+              register={register('stateOrCountryDescription')}
+              value={watch('stateOrCountryDescription')}
+            />
+          </Box>
+          <Box sx={classes.singleInputsWrapper}>
             <Controller
               control={control}
               name="regions"

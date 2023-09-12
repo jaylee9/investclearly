@@ -3,17 +3,26 @@ import { useDropzone } from 'react-dropzone';
 import UserAvatar from './UserAvatar';
 import { useProfilePictureUploaderStyles } from './styles';
 import { useState } from 'react';
+import PlaceholderImage from './PlaceholderImage';
+import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
+
+export enum ProfilePictureUploaderVariant {
+  USER = 'user',
+  SPONSOR = 'sponsor',
+}
 
 interface ProfilePictureUploader {
   username: string;
   defaultImage?: string | null;
   onChange: (value: File) => void;
+  variant?: ProfilePictureUploaderVariant;
 }
 
 const ProfilePictureUploader = ({
   username,
   defaultImage,
   onChange,
+  variant = ProfilePictureUploaderVariant.USER,
 }: ProfilePictureUploader) => {
   const classes = useProfilePictureUploaderStyles();
 
@@ -42,7 +51,18 @@ const ProfilePictureUploader = ({
       <div {...getRootProps()} style={{ width: 'fit-content' }}>
         <input {...getInputProps()} />
         <Box sx={classes.uploader}>
-          <UserAvatar src={src} name={username} width={120} height={120} />
+          {variant === ProfilePictureUploaderVariant.USER && (
+            <UserAvatar src={src} name={username} width={120} height={120} />
+          )}
+          {variant === ProfilePictureUploaderVariant.SPONSOR && (
+            <PlaceholderImage
+              alt="Sponsor avatar"
+              src={src as string}
+              width={120}
+              height={120}
+              defaultImage={DEFAULT_SPONSOR_IMAGE}
+            />
+          )}
           <Box sx={classes.uploadIconWrapper}>
             <Box className="uploadIcon">
               <i className={src ? 'icon-Edit' : 'icon-Plus'} />

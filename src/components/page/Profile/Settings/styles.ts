@@ -19,10 +19,14 @@ export const useEditProfileStyles = () => {
       maxWidth: '600px',
       flex: 1,
     },
-    nameInputsWrapper: {
+    doubleInputsWrapper: {
       display: 'flex',
       gap: '12px',
       width: '100%',
+      maxWidth: '560px',
+      '& > div': {
+        width: '50% !important',
+      },
     },
     singleInputsWrapper: {
       maxWidth: '560px',
@@ -33,6 +37,7 @@ export const useEditProfileStyles = () => {
     buttonsWrapper: {
       display: 'flex',
       justifyContent: 'end',
+      padding: '16px 0px',
     },
   };
 };
