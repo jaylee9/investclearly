@@ -19,7 +19,6 @@ export const updateProfileSettings = async (
   const formData = serialize(payload, {
     indices: true,
     nullsAsUndefineds: true,
-    booleansAsIntegers: true,
   });
 
   try {

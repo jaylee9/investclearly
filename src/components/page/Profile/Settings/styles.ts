@@ -1,3 +1,13 @@
+import theme from '@/config/theme';
+
+const { palette } = theme;
+
+export const buttonsWrapper = {
+  display: 'flex',
+  justifyContent: 'end',
+  padding: '16px 0px',
+};
+
 export const useEditProfileStyles = () => {
   return {
     root: {
@@ -34,10 +44,48 @@ export const useEditProfileStyles = () => {
       flexDirection: 'column',
       gap: '12px',
     },
-    buttonsWrapper: {
+  };
+};
+
+export const useBooleanSettingsStyles = () => {
+  return {
+    root: {
+      padding: '24px',
+      height: '90%',
+      '& .form': {
+        height: '90%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      },
+      '& .firstCondition': {
+        borderBottom: `1px solid ${palette.background.paper}`,
+      },
+    },
+    title: {
+      color: palette.text.secondary,
+      marginBottom: '24px',
+    },
+    header: {
+      padding: '8px 24px',
       display: 'flex',
-      justifyContent: 'end',
-      padding: '16px 0px',
+      alignItems: 'center',
+      gap: '20px',
+      background: palette.background.default,
+      color: palette.text.secondary,
+      '& .fixedWidth': {
+        width: '56px',
+      },
+    },
+    condition: {
+      display: 'flex',
+      padding: '12px 24px',
+      gap: '20px',
+    },
+    checkboxWrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+      width: '56px',
     },
   };
 };

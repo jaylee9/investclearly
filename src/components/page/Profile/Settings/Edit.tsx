@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { useEditProfileStyles } from './styles';
+import { buttonsWrapper, useEditProfileStyles } from './styles';
 import ProfilePictureUploader from '@/components/common/ProfilePictureUploader';
 import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
@@ -170,7 +170,7 @@ const EditProfile = () => {
             />
           </Box>
         </Box>
-        <Box sx={classes.buttonsWrapper}>
+        <Box sx={buttonsWrapper}>
           <Button type="submit" disabled={!isDirty || isLoading}>
             Save
           </Button>
