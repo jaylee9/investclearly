@@ -1,7 +1,15 @@
-const Image404 = () => {
+import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { type FC } from 'react';
+
+const Image404: FC = () => {
+  const { isMobile, isTablet } = useBreakpoints();
+  const width = isMobile ? 'calc(100% - 32px)' : isTablet ? 470 : 596;
+  const maxWidth = isMobile ? '340px' : '100%';
+
   return (
     <svg
-      width="596"
+      style={{ maxWidth }}
+      width={width}
       height="202"
       viewBox="0 0 596 202"
       fill="none"

@@ -13,7 +13,7 @@ import useHeaderProps from '@/hooks/useHeaderProps';
 import useSponsorPageStyles from '@/pages_styles/sponsorPageStyles';
 import { Box, Fade, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { type FC, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import DealCard from '@/components/common/DealCard';
 import PlaceholderImage from '@/components/common/PlaceholderImage';
@@ -34,7 +34,7 @@ interface SponsorPageProps {
   reviews: ReviewInterface[];
 }
 
-const SponsorPage = ({ sponsor, reviews, deals }: SponsorPageProps) => {
+const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
   const classes = useSponsorPageStyles();
   const { isMobile, isDesktop } = useBreakpoints();
 

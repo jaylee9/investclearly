@@ -5,19 +5,22 @@ import useHeaderProps from '@/hooks/useHeaderProps';
 import usePage404Styles from '@/pages_styles/page404styles';
 import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
+import { type FC } from 'react';
 
-const Page404 = () => {
+const Page404: FC = () => {
   const headerProps = useHeaderProps({
     type: 'search-dark',
     isLinks: true,
     isSignIn: true,
     isSearch: true,
+    isShadow: true,
   });
   const classes = usePage404Styles();
+
   return (
     <Layout {...headerProps}>
       <Box sx={classes.root}>
-        <Box>
+        <Box sx={classes.order}>
           <Typography variant="caption" sx={classes.blueTitle}>
             404 ERROR
           </Typography>
