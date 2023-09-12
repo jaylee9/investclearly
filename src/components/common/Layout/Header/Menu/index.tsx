@@ -25,6 +25,7 @@ import { UserInterface } from '@/backend/services/users/interfaces/user.interfac
 import UserAvatar from '@/components/common/UserAvatar';
 import { logout } from '@/actions/auth';
 import { useRouter } from 'next/router';
+import { useUser } from '@/contexts/User';
 
 type MenuClassesProp = SxProps<Theme> | undefined;
 
@@ -74,11 +75,13 @@ export const Menu: FC<MenuProps> = ({
   ...props
 }) => {
   const classes = getStyles({ type: 'dark', isShadow });
+  const { setUser } = useUser();
   const router = useRouter();
   const { open, anchorEl } = { ...props };
   const handleLogout = async () => {
     const response = await logout();
     if (!('error' in response)) {
+      setUser(null);
       router.push('/login');
     }
   };
