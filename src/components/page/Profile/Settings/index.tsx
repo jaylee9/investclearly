@@ -3,11 +3,16 @@ import { Box } from '@mui/material';
 import { SyntheticEvent, useState } from 'react';
 import EditProfile from './Edit';
 import PrivacySettings from './Privacy';
+import Notifications from './Notifications';
 
 const tabs = [
   { value: 'edit', label: 'Edit Profile', content: <EditProfile /> },
   { value: 'privacy', label: 'Privacy Settings', content: <PrivacySettings /> },
-  { value: 'notifications', label: 'Notifications' },
+  {
+    value: 'notifications',
+    label: 'Notifications',
+    content: <Notifications />,
+  },
   { value: 'investment-preferences', label: 'Investment Preferences' },
   { value: 'settings', label: 'Settings' },
 ];
