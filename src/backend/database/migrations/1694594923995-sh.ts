@@ -1,9 +1,12 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class Sh1694179787091 implements MigrationInterface {
-  name = 'Sh1694179787091';
+export class Sh1694594923995 implements MigrationInterface {
+  name = 'Sh1694594923995';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `CREATE TABLE "related_persons" ("id" SERIAL NOT NULL, "first_name" character varying, "middle_name" character varying, "last_name" character varying, "relationships" character varying array, "relationship_clarification" character varying, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_af149a4ea677edfd5188d761c85" PRIMARY KEY ("id"))`
+    );
     await queryRunner.query(
       `CREATE TABLE "deal_related_persons" ("related_person_id" integer NOT NULL, "deal_id" integer NOT NULL, CONSTRAINT "PK_bea9cde4a5cfd4ef8d36b24b61a" PRIMARY KEY ("related_person_id", "deal_id"))`
     );
@@ -35,5 +38,6 @@ export class Sh1694179787091 implements MigrationInterface {
       `DROP INDEX "public"."IDX_e15940108c5226843367da8b78"`
     );
     await queryRunner.query(`DROP TABLE "deal_related_persons"`);
+    await queryRunner.query(`DROP TABLE "related_persons"`);
   }
 }

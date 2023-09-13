@@ -19,4 +19,5 @@ export enum AssetClasses {
   specialty = 'Specialty',
   storage = 'Storage',
   mobileHome = 'Mobile Home',
+  industryFromSec = 'Industry from SEC',
 }

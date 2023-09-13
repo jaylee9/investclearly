@@ -26,5 +26,7 @@ export const createRelatedPerson = async (
         relatedPersonRecord.id
       );
     }
+
+    return relatedPersonRecord;
   }
 };

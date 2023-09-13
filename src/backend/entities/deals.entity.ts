@@ -112,6 +112,9 @@ export class Deal {
 
   isInBookmarks: boolean;
 
+  @Column({ type: 'varchar', nullable: true })
+  accessionNumber: string;
+
   @Column({ type: 'date', nullable: true })
   fileDate: Date;
 
@@ -140,7 +143,7 @@ export class Deal {
   dateOfFirstSale: Date;
 
   @Column({ type: 'boolean', nullable: false, default: false })
-  moreThanOneYear: boolean;
+  isMoreThanOneYear: boolean;
 
   @Column({ type: 'boolean', nullable: false, default: true })
   isDealPublished: boolean;

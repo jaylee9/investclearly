@@ -1,4 +1,5 @@
 import { RelatedPerson } from '../../entities/relatedPersons.entity';
+import { Location } from '../../entities/locations.entity';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 import { createOrUpdateLocation } from '../locations/create-or-update-location';
@@ -13,16 +14,20 @@ export const createOrUpdateRelatedPerson = async (
 
   const relatedPersonRecord = await connection.manager
     .createQueryBuilder()
-    .select('related_person')
-    .from(RelatedPerson, 'related_person')
-    .where('related_person.first_name', { first_name: relatedPerson.firstName })
-    .andWhere('related_person.last_name', { last_name: relatedPerson.lastName })
+    .select('relatedPerson')
+    .from(RelatedPerson, 'relatedPerson')
+    .where('relatedPerson.firstName = :firstName', {
+      firstName: relatedPerson.firstName,
+    })
+    .andWhere('relatedPerson.lastName = :lastName', {
+      lastName: relatedPerson.lastName,
+    })
     .leftJoinAndMapMany(
-      'related_person.locations',
+      'relatedPerson.locations',
       Location,
       'locations',
-      'locations.entityId = related_person.id AND locations.entityType = :relatedPeersonEntityType',
-      { relatedPeersonEntityType: LocationTargetTypesConstants.relatedPerson }
+      'locations.entityId = relatedPerson.id AND locations.entityType = :relatedPersonEntityType',
+      { relatedPersonEntityType: LocationTargetTypesConstants.relatedPerson }
     )
     .getOne();
 
@@ -43,4 +48,6 @@ export const createOrUpdateRelatedPerson = async (
   } else {
     await createRelatedPerson(relatedPersonData);
   }
+
+  return relatedPersonRecord;
 };
