@@ -8,6 +8,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@/components/common/Button';
 import { updateEmail } from '@/actions/user';
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
+import { useState } from 'react';
+import DeactivateAccountModal from './Modals/DeactivateAccount';
+import ChangePasswordModal from './Modals/ChangePassword';
 
 const validationSchema = z.object({
   newEmail: z.string().email({ message: 'Email must be a valid email' }),
@@ -18,10 +21,34 @@ const validationSchema = z.object({
 
 export type ValidationSchema = z.infer<typeof validationSchema>;
 
+enum ModalTypes {
+  ADD_PASSWORD = 'addPassword',
+  CHANGE_PASSWORD = 'changePassword',
+  DEACTIVATE_ACCOUNT = 'deactivateAccount',
+}
+
 const CredentialsSettings = () => {
   const classes = useCredentialsSettingsStyles();
 
   const { user, setUser } = useUser();
+
+  const [openModals, setOpenModals] = useState({
+    addPassword: false,
+    changePassword: false,
+    deactivateAccount: false,
+  });
+
+  const handleOpenModal = (key: ModalTypes) => {
+    setOpenModals(prevState => {
+      return { ...prevState, [key]: true };
+    });
+  };
+
+  const handleCloseModal = (key: ModalTypes) => {
+    setOpenModals(prevState => {
+      return { ...prevState, [key]: false };
+    });
+  };
 
   const defaultValues = {
     newEmail: user?.email || '',
@@ -112,12 +139,42 @@ const CredentialsSettings = () => {
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={!allFieldsDirty()}>
-              Save email
-            </Button>
+            <Button disabled={!allFieldsDirty()}>Save email</Button>
           </Box>
         )}
+        <Typography variant="h5" sx={classes.title}>
+          Password
+        </Typography>
+        <Button
+          variant="tertiary"
+          customStyles={{ padding: 0, marginBottom: '32px', display: 'block' }}
+          onClick={() =>
+            handleOpenModal(
+              !!user?.googleId
+                ? ModalTypes.ADD_PASSWORD
+                : ModalTypes.CHANGE_PASSWORD
+            )
+          }
+        >
+          {!!user?.googleId ? 'Add' : 'Change'} password
+        </Button>
+        <Button
+          color="error"
+          variant="secondary"
+          customStyles={classes.deactivateButton}
+          onClick={() => handleOpenModal(ModalTypes.DEACTIVATE_ACCOUNT)}
+        >
+          Deactivate my account
+        </Button>
       </form>
+      <ChangePasswordModal
+        open={openModals[ModalTypes.CHANGE_PASSWORD]}
+        onClose={() => handleCloseModal(ModalTypes.CHANGE_PASSWORD)}
+      />
+      <DeactivateAccountModal
+        open={openModals[ModalTypes.DEACTIVATE_ACCOUNT]}
+        onClose={() => handleCloseModal(ModalTypes.DEACTIVATE_ACCOUNT)}
+      />
     </Box>
   );
 };

@@ -154,6 +154,11 @@ export const useCredentialsSettingsStyles = () => {
     buttonsWrapper: {
       display: 'flex',
       justifyContent: 'space-between',
+      marginBottom: '32px',
     },
+    deactivateButton: {
+      width: '320px',
+    },
+    iconWrapper: {},
   };
 };

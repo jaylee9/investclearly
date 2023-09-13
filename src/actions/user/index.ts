@@ -57,3 +57,21 @@ export const updateEmail = async ({
     return { error: errorMessage };
   }
 };
+
+export const deactivateAccount = async ({
+  feedback,
+}: {
+  feedback: string;
+}): Promise<{ message: string } | { error: string }> => {
+  try {
+    const stringifiedParameters = queryString.stringify({ feedback });
+    const response: { message: string } = await api
+      .delete(`users?${stringifiedParameters}`)
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to deactivate account';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};
