@@ -16,16 +16,16 @@ import {
 } from '@/actions/user/profile-settings';
 import sanitizeUserUpdatePayload from '@/helpers/sanitizeUserUpdatePayload';
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@/components/common/Button';
 
 const validationSchema = z.object({
   investorStatus: z.string().optional(),
   incomeAndNetWorth: z.string().optional(),
-  assetClasses: z.array(z.string()),
-  regions: z.array(z.string()),
-  holdPeriod: z.array(z.number()),
-  minInvestment: z.array(z.number()),
+  assetClasses: z.array(z.string()).optional(),
+  regions: z.array(z.string()).optional(),
+  holdPeriod: z.array(z.number()).optional(),
+  minInvestment: z.array(z.number()).optional(),
 });
 
 type ValidationSchema = z.infer<typeof validationSchema>;
@@ -41,19 +41,37 @@ const InvestmentPreferences = () => {
     handleSubmit,
     control,
     formState: { isDirty },
+    setValue,
+    reset,
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
-    defaultValues: {
-      investorStatus:
-        user?.investorStatus === 'Accredited Investor' ? 'yes' : 'no',
-      incomeAndNetWorth:
-        user?.incomeAndNetWorth === 'Yes, I have' ? 'yes' : 'no',
-      assetClasses: user?.assetClasses,
-      regions: user?.regions,
-      holdPeriod: [user?.holdPeriodMin, user?.holdPeriodMax],
-      minInvestment: [user?.minimumInvestmentMin, user?.minimumInvestmentMax],
-    },
   });
+
+  useEffect(() => {
+    if (user) {
+      setValue(
+        'investorStatus',
+        user?.investorStatus === 'Accredited Investor' ? 'yes' : 'no'
+      );
+      setValue(
+        'incomeAndNetWorth',
+        user?.incomeAndNetWorth === 'Yes, I have' ? 'yes' : 'no'
+      );
+      setValue('assetClasses', user.assetClasses);
+      setValue('regions', user.regions);
+      setValue('holdPeriod', [user?.holdPeriodMin, user?.holdPeriodMax]);
+      setValue('minInvestment', [
+        user?.minimumInvestmentMin,
+        user?.minimumInvestmentMax,
+      ]);
+    }
+  }, [user, setValue]);
+
+  useEffect(() => {
+    if (user) {
+      setValue('holdPeriod', [user?.holdPeriodMin, user?.holdPeriodMax]);
+    }
+  }, [user, setValue]);
 
   const onSubmit = handleSubmit(async data => {
     setIsLoading(true);
@@ -69,10 +87,10 @@ const InvestmentPreferences = () => {
     );
     const response = await updateProfileSettings({
       ...formattedUser,
-      minimumInvestmentMin: minInvestment[0],
-      minimumInvestmentMax: minInvestment[1],
-      holdPeriodMin: holdPeriod[0],
-      holdPeriodMax: holdPeriod[1],
+      minimumInvestmentMin: minInvestment?.[0],
+      minimumInvestmentMax: minInvestment?.[1],
+      holdPeriodMin: holdPeriod?.[0],
+      holdPeriodMax: holdPeriod?.[1],
       investorStatus:
         investorStatus === 'yes'
           ? 'Accredited Investor'
@@ -85,6 +103,7 @@ const InvestmentPreferences = () => {
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));
     }
+    reset();
     setIsLoading(false);
   });
 
@@ -187,8 +206,11 @@ const InvestmentPreferences = () => {
                 <MultiButtons
                   buttons={assetClassesArray}
                   label="Asset class"
-                  onButtonClick={handleMultiButtonSelection(onChange, value)}
-                  activeValues={value}
+                  onButtonClick={handleMultiButtonSelection(
+                    onChange,
+                    value || []
+                  )}
+                  activeValues={value || []}
                 />
               )}
             />
@@ -201,8 +223,11 @@ const InvestmentPreferences = () => {
                 <MultiButtons
                   buttons={regionsArray}
                   label="Region"
-                  onButtonClick={handleMultiButtonSelection(onChange, value)}
-                  activeValues={value}
+                  onButtonClick={handleMultiButtonSelection(
+                    onChange,
+                    value || []
+                  )}
+                  activeValues={value || []}
                 />
               )}
             />

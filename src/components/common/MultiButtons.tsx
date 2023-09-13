@@ -20,7 +20,6 @@ const MultiButtons = ({
   label,
   ...props
 }: MultiButtonsProps) => {
-  console.log(activeValues);
   const classes = useMultiButtonsStyles();
   const multiButtonSx = (active: boolean) =>
     active
@@ -36,7 +35,7 @@ const MultiButtons = ({
       <Box sx={classes.root} {...props}>
         {buttons.map(item => (
           <Box
-            sx={multiButtonSx(activeValues.includes(item.value))}
+            sx={multiButtonSx(activeValues?.includes(item.value))}
             key={item.value}
             onClick={() => onButtonClick(item.value)}
           >
