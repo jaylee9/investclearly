@@ -124,3 +124,36 @@ export const useInvestmentPreferencesStyles = () => {
     },
   };
 };
+
+export const useCredentialsSettingsStyles = () => {
+  return {
+    root: {
+      padding: '24px',
+      maxWidth: '650px',
+    },
+    title: {
+      fontWeight: 600,
+      marginBottom: '24px',
+    },
+    googleWarning: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      padding: '8px 16px',
+      borderRadius: '36px',
+      background: palette.secondary.light,
+      marginBottom: '24px',
+      '& .icon-Warning': {
+        fontSize: '24px',
+        color: palette.secondary.main,
+      },
+    },
+    input: {
+      marginBottom: '16px',
+    },
+    buttonsWrapper: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+  };
+};

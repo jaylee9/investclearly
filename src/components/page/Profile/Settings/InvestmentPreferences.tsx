@@ -16,7 +16,7 @@ import {
 } from '@/actions/user/profile-settings';
 import sanitizeUserUpdatePayload from '@/helpers/sanitizeUserUpdatePayload';
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Button from '@/components/common/Button';
 
 const validationSchema = z.object({
@@ -41,37 +41,20 @@ const InvestmentPreferences = () => {
     handleSubmit,
     control,
     formState: { isDirty },
-    setValue,
     reset,
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
+    defaultValues: {
+      investorStatus:
+        user?.investorStatus === 'Accredited Investor' ? 'yes' : 'no',
+      incomeAndNetWorth:
+        user?.incomeAndNetWorth === 'Yes, I have' ? 'yes' : 'no',
+      assetClasses: user?.assetClasses,
+      regions: user?.regions,
+      holdPeriod: [user?.holdPeriodMin, user?.holdPeriodMax],
+      minInvestment: [user?.minimumInvestmentMin, user?.minimumInvestmentMax],
+    },
   });
-
-  useEffect(() => {
-    if (user) {
-      setValue(
-        'investorStatus',
-        user?.investorStatus === 'Accredited Investor' ? 'yes' : 'no'
-      );
-      setValue(
-        'incomeAndNetWorth',
-        user?.incomeAndNetWorth === 'Yes, I have' ? 'yes' : 'no'
-      );
-      setValue('assetClasses', user.assetClasses);
-      setValue('regions', user.regions);
-      setValue('holdPeriod', [user?.holdPeriodMin, user?.holdPeriodMax]);
-      setValue('minInvestment', [
-        user?.minimumInvestmentMin,
-        user?.minimumInvestmentMax,
-      ]);
-    }
-  }, [user, setValue]);
-
-  useEffect(() => {
-    if (user) {
-      setValue('holdPeriod', [user?.holdPeriodMin, user?.holdPeriodMax]);
-    }
-  }, [user, setValue]);
 
   const onSubmit = handleSubmit(async data => {
     setIsLoading(true);
@@ -103,7 +86,7 @@ const InvestmentPreferences = () => {
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));
     }
-    reset();
+    reset({}, { keepValues: true });
     setIsLoading(false);
   });
 
@@ -244,7 +227,7 @@ const InvestmentPreferences = () => {
                   onChange={onChange}
                   min={0}
                   max={10}
-                  value={value}
+                  value={value || [0, 10]}
                 />
               )}
             />
@@ -261,7 +244,7 @@ const InvestmentPreferences = () => {
                   onChange={onChange}
                   min={1000}
                   max={25000}
-                  value={value}
+                  value={value || [1000, 25000]}
                 />
               )}
             />

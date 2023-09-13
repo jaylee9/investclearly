@@ -33,3 +33,27 @@ export const getUser = async ({
     return { error: errorMessage };
   }
 };
+
+interface UpdateEmailPayload {
+  newEmail: string;
+  password: string;
+}
+
+export const updateEmail = async ({
+  password,
+  newEmail,
+}: UpdateEmailPayload): Promise<{ message: string } | { error: string }> => {
+  try {
+    const response: { message: string } = await api
+      .put('auth/change-email', {
+        json: { newEmail, password },
+      })
+      .json();
+    toast.success('Email successfully changed!');
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to change email';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};

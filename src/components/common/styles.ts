@@ -10,6 +10,7 @@ interface UseInputStylesProps {
   error?: boolean;
   isFilledWhite: boolean;
   height: 'base' | 'large';
+  disabled?: boolean;
 }
 
 export const useInputStyles = ({
@@ -18,8 +19,12 @@ export const useInputStyles = ({
   error,
   isFilledWhite,
   height,
+  disabled,
 }: UseInputStylesProps) => {
   return {
+    topLabel: {
+      color: disabled ? palette.secondary.dark : palette.common.black,
+    },
     filled: {
       width: '100%',
       borderRadius: '120px',
@@ -33,6 +38,11 @@ export const useInputStyles = ({
       },
     },
     outlined: {
+      '& i': {
+        color: disabled ? palette.secondary.dark : palette.text.disabled,
+        cursor: disabled ? 'default' : 'pointer',
+        fontSize: '24px',
+      },
       width: '100%',
       borderRadius: '12px',
       '& .MuiOutlinedInput-root': {

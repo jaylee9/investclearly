@@ -5,6 +5,7 @@ import EditProfile from './Edit';
 import PrivacySettings from './Privacy';
 import Notifications from './Notifications';
 import InvestmentPreferences from './InvestmentPreferences';
+import CredentialsSettings from './Credentials';
 
 const tabs = [
   { value: 'edit', label: 'Edit Profile', content: <EditProfile /> },
@@ -19,7 +20,7 @@ const tabs = [
     label: 'Investment Preferences',
     content: <InvestmentPreferences />,
   },
-  { value: 'settings', label: 'Settings' },
+  { value: 'settings', label: 'Settings', content: <CredentialsSettings /> },
 ];
 
 const ProfileSettings = () => {
