@@ -159,3 +159,22 @@ export const changePassword = async ({
     return { error: errorMessage };
   }
 };
+
+export const addPassword = async ({
+  newPassword,
+}: {
+  newPassword: string;
+}): Promise<{ message: string } | { error: string }> => {
+  try {
+    const response: { message: string } = await api
+      .post('auth/add-password-to-google', {
+        json: { newPassword },
+      })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to add password';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};

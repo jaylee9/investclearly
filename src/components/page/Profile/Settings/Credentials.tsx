@@ -11,6 +11,7 @@ import { PublicUserInterface } from '@/backend/services/users/interfaces/public-
 import { useState } from 'react';
 import DeactivateAccountModal from './Modals/DeactivateAccount';
 import ChangePasswordModal from './Modals/ChangePassword';
+import AddPasswordModal from './Modals/AddPassword';
 
 const validationSchema = z.object({
   newEmail: z.string().email({ message: 'Email must be a valid email' }),
@@ -170,6 +171,10 @@ const CredentialsSettings = () => {
       <ChangePasswordModal
         open={openModals[ModalTypes.CHANGE_PASSWORD]}
         onClose={() => handleCloseModal(ModalTypes.CHANGE_PASSWORD)}
+      />
+      <AddPasswordModal
+        open={openModals[ModalTypes.ADD_PASSWORD]}
+        onClose={() => handleCloseModal(ModalTypes.ADD_PASSWORD)}
       />
       <DeactivateAccountModal
         open={openModals[ModalTypes.DEACTIVATE_ACCOUNT]}

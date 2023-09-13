@@ -5,16 +5,12 @@ import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useActionPasswordStyles } from './styles';
 import Input from '@/components/common/Input';
-import Link from 'next/link';
 import Button from '@/components/common/Button';
-import { changePassword } from '@/actions/auth';
+import { addPassword } from '@/actions/auth';
 import { useState } from 'react';
 
 const validationSchema = z
   .object({
-    password: z
-      .string()
-      .min(8, { message: 'Password must be at least 8 characters long' }),
     newPassword: z
       .string()
       .min(8, { message: 'Password must be at least 8 characters long' }),
@@ -30,23 +26,22 @@ const validationSchema = z
 type ValidationSchema = z.infer<typeof validationSchema>;
 
 interface Field {
-  name: 'password' | 'newPassword' | 'repeat_password';
+  name: 'newPassword' | 'repeat_password';
   label: string;
 }
 
 const fields: Field[] = [
-  { name: 'password', label: 'Old Password' },
   { name: 'newPassword', label: 'New Password' },
   { name: 'repeat_password', label: 'Repeat Password' },
 ];
 
-const ChangePasswordModal = ({
+const AddPasswordModal = ({
   onClose,
   ...props
 }: Omit<ModalProps, 'children'>) => {
   const classes = useActionPasswordStyles();
 
-  const [isChangedPassword, setIsChangedPassword] = useState(false);
+  const [isAddedPassword, setIsChangedPassword] = useState(false);
 
   const {
     handleSubmit,
@@ -58,8 +53,8 @@ const ChangePasswordModal = ({
   });
 
   const onSubmit = handleSubmit(async data => {
-    const { newPassword, password } = data;
-    const response = await changePassword({ newPassword, password });
+    const { newPassword } = data;
+    const response = await addPassword({ newPassword });
     if (!('error' in response)) {
       setIsChangedPassword(true);
     }
@@ -75,15 +70,15 @@ const ChangePasswordModal = ({
 
   return (
     <PasswordModalsWrapper
-      label="Change password"
-      isLabel={!isChangedPassword}
+      label="Add password"
+      isLabel={!isAddedPassword}
       onClose={handleClose}
       {...props}
     >
-      {isChangedPassword ? (
-        <Box>
+      {isAddedPassword ? (
+        <Box sx={classes.successWrapper}>
           <Typography variant="h3" sx={classes.changedTitle}>
-            Password changed successfully!
+            Password added successfully!
           </Typography>
           <Typography variant="body1" sx={classes.changedSubTitle}>
             You can now log in with your new password
@@ -106,11 +101,6 @@ const ChangePasswordModal = ({
                 showClearOption={false}
               />
             ))}
-            <Link href="/forgot-password" style={{ width: 'fit-content' }}>
-              <Typography variant="body1" sx={classes.link}>
-                Forgot password?
-              </Typography>
-            </Link>
           </Box>
           <Button type="submit" customStyles={{ width: '100%' }}>
             Save Password
@@ -121,4 +111,4 @@ const ChangePasswordModal = ({
   );
 };
 
-export default ChangePasswordModal;
+export default AddPasswordModal;

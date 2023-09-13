@@ -108,7 +108,7 @@ export const usePasswordModalsWrapperStyles = () => {
   };
 };
 
-export const useChangePasswordStyles = () => {
+export const useActionPasswordStyles = () => {
   return {
     inputsWrapper: {
       display: 'flex',
@@ -127,6 +127,9 @@ export const useChangePasswordStyles = () => {
     changedSubTitle: {
       marginBottom: '40px',
       color: palette.text.secondary,
+    },
+    successWrapper: {
+      textAlign: 'center',
     },
   };
 };
