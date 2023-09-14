@@ -6,14 +6,18 @@ import LoginForm, {
 import withPublicRoute from '@/HOC/withPublicRoute';
 import { googleLogin, login } from '@/actions/auth';
 import { CredentialResponse } from '@react-oauth/google';
+import { useUser } from '@/contexts/User';
+import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
 
 const Login = () => {
   const router = useRouter();
+  const { setUser } = useUser();
 
   const handleSubmit = async (data: LoginFormValidationSchema) => {
     const { email, password } = data;
     const response = await login({ email, password });
     if (!('error' in response)) {
+      setUser(response as PublicUserInterface);
       router.push('/');
     }
   };
@@ -23,6 +27,7 @@ const Login = () => {
       token: credentials.credential as string,
     });
     if (!('error' in response)) {
+      setUser(response as PublicUserInterface);
       router.push('/');
     }
   };

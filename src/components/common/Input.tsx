@@ -50,6 +50,9 @@ const Input = ({
   const [value, setValue] = useState(props.value || '');
   const [showPassword, setShowPassword] = useState(!isPassword);
   const handleShowPassword = () => {
+    if (props.disabled) {
+      return;
+    }
     setShowPassword(!showPassword);
   };
   const styles = useInputStyles({
@@ -58,6 +61,7 @@ const Input = ({
     error,
     isFilledWhite,
     height,
+    disabled: props.disabled,
   });
   const sxStyles = {
     ...styles[variant],
@@ -85,7 +89,7 @@ const Input = ({
   return (
     <Box textAlign="start">
       {!!topLabel && (
-        <Typography variant="caption" fontWeight={600}>
+        <Typography variant="caption" fontWeight={600} sx={styles.topLabel}>
           {topLabel}
           {props.required && <span className="required-star">*</span>}
         </Typography>
@@ -112,10 +116,7 @@ const Input = ({
               {showClearOption && (
                 <Fade in={!!value}>
                   <InputAdornment position="end" onClick={handleClear}>
-                    <i
-                      className="icon-Cross"
-                      style={{ cursor: 'pointer', fontSize: 24 }}
-                    ></i>
+                    <i className="icon-Cross"></i>
                   </InputAdornment>
                 </Fade>
               )}
@@ -126,7 +127,6 @@ const Input = ({
                     className={
                       !showPassword ? 'icon-Eye-opened' : 'icon-Eye-closed'
                     }
-                    style={{ cursor: 'pointer', fontSize: 24 }}
                   ></i>
                 </InputAdornment>
               )}

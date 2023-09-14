@@ -58,7 +58,11 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
           />
         ))}
       </Tabs>
-      {activeTab && <Box key={activeTab.value}>{activeTab.content}</Box>}
+      {activeTab && (
+        <React.Fragment key={activeTab.value}>
+          {activeTab.content}
+        </React.Fragment>
+      )}
     </>
   );
 };

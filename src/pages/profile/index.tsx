@@ -8,6 +8,7 @@ import ProfileInvestments from '@/components/page/Profile/Investments';
 import withPrivateRoute from '@/HOC/withPrivateRoute';
 import ProfileReviews from '@/components/page/Profile/Reviews';
 import ProfileSaved from '@/components/page/Profile/Saved';
+import ProfileSettings from '@/components/page/Profile/Settings';
 
 const sections = [
   {
@@ -32,6 +33,7 @@ const sections = [
     label: 'Profile Settings',
     icon: 'icon-Settings',
     href: 'settings',
+    component: <ProfileSettings />,
   },
 ];
 
@@ -75,11 +77,13 @@ const UserProfilePage = () => {
               </Typography>
             ))}
           </Box>
-          <Box sx={classes.content}>
-            <Typography variant="h3" fontWeight={600} marginBottom="20px">
-              {activeTab?.label}
-            </Typography>
-            {activeTab?.component}
+          <Box sx={classes.contentWrapper}>
+            <Box sx={classes.content}>
+              <Typography variant="h3" fontWeight={600} marginBottom="20px">
+                {activeTab?.label}
+              </Typography>
+              {activeTab?.component}
+            </Box>
           </Box>
         </Box>
       </Box>

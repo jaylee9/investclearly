@@ -10,6 +10,7 @@ interface UseInputStylesProps {
   error?: boolean;
   isFilledWhite: boolean;
   height: 'base' | 'large';
+  disabled?: boolean;
 }
 
 export const useInputStyles = ({
@@ -18,8 +19,12 @@ export const useInputStyles = ({
   error,
   isFilledWhite,
   height,
+  disabled,
 }: UseInputStylesProps) => {
   return {
+    topLabel: {
+      color: disabled ? palette.secondary.dark : palette.common.black,
+    },
     filled: {
       width: '100%',
       borderRadius: '120px',
@@ -33,6 +38,11 @@ export const useInputStyles = ({
       },
     },
     outlined: {
+      '& i': {
+        color: disabled ? palette.secondary.dark : palette.text.disabled,
+        cursor: disabled ? 'default' : 'pointer',
+        fontSize: '24px',
+      },
       width: '100%',
       borderRadius: '12px',
       '& .MuiOutlinedInput-root': {
@@ -395,17 +405,53 @@ export const useSelectStyles = ({ variant }: UseSelectStylesProps) => {
         marginTop: '4px',
         '& ul': {
           padding: '0px',
+          maxHeight: '120px',
         },
         '& li': {
           padding: '6px 24px',
           '&:hover': {
-            background: palette.background.default,
+            background: palette.common.white,
           },
         },
         '& .Mui-disabled': {
           display: 'none',
         },
       },
+    },
+    menuItem: {
+      background: palette.common.white,
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      fontSize: typography.body1,
+      '&.Mui-selected': {
+        background: palette.common.white,
+      },
+      '& .icon-Check': {
+        fontSize: '24px',
+        color: palette.text.secondary,
+      },
+    },
+    tagsWrapper: {
+      display: 'flex',
+      gap: '4px',
+      alignItems: 'center',
+    },
+    tag: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '4px',
+      padding: '4px 12px',
+      borderRadius: '20px',
+      border: `1px solid ${palette.background.paper}`,
+      '& .icon-Cross': {
+        fontSize: '16px',
+        color: palette.text.disabled,
+        cursor: 'pointer',
+      },
+    },
+    singleSelectedItem: {
+      color: `${palette.common.black} !important`,
     },
   };
 };
@@ -1301,6 +1347,48 @@ export const usePasswordChangedSuccessfullyStyles = () => {
     text: {
       marginBottom: '40px',
       color: palette.text.secondary,
+    },
+  };
+};
+
+export const useProfilePictureUploaderStyles = () => {
+  return {
+    root: {
+      display: 'flex',
+      gap: '20px',
+    },
+    uploader: {
+      cursor: 'pointer',
+      width: 'fit-content',
+    },
+    uploadIconWrapper: {
+      display: 'flex',
+      justifyContent: 'end',
+      marginTop: '-50px',
+      '& .uploadIcon': {
+        background: palette.common.white,
+        borderRadius: '40px',
+        border: `1px solid ${palette.background.paper}`,
+        width: '40px',
+        height: '40px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      '& i': {
+        fontSize: '24px',
+        color: palette.text.secondary,
+      },
+    },
+    title: {
+      fontWeight: 600,
+      marginBottom: '4px',
+    },
+    rules: {
+      color: palette.text.secondary,
+      '& span': {
+        display: 'block',
+      },
     },
   };
 };

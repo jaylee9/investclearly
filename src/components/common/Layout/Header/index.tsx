@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Logo from '@/assets/components/Logo';
 import getStyles from './styles';
 import { Box, IconButton } from '@mui/material';
@@ -15,9 +15,9 @@ import CreateReviewForm from '../../CreateReview';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { Menu } from './Menu';
 import { DealsPopover } from './DealsPopover';
-import { UserInterface } from '@/backend/services/users/interfaces/user.interface';
 import UserAvatar from '../../UserAvatar';
 import { Menu as MenuIcon } from '@mui/icons-material';
+import { useUser } from '@/contexts/User';
 
 export const links: TModalHandlers = [
   { type: 'review', label: 'Write a Review' },
@@ -49,7 +49,7 @@ const Header = ({
     variant: globalSearchVariant,
     isSticky,
   });
-  const [user, setUser] = useState<null | UserInterface>(null);
+  const { user } = useUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const openMenu = Boolean(anchorEl);
@@ -89,13 +89,6 @@ const Header = ({
       handleOpenCreateReviewForm();
     }
   };
-
-  useEffect(() => {
-    const userData: UserInterface = JSON.parse(
-      localStorage.getItem('user') || 'null'
-    );
-    setUser(userData);
-  }, []);
 
   return (
     <Box

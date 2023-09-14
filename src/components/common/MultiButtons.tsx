@@ -35,7 +35,7 @@ const MultiButtons = ({
       <Box sx={classes.root} {...props}>
         {buttons.map(item => (
           <Box
-            sx={multiButtonSx(activeValues.includes(item.value))}
+            sx={multiButtonSx(activeValues?.includes(item.value))}
             key={item.value}
             onClick={() => onButtonClick(item.value)}
           >
