@@ -4,15 +4,24 @@ import { ReactNode } from 'react';
 import { ThemeProvider } from '@emotion/react';
 import theme from '@/config/theme';
 import Footer from './Footer';
-import { useDefaultLayoutStyles, useEntryLayoutStyles } from './styles';
+import {
+  useAdminLayoutStyles,
+  useDefaultLayoutStyles,
+  useEntryLayoutStyles,
+} from './styles';
 import { HeaderProps } from '@/hooks/useHeaderProps';
 import Logo, { LogoVariant } from '@/assets/components/Logo';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import Link from 'next/link';
+import clsx from 'clsx';
+import { useRouter } from 'next/router';
+import { logout } from '@/actions/auth';
 
 export enum LayoutVariant {
   Default = 'default',
   Entry = 'entry',
+  Admin = 'admin',
 }
 interface LayoutProps extends HeaderProps {
   children: ReactNode;
@@ -20,6 +29,24 @@ interface LayoutProps extends HeaderProps {
   isEntrySpacing?: boolean;
   isFooter?: boolean;
 }
+
+const adminLinks = [
+  {
+    href: 'deals',
+    label: 'Deals',
+    icon: 'icon-Deals',
+  },
+  {
+    href: 'sponsors',
+    label: 'Sponsors',
+    icon: 'icon-Sponsor',
+  },
+  {
+    href: 'review-moderation',
+    label: 'Review Moderation',
+    icon: 'icon-Review',
+  },
+];
 
 const Layout = ({
   variant = LayoutVariant.Default,
@@ -40,6 +67,22 @@ const Layout = ({
 }: LayoutProps) => {
   const defaultStyles = useDefaultLayoutStyles();
   const entryStyles = useEntryLayoutStyles(isEntrySpacing);
+  const adminStyles = useAdminLayoutStyles();
+
+  const { pathname, push } = useRouter();
+
+  const activeAdminLinkClassName = (path: string) =>
+    clsx('defaultLink', {
+      activeLink: pathname.includes(path),
+    });
+
+  const handleLogout = async () => {
+    const response = await logout();
+    if (!('error' in response)) {
+      push('/');
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -84,6 +127,41 @@ const Layout = ({
             </Box>
           </Box>
           <Box sx={entryStyles.rightPartWrapper}>{children}</Box>
+        </Box>
+      )}
+      {variant === LayoutVariant.Admin && (
+        <Box sx={adminStyles.root}>
+          <Box sx={adminStyles.sideBar}>
+            <Box sx={adminStyles.logoWrapper}>
+              <Logo />
+            </Box>
+            <Box sx={adminStyles.linksWrapper}>
+              {adminLinks.map(link => (
+                <Link key={link.href} href={`/admin-panel/${link.href}`}>
+                  <Typography
+                    variant="body1"
+                    className={activeAdminLinkClassName(link.href)}
+                  >
+                    <i className={link.icon} />
+                    {link.label}
+                  </Typography>
+                </Link>
+              ))}
+            </Box>
+          </Box>
+          <Box sx={adminStyles.headerWithContentWrapper}>
+            <Box sx={adminStyles.header}>
+              <Typography
+                variant="body1"
+                className="logoutLink"
+                onClick={handleLogout}
+              >
+                <i className="icon-Log-out" />
+                Log out
+              </Typography>
+            </Box>
+            <Box>{children}</Box>
+          </Box>
         </Box>
       )}
     </ThemeProvider>
