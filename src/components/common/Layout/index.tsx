@@ -129,7 +129,7 @@ const Layout = ({
           <Box sx={entryStyles.rightPartWrapper}>{children}</Box>
         </Box>
       )}
-      {LayoutVariant.Admin && (
+      {variant === LayoutVariant.Admin && (
         <Box sx={adminStyles.root}>
           <Box sx={adminStyles.sideBar}>
             <Box sx={adminStyles.logoWrapper}>
