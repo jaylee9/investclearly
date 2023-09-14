@@ -84,9 +84,9 @@ const CustomSelect = ({
         renderValue={selected =>
           Array.isArray(selected) ? (
             <Box sx={classes.tagsWrapper}>
-              {selected.map((selectedItem, index) => (
-                <>
-                  {index <= 1 && (
+              {selected.map(
+                (selectedItem, index) =>
+                  index <= 1 && (
                     <Typography
                       variant="body1"
                       key={selectedItem}
@@ -99,9 +99,8 @@ const CustomSelect = ({
                         onMouseDown={event => event.stopPropagation()}
                       />
                     </Typography>
-                  )}
-                </>
-              ))}
+                  )
+              )}
               {selected.length > 2 && (
                 <Typography variant="body1">+{selected.length - 2}</Typography>
               )}
