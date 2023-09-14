@@ -86,6 +86,7 @@ const DealPage = ({ deal }: DealPageProps) => {
           {deal.attachments[0] && (
             <SkeletonImage
               alt="deal image"
+              style={{ width: '100%' }}
               width={1200}
               height={400}
               src={deal.attachments[0].path}
@@ -98,7 +99,7 @@ const DealPage = ({ deal }: DealPageProps) => {
             <Box sx={classes.info}>
               <Box sx={classes.infoHeader}>
                 <Box>
-                  <Typography variant="h3">{deal.dealLegalName}</Typography>
+                  <Typography variant="h3">{deal.dealTitle}</Typography>
                   <Typography variant="body1">{deal.dealAddress}</Typography>
                 </Box>
                 <div>

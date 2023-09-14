@@ -6,6 +6,7 @@ import PlaceholderImage from '@/components/common/PlaceholderImage';
 import useDealPageStyles from '@/pages_styles/dealPageStyles';
 import type { ModalKeyType, OpenModalsProps } from '@/pages/deals/[id]';
 import ClaimDealModal from './Modals/ClaimDeal';
+import Link from 'next/link';
 
 interface DealSponsorProps {
   deal: DealInterface;
@@ -49,7 +50,9 @@ export const DealSponsor: FC<DealSponsorProps> = ({
             defaultImage={defaultSponsorImage}
           />
           <Box>
-            <Typography variant="h5">{deal.sponsor.legalName}</Typography>
+            <Link href={`/sponsors/${deal.sponsor.id}`}>
+              <Typography variant="h5">{deal.sponsor.legalName}</Typography>
+            </Link>
             <Typography variant="body1" sx={classes.sponsorRating}>
               <i className="icon-Star"></i>
               {deal.sponsor.avgTotalRating}{' '}
