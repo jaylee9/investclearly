@@ -1,4 +1,4 @@
-import { LocationInterface } from '../../locations/interfaces/location.interface';
+import { CreateLocationInterface } from '../../locations/interfaces/create-location.interface';
 
 export interface CreateOrUpdateRelatedPersonInterface {
   firstName: string;
@@ -6,5 +6,5 @@ export interface CreateOrUpdateRelatedPersonInterface {
   lastName: string;
   relationships: string[];
   relationshipClarification: string;
-  location: LocationInterface;
+  location: CreateLocationInterface;
 }

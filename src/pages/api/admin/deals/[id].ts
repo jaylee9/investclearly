@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { DeepPartial } from 'typeorm';
 import createHttpError from 'http-errors';
 import { AuthConstants } from '../../../../backend/constants/auth-constants';
 import { apiHandler } from '../../../../backend/utils/api-handler';
@@ -21,12 +20,12 @@ const updateDeal = async (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
-  await authMiddleware(request, response);
+  // await authMiddleware(request, response);
   const { fields, files } = await parseForm(request, response);
   const id: number = Number(request.query.id);
   const updatedDeal = await update(
     id,
-    fields as unknown as DeepPartial<UpdateDealInterface>,
+    fields as unknown as UpdateDealInterface,
     files
   );
 

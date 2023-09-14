@@ -1,4 +1,3 @@
-import { DeepPartial } from 'typeorm';
 import { SponsorInterface } from './interfaces/sponsor.interface';
 import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
@@ -8,9 +7,10 @@ import { uploadFile } from '../files/upload-file';
 import { getSponsorById } from './get-sponsor-by-id';
 import { createLocation } from '../locations/create-location';
 import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
+import { CreateSponsorInterface } from './interfaces/create-sponsor.interface';
 
 export const createSponsorRecord = async (
-  data: DeepPartial<Sponsor>,
+  data: CreateSponsorInterface,
   files: Express.Multer.File[]
 ) => {
   const connection = await getDatabaseConnection();

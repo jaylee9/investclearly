@@ -1,17 +1,16 @@
-import { DeepPartial } from 'typeorm';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { Deal } from '../../entities/deals.entity';
 import { uploadFile } from '../files/upload-file';
 import { getDealById } from './get-deal-by-id';
-import { DealInterface } from './interfaces/deal.interface';
 import { createAttachment } from '../attachments/create-attachment';
 import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
 import { createLocation } from '../locations/create-location';
 import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
+import { CreateDealInterface } from './interfaces/create-deal.interface';
 
 export const createDeal = async (
-  data: DeepPartial<Deal>,
+  data: CreateDealInterface,
   files: Express.Multer.File[]
 ) => {
   const connection = await getDatabaseConnection();
@@ -35,7 +34,7 @@ export const createDeal = async (
   const deal = connection.manager.create(Deal, {
     ...transformedData,
     ...createDealData,
-  }) as DealInterface;
+  });
   await connection.manager.save(deal);
 
   const dealRecord = await getDealById(deal.id);

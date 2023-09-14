@@ -1,9 +1,12 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class Sh1694594789036 implements MigrationInterface {
-  name = 'Sh1694594789036';
+export class Sh1694610081644 implements MigrationInterface {
+  name = 'Sh1694610081644';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `ALTER TABLE "deals" ADD "sec_api_id" character varying`
+    );
     await queryRunner.query(
       `ALTER TABLE "deals" ADD "accession_number" character varying`
     );
@@ -47,6 +50,14 @@ export class Sh1694594789036 implements MigrationInterface {
     );
     await queryRunner.query(`DROP TYPE "public"."deals_asset_class_enum_old"`);
     await queryRunner.query(
+      `ALTER TABLE "deals" DROP COLUMN "minimum_investment"`
+    );
+    await queryRunner.query(
+      `ALTER TABLE "deals" ADD "minimum_investment" bigint`
+    );
+    await queryRunner.query(`ALTER TABLE "deals" DROP COLUMN "target_raise"`);
+    await queryRunner.query(`ALTER TABLE "deals" ADD "target_raise" bigint`);
+    await queryRunner.query(
       `ALTER TYPE "public"."deals_sec_industry_enum" RENAME TO "deals_sec_industry_enum_old"`
     );
     await queryRunner.query(
@@ -82,7 +93,7 @@ export class Sh1694594789036 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TYPE "public"."user_asset_classes_enum_old" AS ENUM('Build-to-Rent', 'Co-Living', 'Data Center', 'Flex R&D', 'Flex/Office', 'Hospitality', 'Industrial', 'Land''Manufactured Housing', 'Medical Office', 'Mixed Use', 'Mobile Home', 'Multi-Asset', 'Multifamily', 'Office', 'Parking Garage', 'Retail', 'Senior Housing', 'Single Family', 'Specialty', 'Storage')`
+      `CREATE TYPE "public"."user_asset_classes_enum_old" AS ENUM('Build-to-Rent', 'Co-Living', 'Data Center', 'Flex R&D', 'Flex/Office', 'Hospitality', 'Industrial', 'Land''Manufactured Housing', 'Medical Office', 'Mixed Use', 'Multi-Asset', 'Multifamily', 'Office', 'Parking Garage', 'Retail', 'Senior Housing', 'Single Family', 'Specialty', 'Storage', 'Mobile Home')`
     );
     await queryRunner.query(
       `ALTER TABLE "user" ALTER COLUMN "asset_classes" TYPE "public"."user_asset_classes_enum_old"[] USING "asset_classes"::"text"::"public"."user_asset_classes_enum_old"[]`
@@ -92,7 +103,7 @@ export class Sh1694594789036 implements MigrationInterface {
       `ALTER TYPE "public"."user_asset_classes_enum_old" RENAME TO "user_asset_classes_enum"`
     );
     await queryRunner.query(
-      `CREATE TYPE "public"."sponsors_specialties_enum_old" AS ENUM('Build-to-Rent', 'Co-Living', 'Data Center', 'Flex R&D', 'Flex/Office', 'Hospitality', 'Industrial', 'Land''Manufactured Housing', 'Medical Office', 'Mixed Use', 'Mobile Home', 'Multi-Asset', 'Multifamily', 'Office', 'Parking Garage', 'Retail', 'Senior Housing', 'Single Family', 'Specialty', 'Storage')`
+      `CREATE TYPE "public"."sponsors_specialties_enum_old" AS ENUM('Build-to-Rent', 'Co-Living', 'Data Center', 'Flex R&D', 'Flex/Office', 'Hospitality', 'Industrial', 'Land''Manufactured Housing', 'Medical Office', 'Mixed Use', 'Multi-Asset', 'Multifamily', 'Office', 'Parking Garage', 'Retail', 'Senior Housing', 'Single Family', 'Specialty', 'Storage', 'Mobile Home')`
     );
     await queryRunner.query(
       `ALTER TABLE "sponsors" ALTER COLUMN "specialties" TYPE "public"."sponsors_specialties_enum_old"[] USING "specialties"::"text"::"public"."sponsors_specialties_enum_old"[]`
@@ -102,7 +113,7 @@ export class Sh1694594789036 implements MigrationInterface {
       `ALTER TYPE "public"."sponsors_specialties_enum_old" RENAME TO "sponsors_specialties_enum"`
     );
     await queryRunner.query(
-      `CREATE TYPE "public"."deals_sec_industry_enum_old" AS ENUM('Commercial', 'Construction', 'Lodging & Conventions', 'Other', 'Other Real Estate', 'Pooled Investment Fund', 'REITs & Finance Residential')`
+      `CREATE TYPE "public"."deals_sec_industry_enum_old" AS ENUM('Pooled Investment Fund', 'Commercial', 'Construction', 'REITs & Finance Residential', 'Other Real Estate', 'Other', 'Lodging & Conventions')`
     );
     await queryRunner.query(
       `ALTER TABLE "deals" ALTER COLUMN "sec_industry" TYPE "public"."deals_sec_industry_enum_old" USING "sec_industry"::"text"::"public"."deals_sec_industry_enum_old"`
@@ -111,8 +122,16 @@ export class Sh1694594789036 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TYPE "public"."deals_sec_industry_enum_old" RENAME TO "deals_sec_industry_enum"`
     );
+    await queryRunner.query(`ALTER TABLE "deals" DROP COLUMN "target_raise"`);
+    await queryRunner.query(`ALTER TABLE "deals" ADD "target_raise" integer`);
     await queryRunner.query(
-      `CREATE TYPE "public"."deals_asset_class_enum_old" AS ENUM('Build-to-Rent', 'Co-Living', 'Data Center', 'Flex R&D', 'Flex/Office', 'Hospitality', 'Industrial', 'Land''Manufactured Housing', 'Medical Office', 'Mixed Use', 'Mobile Home', 'Multi-Asset', 'Multifamily', 'Office', 'Parking Garage', 'Retail', 'Senior Housing', 'Single Family', 'Specialty', 'Storage')`
+      `ALTER TABLE "deals" DROP COLUMN "minimum_investment"`
+    );
+    await queryRunner.query(
+      `ALTER TABLE "deals" ADD "minimum_investment" integer`
+    );
+    await queryRunner.query(
+      `CREATE TYPE "public"."deals_asset_class_enum_old" AS ENUM('Build-to-Rent', 'Co-Living', 'Data Center', 'Flex R&D', 'Flex/Office', 'Hospitality', 'Industrial', 'Land''Manufactured Housing', 'Medical Office', 'Mixed Use', 'Multi-Asset', 'Multifamily', 'Office', 'Parking Garage', 'Retail', 'Senior Housing', 'Single Family', 'Specialty', 'Storage', 'Mobile Home')`
     );
     await queryRunner.query(
       `ALTER TABLE "deals" ALTER COLUMN "asset_class" TYPE "public"."deals_asset_class_enum_old" USING "asset_class"::"text"::"public"."deals_asset_class_enum_old"`
@@ -149,5 +168,6 @@ export class Sh1694594789036 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "deals" DROP COLUMN "accession_number"`
     );
+    await queryRunner.query(`ALTER TABLE "deals" DROP COLUMN "sec_api_id"`);
   }
 }

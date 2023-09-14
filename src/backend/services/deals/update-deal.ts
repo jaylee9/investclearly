@@ -1,4 +1,3 @@
-import { DeepPartial } from 'typeorm';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { Deal } from '../../entities/deals.entity';
@@ -15,7 +14,7 @@ import { LocationTargetTypesConstants } from '../../constants/location-target-ty
 
 export const update = async (
   id: number,
-  fields: DeepPartial<UpdateDealInterface>,
+  fields: UpdateDealInterface,
   files: Express.Multer.File[]
 ) => {
   const connection = await getDatabaseConnection();
@@ -42,6 +41,7 @@ export const update = async (
   });
 
   await getDealById(id);
+
   await connection.manager.update(
     Deal,
     { id },

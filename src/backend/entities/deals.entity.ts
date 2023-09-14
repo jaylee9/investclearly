@@ -51,7 +51,7 @@ export class Deal {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'bigint', nullable: true })
   minimumInvestment: number;
 
   @Column({ type: 'int', nullable: true })
@@ -68,7 +68,7 @@ export class Deal {
   @Column({ type: 'int', nullable: true })
   fees: number;
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'bigint', nullable: true })
   targetRaise: number;
 
   @Column({ type: 'int', nullable: true })
@@ -111,6 +111,9 @@ export class Deal {
   isInInvestments: boolean;
 
   isInBookmarks: boolean;
+
+  @Column({ type: 'varchar', nullable: true })
+  secApiId: string;
 
   @Column({ type: 'varchar', nullable: true })
   accessionNumber: string;
