@@ -5,12 +5,13 @@ const usePublicUserPageStyles = () => {
   return {
     root: {
       display: 'flex',
+      flexDirection: { xs: 'column', lg: 'row' },
       gap: '16px',
-      padding: '32px 48px',
+      padding: { xs: '0', md: '16px', lg: '32px 48px' },
     },
     userInfo: {
-      width: '25%',
-      padding: '24px 28px',
+      width: { xs: '100%', lg: '25%' },
+      padding: { xs: '24px 16px', lg: '24px 28px' },
       display: 'flex',
       flexDirection: 'column',
       background: palette.common.white,
@@ -23,10 +24,10 @@ const usePublicUserPageStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
-      width: '75%',
+      width: { xs: '100%', lg: '75%' },
     },
     rightColumnBlock: {
-      padding: '40px',
+      padding: { xs: '24px 16px', md: '40px 16px', lg: '40px' },
       borderRadius: '12px',
       background: palette.common.white,
       '& h3': {
@@ -54,7 +55,7 @@ const usePublicUserPageStyles = () => {
       flexWrap: 'wrap',
     },
     dealCard: {
-      width: 'calc((100% - 24px) / 3)',
+      width: { xs: '100%', md: 'calc((100% - 24px) / 3)' },
       '& h5': {
         maxWidth: '340px',
       },

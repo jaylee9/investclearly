@@ -5,6 +5,7 @@ import { HeaderType } from '@/hooks/useHeaderProps';
 interface HeaderStylesProps {
   type?: HeaderType;
   isShadow?: boolean;
+  isShadowInFront?: boolean;
   variant?: GlobalSearchVariant;
   isSticky?: boolean;
 }
@@ -12,6 +13,7 @@ interface HeaderStylesProps {
 const getStyles = ({
   type = 'dark',
   isShadow,
+  isShadowInFront,
   variant,
   isSticky,
 }: HeaderStylesProps) => {
@@ -33,6 +35,9 @@ const getStyles = ({
       justifyContent: 'space-between',
       alignItems: 'center',
       boxShadow: isShadow ? theme.customShadows.header : 'none',
+      filter: isShadowInFront
+        ? `drop-shadow(${theme.customShadows.header})`
+        : 'none',
       background: type.includes('search') ? theme.palette.common.white : '',
       zIndex: 1,
       position: rootPosition,

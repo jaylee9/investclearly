@@ -12,6 +12,7 @@ export interface HeaderProps {
   isLinks?: boolean;
   isSignIn?: boolean;
   isShadow?: boolean;
+  isShadowInFront?: boolean;
   logoVariant?: LogoVariant;
   onChangeSearch?: (searchTerm: string) => void;
   isSticky?: boolean;
@@ -27,6 +28,7 @@ const useHeaderProps = (headerProps: HeaderProps = {}) => {
     isLinks: true,
     isSignIn: true,
     isShadow: true,
+    isShadowInFront: false,
     logoVariant: LogoVariant.Default,
     onChangeSearch: undefined,
     isSticky: false,

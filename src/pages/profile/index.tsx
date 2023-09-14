@@ -41,6 +41,7 @@ const UserProfilePage = () => {
     isLinks: true,
     isSignIn: true,
     isSearch: true,
+    isShadow: false,
   });
   const classes = useUserProfilePageStyles();
   const router = useRouter();

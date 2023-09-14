@@ -24,8 +24,8 @@ const ReviewCard = ({
   onVerify,
 }: ReviewCardProps) => {
   const [isExtended, setIsExtended] = useState(false);
-  const classes = useReviewCardStyles({ isExtended });
   const [isTruncated, setIsTruncated] = useState(false);
+  const classes = useReviewCardStyles({ isExtended, isTruncated });
   const contentRef = useRef<HTMLDivElement>(null);
 
   const toggleExpand = () => {

@@ -34,7 +34,7 @@ export type ModalKeyType = 'claimDeal' | 'addDeal' | 'suggestEdit';
 
 const DealPage = ({ deal }: DealPageProps) => {
   const classes = useDealPageStyles();
-  const { isDesktop } = useBreakpoints();
+  const { isMobile, isDesktop } = useBreakpoints();
   const [isInBookmarks, setIsInBookmarks] = useState(deal.isInBookmarks);
   const [openModals, setOpenModals] = useState<OpenModalsProps>({
     claimDeal: false,
@@ -59,6 +59,8 @@ const DealPage = ({ deal }: DealPageProps) => {
     isLinks: true,
     isSignIn: true,
     isSearch: true,
+    isShadow: isDesktop,
+    isShadowInFront: isMobile,
   });
 
   const handleAddBookmark = async (entityId: number) => {

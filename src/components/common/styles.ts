@@ -795,20 +795,24 @@ export const useMultiButtonsStyles = () => {
 
 interface UseReviewCardStylesProps {
   isExtended: boolean;
+  isTruncated: boolean;
 }
 
 export const useReviewCardStyles = ({
   isExtended,
+  isTruncated,
 }: UseReviewCardStylesProps) => {
   return {
     root: {
-      padding: '24px 28px',
+      padding: { xs: '24px 20px', md: '24px 28px' },
       border: `1px solid ${palette.background.paper}`,
       borderRadius: '8px',
       boxShadow: customShadows.base,
     },
     reviewHeader: {
       display: 'flex',
+      gap: { xs: '16px', md: 0 },
+      flexDirection: { xs: 'column', md: 'row' },
       justifyContent: 'space-between',
       marginBottom: '20px',
     },
@@ -827,6 +831,8 @@ export const useReviewCardStyles = ({
     defaultIndicatior: {
       display: 'flex',
       gap: '6px',
+      maxWidth: 'max-content',
+      order: { xs: -1, md: 1 },
       alignItems: 'center',
       padding: '0px 12px',
       borderRadius: '16px',
@@ -859,7 +865,7 @@ export const useReviewCardStyles = ({
       display: '-webkit-box',
       WebkitBoxOrient: 'vertical',
       WebkitLineClamp: isExtended ? 'none' : 3,
-      marginBottom: '16px',
+      marginBottom: isTruncated ? '16px' : 0,
     },
     readFullLink: {
       fontWeight: 600,

@@ -4,7 +4,7 @@ const useSponsorPageStyles = () => {
   const { palette, customShadows } = theme;
   return {
     wrapper: {
-      padding: '32px 48px',
+      padding: { xs: 0, md: '16px', lg: '32px 48px' },
     },
     fixedHeader: {
       background: palette.common.white,
@@ -12,9 +12,10 @@ const useSponsorPageStyles = () => {
       width: '100%',
       zIndex: 100,
       top: 0,
-      padding: '12px 48px 0px',
+      padding: { xs: '0 16px', md: '16px', lg: '12px 48px 0px' },
       display: 'flex',
       justifyContent: 'space-between',
+      alignItems: { lg: 'center' },
       boxShadow: customShadows.header,
     },
     fixedHeaderInfo: {
@@ -31,16 +32,17 @@ const useSponsorPageStyles = () => {
     },
     root: {
       display: 'flex',
+      flexDirection: { xs: 'column', lg: 'row' },
       gap: '16px',
     },
     leftColumn: {
-      width: '70%',
+      width: { xs: '100%', lg: '70%' },
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
     },
     rightColumn: {
-      width: '30%',
+      width: { xs: '100%', lg: '30%' },
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
@@ -48,15 +50,16 @@ const useSponsorPageStyles = () => {
     info: {
       width: '100%',
       background: palette.common.white,
-      padding: '40px 40px 0px',
-      borderRadius: '12px',
+      padding: { xs: '24px 16px 0', lg: '40px 40px 0px' },
+      borderRadius: { xs: 'unset', md: '12px' },
       marginBottom: '16px',
     },
     infoHeader: {
       display: 'flex',
       justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: '24px',
+      alignItems: 'flex-start',
+      position: { xs: 'relative', md: 'initial' },
+      marginBottom: { xs: '16px', md: '24px' },
       '& h3': {
         fontWeight: 600,
         marginBottom: '4px',
@@ -67,11 +70,15 @@ const useSponsorPageStyles = () => {
     },
     infoHeaderMain: {
       display: 'flex',
-      gap: '24px',
+      flexDirection: { xs: 'column', md: 'row' },
+      gap: { xs: '12px', md: '24px' },
     },
     infoHeaderActions: {
       display: 'flex',
       gap: '20px',
+      position: { xs: 'absolute', md: 'initial' },
+      top: '12px',
+      right: '12px',
       alignItems: 'center',
       '& .icon-Saved': {
         fontSize: '24px',
@@ -88,10 +95,12 @@ const useSponsorPageStyles = () => {
       },
     },
     infoContent: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      width: '70%',
-      marginBottom: '24px',
+      gap: '12px',
+      display: { xs: 'grid', lg: 'flex' },
+      gridTemplateColumns: { xs: '1fr', md: '1fr 1fr', lg: 'none' },
+      justifyContent: { lg: 'space-between' },
+      width: { xs: '100%', lg: '70%' },
+      margin: { xs: '24px 0', md: '0 0 24px' },
     },
     infoContentColumn: {
       display: 'flex',
@@ -115,7 +124,7 @@ const useSponsorPageStyles = () => {
       },
     },
     overview: {
-      padding: '40px',
+      padding: { xs: '24px 16px', lg: '40px' },
       background: palette.common.white,
       borderRadius: '12px',
     },
@@ -138,13 +147,15 @@ const useSponsorPageStyles = () => {
       gap: '16px',
     },
     overviewDetails: {
-      width: '70%',
+      width: { xs: '100%', lg: '70%' },
       display: 'flex',
       justifyContent: 'space-between',
     },
     overviewDetailswrapper: {
-      display: 'flex',
-      width: '60%',
+      gap: '12px',
+      display: { xs: 'grid', lg: 'flex' },
+      width: { xs: '100%', lg: '60%' },
+      gridTemplateColumns: { xs: '1fr', md: '1fr 1fr', lg: 'none' },
       justifyContent: 'space-between',
       '& span': {
         color: palette.text.disabled,
@@ -153,6 +164,11 @@ const useSponsorPageStyles = () => {
       '& p': {
         fontWeight: 500,
       },
+    },
+    dealsOverview: {
+      padding: { xs: '24px 16px', lg: '40px' },
+      background: palette.common.white,
+      borderRadius: { xs: 'unset', md: '12px' },
     },
     dealsBlockHeader: {
       display: 'flex',
@@ -172,33 +188,35 @@ const useSponsorPageStyles = () => {
     dealsBlockContent: {
       display: 'flex',
       gap: '12px',
+      flexDirection: { xs: 'column', md: 'row' },
       alignItems: 'center',
       marginBottom: '16px',
       flexWrap: 'wrap',
     },
     dealCard: {
-      width: 'calc((100% - 24px) / 3)',
+      width: { xs: '100%', md: 'calc((100% - 24px) / 3)' },
       '& h5': {
         maxWidth: '340px',
       },
     },
     textWithButton: {
-      padding: '24px 28px',
+      padding: { xs: '24px 16px', lg: '24px 28px' },
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
       background: palette.primary.contrastText,
-      borderRadius: '12px',
+      borderRadius: { xs: 'unset', md: '12px' },
       border: `1px solid ${palette.background.paper}`,
       '& p': {
         fontWeight: 600,
       },
     },
     sponsorInfo: {
-      padding: '24px 28px',
+      padding: { xs: '24px 16px', lg: '24px 28px' },
       background: palette.common.white,
       borderRadius: '12px',
-      display: 'flex',
+      display: { xs: 'grid', lg: 'flex' },
+      gridTemplateColumns: { xs: '1fr 1fr', lg: 'none' },
       gap: '16px',
       '& span': {
         color: palette.text.disabled,
@@ -228,12 +246,12 @@ const useSponsorPageStyles = () => {
       },
     },
     reviewsWrapper: {
-      padding: '40px',
+      padding: { xs: '24px 16px', lg: '40px' },
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
       background: palette.common.white,
-      borderRadius: '12px',
+      borderRadius: { xs: 'unset', md: '12px' },
     },
     reviewsWrapperHeader: {
       display: 'flex',
@@ -258,7 +276,7 @@ const useSponsorPageStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       gap: '8px',
-      marginBottom: '16px',
+      marginBottom: { xs: 0, lg: '16px' },
     },
     showMoreLink: {
       cursor: 'pointer',
@@ -280,6 +298,16 @@ const useSponsorPageStyles = () => {
       color: palette.primary.light,
       cursor: 'pointer',
       width: '24px',
+    },
+    customTabs: {
+      overflow: { md: 'initial' },
+      '& .MuiTabs-scroller': {
+        overflow: { md: 'initial !important' },
+      },
+      '& .MuiTabs-indicator': {
+        backgroundColor: palette.primary.light,
+        bottom: { md: '-16px', lg: '-13px' },
+      },
     },
   };
 };

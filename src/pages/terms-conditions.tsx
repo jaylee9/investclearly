@@ -10,6 +10,7 @@ const TermsConditionsPage = () => {
     isLinks: true,
     isSignIn: true,
     isSearch: true,
+    isShadow: true,
   });
   return (
     <Layout {...headerProps}>

@@ -7,11 +7,12 @@ import Layout from '@/components/common/Layout';
 import Loading from '@/components/common/Loading';
 import ReviewCard from '@/components/common/ReviewCard';
 import UserAvatar from '@/components/common/UserAvatar';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import usePublicUserPageStyles from '@/pages_styles/publicUserPageStyles';
 import { Box, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
-import { useState } from 'react';
+import { type FC, useState } from 'react';
 import { useQuery } from 'react-query';
 
 interface PublicUserPageProps {
@@ -20,22 +21,25 @@ interface PublicUserPageProps {
   investments: InvestmentInterface[];
 }
 
-const PublicUserPage = ({
+const PublicUserPage: FC<PublicUserPageProps> = ({
   user,
   reviews,
   investments,
-}: PublicUserPageProps) => {
+}) => {
+  const classes = usePublicUserPageStyles();
+  const { isMobile } = useBreakpoints();
+  const [reviewsData, setReviewsData] = useState(reviews);
+  const [investmentsData, setInvestmentsData] = useState(investments);
+  const [reviewsLimit, setReviewsLimit] = useState(3);
   const headerProps = useHeaderProps({
     type: 'search-dark',
     isLinks: true,
     isSignIn: true,
     isSearch: true,
     isSticky: true,
+    isShadow: true,
+    isShadowInFront: isMobile,
   });
-  const classes = usePublicUserPageStyles();
-  const [reviewsData, setReviewsData] = useState(reviews);
-  const [investmentsData, setInvestmentsData] = useState(investments);
-  const [reviewsLimit, setReviewsLimit] = useState(3);
   const fetchReviews = async () => {
     const response = (await getUser({
       id: String(user.id),
@@ -79,6 +83,9 @@ const PublicUserPage = ({
   const handleShowMoreInvestments = () =>
     setInvestmentsLimit(prevLimit => prevLimit + 3);
 
+  const investmentsDataSliceCondition =
+    isMobile && investmentsData.length > 1 ? 1 : investmentsData.length;
+
   return (
     <Layout {...headerProps}>
       <Box sx={classes.root}>
@@ -100,13 +107,15 @@ const PublicUserPage = ({
               <Typography variant="body1">{user.investmentsCount}</Typography>
             </Box>
             <Box sx={classes.dealsBlockContent}>
-              {investmentsData?.map(investment => (
-                <DealCard
-                  key={investment.id}
-                  deal={investment.deal}
-                  sx={classes.dealCard}
-                />
-              ))}
+              {investmentsData
+                .slice(0, investmentsDataSliceCondition)
+                ?.map(investment => (
+                  <DealCard
+                    key={investment.id}
+                    deal={investment.deal}
+                    sx={classes.dealCard}
+                  />
+                ))}
             </Box>
             {!!user.investmentsCount &&
               user.investmentsCount > investmentsLimit &&

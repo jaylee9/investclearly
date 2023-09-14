@@ -32,6 +32,7 @@ const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
     isLinks: true,
     isSignIn: true,
     isSearch: true,
+    isShadow: false,
     onChangeSearch: handleChangeSearch,
   });
   const tabs = [

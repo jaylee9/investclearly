@@ -7,6 +7,7 @@ export const useClaimCompanyModalStyles = () => {
     root: {
       height: '440px',
       width: '370px',
+      margin: { xs: '0 auto', md: 0 },
       boxSizing: 'border-box',
       '& h3': {
         fontWeight: 600,
