@@ -95,11 +95,14 @@ export const getDeal = async ({
   token?: string;
 }): Promise<DealInterface | { error: string }> => {
   try {
+    const headers = token
+      ? {
+          Cookie: `accessToken=${token}`,
+        }
+      : {};
     const response: DealInterface = await api
       .get(`deals/${id}`, {
-        headers: {
-          Cookie: `accessToken=${token}`,
-        },
+        headers,
       })
       .json();
     return response;
