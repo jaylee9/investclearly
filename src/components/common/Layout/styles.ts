@@ -101,8 +101,16 @@ export const useAdminLayoutStyles = () => {
       display: 'flex',
       justifyContent: 'end',
       padding: '16px 24px',
-      '& img': {
-        borderRadius: '1230px',
+      '& .logoutLink': {
+        color: palette.primary.light,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        cursor: 'pointer',
+        fontWeight: 600,
+        '& i': {
+          fontSize: '24px',
+        },
       },
     },
   };

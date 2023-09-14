@@ -16,8 +16,7 @@ import { ToastContainer } from 'react-toastify';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
-import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
+import { logout } from '@/actions/auth';
 
 export enum LayoutVariant {
   Default = 'default',
@@ -70,12 +69,19 @@ const Layout = ({
   const entryStyles = useEntryLayoutStyles(isEntrySpacing);
   const adminStyles = useAdminLayoutStyles();
 
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
 
   const activeAdminLinkClassName = (path: string) =>
     clsx('defaultLink', {
       activeLink: pathname.includes(path),
     });
+
+  const handleLogout = async () => {
+    const response = await logout();
+    if (!('error' in response)) {
+      push('/');
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -145,12 +151,14 @@ const Layout = ({
           </Box>
           <Box sx={adminStyles.headerWithContentWrapper}>
             <Box sx={adminStyles.header}>
-              <Image
-                width={44}
-                height={44}
-                alt="sponsor image"
-                src={DEFAULT_SPONSOR_IMAGE}
-              />
+              <Typography
+                variant="body1"
+                className="logoutLink"
+                onClick={handleLogout}
+              >
+                <i className="icon-Log-out" />
+                Log out
+              </Typography>
             </Box>
             <Box>{children}</Box>
           </Box>
