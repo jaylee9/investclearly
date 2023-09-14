@@ -128,7 +128,11 @@ const ChooseDealStep = ({
                     defaultImage={DEFAULT_DEAL_IMAGE}
                     width={48}
                     height={48}
-                    style={{ borderRadius: '1230px', objectFit: 'cover' }}
+                    style={{
+                      borderRadius: '1230px',
+                      objectFit: 'cover',
+                      maxHeight: '48px',
+                    }}
                   />
                   <Box>
                     <Typography variant="body1" fontWeight={600}>

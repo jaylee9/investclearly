@@ -25,7 +25,7 @@ const SkeletonImage: React.FC<SkeletonImageProps> = ({ alt, ...props }) => {
           transition: 'opacity 0.2s',
           opacity: isLoaded ? 1 : 0,
           height: props.height,
-          width: props.width,
+          width: props?.style ? props.style.width : props.width,
         }}
       >
         <Image

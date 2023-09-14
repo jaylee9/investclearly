@@ -116,7 +116,7 @@ const ChooseSponsorStep = ({
                     defaultImage={DEFAULT_SPONSOR_IMAGE}
                     width={48}
                     height={48}
-                    style={{ borderRadius: '1230px' }}
+                    style={{ borderRadius: '1230px', maxHeight: '48px' }}
                   />
                   <Box>
                     <Typography variant="body1" fontWeight={600}>
