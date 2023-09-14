@@ -1,5 +1,7 @@
 import theme from '@/config/theme';
 
+const { palette, customShadows } = theme;
+
 export const useDefaultLayoutStyles = () => {
   return {
     root: {
@@ -15,7 +17,7 @@ export const useEntryLayoutStyles = (isEntrySpacing: boolean) => {
     root: {
       minHeight: '100vh',
       display: 'flex',
-      background: theme.palette.common.white,
+      background: palette.common.white,
     },
     leftPartWrapper: {
       padding: '24px 0px 24px 24px',
@@ -48,6 +50,60 @@ export const useEntryLayoutStyles = (isEntrySpacing: boolean) => {
       justifyContent: isEntrySpacing ? 'normal' : 'center',
       paddingTop: '135px',
       padding: isEntrySpacing ? '135px 65px 0px' : '125px 0px',
+    },
+  };
+};
+
+export const useAdminLayoutStyles = () => {
+  return {
+    root: {
+      display: 'flex',
+    },
+    sideBar: {
+      height: '100vh',
+      background: palette.common.white,
+      boxShadow: customShadows.header,
+      borderRight: `1px solid ${palette.background.default}`,
+    },
+    logoWrapper: {
+      padding: '24px 56px 24px 24px',
+      marginBottom: '12px',
+    },
+    linksWrapper: {
+      padding: '0px 8px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '4px',
+      '& .defaultLink': {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        padding: '8px 16px',
+        color: palette.text.secondary,
+        fontWeight: 600,
+        borderRadius: '8px',
+        '& i': {
+          fontSize: '24px',
+        },
+      },
+      '& .activeLink': {
+        color: palette.primary.light,
+        background: palette.primary.contrastText,
+      },
+    },
+    headerWithContentWrapper: {
+      width: '100%',
+    },
+    header: {
+      width: '100%',
+      background: palette.common.white,
+      boxShadow: customShadows.header,
+      display: 'flex',
+      justifyContent: 'end',
+      padding: '16px 24px',
+      '& img': {
+        borderRadius: '1230px',
+      },
     },
   };
 };
