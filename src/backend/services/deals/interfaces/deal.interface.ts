@@ -9,6 +9,7 @@ export interface DealInterface {
   fileDate: Date;
   isDealPublished: boolean;
   dealTitle: string;
+  dealAddress: string;
   regions: string | string[];
   status: string;
   assetClass: string;

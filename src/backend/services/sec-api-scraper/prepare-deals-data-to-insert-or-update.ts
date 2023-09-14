@@ -120,6 +120,7 @@ export const prepareDealsDataAndInsertOrUpdateRecords = async (
             offering?.offeringData?.durationOfOffering?.moreThanOneYear,
           submissionType: offering.submissionType,
           regions: Regions.myState,
+          dealAddress: '',
           description: '',
           cashOnCash: 0,
           fees: 0,

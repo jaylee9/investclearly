@@ -3,6 +3,7 @@ import { InvestmentStructures } from '../../../../backend/constants/enums/invest
 
 export interface UpdateDealInterface {
   dealTitle: string;
+  dealAddress: string;
   regions: string;
   status: string;
   assetClass: string;

@@ -12,6 +12,7 @@ export interface CreateDealInterface {
   isMoreThanOneYear: boolean;
   isDealPublished: boolean;
   dealTitle: string;
+  dealAddress: string;
   regions: string | string[];
   status: string;
   assetClass: string;

@@ -10,6 +10,7 @@ export const dealMapper = (deal: Deal): DealInterface => {
   return {
     id: deal.id,
     dealTitle: deal.dealTitle,
+    dealAddress: deal.dealAddress,
     regions: deal.regions || [],
     status: deal.status,
     assetClass: deal.assetClass,
