@@ -48,6 +48,7 @@ export const DealSponsor: FC<DealSponsorProps> = ({
             height={58}
             src={deal.sponsor.businessAvatar as string}
             defaultImage={defaultSponsorImage}
+            style={{ maxHeight: '58px', borderRadius: '1230px' }}
           />
           <Box>
             <Link href={`/sponsors/${deal.sponsor.id}`}>

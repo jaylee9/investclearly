@@ -18,7 +18,7 @@ const UserAvatar = ({ src, name, width, height }: UserAvatarProps) => {
       width={width}
       height={height}
       alt="user avatar"
-      style={{ borderRadius: '1230px' }}
+      style={{ borderRadius: '1230px', maxHeight: height }}
     />
   ) : (
     <Box sx={{ ...classes.root, width, height }}>
