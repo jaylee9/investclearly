@@ -41,7 +41,7 @@ const AddPasswordModal = ({
 }: Omit<ModalProps, 'children'>) => {
   const classes = useActionPasswordStyles();
 
-  const [isAddedPassword, setIsChangedPassword] = useState(false);
+  const [isAddedPassword, setIsAddedPassword] = useState(false);
 
   const {
     handleSubmit,
@@ -56,12 +56,12 @@ const AddPasswordModal = ({
     const { newPassword } = data;
     const response = await addPassword({ newPassword });
     if (!('error' in response)) {
-      setIsChangedPassword(true);
+      setIsAddedPassword(true);
     }
   });
 
   const handleClose = (e: MouseEvent | object) => {
-    setIsChangedPassword(false);
+    setIsAddedPassword(false);
     reset();
     if (onClose) {
       onClose(e, 'backdropClick');
