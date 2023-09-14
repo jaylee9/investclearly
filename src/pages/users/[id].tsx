@@ -101,39 +101,41 @@ const PublicUserPage: FC<PublicUserPageProps> = ({
           </Typography>
         </Box>
         <Box sx={classes.rightColumn}>
-          <Box sx={classes.rightColumnBlock}>
-            <Box sx={classes.rightColumnBlockHeader} marginBottom="32px">
-              <Typography variant="h3">Deals</Typography>
-              <Typography variant="body1">{user.investmentsCount}</Typography>
-            </Box>
-            <Box sx={classes.dealsBlockContent}>
-              {investmentsData
-                .slice(0, investmentsDataSliceCondition)
-                ?.map(investment => (
-                  <DealCard
-                    key={investment.id}
-                    deal={investment.deal}
-                    sx={classes.dealCard}
-                  />
-                ))}
-            </Box>
-            {!!user.investmentsCount &&
-              user.investmentsCount > investmentsLimit &&
-              !isLoadingInvestments && (
-                <Typography
-                  variant="body1"
-                  sx={classes.showMoreLink}
-                  onClick={handleShowMoreInvestments}
-                >
-                  Show more deals <i className="icon-Caret-down"></i>
-                </Typography>
-              )}
-            {isLoadingInvestments && (
-              <Box>
-                <Loading />
+          {!!investments.length && (
+            <Box sx={classes.rightColumnBlock}>
+              <Box sx={classes.rightColumnBlockHeader} marginBottom="32px">
+                <Typography variant="h3">Deals</Typography>
+                <Typography variant="body1">{user.investmentsCount}</Typography>
               </Box>
-            )}
-          </Box>
+              <Box sx={classes.dealsBlockContent}>
+                {investmentsData
+                  .slice(0, investmentsDataSliceCondition)
+                  ?.map(investment => (
+                    <DealCard
+                      key={investment.id}
+                      deal={investment.deal}
+                      sx={classes.dealCard}
+                    />
+                  ))}
+              </Box>
+              {!!user.investmentsCount &&
+                user.investmentsCount > investmentsLimit &&
+                !isLoadingInvestments && (
+                  <Typography
+                    variant="body1"
+                    sx={classes.showMoreLink}
+                    onClick={handleShowMoreInvestments}
+                  >
+                    Show more deals <i className="icon-Caret-down"></i>
+                  </Typography>
+                )}
+              {isLoadingInvestments && (
+                <Box>
+                  <Loading />
+                </Box>
+              )}
+            </Box>
+          )}
           <Box sx={classes.rightColumnBlock}>
             <Box sx={classes.rightColumnBlockHeader} marginBottom="16px">
               <Typography variant="h3">Reviews</Typography>
