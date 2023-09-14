@@ -171,7 +171,8 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
     isLinks: true,
     isSignIn: true,
     isSearch: true,
-    isShadow: true,
+    isShadow: isDesktop || isMobile,
+    isShadowInFront: isDesktop || isMobile,
   });
 
   const dealsDataSliceCondition =

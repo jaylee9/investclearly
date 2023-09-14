@@ -831,6 +831,7 @@ export const useReviewCardStyles = ({
     defaultIndicatior: {
       display: 'flex',
       gap: '6px',
+      maxWidth: 'max-content',
       order: { xs: -1, md: 1 },
       alignItems: 'center',
       padding: '0px 12px',

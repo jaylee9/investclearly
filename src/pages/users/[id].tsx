@@ -26,6 +26,11 @@ const PublicUserPage: FC<PublicUserPageProps> = ({
   reviews,
   investments,
 }) => {
+  const classes = usePublicUserPageStyles();
+  const { isMobile } = useBreakpoints();
+  const [reviewsData, setReviewsData] = useState(reviews);
+  const [investmentsData, setInvestmentsData] = useState(investments);
+  const [reviewsLimit, setReviewsLimit] = useState(3);
   const headerProps = useHeaderProps({
     type: 'search-dark',
     isLinks: true,
@@ -33,12 +38,8 @@ const PublicUserPage: FC<PublicUserPageProps> = ({
     isSearch: true,
     isSticky: true,
     isShadow: true,
+    isShadowInFront: isMobile,
   });
-  const classes = usePublicUserPageStyles();
-  const { isMobile } = useBreakpoints();
-  const [reviewsData, setReviewsData] = useState(reviews);
-  const [investmentsData, setInvestmentsData] = useState(investments);
-  const [reviewsLimit, setReviewsLimit] = useState(3);
   const fetchReviews = async () => {
     const response = (await getUser({
       id: String(user.id),

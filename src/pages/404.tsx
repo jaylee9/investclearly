@@ -1,6 +1,7 @@
 import Image404 from '@/assets/components/Image404';
 import Button from '@/components/common/Button';
 import Layout from '@/components/common/Layout';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 import useHeaderProps from '@/hooks/useHeaderProps';
 import usePage404Styles from '@/pages_styles/page404styles';
 import { Box, Typography } from '@mui/material';
@@ -8,12 +9,13 @@ import Link from 'next/link';
 import { type FC } from 'react';
 
 const Page404: FC = () => {
+  const { isTablet } = useBreakpoints();
   const headerProps = useHeaderProps({
     type: 'search-dark',
     isLinks: true,
     isSignIn: true,
     isSearch: true,
-    isShadow: true,
+    isShadow: isTablet,
   });
   const classes = usePage404Styles();
 
