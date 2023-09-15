@@ -160,7 +160,7 @@ const Layout = ({
                 Log out
               </Typography>
             </Box>
-            <Box>{children}</Box>
+            <Box sx={adminStyles.children}>{children}</Box>
           </Box>
         </Box>
       )}

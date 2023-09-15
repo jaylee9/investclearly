@@ -60,7 +60,7 @@ export const useAdminLayoutStyles = () => {
       display: 'flex',
     },
     sideBar: {
-      height: '100vh',
+      minHeight: '100vh',
       background: palette.common.white,
       boxShadow: customShadows.header,
       borderRight: `1px solid ${palette.background.default}`,
@@ -112,6 +112,9 @@ export const useAdminLayoutStyles = () => {
           fontSize: '24px',
         },
       },
+    },
+    children: {
+      padding: '24px',
     },
   };
 };
