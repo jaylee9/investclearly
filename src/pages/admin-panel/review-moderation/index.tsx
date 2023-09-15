@@ -38,10 +38,6 @@ const ReviewModerationPage = () => {
   const [activeTab, setActiveTab] = useState<AllowedReviewStatuses>(
     ReviewStatuses.onModeration
   );
-  const [counters, setCounters] = useState({
-    published: 0,
-    'on moderation': 0,
-  });
 
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
@@ -56,26 +52,26 @@ const ReviewModerationPage = () => {
     setPage(1);
   };
 
-  const { isLoading: isLoadingPublishedCountData } = useQuery(
+  const {
+    data: { total: totalPublishedReviews } = {},
+    isLoading: isLoadingPublishedCountData,
+  } = useQuery<GetUserReviewsResponse>(
     ['publishedReviewsCount'],
-    () => getUserReviews({ status: ReviewStatuses.published }),
-    {
-      onSuccess: (data: GetUserReviewsResponse) =>
-        setCounters(prevCounters => {
-          return { ...prevCounters, published: data.total };
-        }),
-    }
+    () =>
+      getUserReviews({
+        status: ReviewStatuses.published,
+      }) as Promise<GetUserReviewsResponse>
   );
 
-  const { isLoading: isLoadingOnModerationCountData } = useQuery(
+  const {
+    data: { total: totalOnModerationReviews } = {},
+    isLoading: isLoadingOnModerationCountData,
+  } = useQuery(
     ['onModerationReviewsCount'],
-    () => getUserReviews({ status: ReviewStatuses.onModeration }),
-    {
-      onSuccess: (data: GetUserReviewsResponse) =>
-        setCounters(prevCounters => {
-          return { ...prevCounters, 'on moderation': data.total };
-        }),
-    }
+    () =>
+      getUserReviews({
+        status: ReviewStatuses.onModeration,
+      }) as Promise<GetUserReviewsResponse>
   );
 
   const { data, isLoading } = useQuery<GetUserReviewsResponse>(
@@ -104,12 +100,12 @@ const ReviewModerationPage = () => {
     {
       value: ReviewStatuses.onModeration,
       label: 'On moderation',
-      count: counters[ReviewStatuses.onModeration],
+      count: totalOnModerationReviews,
     },
     {
       value: ReviewStatuses.published,
       label: 'Published',
-      count: counters[ReviewStatuses.published],
+      count: totalPublishedReviews,
     },
   ];
 
@@ -220,6 +216,11 @@ const ReviewModerationPage = () => {
     setOrderDirection(OrderDirectionConstants.DESC);
   }, [activeTab]);
 
+  const isReviewsExist =
+    activeTab === 'on moderation'
+      ? !!totalOnModerationReviews
+      : !!totalPublishedReviews;
+
   const isComprehensiveLoading =
     isLoading || isLoadingOnModerationCountData || isLoadingPublishedCountData;
 
@@ -237,7 +238,7 @@ const ReviewModerationPage = () => {
             onChange={handleChangeTab}
             tabs={tabs}
           />
-          {!!counters[activeTab] ? (
+          {isReviewsExist ? (
             <Box>
               <Box sx={classes.header}>
                 <Input
