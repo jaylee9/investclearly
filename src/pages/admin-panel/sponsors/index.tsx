@@ -22,7 +22,6 @@ interface AdminSponsorsPageProps {
 const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
   const classes = useAdminSponsorsStyles();
 
-  const [sponsorsData, setSponsorsData] = useState(sponsorsResponse);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const handleSearch = debounce((value: string) => {
@@ -33,7 +32,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
     setSearchTerm('');
   };
 
-  useQuery<GetAllSponsorsResponse>(
+  const { data } = useQuery<GetAllSponsorsResponse>(
     ['sponsors', page, searchTerm],
     () =>
       getAllSponsors({
@@ -42,7 +41,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
         search: searchTerm,
       }) as Promise<GetAllSponsorsResponse>,
     {
-      onSuccess: data => setSponsorsData(data),
+      initialData: sponsorsResponse,
       keepPreviousData: true,
     }
   );
@@ -165,11 +164,11 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
             <Button>Add Sponsor</Button>
           </Box>
           <CustomTable<SponsorInterface>
-            data={sponsorsData?.sponsors as SponsorInterface[]}
+            data={data?.sponsors as SponsorInterface[]}
             page={page}
             setPage={setPage}
-            total={Number(sponsorsData?.total)}
-            lastPage={Number(sponsorsData?.lastPage)}
+            total={Number(data?.total)}
+            lastPage={Number(data?.lastPage)}
             columns={columns}
             actions={actions}
             pageSize={10}
