@@ -19,9 +19,10 @@ export interface Column<T> {
 }
 
 type Action<RowData> = {
-  onClick: (data: RowData) => void;
-  icon: string;
+  onClick?: (data: RowData) => void;
+  icon?: string;
   styles?: React.CSSProperties;
+  content?: React.ReactNode;
 };
 
 interface CustomTableProps<RowData> {
@@ -85,14 +86,19 @@ const CustomTable = <RowData,>({
               {actions && (
                 <TableCell>
                   <Box sx={classes.actionCell}>
-                    {actions.map((action, actionIndex) => (
-                      <i
-                        key={actionIndex}
-                        onClick={() => action.onClick(row)}
-                        className={action.icon}
-                        style={{ cursor: 'pointer', ...action.styles }}
-                      ></i>
-                    ))}
+                    {actions.map(
+                      (action, actionIndex) =>
+                        action.content || (
+                          <i
+                            key={actionIndex}
+                            onClick={() =>
+                              action.onClick && action.onClick(row)
+                            }
+                            className={action.icon}
+                            style={{ cursor: 'pointer', ...action.styles }}
+                          ></i>
+                        )
+                    )}
                   </Box>
                 </TableCell>
               )}
