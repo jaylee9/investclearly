@@ -276,7 +276,8 @@ const ReviewModerationPage = () => {
           ) : (
             <Box sx={classes.noReviewsContent}>
               <Typography variant="h4">
-                There are no Reviews for moderation yet
+                There are no {activeTab === 'published' && 'Published '} Reviews
+                {activeTab === 'on moderation' && ' for moderation'} yet
               </Typography>
               <Typography variant="body1" textAlign="center">
                 To add deals, search for them on the platform and let us know
