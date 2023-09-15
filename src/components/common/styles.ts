@@ -36,6 +36,11 @@ export const useInputStyles = ({
         border: `1px solid ${palette.background.default}`,
         transition: 'border 0.3s ease-in-out',
       },
+      '& i': {
+        color: disabled ? palette.secondary.dark : palette.text.disabled,
+        cursor: disabled ? 'default' : 'pointer',
+        fontSize: '24px',
+      },
     },
     outlined: {
       '& i': {

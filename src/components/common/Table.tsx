@@ -32,6 +32,7 @@ interface CustomTableProps<RowData> {
   total: number;
   lastPage: number;
   setPage: (value: number) => void;
+  pageSize: number;
 }
 
 const CustomTable = <RowData,>({
@@ -42,10 +43,11 @@ const CustomTable = <RowData,>({
   total,
   lastPage,
   setPage,
+  pageSize,
 }: CustomTableProps<RowData>) => {
   const classes = useTableStyles();
-  const firstItem = (page - 1) * 4 + 1;
-  const lastItem = page * 4 > total ? total : page * 4;
+  const firstItem = (page - 1) * pageSize + 1;
+  const lastItem = page * pageSize > total ? total : page * pageSize;
   const handleChangePaginate = (page: number) => {
     setPage(page);
   };
@@ -57,7 +59,7 @@ const CustomTable = <RowData,>({
             {columns.map((column, index) => (
               <TableCell
                 key={index}
-                align={column.align || 'left'}
+                align={'left'}
                 sx={{ width: column.width }}
               >
                 {column.label}
@@ -72,7 +74,7 @@ const CustomTable = <RowData,>({
               {columns.map((column, index) => (
                 <TableCell
                   key={index}
-                  align={'left'}
+                  align={column.align || 'left'}
                   sx={{ width: column.width, ...classes.bodyCell }}
                 >
                   {column.accessor

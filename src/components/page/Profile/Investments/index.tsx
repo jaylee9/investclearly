@@ -216,6 +216,7 @@ const ProfileInvestments = () => {
                   lastPage={Number(data?.lastPage)}
                   setPage={setPage}
                   actions={actions}
+                  pageSize={4}
                 />
                 <EditDealModal
                   open={openModals.edit}
