@@ -1,6 +1,6 @@
 import Layout, { LayoutVariant } from '@/components/common/Layout';
 import { Box, Typography } from '@mui/material';
-import useAdminDealsStyles from './styles';
+import useAdminDealsStyles from '@/pages_styles/adminDealsStyles';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
