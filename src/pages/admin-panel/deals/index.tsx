@@ -34,7 +34,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
     setSearchTerm('');
   };
 
-  const {} = useQuery<GetAllDealsResponse>(
+  useQuery<GetAllDealsResponse>(
     ['deals', page, searchTerm],
     () =>
       getAllDeals({
