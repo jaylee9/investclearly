@@ -33,7 +33,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
     setSearchTerm('');
   };
 
-  const {} = useQuery<GetAllSponsorsResponse>(
+  useQuery<GetAllSponsorsResponse>(
     ['sponsors', page, searchTerm],
     () =>
       getAllSponsors({
