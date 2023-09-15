@@ -23,7 +23,6 @@ interface AdminDealsPageProps {
 const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
   const classes = useAdminDealsStyles();
 
-  const [dealsData, setDealsData] = useState(dealsResponse);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const handleSearch = debounce((value: string) => {
@@ -34,7 +33,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
     setSearchTerm('');
   };
 
-  useQuery<GetAllDealsResponse>(
+  const { data } = useQuery<GetAllDealsResponse>(
     ['deals', page, searchTerm],
     () =>
       getAllDeals({
@@ -43,7 +42,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
         search: searchTerm,
       }) as Promise<GetAllDealsResponse>,
     {
-      onSuccess: data => setDealsData(data),
+      initialData: dealsResponse,
       keepPreviousData: true,
     }
   );
@@ -159,11 +158,11 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
             <Button>Add Deal</Button>
           </Box>
           <CustomTable<DealInterface>
-            data={dealsData?.deals as DealInterface[]}
+            data={data?.deals as DealInterface[]}
             page={page}
             setPage={setPage}
-            total={Number(dealsData?.total)}
-            lastPage={Number(dealsData?.lastPage)}
+            total={Number(data?.total)}
+            lastPage={Number(data?.lastPage)}
             columns={columns}
             actions={actions}
             pageSize={10}
