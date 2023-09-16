@@ -38,7 +38,7 @@ export const createOrUpdateRelatedPerson = async (
       relatedPerson
     );
 
-    if (relatedPersonRecord?.locations[0] && relatedPersonRecord) {
+    if (relatedPersonRecord?.locations[0] || location) {
       await createOrUpdateLocation(
         location,
         LocationTargetTypesConstants.relatedPerson,

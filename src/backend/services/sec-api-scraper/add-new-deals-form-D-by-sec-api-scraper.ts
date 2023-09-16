@@ -1,32 +1,49 @@
 import axios from 'axios';
 import moment from 'moment';
+import { Deal } from '../../entities/deals.entity';
 import { SecIndustries } from '../../constants/enums/sec-industries';
 import { prepareDealsDataAndInsertOrUpdateRecords } from './prepare-deals-data-to-insert-or-update';
 import { MomentConstants } from '../../../backend/constants/moment-constants';
 import { OrderDirectionConstants } from '../../../backend/constants/order-direction-constants';
+import { getDatabaseConnection } from '../../../backend/config/data-source-config';
 const industryGroupTypes = Object.values(SecIndustries);
 
-export const addNewDealsFormDBySecApiScraper = async (
-  startDate?: string | null,
-  endDate?: string | null
-) => {
+export const addNewDealsFormDBySecApiScraper = async () => {
+  const connection = await getDatabaseConnection();
   const apiKey = process.env.SEC_API_KEY;
   const url = `${process.env.SEC_API_URL}/form-d?token=${apiKey}`;
   const pageSize = 50;
   let from = 0;
 
-  if (!startDate && !endDate) {
-    startDate = moment()
-      .subtract(10, 'years')
-      .format(MomentConstants.yearMonthDay);
+  const deal = await connection.manager
+    .createQueryBuilder()
+    .select('deals')
+    .from(Deal, 'deals')
+    .orderBy('deals.fileDate', OrderDirectionConstants.DESC)
+    .getOne();
+  console.log(
+    '🚀 ~ file: add-new-deals-form-D-by-sec-api-scraper.ts:24 ~ addNewDealsFormDBySecApiScraper ~ deal:',
+    deal
+  );
 
-    endDate = moment()
-      .subtract(9, 'years')
-      .subtract(11, 'months')
+  let startDate = moment()
+    .subtract(10, 'years')
+    .format(MomentConstants.yearMonthDay);
+  let endDate = moment()
+    .subtract(9, 'years')
+    .subtract(11, 'months')
+    .format(MomentConstants.yearMonthDay);
+
+  if (deal && deal.fileDate) {
+    startDate = moment(deal.fileDate)
+      .subtract(1, 'days')
+      .format(MomentConstants.yearMonthDay);
+    endDate = moment(startDate)
+      .add(1, 'months')
       .format(MomentConstants.yearMonthDay);
   }
 
-  const pauseBetweenRequestsMs = 2000;
+  const pauseBetweenRequestsMs = 1000;
   try {
     while (true) {
       const requestPayload = {
@@ -54,11 +71,12 @@ export const addNewDealsFormDBySecApiScraper = async (
       const response = await axios.post(url, requestPayload);
       const responseData = response.data;
 
-      if (from === 1000) {
+      if (from === 2000) {
         break;
       }
 
       from += pageSize;
+
       await prepareDealsDataAndInsertOrUpdateRecords(responseData.offerings);
       await new Promise(resolve => setTimeout(resolve, pauseBetweenRequestsMs));
     }

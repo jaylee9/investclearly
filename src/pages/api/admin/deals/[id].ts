@@ -20,7 +20,7 @@ const updateDeal = async (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
-  // await authMiddleware(request, response);
+  await authMiddleware(request, response);
   const { fields, files } = await parseForm(request, response);
   const id: number = Number(request.query.id);
   const updatedDeal = await update(

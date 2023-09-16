@@ -12,8 +12,9 @@ import { createDeal } from '../deals/create-deal';
 import { createRelatedPerson } from '../relatedPersons/create-related-person';
 import { createOrUpdateRelatedPerson } from '../relatedPersons/create-or-update-related-person';
 import { FormD } from './interfaces/form-D.interface';
-import { Regions } from '@/backend/constants/enums/regions';
-import { RelatedPerson } from '@/backend/entities/relatedPersons.entity';
+import { Regions } from '../../../backend/constants/enums/regions';
+import { DealInterface } from '../deals/interfaces/deal.interface';
+import { MomentConstants } from '../../../backend/constants/moment-constants';
 const industryGroupTypes = Object.values(SecIndustries);
 
 interface IssuerData {
@@ -25,51 +26,66 @@ export const prepareDealsDataAndInsertOrUpdateRecords = async (
   offerings: FormD[]
 ) => {
   for (const offering of offerings) {
-    const connection = await getDatabaseConnection();
-    const currentDate = moment();
-    const diffInMonths = currentDate.diff(offering?.filedAt, 'months');
-    const diffInDays = currentDate.diff(offering?.filedAt, 'days');
-
     if (
       industryGroupTypes.includes(
         offering?.offeringData?.industryGroup?.industryGroupType
       )
     ) {
-      const deal = await connection.manager.findOne(Deal, {
-        where: { secApiId: offering.id },
-      });
+      const connection = await getDatabaseConnection();
+      const expirationDateFor500C = moment()
+        .subtract(6, 'months')
+        .subtract(1, 'days')
+        .format(MomentConstants.yearMonthDay);
+
+      const expirationDateFor500B = moment()
+        .subtract(12, 'months')
+        .subtract(1, 'days')
+        .format(MomentConstants.yearMonthDay);
+
+      const is06c =
+        offering?.offeringData?.federalExemptionsExclusions?.item?.includes(
+          '06c'
+        );
+      const is06b =
+        offering?.offeringData?.federalExemptionsExclusions?.item?.includes(
+          '06b'
+        );
 
       let investmentStructures = InvestmentStructures.equity;
       let exemption = Exemptions.Rule506C;
       let status = DealStatuses.open;
+      const deal = await connection.manager.findOne(Deal, {
+        where: { secApiId: offering.id },
+      });
 
-      if (offering?.offeringData?.typesOfSecuritiesOffered?.isDebtType) {
-        investmentStructures = InvestmentStructures.debt;
+      if (
+        industryGroupTypes.includes(
+          offering?.offeringData?.industryGroup?.industryGroupType
+        )
+      ) {
+        if (offering?.offeringData?.typesOfSecuritiesOffered?.isDebtType) {
+          investmentStructures = InvestmentStructures.debt;
+        }
+
+        if (
+          is06c &&
+          moment(offering?.filedAt) < moment(expirationDateFor500C) &&
+          offering?.offeringData?.durationOfOffering?.moreThanOneYear === true
+        ) {
+          status = DealStatuses.closedActive;
+        } else if (is06b) {
+          exemption = Exemptions.Rule506B;
+
+          if (moment(offering?.filedAt) < moment(expirationDateFor500B)) {
+            status = DealStatuses.closedActive;
+          }
+        }
       }
 
       if (
-        offering?.offeringData?.federalExemptionsExclusions?.item?.includes(
-          '06c'
-        )
-      ) {
-        if (diffInMonths >= 6 && diffInDays >= 1) {
-          status = DealStatuses.closedActive;
-        }
-      } else if (
-        offering?.offeringData?.federalExemptionsExclusions?.item?.includes(
-          '06b'
-        )
-      ) {
-        exemption = Exemptions.Rule506B;
-
-        if (diffInMonths >= 12 && diffInDays >= 1) {
-          status = DealStatuses.closedActive;
-        }
-      }
-
-      if (
-        exemption === Exemptions.Rule506B ||
-        status === DealStatuses.closedActive
+        exemption === Exemptions.Rule506C ||
+        (exemption === Exemptions.Rule506B &&
+          status === DealStatuses.closedActive)
       ) {
         let allPreviousNames: string[] = [];
         if (offering?.primaryIssuer?.issuerPreviousNameList?.length) {
@@ -130,68 +146,45 @@ export const prepareDealsDataAndInsertOrUpdateRecords = async (
           actualIRR: 0,
           preferredReturn: 0,
           dealSponsor: '',
-          closeDate: new Date(),
+          closeDate: offering?.filedAt,
           attachmentsIdsToDelete: [],
           isDealPublished: true,
         };
 
+        let dealRecord: DealInterface | null = null;
+
         if (deal) {
-          const relatedPersonRecords = [];
-          const updatedDeal = await update(deal.id, dealData, []);
-
-          for (const relatedPerson of offering?.relatedPersonsList
-            ?.relatedPersonInfo) {
-            const relatedPersonData = {
-              firstName: relatedPerson?.relatedPersonName?.firstName || '',
-              middleName: relatedPerson?.relatedPersonName?.middleName || '',
-              lastName: relatedPerson?.relatedPersonName?.lastName || '',
-              relationships:
-                relatedPerson?.relatedPersonRelationshipList?.relationship ||
-                [],
-              relationshipClarification:
-                relatedPerson?.relationshipClarification || '',
-              location: relatedPerson?.relatedPersonAddress || '',
-            };
-            const relatedPersoRecord = (await createOrUpdateRelatedPerson(
-              relatedPersonData
-            )) as unknown as RelatedPerson;
-
-            if (relatedPersoRecord) {
-              relatedPersonRecords.push(relatedPersoRecord);
-            }
-          }
-
-          await connection.manager.save(Deal, {
-            id: updatedDeal.id,
-            relatedPersons: relatedPersonRecords,
-          });
+          dealRecord = await update(deal.id, dealData, []);
         } else {
-          const dealRecord = await createDeal(dealData, []);
-          const relatedPersonRecords = [];
+          dealRecord = await createDeal(dealData, []);
+        }
 
-          for (const relatedPerson of offering?.relatedPersonsList
-            ?.relatedPersonInfo) {
-            const relatedPersonData = {
-              firstName: relatedPerson?.relatedPersonName?.firstName,
-              middleName: relatedPerson?.relatedPersonName?.middleName,
-              lastName: relatedPerson?.relatedPersonName?.lastName,
-              relationships:
-                relatedPerson?.relatedPersonRelationshipList?.relationship,
-              relationshipClarification:
-                relatedPerson?.relationshipClarification,
-              location: relatedPerson?.relatedPersonAddress,
-            };
-            const relatedPersoRecord = await createRelatedPerson(
-              relatedPersonData
-            );
+        const relatedPersonRecords = [];
 
-            if (relatedPersoRecord) {
-              relatedPersonRecords.push(relatedPersoRecord);
-            }
+        for (const relatedPerson of offering?.relatedPersonsList
+          ?.relatedPersonInfo || []) {
+          const relatedPersonData = {
+            firstName: relatedPerson?.relatedPersonName?.firstName || '',
+            middleName: relatedPerson?.relatedPersonName?.middleName || '',
+            lastName: relatedPerson?.relatedPersonName?.lastName || '',
+            relationships:
+              relatedPerson?.relatedPersonRelationshipList?.relationship || [],
+            relationshipClarification:
+              relatedPerson?.relationshipClarification || '',
+            location: relatedPerson?.relatedPersonAddress || '',
+          };
+          const relatedPersonRecord = await (deal
+            ? createOrUpdateRelatedPerson
+            : createRelatedPerson)(relatedPersonData);
+
+          if (relatedPersonRecord) {
+            relatedPersonRecords.push(relatedPersonRecord);
           }
+        }
 
+        if (dealRecord) {
           await connection.manager.save(Deal, {
-            id: dealRecord.id,
+            id: deal ? deal.id : dealRecord.id,
             relatedPersons: relatedPersonRecords,
           });
         }
