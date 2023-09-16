@@ -21,10 +21,6 @@ export const addNewDealsFormDBySecApiScraper = async () => {
     .from(Deal, 'deals')
     .orderBy('deals.fileDate', OrderDirectionConstants.DESC)
     .getOne();
-  console.log(
-    '🚀 ~ file: add-new-deals-form-D-by-sec-api-scraper.ts:24 ~ addNewDealsFormDBySecApiScraper ~ deal:',
-    deal
-  );
 
   let startDate = moment()
     .subtract(10, 'years')
