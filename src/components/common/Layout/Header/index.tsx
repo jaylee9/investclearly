@@ -1,41 +1,27 @@
 import React, { useState } from 'react';
 import Logo from '@/assets/components/Logo';
 import getStyles from './styles';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import Link from 'next/link';
 import Button from '@/components/common/Button';
-import Input from '@/components/common/Input';
-import CustomPopover from '@/components/common/Popover';
-import { TLinks } from '@/types/common';
+import { TModalHandlers } from '@/types/common';
 import { HeaderProps } from '@/hooks/useHeaderProps';
+import { AssetClasses } from '@/backend/constants/enums/asset-classes';
+import GlobalSearch, {
+  GlobalSearchVariant,
+} from '@/components/page/Home/GlobalSearch/GlobalSearch';
+import escapeStringForHttpParams from '@/helpers/escapeStringForHttpParams';
+import CreateReviewForm from '../../CreateReview';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { Menu } from './Menu';
+import { DealsPopover } from './DealsPopover';
+import UserAvatar from '../../UserAvatar';
+import { Menu as MenuIcon } from '@mui/icons-material';
+import { useUser } from '@/contexts/User';
 
-const links: TLinks = [
-  { href: '/review', label: 'Write a Review' },
-  { href: '/sponsor-profile', label: 'Claim Sponsor Profile' },
-];
-
-const popoverMockData: { value: string; href: string }[] = [
-  { value: 'Build-to-Rent', href: '/example' },
-  { value: 'Co-Living', href: '/example' },
-  { value: 'Data Center', href: '/example' },
-  { value: 'Flex R&D', href: '/example' },
-  { value: 'Flex/Office', href: '/example' },
-  { value: 'Hospitality', href: '/example' },
-  { value: 'Industrial', href: '/example' },
-  { value: 'Land Manufactured Housing', href: '/example' },
-  { value: 'Medical Office', href: '/example' },
-  { value: 'Mixed Use', href: '/example' },
-  { value: 'Mobile Home', href: '/example' },
-  { value: 'Multi-Asset', href: '/example' },
-  { value: 'Multifamily', href: '/example' },
-  { value: 'Office', href: '/example' },
-  { value: 'Parking Garage', href: '/example' },
-  { value: 'Retail', href: '/example' },
-  { value: 'Senior Housing', href: '/example' },
-  { value: 'Single Family', href: '/example' },
-  { value: 'Specialty', href: '/example' },
-  { value: 'All Deals', href: '/example' },
-  { value: 'Storage', href: '/example' },
+export const links: TModalHandlers = [
+  { type: 'review', label: 'Write a Review' },
+  { type: 'sponsor-profile', label: 'Claim Sponsor Profile' },
 ];
 
 const Header = ({
@@ -47,82 +33,140 @@ const Header = ({
   isSignIn,
   type,
   isShadow,
+  onChangeSearch,
+  isSticky,
 }: HeaderProps) => {
-  const [searchValue, setSearchValue] = useState('');
-  const [isArrowRotated, setIsArrowRotated] = useState(false);
-  const classes = getStyles({ type, isShadow });
-  const handleChangeSearch = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setSearchValue(e.target.value);
+  const { isDesktop, isMobile } = useBreakpoints();
+  const globalSearchVariant = isMobile
+    ? GlobalSearchVariant.SMALL
+    : GlobalSearchVariant.BASE;
+  const [isMobileSearchInput, setIsMobileSearchInput] = useState(false);
+  const [isOpenGlobalSearch, setIsOpenGlobalSearch] = useState(false);
+  const [openCreateReviewForm, setOpenCreateReviewForm] = useState(false);
+  const classes = getStyles({
+    type,
+    isShadow,
+    variant: globalSearchVariant,
+    isSticky,
+  });
+  const { user } = useUser();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const openMenu = Boolean(anchorEl);
+
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
   };
-  const handleArrowClick = () => {
-    setIsArrowRotated(!isArrowRotated);
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
   };
+
+  const handleChangeSearch = (value: string) => {
+    if (onChangeSearch) {
+      onChangeSearch(value);
+    }
+  };
+
+  const assetClassesArray = [
+    ...Object.keys(AssetClasses).map(key => {
+      const value = AssetClasses[key as keyof typeof AssetClasses];
+      const linkValue = escapeStringForHttpParams(value);
+      const href = `/list?type=deals&asset_class=${linkValue}`;
+      return { value, href };
+    }),
+    { value: 'All Deals', href: '/list?type=deals' },
+  ];
+  const columnLength = Math.ceil(assetClassesArray.length / 2);
+  const firstColumn = assetClassesArray.slice(0, columnLength);
+  const secondColumn = assetClassesArray.slice(columnLength);
+
+  const handleOpenCreateReviewForm = () => setOpenCreateReviewForm(true);
+  const handleCloseCreateReviewForm = () => setOpenCreateReviewForm(false);
+
+  const handleClickLink = (type: string) => {
+    if (type === 'review') {
+      handleOpenCreateReviewForm();
+    }
+  };
+
   return (
-    <header style={classes.root}>
+    <Box
+      component="header"
+      sx={{ ...classes.root, overflow: isOpenGlobalSearch ? '' : 'hidden' }}
+    >
       {!!content && content}
       <Box sx={classes.leftSideWrapper}>
-        <Logo variant={logoVariant} />
+        {!isMobileSearchInput && <Logo variant={logoVariant} />}
         {isSearch && (
-          <Input
-            variant="filled"
-            isSearch
-            placeholder="Search"
-            onChange={e => handleChangeSearch(e)}
-            value={searchValue}
+          <GlobalSearch
+            type={type}
+            variant={globalSearchVariant}
+            onChangeSearch={handleChangeSearch}
+            isMobileSearchInput={isMobileSearchInput}
+            setIsMobileSearchInput={setIsMobileSearchInput}
+            isOpenGlobalSearch={isOpenGlobalSearch}
+            setIsOpenGlobalSearch={setIsOpenGlobalSearch}
           />
         )}
         {title && title}
       </Box>
-      <Box sx={classes.menu}>
-        {isLinks && (
-          <>
-            <CustomPopover
-              open={isArrowRotated}
-              handleClose={() => setIsArrowRotated(false)}
-              trigger={
-                <p style={classes.link} onClick={handleArrowClick}>
-                  <span>Deals</span>
-                  <i
-                    className={`icon-Caret-down ${
-                      isArrowRotated ? 'rotate' : ''
-                    }`}
-                    style={classes.arrow}
-                  ></i>
-                </p>
-              }
+      {!isMobileSearchInput && (
+        <Box sx={classes.dealsPopover}>
+          {isDesktop && isLinks && (
+            <DealsPopover
+              type={type}
+              isShadow={isShadow}
+              firstColumn={firstColumn}
+              secondColumn={secondColumn}
+              handleClickLink={handleClickLink}
+            />
+          )}
+          {isDesktop ? (
+            <>
+              {isSignIn && user ? (
+                <Box sx={classes.avatarWrapper} onClick={handleOpenMenu}>
+                  <UserAvatar
+                    src={user.profilePicture as string}
+                    width={44}
+                    height={44}
+                    name={`${user.firstName} ${user.lastName}`}
+                  />
+                </Box>
+              ) : (
+                <Link href="/sign-up">
+                  <Button>Log in / Sign up</Button>
+                </Link>
+              )}
+            </>
+          ) : (
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={handleOpenMenu}
             >
-              <Box sx={classes.popoverWrapper}>
-                {popoverMockData.map(item => (
-                  <Link
-                    href={item.href}
-                    key={item.value}
-                    style={
-                      item.value === 'All Deals'
-                        ? { ...classes.popoverItem, ...classes.dealsLink }
-                        : classes.popoverItem
-                    }
-                  >
-                    {item.value}
-                  </Link>
-                ))}
-              </Box>
-            </CustomPopover>
-            {links.map(link => (
-              <Link href={link.href} key={link.href} style={classes.link}>
-                {link.label}
-              </Link>
-            ))}
-          </>
-        )}
-        {isSignIn && (
-          <Link href="/sign-up">
-            <Button>Log in / Sign up</Button>
-          </Link>
-        )}
-      </Box>
-    </header>
+              <MenuIcon />
+            </IconButton>
+          )}
+          <Menu
+            isShadow={isShadow}
+            firstColumn={firstColumn}
+            secondColumn={secondColumn}
+            handleClickLink={handleClickLink}
+            user={user}
+            isDesktop={isDesktop}
+            anchorEl={anchorEl}
+            handleClose={handleCloseMenu}
+            open={openMenu}
+          />
+          <CreateReviewForm
+            open={openCreateReviewForm}
+            onClose={handleCloseCreateReviewForm}
+          />
+        </Box>
+      )}
+    </Box>
   );
 };
 

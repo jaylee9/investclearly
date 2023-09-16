@@ -35,6 +35,7 @@ const theme = createTheme({
     secondary: {
       main: '#F58F29',
       dark: '#B4C2D7',
+      light: '#FEFCF6',
     },
     error: {
       main: '#C2192A',
@@ -71,7 +72,7 @@ const theme = createTheme({
       },
     },
     h3: {
-      fontSize: 28,
+      fontSize: 26,
       lineHeight: '36px',
       '@media (max-width:744px)': {
         fontSize: 24,
@@ -101,7 +102,7 @@ const theme = createTheme({
   },
   customShadows: {
     base: '0px 4px 12px 0px rgba(30, 43, 67, 0.06)',
-    header: '8px 12px 32px 0px rgba(113, 124, 137, 0.06)',
+    header: '8px 12px 32px rgba(113, 124, 137, 0.06)',
   },
   components: {
     MuiCssBaseline: {
@@ -110,6 +111,30 @@ const theme = createTheme({
           color: '#1E2B43',
         },
       },
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 320,
+      md: 768,
+      lg: 1024,
+      xl: 1376,
+    },
+  },
+  transitions: {
+    duration: {
+      shortest: 150,
+      shorter: 200,
+      short: 250,
+      // most basic recommended timing
+      standard: 300,
+      // this is to be used in complex animations
+      complex: 375,
+      // recommended when something is entering screen
+      enteringScreen: 225,
+      // recommended when something is leaving screen
+      leavingScreen: 195,
     },
   },
 });

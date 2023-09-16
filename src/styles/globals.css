@@ -5,6 +5,7 @@ a {
 
 body {
   margin: 0px;
+  background: #f6f7fa !important;
 }
 
 .round-divider {
@@ -12,4 +13,8 @@ body {
   height: 4px;
   background-color: #717c89;
   border-radius: 50%;
+}
+
+.required-star {
+  color: #d72638;
 }

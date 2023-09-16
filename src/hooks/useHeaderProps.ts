@@ -12,22 +12,26 @@ export interface HeaderProps {
   isLinks?: boolean;
   isSignIn?: boolean;
   isShadow?: boolean;
+  isShadowInFront?: boolean;
   logoVariant?: LogoVariant;
-  search?: () => void;
+  onChangeSearch?: (searchTerm: string) => void;
+  isSticky?: boolean;
 }
 
 const useHeaderProps = (headerProps: HeaderProps = {}) => {
   const defaultHeaderProps: HeaderProps = {
     type: 'dark',
     isSearch: false,
-    search: undefined,
     content: null,
     title: null,
     isLogo: true,
     isLinks: true,
     isSignIn: true,
     isShadow: true,
-    logoVariant: 'default',
+    isShadowInFront: false,
+    logoVariant: LogoVariant.Default,
+    onChangeSearch: undefined,
+    isSticky: false,
   };
   const formattedHeaderProps = { ...defaultHeaderProps, ...headerProps };
   return formattedHeaderProps;

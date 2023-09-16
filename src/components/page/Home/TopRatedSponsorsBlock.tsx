@@ -5,7 +5,11 @@ import {
   viewAllLink,
 } from './styles';
 import Link from 'next/link';
-import Image from 'next/image';
+import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
+import SponsorCard from '@/components/common/SponsorCard';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
+import Button from '@/components/common/Button';
+import type { FC } from 'react';
 
 const blockInformation = [
   {
@@ -20,47 +24,25 @@ const blockInformation = [
   },
 ];
 
-const sponsors = [
-  {
-    image:
-      'https://img.freepik.com/free-vector/corporate-business-fintech-logo-abstract-design-template-real-estate-charts-diagram-logotype-concept_126523-637.jpg?w=1380&t=st=1689086397~exp=1689086997~hmac=4a9510a550e70a9eab5ca26a9c712fd7655f90479852c8d0d55d6d78bee227e9',
-    name: 'Cloud Investment Ltd',
-    location: 'Phoenix, AZ',
-    rating: 4.9,
-    amountRatings: 115,
-  },
-  {
-    image:
-      'https://img.freepik.com/free-vector/corporate-business-fintech-logo-abstract-design-template-real-estate-charts-diagram-logotype-concept_126523-637.jpg?w=1380&t=st=1689086397~exp=1689086997~hmac=4a9510a550e70a9eab5ca26a9c712fd7655f90479852c8d0d55d6d78bee227e9',
-    name: 'Sky Capital LLC',
-    location: 'Los Angeles, CA',
-    rating: 4.7,
-    amountRatings: 95,
-  },
-  {
-    image:
-      'https://img.freepik.com/free-vector/corporate-business-fintech-logo-abstract-design-template-real-estate-charts-diagram-logotype-concept_126523-637.jpg?w=1380&t=st=1689086397~exp=1689086997~hmac=4a9510a550e70a9eab5ca26a9c712fd7655f90479852c8d0d55d6d78bee227e9',
-    name: 'Rainbow Finances',
-    location: 'Denver, CO',
-    rating: 4.5,
-    amountRatings: 80,
-  },
-  {
-    image:
-      'https://img.freepik.com/free-vector/corporate-business-fintech-logo-abstract-design-template-real-estate-charts-diagram-logotype-concept_126523-637.jpg?w=1380&t=st=1689086397~exp=1689086997~hmac=4a9510a550e70a9eab5ca26a9c712fd7655f90479852c8d0d55d6d78bee227e9',
-    name: 'Green Leaf Investments',
-    location: 'Chicago, IL',
-    rating: 4.8,
-    amountRatings: 110,
-  },
-];
+interface TopRatedSponsorsBlockProps {
+  sponsors: SponsorInterface[];
+}
 
-const TopRatedSponsorsBlock = () => {
+const TopRatedSponsorsBlock: FC<TopRatedSponsorsBlockProps> = ({
+  sponsors,
+}) => {
   const classes = useTopRatedSponsorsBlockStyles();
+  const { isDesktop, isMobile } = useBreakpoints();
+
+  const gridSize = isDesktop ? 6 : 12;
+  const gridCardSize = isMobile ? 12 : 6;
+
+  const sponsorsFiltered = sponsors.slice(0, isMobile ? 1 : sponsors.length);
+
   return (
     <Box sx={classes.root}>
-      <Grid container spacing={5}>
-        <Grid item xs={6}>
+      <Grid container spacing={5} sx={classes.gridContainer}>
+        <Grid item xs={gridSize} sx={classes.sponsorGridContainer}>
           <Box>
             <Typography variant="caption" sx={blueTitleStyles}>
               TOP RATED SPONSORS
@@ -83,40 +65,41 @@ const TopRatedSponsorsBlock = () => {
                 </Box>
               ))}
             </Box>
-            <Link href="/sponsors">
-              <Typography variant="body1" sx={viewAllLink} padding="0px 24px">
-                View all sponsors
-              </Typography>
-            </Link>
+            {isDesktop && (
+              <Link href="/list?type=sponsors">
+                <Button variant="secondary">
+                  <Typography
+                    variant="body1"
+                    sx={viewAllLink}
+                    padding="0px 24px"
+                  >
+                    View all sponsors
+                  </Typography>
+                </Button>
+              </Link>
+            )}
           </Box>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={gridSize} sx={classes.sponsorGridContainer}>
           <Box>
             <Grid container spacing={2}>
-              {sponsors.map((item, index) => (
-                <Grid item xs={6} key={index}>
-                  <Box sx={classes.sponsorWrapper}>
-                    <Image
-                      src={item.image}
-                      width={72}
-                      height={72}
-                      alt="sponsor image"
-                      style={classes.sponsorImage}
-                    />
-                    <Typography variant="h5" fontWeight={600}>
-                      {item.name}
-                    </Typography>
-                    <Typography variant="body1">{item.location}</Typography>
-                    <Typography variant="body1" sx={classes.sponsorRating}>
-                      <i className="icon-Star"></i> {item.rating}
-                      <span> ({item.amountRatings})</span>
-                    </Typography>
-                  </Box>
+              {sponsorsFiltered.map((item, index) => (
+                <Grid item xs={gridCardSize} key={index}>
+                  <SponsorCard sponsor={item} />
                 </Grid>
               ))}
             </Grid>
           </Box>
         </Grid>
+        {!isDesktop && (
+          <Link href="/list?type=sponsors" style={{ margin: '32px auto 0' }}>
+            <Button variant="secondary">
+              <Typography variant="body1" sx={viewAllLink} padding="0px 24px">
+                View all sponsors
+              </Typography>
+            </Button>
+          </Link>
+        )}
       </Grid>
     </Box>
   );

@@ -1,118 +1,149 @@
-import theme from '@/config/theme';
-import { TextField, Fade, InputAdornment } from '@mui/material';
-import { TextFieldProps, SxProps } from '@mui/material';
-import { Theme } from '@mui/material/styles';
-import { ReactNode, useState } from 'react';
+import {
+  TextField,
+  Fade,
+  InputAdornment,
+  Box,
+  Typography,
+  SxProps,
+  Theme,
+} from '@mui/material';
+import { TextFieldProps } from '@mui/material';
+import { CSSProperties, ChangeEvent, ReactNode, useState } from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
+import { useInputStyles } from './styles';
 
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
   variant?: 'filled' | 'outlined';
   isFilledWhite?: boolean;
   errorText?: string;
+  error?: boolean;
   isSearch?: boolean;
-  isClear?: boolean;
-  customStyles?: SxProps<Theme>;
+  showClearOption?: boolean;
+  isPassword?: boolean;
+  customStyles?: CSSProperties;
+  sxCustomStyles?: SxProps<Theme>;
   height?: 'base' | 'large';
   endComponent?: ReactNode;
+  register?: UseFormRegisterReturn;
+  onClear?: () => void;
+  topLabel?: string;
 }
 
 const Input = ({
   variant = 'outlined',
   errorText,
   isSearch,
-  isClear = true,
+  showClearOption = true,
   isFilledWhite = false,
-  customStyles,
+  customStyles = {},
+  sxCustomStyles = {},
   height = 'base',
   endComponent,
+  register,
+  onChange,
+  onClear,
+  error,
+  isPassword = false,
+  topLabel,
   ...props
 }: InputProps) => {
-  const [value, setValue] = useState('');
-  const { palette, typography } = theme;
-  const styles = {
-    filled: {
-      width: '320px',
-      borderRadius: '120px',
-      '& .MuiOutlinedInput-root': {
-        background: isFilledWhite
-          ? palette.common.white
-          : palette.background.default,
-        borderRadius: '120px',
-        border: `1px solid ${palette.background.default}`,
-        transition: 'border 0.3s ease-in-out',
-      },
-    },
-    outlined: {
-      width: '320px',
-      borderRadius: '12px',
-      '& .MuiOutlinedInput-root': {
-        borderRadius: '12px',
-        border: `1px solid ${
-          errorText ? palette.error.light : palette.background.default
-        } ${errorText ? '!important' : ''}`,
-        transition: 'border 0.3s ease-in-out',
-      },
-    },
+  const [value, setValue] = useState(props.value || '');
+  const [showPassword, setShowPassword] = useState(!isPassword);
+  const handleShowPassword = () => {
+    if (props.disabled) {
+      return;
+    }
+    setShowPassword(!showPassword);
   };
-  const handleClear = () => {
+  const styles = useInputStyles({
+    variant,
+    errorText,
+    error,
+    isFilledWhite,
+    height,
+    disabled: props.disabled,
+  });
+  const sxStyles = {
+    ...styles[variant],
+    ...styles.root,
+    ...sxCustomStyles,
+  };
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setValue('');
+    if (onClear) {
+      onClear();
+    }
+  };
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setValue(e.target.value);
+    if (register) {
+      register.onChange(e);
+    }
+    if (onChange) {
+      onChange(e);
+    }
   };
   return (
-    <TextField
-      value={value}
-      onChange={e => setValue(e.target.value)}
-      helperText={errorText}
-      sx={{
-        ...styles[variant],
-        ...customStyles,
-        '& .MuiInputBase-root': {
-          height: height === 'base' ? '44px' : '56px',
-          fontSize: typography.body1,
-        },
-        '& fieldset': {
-          border: 'none',
-        },
-        '& .MuiOutlinedInput-root:hover': {
-          border: `1px solid ${palette.secondary.dark}`,
-        },
-        '& .MuiOutlinedInput-root.Mui-focused': {
-          border: `1px solid ${palette.primary.light}`,
-          background: palette.common.white,
-        },
-        '& .MuiFormHelperText-root': {
-          color: palette.error.light,
-          background: palette.common.white,
-          fontSize: typography.caption,
-        },
-      }}
-      InputProps={{
-        startAdornment: isSearch && (
-          <InputAdornment position="start">
-            <i
-              className="icon-Search"
-              style={{ fontSize: 24 }}
-              onClick={handleClear}
-            ></i>
-          </InputAdornment>
-        ),
-        endAdornment: (
-          <>
-            {isClear && (
-              <Fade in={!!value}>
+    <Box textAlign="start">
+      {!!topLabel && (
+        <Typography variant="caption" fontWeight={600} sx={styles.topLabel}>
+          {topLabel}
+          {props.required && <span className="required-star">*</span>}
+        </Typography>
+      )}
+      <TextField
+        type={showPassword ? 'text' : 'password'}
+        value={value}
+        onChange={handleChange}
+        helperText={errorText}
+        sx={sxStyles as SxProps<Theme>}
+        style={customStyles}
+        InputProps={{
+          startAdornment: isSearch && (
+            <InputAdornment position="start">
+              <i
+                className="icon-Search"
+                style={{ fontSize: 24 }}
+                onClick={handleClear}
+              ></i>
+            </InputAdornment>
+          ),
+          endAdornment: (
+            <>
+              {showClearOption && (
+                <Fade in={!!value}>
+                  <InputAdornment position="end" onClick={handleClear}>
+                    <i className="icon-Cross"></i>
+                  </InputAdornment>
+                </Fade>
+              )}
+              {isPassword && (
                 <InputAdornment position="end">
                   <i
-                    className="icon-Cross"
-                    style={{ cursor: 'pointer', fontSize: 24 }}
-                    onClick={handleClear}
+                    onClick={handleShowPassword}
+                    className={
+                      !showPassword ? 'icon-Eye-opened' : 'icon-Eye-closed'
+                    }
                   ></i>
                 </InputAdornment>
-              </Fade>
-            )}
-            <InputAdornment position="end">{endComponent}</InputAdornment>
-          </>
-        ),
-      }}
-      {...props}
-    />
+              )}
+              <InputAdornment position="end">{endComponent}</InputAdornment>
+            </>
+          ),
+        }}
+        {...props}
+        {...(register
+          ? {
+              name: register.name,
+              ref: register.ref,
+              onBlur: register.onBlur,
+            }
+          : {})}
+      />
+    </Box>
   );
 };
 

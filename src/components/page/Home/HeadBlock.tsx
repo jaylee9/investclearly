@@ -1,9 +1,15 @@
 import { useHeadBlockStyles } from './styles';
 import { Box, Typography } from '@mui/material';
+import GlobalSearch from './GlobalSearch/GlobalSearch';
+import { GlobalSearchResponse } from '@/actions/common';
 import { useState } from 'react';
-import GlobalSearch from './GlobalSearch';
 
-const HeadBlock = () => {
+interface HeadBlockProps {
+  searchResponse: GlobalSearchResponse;
+}
+
+const HeadBlock = ({ searchResponse }: HeadBlockProps) => {
+  const [isOpenGlobalSearch, setIsOpenGlobalSearch] = useState(false);
   const classes = useHeadBlockStyles();
   return (
     <Box sx={classes.root}>
@@ -17,7 +23,12 @@ const HeadBlock = () => {
           confidence.
         </Typography>
       </Box>
-      <GlobalSearch />
+      <GlobalSearch
+        searchResponse={searchResponse}
+        type="light"
+        isOpenGlobalSearch={isOpenGlobalSearch}
+        setIsOpenGlobalSearch={setIsOpenGlobalSearch}
+      />
     </Box>
   );
 };

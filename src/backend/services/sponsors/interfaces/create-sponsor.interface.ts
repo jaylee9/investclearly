@@ -1,0 +1,30 @@
+export interface CreateSponsorInterface {
+  vanityName?: string | null;
+  legalName?: string | null;
+  userId?: number | null;
+  businessAvatar?: string | null;
+  businessEmail?: string | null;
+  businessPhone?: string | null;
+  sponsorName?: string | null;
+  address?: string | null;
+  website?: string | null;
+  description?: string | null;
+  aum?: number | null;
+  specialties?: string | string[];
+  investmentStructures?: string | string[];
+  facebookLink?: string | null;
+  linkedInLink?: string | null;
+  twitterLink?: string | null;
+  instagramLink?: string | null;
+  exemptions?: string | string[];
+  workForThisCompany?: boolean | null;
+  regions?: string | string[];
+  cashOnCash?: number | null;
+  equityMultiple?: number | null;
+  holdPeriod?: number | null;
+  targetIRR?: number | null;
+  actualIRR?: number | null;
+  fees?: number | null;
+  regulations?: string | string[];
+  interests?: string | string[];
+}

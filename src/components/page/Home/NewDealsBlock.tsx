@@ -1,45 +1,22 @@
-import { Box, Grid, Typography } from '@mui/material';
-import { blueTitleStyles, useNewDealsBlockStyles, viewAllLink } from './styles';
-import DealCard from '@/components/common/DealCard';
 import Link from 'next/link';
+import { Box, Grid, Typography } from '@mui/material';
+import type { FC } from 'react';
+import DealCard from '@/components/common/DealCard';
+import Button from '@/components/common/Button';
+import { blueTitleStyles, useNewDealsBlockStyles, viewAllLink } from './styles';
+import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 
-const mockData = [
-  {
-    image:
-      'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    name: 'Lolo Peak Village',
-    location: 'Lolo, Montana',
-    status: 'In development',
-    cost: '28-30',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    name: 'Lolo Peak Village',
-    location: 'Lolo, Montana',
-    status: 'In development',
-    cost: '28-30',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    name: 'Lolo Peak Village',
-    location: 'Lolo, Montana',
-    status: 'In development',
-    cost: '28-30',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    name: 'Lolo Peak Village',
-    location: 'Lolo, Montana',
-    status: 'In development',
-    cost: '28-30',
-  },
-];
+interface NewDealsBlockProps {
+  deals: DealInterface[];
+}
 
-const NewDealsBlock = () => {
+const NewDealsBlock: FC<NewDealsBlockProps> = ({ deals }) => {
   const classes = useNewDealsBlockStyles();
+  const { isMobile, isTablet } = useBreakpoints();
+  const dealsFiltered = isMobile ? deals.slice(0, 1) : deals;
+  const gridSize = isMobile ? 12 : isTablet ? 6 : 3;
+
   return (
     <Box sx={classes.root}>
       <Typography variant="caption" sx={blueTitleStyles}>
@@ -49,35 +26,20 @@ const NewDealsBlock = () => {
         View Active Deals
       </Typography>
       <Box sx={classes.dealCardsWrapper}>
-        {mockData.map((deal, index) => (
-          <Grid item xs={3} key={index}>
-            <DealCard image={deal.image}>
-              <Box sx={classes.dealCardContent}>
-                <Typography variant="h5" sx={classes.dealName}>
-                  {deal.name}
-                </Typography>
-                <Typography variant="body1" sx={classes.dealLocation}>
-                  {deal.location}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  sx={classes.dealDetail}
-                  marginBottom="10px"
-                >
-                  <i className="icon-Status"></i> {deal.status}
-                </Typography>
-                <Typography variant="body1" sx={classes.dealDetail}>
-                  <i className="icon-Investment"></i> {deal.cost}% IRR
-                </Typography>
-              </Box>
-            </DealCard>
-          </Grid>
-        ))}
+        <Grid container spacing={2}>
+          {dealsFiltered.map((deal, index) => (
+            <Grid item xs={gridSize} key={index}>
+              <DealCard deal={deal} />
+            </Grid>
+          ))}
+        </Grid>
       </Box>
-      <Link href="/deals">
-        <Typography variant="body1" sx={viewAllLink}>
-          View all deals
-        </Typography>
+      <Link href="/list?type=deals">
+        <Button variant="secondary">
+          <Typography variant="body1" sx={viewAllLink}>
+            View all deals
+          </Typography>
+        </Button>
       </Link>
     </Box>
   );
