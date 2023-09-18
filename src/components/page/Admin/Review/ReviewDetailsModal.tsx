@@ -10,19 +10,28 @@ import CustomRating from '@/components/common/CustomRating';
 interface ReviewDetailsModal extends Omit<ModalProps, 'children'> {
   title: string;
   review: ReviewInterface;
+  actionButtons: (data: ReviewInterface) => React.ReactNode;
 }
 
 const reviewWithCommentKeys = [
-  'preInvestmentCommunication',
-  'postInvestmentCommunication',
-  'strengthOfLeadershipTeam',
-  'alignmentOfExpectations',
+  {
+    key: 'preInvestmentCommunication',
+    label: 'Pre-Investment Communication',
+  },
+  {
+    key: 'postInvestmentCommunication',
+    label: 'Post-Investment Communication',
+  },
+  { key: 'strengthOfLeadershipTeam', label: 'Strength of Leadership Team' },
+  { key: 'alignmentOfExpectations', label: 'Alignment of Expectations' },
+  { key: 'overall', label: 'Overall Rating' },
 ];
 
 const ReviewDetailsModal = ({
   title,
   onClose,
   review,
+  actionButtons,
   ...props
 }: ReviewDetailsModal) => {
   const classes = useReviewDetailsModalStyles();
@@ -146,17 +155,39 @@ const ReviewDetailsModal = ({
                 <Typography variant="h5" sx={classes.blockTitle}>
                   Review details
                 </Typography>
-                {reviewWithCommentKeys.map(key => (
-                  <Box key={key}>
-                    <CustomRating
-                      value={Number(
-                        review?.[(key + 'Rating') as keyof ReviewInterface]
+                <Box sx={classes.ratingsWrapper}>
+                  {reviewWithCommentKeys.map(item => (
+                    <Box key={item.key} sx={classes.ratingWithCommentWrapper}>
+                      <CustomRating
+                        label={item.label}
+                        fontSize="40px"
+                        labelVariant="caption"
+                        value={Number(
+                          review?.[
+                            (item.key + 'Rating') as keyof ReviewInterface
+                          ]
+                        )}
+                      />
+                      {!!review?.[
+                        (item.key + 'Comment') as keyof ReviewInterface
+                      ] && (
+                        <Box>
+                          <Typography variant="caption" fontWeight={600}>
+                            Comment
+                          </Typography>
+                          <Typography>
+                            {`${review?.[
+                              (item.key + 'Comment') as keyof ReviewInterface
+                            ]}`}
+                          </Typography>
+                        </Box>
                       )}
-                    />
-                  </Box>
-                ))}
+                    </Box>
+                  ))}
+                </Box>
               </Box>
             </Box>
+            <Box sx={classes.buttonsWrapper}>{actionButtons(review)}</Box>
           </Box>
         </Box>
       </Box>

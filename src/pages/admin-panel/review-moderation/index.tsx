@@ -263,6 +263,14 @@ const ReviewModerationPage = () => {
     setOpenModals({ manage: null, publish: null });
   };
 
+  const actionButtons = openModals.publish
+    ? (data: ReviewInterface) => (
+        <Button onClick={() => console.log(data)}>Unpublish</Button>
+      )
+    : (data: ReviewInterface) => (
+        <Button onClick={() => console.log(data)}>Unpublish</Button>
+      );
+
   const isComprehensiveLoading =
     isLoading || isLoadingOnModerationCountData || isLoadingPublishedCountData;
 
@@ -321,7 +329,8 @@ const ReviewModerationPage = () => {
                 onClose={handleCloseModal}
                 review={
                   (openModals.manage || openModals.publish) as ReviewInterface
-                }
+                } 
+                actionButtons={actionButtons}
               />
             </Box>
           ) : (
