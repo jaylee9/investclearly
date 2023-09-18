@@ -28,6 +28,9 @@ export const update = async (
       const fileUrl = await uploadFile(file, TargetTypesConstants.reviewProofs);
       await createAttachment(fileUrl, id, TargetTypesConstants.reviewProofs);
     }
+
+    const connection = await getDatabaseConnection();
+    await connection.manager.update(Review, { id }, { isVerified: true });
   }
 
   if (transformedData.attachmentsIdsToDelete?.length !== 0) {
@@ -40,9 +43,6 @@ export const update = async (
       await deleteFile(attachment.path);
       await deleteAttachment(attachment.id);
     }
-
-    const connection = await getDatabaseConnection();
-    await connection.manager.update(Review, { id }, { isVerified: true });
   }
   return getReviewById(id);
 };
