@@ -18,7 +18,7 @@ const addPassword = async (
   const body: AddPasswordToGoogleAccountInterface = authRequest.body;
   let userRecord = null;
 
-  if (user) {
+  if (user && !user.password) {
     userRecord = await addPasswordToGoogleAccount(user, body.newPassword);
   }
 
