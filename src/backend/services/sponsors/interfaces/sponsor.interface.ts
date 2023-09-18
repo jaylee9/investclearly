@@ -1,13 +1,42 @@
 import { DealInterface } from '../../deals/interfaces/deal.interface';
+import { LocationInterface } from '../../locations/interfaces/location.interface';
 import { ReviewInterface } from '../../reviews/interfaces/review.interface';
 import { UserInterface } from '../../users/interfaces/user.interface';
-import { CreateSponsorInterface } from './create-sponsor.interface';
 
-export interface SponsorInterface extends CreateSponsorInterface {
+export interface SponsorInterface {
   id: number;
+  vanityName: string;
+  legalName: string;
+  userId: number;
+  businessAvatar: string;
+  businessEmail: string;
+  businessPhone: string;
+  sponsorName: string;
+  address: string;
+  website: string;
+  description: string;
+  aum: number;
+  specialties: string | string[];
+  investmentStructures: string | string[];
+  facebookLink: string;
+  linkedInLink: string;
+  twitterLink: string;
+  instagramLink: string;
+  exemptions: string | string[];
+  workForThisCompany: boolean;
+  regions: string | string[];
+  cashOnCash: number;
+  equityMultiple: number;
+  holdPeriod: number;
+  targetIRR: number;
+  actualIRR: number;
+  fees: number;
+  regulations: string | string[];
+  interests: string | string[];
   admin?: UserInterface | null;
   deals?: DealInterface[];
   reviews?: ReviewInterface[];
+  locations: LocationInterface[];
   activelyRising: boolean;
   dealsCount?: number | 0;
   reviewsCount?: number | 0;

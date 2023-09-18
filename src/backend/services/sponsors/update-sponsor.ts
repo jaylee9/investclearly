@@ -6,6 +6,8 @@ import { getSponsorById } from './get-sponsor-by-id';
 import { UpdateSponsorInterface } from './interfaces/update-sponsor.interface';
 import { deleteFile } from '../files/delete-file';
 import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
+import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
+import { createOrUpdateLocation } from '../locations/create-or-update-location';
 
 export const updateSponsorRecord = async (
   id: number,
@@ -24,6 +26,12 @@ export const updateSponsorRecord = async (
     regions,
     regulations,
     interests,
+    street1,
+    street2,
+    city,
+    stateOrCountry,
+    stateOrCountryDescription,
+    zipCode,
     ...updateSponsorData
   } = data;
 
@@ -52,6 +60,19 @@ export const updateSponsorRecord = async (
     Sponsor,
     { id },
     { ...updateSponsorData, ...transformedData, businessAvatar }
+  );
+
+  await createOrUpdateLocation(
+    {
+      street1,
+      street2,
+      city,
+      stateOrCountry,
+      stateOrCountryDescription,
+      zipCode,
+    },
+    LocationTargetTypesConstants.sponsor,
+    id
   );
 
   return getSponsorById(id);

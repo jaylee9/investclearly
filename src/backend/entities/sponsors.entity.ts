@@ -19,6 +19,7 @@ import { Review } from './reviews.entity';
 import { Regulations } from '../constants/enums/regulations';
 import { Interests } from '../constants/enums/interests';
 import { Bookmark } from './bookmark.entity';
+import { Location } from './locations.entity';
 
 @Entity({ name: 'sponsors' })
 export class Sponsor {
@@ -146,4 +147,7 @@ export class Sponsor {
 
   @PolymorphicParent(() => Bookmark, { eager: false, cascade: true })
   bookmarks: Relation<Bookmark[]>;
+
+  @PolymorphicParent(() => Location, { eager: false, cascade: true })
+  locations: Relation<Location[]>;
 }

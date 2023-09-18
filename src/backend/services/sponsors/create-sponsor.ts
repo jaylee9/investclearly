@@ -1,4 +1,3 @@
-import { DeepPartial } from 'typeorm';
 import { SponsorInterface } from './interfaces/sponsor.interface';
 import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
@@ -6,9 +5,12 @@ import { Sponsor } from '../../../backend/entities/sponsors.entity';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { uploadFile } from '../files/upload-file';
 import { getSponsorById } from './get-sponsor-by-id';
+import { createLocation } from '../locations/create-location';
+import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
+import { CreateSponsorInterface } from './interfaces/create-sponsor.interface';
 
 export const createSponsorRecord = async (
-  data: DeepPartial<Sponsor>,
+  data: CreateSponsorInterface,
   files: Express.Multer.File[]
 ) => {
   const connection = await getDatabaseConnection();
@@ -19,6 +21,12 @@ export const createSponsorRecord = async (
     regions,
     regulations,
     interests,
+    street1,
+    street2,
+    city,
+    stateOrCountry,
+    stateOrCountryDescription,
+    zipCode,
     ...createSponsorData
   } = data;
 
@@ -43,8 +51,21 @@ export const createSponsorRecord = async (
     ...transformedData,
     ...createSponsorData,
     businessAvatar,
-  }) as SponsorInterface;
+  }) as unknown as SponsorInterface;
   await connection.manager.save(sponsor);
+
+  await createLocation(
+    {
+      street1,
+      street2,
+      city,
+      stateOrCountry,
+      stateOrCountryDescription,
+      zipCode,
+    },
+    LocationTargetTypesConstants.sponsor,
+    sponsor.id
+  );
 
   return getSponsorById(sponsor.id);
 };

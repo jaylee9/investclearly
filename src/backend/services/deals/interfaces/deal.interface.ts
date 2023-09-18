@@ -1,12 +1,39 @@
 import { AttachmentInterface } from '../../attachments/interfaces/attachment-interface';
+import { LocationInterface } from '../../locations/interfaces/location.interface';
+import { RelatedPersonInterface } from '../../relatedPersons/interfaces/related-person.interface';
 import { ReviewInterface } from '../../reviews/interfaces/review.interface';
 import { SponsorInterface } from '../../sponsors/interfaces/sponsor.interface';
-import { CreateDealInterface } from './create-deal.interface';
 
-export interface DealInterface extends CreateDealInterface {
+export interface DealInterface {
   id: number;
+  fileDate: Date;
+  isDealPublished: boolean;
+  dealTitle: string;
+  dealAddress: string;
+  regions: string | string[];
+  status: string;
+  assetClass: string;
+  description: string;
+  minimumInvestment: number;
+  cashOnCash: number;
+  investmentStructures: string | string[];
+  fees: number;
+  targetRaise: number;
+  equityMultiple: number;
+  holdPeriod: number;
+  targetIRR: number;
+  actualIRR: number;
+  preferredReturn: number;
+  dealLegalName: string;
+  dealSponsor: string;
+  exemption: string;
+  secIndustry: string;
+  closeDate: Date;
+  regulation: string;
   sponsor?: SponsorInterface | null;
   attachments: AttachmentInterface[];
+  locations: LocationInterface[];
+  relatedPersons: RelatedPersonInterface[];
   reviews?: ReviewInterface[];
   reviewsCount?: number | 0;
   avgTotalRating?: number | 0;
