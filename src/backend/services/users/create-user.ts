@@ -26,6 +26,7 @@ export const createUser = async (
 
   const user = connection.manager.create(User, {
     ...data,
+    isPasswordAdded: true,
     emailConfirmationCode: confirmationCode,
   });
   await connection.manager.save(user);

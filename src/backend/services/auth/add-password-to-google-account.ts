@@ -22,6 +22,7 @@ export const addPasswordToGoogleAccount = async (
     { id: user.id },
     {
       password: hashedPassword,
+      isPasswordAdded: true,
     }
   );
 

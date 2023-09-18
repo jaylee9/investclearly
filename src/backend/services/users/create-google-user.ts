@@ -12,6 +12,7 @@ export const createGoogleUser = async (googleData: GoogleDataInterface) => {
     firstName,
     lastName,
     email,
+    isPasswordAdded: false,
   });
 
   await connection.manager.save(user);

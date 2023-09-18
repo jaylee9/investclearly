@@ -101,6 +101,9 @@ export class User {
 
   investmentsCount: number;
 
+  @Column({ type: 'boolean', nullable: false, default: true })
+  isPasswordAdded: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

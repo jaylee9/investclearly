@@ -26,6 +26,7 @@ export interface PublicUserInterface extends UserInterface {
   holdPeriodMax: number;
   reviewsCount: number;
   investmentsCount: number;
+  isPasswordAdded: boolean;
   investments: InvestmentInterface[];
   locations: LocationInterface[];
 }
