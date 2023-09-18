@@ -26,15 +26,13 @@ export const prepareDealsDataAndInsertOrUpdateRecords = async (
       const dealData = await prepareDealData(offering);
 
       if (dealData) {
-        const dealRecord = (await (deal?.id
+        const command = deal?.id
           ? update(deal!.id, dealData, [])
-          : createDeal(dealData, []))) as unknown as Deal;
+          : createDeal(dealData, []);
+        const dealRecord = (await command) as unknown as Deal;
 
         if (dealRecord) {
-          const relatedPersonRecords = await prepareRelatedPersonData(
-            offering,
-            dealRecord
-          );
+          const relatedPersonRecords = await prepareRelatedPersonData(offering);
 
           await connection.manager.save(Deal, {
             id: dealRecord.id,

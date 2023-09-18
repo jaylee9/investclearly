@@ -1,9 +1,7 @@
-import { createRelatedPerson } from '../relatedPersons/create-related-person';
 import { createOrUpdateRelatedPerson } from '../relatedPersons/create-or-update-related-person';
 import { FormD } from './interfaces/form-D.interface';
-import { Deal } from '../../entities/deals.entity';
 
-export const prepareRelatedPersonData = async (offering: FormD, deal: Deal) => {
+export const prepareRelatedPersonData = async (offering: FormD) => {
   const relatedPersonRecords = [];
 
   for (const relatedPerson of offering?.relatedPersonsList?.relatedPersonInfo ||
@@ -17,9 +15,9 @@ export const prepareRelatedPersonData = async (offering: FormD, deal: Deal) => {
       relationshipClarification: relatedPerson?.relationshipClarification || '',
       location: relatedPerson?.relatedPersonAddress || '',
     };
-    const relatedPersonRecord = await (deal
-      ? createOrUpdateRelatedPerson
-      : createRelatedPerson)(relatedPersonData);
+    const relatedPersonRecord = await createOrUpdateRelatedPerson(
+      relatedPersonData
+    );
 
     if (relatedPersonRecord) {
       relatedPersonRecords.push(relatedPersonRecord);
