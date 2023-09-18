@@ -97,5 +97,21 @@ export const useReviewDetailsModalStyles = () => {
     proofsBlock: {
       marginBottom: '40px',
     },
+    ratingsWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '40px',
+      marginTop: '24px',
+    },
+    ratingWithCommentWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+    },
+    buttonsWrapper: {
+      display: 'flex',
+      justifyContent: 'end',
+      padding: '16px 40px',
+    },
   };
 };
