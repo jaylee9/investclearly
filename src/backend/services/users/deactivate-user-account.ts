@@ -5,7 +5,7 @@ import { User } from '../../entities/user.entity';
 import { deleteFile } from '../files/delete-file';
 import { DeleteUserConstants } from '../../../backend/constants/delete-user-constants';
 
-export const deactivateUserAccount = async (user: User, feedback: string) => {
+export const deactivateUserAccount = async (user: User) => {
   const connection = await getDatabaseConnection();
   const profilePicture = user.profilePicture;
   const randomPassword = crypto.randomBytes(10).toString('hex');
@@ -39,7 +39,6 @@ export const deactivateUserAccount = async (user: User, feedback: string) => {
       newDealMathingYourInvestmentPreferencesEmail: false,
       newDealFromTheSponsorYouSavedEmail: false,
       newReviewHasBeenSharedToSponsorEmail: false,
-      // feedbackOfDeletedAccount: feedback,
     }
   );
   if (profilePicture) {
