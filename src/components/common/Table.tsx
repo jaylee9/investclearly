@@ -22,7 +22,7 @@ type Action<RowData> = {
   onClick?: (data: RowData) => void;
   icon?: string;
   styles?: React.CSSProperties;
-  content?: React.ReactNode;
+  content?: (data: RowData) => React.ReactNode;
 };
 
 interface CustomTableProps<RowData> {
@@ -88,7 +88,7 @@ const CustomTable = <RowData,>({
                   <Box sx={classes.actionCell}>
                     {actions.map(
                       (action, actionIndex) =>
-                        action.content || (
+                        (action.content && action.content(row)) || (
                           <i
                             key={actionIndex}
                             onClick={() =>

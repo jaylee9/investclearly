@@ -19,6 +19,7 @@ import { ReviewStatuses } from '@/backend/constants/enums/review-statuses';
 import CustomTabs from '@/components/common/CustomTabs';
 import Loading from '@/components/common/Loading';
 import Button from '@/components/common/Button';
+import ReviewDetailsModal from '@/components/page/Admin/Review/ReviewDetailsModal';
 
 const sortOptions = [
   { label: 'Newest Reviews', value: 'DESC' },
@@ -26,6 +27,11 @@ const sortOptions = [
 ];
 
 type AllowedReviewStatuses = 'published' | 'on moderation';
+
+interface OpenModals {
+  publish: ReviewInterface | null;
+  manage: ReviewInterface | null;
+}
 
 const ReviewModerationPage = () => {
   const classes = useAdminReviewModerationStyles();
@@ -38,6 +44,10 @@ const ReviewModerationPage = () => {
   const [activeTab, setActiveTab] = useState<AllowedReviewStatuses>(
     ReviewStatuses.onModeration
   );
+  const [openModals, setOpenModals] = useState<OpenModals>({
+    publish: null,
+    manage: null,
+  });
 
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
@@ -201,12 +211,30 @@ const ReviewModerationPage = () => {
 
   const actions =
     activeTab === 'on moderation'
-      ? [{ content: <Button variant="secondary">Manage Review</Button> }]
+      ? [
+          {
+            content: (data: ReviewInterface) => (
+              <Button
+                variant="secondary"
+                onClick={() =>
+                  setOpenModals(prevState => {
+                    return { ...prevState, manage: data };
+                  })
+                }
+              >
+                Manage Review
+              </Button>
+            ),
+          },
+        ]
       : [
           {
             icon: 'icon-Eye-opened',
             //will be replaced by logic of open unpublish review modal
-            onClick: (data: ReviewInterface) => console.log(data),
+            onClick: (data: ReviewInterface) =>
+              setOpenModals(prevState => {
+                return { ...prevState, publish: data };
+              }),
             styles: classes.editIcon,
           },
         ];
@@ -220,6 +248,20 @@ const ReviewModerationPage = () => {
     activeTab === 'on moderation'
       ? !!totalOnModerationReviews
       : !!totalPublishedReviews;
+
+  const reviewDetailsModalTitle = () => {
+    if (!!openModals.manage) {
+      return 'Manage Review';
+    } else if (!!openModals.publish) {
+      return 'Review';
+    } else {
+      return '';
+    }
+  };
+
+  const handleCloseModal = () => {
+    setOpenModals({ manage: null, publish: null });
+  };
 
   const isComprehensiveLoading =
     isLoading || isLoadingOnModerationCountData || isLoadingPublishedCountData;
@@ -272,6 +314,14 @@ const ReviewModerationPage = () => {
                 columns={columns}
                 actions={actions}
                 pageSize={10}
+              />
+              <ReviewDetailsModal
+                open={!!openModals.manage || !!openModals.publish}
+                title={reviewDetailsModalTitle()}
+                onClose={handleCloseModal}
+                review={
+                  (openModals.manage || openModals.publish) as ReviewInterface
+                }
               />
             </Box>
           ) : (
