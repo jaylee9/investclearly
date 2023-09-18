@@ -329,7 +329,7 @@ const ReviewModerationPage = () => {
                 onClose={handleCloseModal}
                 review={
                   (openModals.manage || openModals.publish) as ReviewInterface
-                } 
+                }
                 actionButtons={actionButtons}
               />
             </Box>
