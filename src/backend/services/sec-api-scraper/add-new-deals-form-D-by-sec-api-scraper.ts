@@ -2,18 +2,19 @@ import axios from 'axios';
 import moment from 'moment';
 import { Deal } from '../../entities/deals.entity';
 import { SecIndustries } from '../../constants/enums/sec-industries';
-import { prepareDealsDataAndInsertOrUpdateRecords } from './prepare-deals-data-to-insert-or-update';
 import { MomentConstants } from '../../../backend/constants/moment-constants';
 import { OrderDirectionConstants } from '../../../backend/constants/order-direction-constants';
 import { getDatabaseConnection } from '../../../backend/config/data-source-config';
+import { ScraperConstants } from '../../../backend/constants/scraper-constants';
+import { prepareDealsDataAndInsertOrUpdateRecords } from './prepare-deals-data-and-insert-or-update-records';
 const industryGroupTypes = Object.values(SecIndustries);
 
 export const addNewDealsFormDBySecApiScraper = async () => {
   const connection = await getDatabaseConnection();
   const apiKey = process.env.SEC_API_KEY;
   const url = `${process.env.SEC_API_URL}/form-d?token=${apiKey}`;
-  const pageSize = 50;
-  let from = 0;
+  const pageSize = ScraperConstants.maxPageSize;
+  let from = ScraperConstants.from;
 
   const deal = await connection.manager
     .createQueryBuilder()
@@ -39,7 +40,6 @@ export const addNewDealsFormDBySecApiScraper = async () => {
       .format(MomentConstants.yearMonthDay);
   }
 
-  const pauseBetweenRequestsMs = 1000;
   try {
     while (true) {
       const requestPayload = {
@@ -67,14 +67,16 @@ export const addNewDealsFormDBySecApiScraper = async () => {
       const response = await axios.post(url, requestPayload);
       const responseData = response.data;
 
-      if (from === 2000) {
+      if (from === ScraperConstants.maxAmountOfScrapedOfferings) {
         break;
       }
 
       from += pageSize;
 
       await prepareDealsDataAndInsertOrUpdateRecords(responseData.offerings);
-      await new Promise(resolve => setTimeout(resolve, pauseBetweenRequestsMs));
+      await new Promise(resolve =>
+        setTimeout(resolve, ScraperConstants.pauseBetweenRequestsMs)
+      );
     }
   } catch (error) {
     throw error;
