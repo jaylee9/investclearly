@@ -140,7 +140,9 @@ const CredentialsSettings = () => {
             >
               Cancel
             </Button>
-            <Button disabled={!allFieldsDirty()}>Save email</Button>
+            <Button type="submit" disabled={!allFieldsDirty()}>
+              Save email
+            </Button>
           </Box>
         )}
         <Typography variant="h5" sx={classes.title}>

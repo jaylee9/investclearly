@@ -4,6 +4,7 @@ import { AuthConstants } from '../../constants/auth-constants';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { User } from '../../entities/user.entity';
 import { ChangeEmailInterface } from './interfaces/change-email.interface';
+import { getUserById } from '../users/get-user-by-id';
 
 export const changeUserEmail = async (
   user: User,
@@ -23,4 +24,6 @@ export const changeUserEmail = async (
   } else {
     throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);
   }
+
+  return getUserById(user.id);
 };
