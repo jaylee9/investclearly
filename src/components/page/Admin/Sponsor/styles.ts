@@ -42,6 +42,12 @@ export const useAddEditSponsorModalStyles = () => {
       borderRadius: '12px',
       background: palette.common.white,
       boxShadow: customShadows.header,
+      padding: '40px 16px 40px',
+      width: '790px',
+    },
+    title: {
+      fontWeight: 600,
+      marginBottom: '32px',
     },
   };
 };

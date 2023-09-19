@@ -15,6 +15,7 @@ import { debounce } from 'lodash';
 import { GetAllSponsorsResponse, getAllSponsors } from '@/actions/sponsors';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import AddEditSponsorModal from '@/components/page/Admin/Sponsor/AddEditSponsorModal';
+import Loading from '@/components/common/Loading';
 
 interface AdminSponsorsPageProps {
   sponsorsResponse: GetAllSponsorsResponse;
@@ -34,7 +35,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
     setSearchTerm('');
   };
 
-  const { data } = useQuery<GetAllSponsorsResponse>(
+  const { data, isLoading } = useQuery<GetAllSponsorsResponse>(
     ['sponsors', page, searchTerm],
     () =>
       getAllSponsors({
@@ -151,6 +152,10 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
     setOpenModal(modalType);
 
   const handleCloseModal = () => setOpenModal(null);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Layout variant={LayoutVariant.Admin}>
