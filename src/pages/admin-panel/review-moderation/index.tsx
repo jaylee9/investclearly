@@ -20,6 +20,7 @@ import CustomTabs from '@/components/common/CustomTabs';
 import Loading from '@/components/common/Loading';
 import Button from '@/components/common/Button';
 import ReviewDetailsModal from '@/components/page/Admin/Review/ReviewDetailsModal';
+import UnpublishReviewModal from '@/components/page/Admin/Review/UnpublishReviewModal';
 
 const sortOptions = [
   { label: 'Newest Reviews', value: 'DESC' },
@@ -31,6 +32,11 @@ type AllowedReviewStatuses = 'published' | 'on moderation';
 interface OpenModals {
   publish: ReviewInterface | null;
   manage: ReviewInterface | null;
+}
+
+interface OpenActionModals {
+  unpublish: number | null;
+  reject: number | null;
 }
 
 const ReviewModerationPage = () => {
@@ -49,6 +55,21 @@ const ReviewModerationPage = () => {
     manage: null,
   });
 
+  const [openActionModals, setOpenActionModals] = useState<OpenActionModals>({
+    unpublish: null,
+    reject: null,
+  });
+
+  const handleOpenActionModal = (id: number, key: 'unpublish' | 'reject') =>
+    setOpenActionModals(prevModals => {
+      return { ...prevModals, [key]: id };
+    });
+
+  const handleCloseActionModal = (key: 'unpublish' | 'reject') =>
+    setOpenActionModals(prevModals => {
+      return { ...prevModals, [key]: null };
+    });
+
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
   }, 300);
@@ -65,6 +86,7 @@ const ReviewModerationPage = () => {
   const {
     data: { total: totalPublishedReviews } = {},
     isLoading: isLoadingPublishedCountData,
+    refetch: refetchTotalPublishedReviews,
   } = useQuery<GetUserReviewsResponse>(
     ['publishedReviewsCount'],
     () =>
@@ -84,7 +106,7 @@ const ReviewModerationPage = () => {
       }) as Promise<GetUserReviewsResponse>
   );
 
-  const { data, isLoading } = useQuery<GetUserReviewsResponse>(
+  const { data, isLoading, refetch } = useQuery<GetUserReviewsResponse>(
     ['reviews', page, searchTerm, orderDirection, activeTab],
     () =>
       getUserReviews({
@@ -265,11 +287,25 @@ const ReviewModerationPage = () => {
 
   const actionButtons = openModals.publish
     ? (data: ReviewInterface) => (
-        <Button onClick={() => console.log(data)}>Unpublish</Button>
+        <Button
+          onClick={() => handleOpenActionModal(data.id, 'unpublish')}
+          color="error"
+          variant="secondary"
+          customStyles={classes.actionButton}
+        >
+          <i className="icon-Cross" style={classes.iconCross} />
+          Unpublish
+        </Button>
       )
     : (data: ReviewInterface) => (
         <Button onClick={() => console.log(data)}>Unpublish</Button>
       );
+
+  const handleSubmitCloseUnpublishModal = () => {
+    refetchTotalPublishedReviews().then(() =>
+      refetch().then(() => handleCloseActionModal('unpublish'))
+    );
+  };
 
   const isComprehensiveLoading =
     isLoading || isLoadingOnModerationCountData || isLoadingPublishedCountData;
@@ -331,6 +367,12 @@ const ReviewModerationPage = () => {
                   (openModals.manage || openModals.publish) as ReviewInterface
                 }
                 actionButtons={actionButtons}
+              />
+              <UnpublishReviewModal
+                open={!!openActionModals.unpublish}
+                onClose={() => handleCloseActionModal('unpublish')}
+                reviewId={Number(openActionModals.unpublish)}
+                onSubmitClose={handleSubmitCloseUnpublishModal}
               />
             </Box>
           ) : (

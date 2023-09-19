@@ -6,6 +6,7 @@ import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.in
 import PlaceholderImage from '@/components/common/PlaceholderImage';
 import { DEFAULT_DEAL_IMAGE, DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 import CustomRating from '@/components/common/CustomRating';
+import Link from 'next/link';
 
 interface ReviewDetailsModal extends Omit<ModalProps, 'children'> {
   title: string;
@@ -42,6 +43,8 @@ const ReviewDetailsModal = ({
     }
   };
 
+  console.log(review?.attachments);
+
   return (
     <Modal showCloseIcon={false} {...props}>
       <Box sx={classes.root}>
@@ -61,7 +64,7 @@ const ReviewDetailsModal = ({
           <Box sx={classes.content}>
             <Box sx={classes.reviewInfo}>
               <Typography variant="h3" sx={classes.title}>
-                “{review?.overallComment}”
+                “{review?.title}”
               </Typography>
               <Box sx={classes.mainReviewInfo}>
                 <Box sx={classes.mainReviewInfoRow}>
@@ -146,11 +149,37 @@ const ReviewDetailsModal = ({
                   </Box>
                 </Box>
               </Box>
-              <Box sx={classes.proofsBlock}>
-                <Typography variant="h5" sx={classes.blockTitle}>
-                  Proofs
-                </Typography>
-              </Box>
+              {!!review?.attachments?.length && (
+                <Box sx={classes.proofsBlock}>
+                  <Typography variant="h5" sx={classes.blockTitle}>
+                    Proofs
+                  </Typography>
+                  <Box sx={classes.proofsWrapper}>
+                    {review?.attachments?.map(attachment => (
+                      <Box key={attachment.id} sx={classes.proof}>
+                        <Box sx={classes.proofInfo}>
+                          <i className="icon-File" />
+                          {/* mock data */}
+                          <Box>
+                            <Typography variant="body1" fontWeight={600}>
+                              Proof.pdf
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              sx={classes.proofSize}
+                            >
+                              2.5 MB
+                            </Typography>
+                          </Box>
+                        </Box>
+                        <Link href={attachment.path} download={true}>
+                          <i className="icon-Download" />
+                        </Link>
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+              )}
               <Box>
                 <Typography variant="h5" sx={classes.blockTitle}>
                   Review details

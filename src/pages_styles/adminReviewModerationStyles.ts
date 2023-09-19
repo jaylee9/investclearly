@@ -71,6 +71,14 @@ const useAdminReviewModerationStyles = () => {
     selectContent: {
       width: '200px',
     },
+    actionButton: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+    },
+    iconCross: {
+      color: palette.error.light,
+    },
   };
 };
 

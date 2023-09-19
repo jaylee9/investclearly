@@ -64,6 +64,7 @@ export const useReviewDetailsModalStyles = () => {
     },
     mainReviewInfoLabel: {
       width: '120px',
+      maxWidth: '120px',
       fontWeight: 600,
     },
     entityInfo: {
@@ -97,6 +98,35 @@ export const useReviewDetailsModalStyles = () => {
     proofsBlock: {
       marginBottom: '40px',
     },
+    proofsWrapper: {
+      marginTop: '16px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px',
+    },
+    proof: {
+      borderRadius: '8px',
+      padding: '16px 24px',
+      border: `1px solid ${palette.background.paper}`,
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      '& i': {
+        fontSize: '24px',
+        color: palette.text.secondary,
+      },
+      '& .icon-Download': {
+        cursor: 'pointer',
+      },
+    },
+    proofInfo: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+    },
+    proofSize: {
+      color: palette.text.secondary,
+    },
     ratingsWrapper: {
       display: 'flex',
       flexDirection: 'column',
@@ -112,6 +142,28 @@ export const useReviewDetailsModalStyles = () => {
       display: 'flex',
       justifyContent: 'end',
       padding: '16px 40px',
+    },
+  };
+};
+
+export const useUnpublishReviewModalStyles = () => {
+  return {
+    title: {
+      fontWeight: 600,
+      marginBottom: '6px',
+    },
+    subTitle: {
+      marginBottom: '24px',
+      color: palette.text.secondary,
+      maxWidth: '375px',
+    },
+    buttonsWrapper: {
+      display: 'flex',
+      gap: '12px',
+      marginTop: '24px',
+      '& button': {
+        width: '50%',
+      },
     },
   };
 };
