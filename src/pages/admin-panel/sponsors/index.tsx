@@ -14,6 +14,7 @@ import clsx from 'clsx';
 import { debounce } from 'lodash';
 import { GetAllSponsorsResponse, getAllSponsors } from '@/actions/sponsors';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
+import AddEditSponsorModal from '@/components/page/Admin/Sponsor/AddEditSponsorModal';
 
 interface AdminSponsorsPageProps {
   sponsorsResponse: GetAllSponsorsResponse;
@@ -22,6 +23,7 @@ interface AdminSponsorsPageProps {
 const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
   const classes = useAdminSponsorsStyles();
 
+  const [openModal, setOpenModal] = useState<null | 'add' | 'edit'>(null);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const handleSearch = debounce((value: string) => {
@@ -145,6 +147,11 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
     },
   ];
 
+  const handleOpenModal = (modalType: 'add' | 'edit') =>
+    setOpenModal(modalType);
+
+  const handleCloseModal = () => setOpenModal(null);
+
   return (
     <Layout variant={LayoutVariant.Admin}>
       <Typography variant="h3" sx={classes.title}>
@@ -161,7 +168,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
               onChange={e => handleSearch(e.target.value)}
               onClear={handleClearSearch}
             />
-            <Button>Add Sponsor</Button>
+            <Button onClick={() => handleOpenModal('add')}>Add Sponsor</Button>
           </Box>
           <CustomTable<SponsorInterface>
             data={data?.sponsors as SponsorInterface[]}
@@ -179,9 +186,10 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
           <Typography variant="h4">
             There are no published Sponsors yet
           </Typography>
-          <Button>Add Sponsor</Button>
+          <Button onClick={() => handleOpenModal('add')}>Add Sponsor</Button>
         </Box>
       )}
+      <AddEditSponsorModal open={!!openModal} onClose={handleCloseModal} />
     </Layout>
   );
 };
