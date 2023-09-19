@@ -134,3 +134,22 @@ export const unpublishReview = async ({
     return { error: errorMessage };
   }
 };
+
+export const approveReview = async ({
+  id,
+}: {
+  id: number;
+}): Promise<ReviewInterface | { error: string }> => {
+  try {
+    const response: ReviewInterface = await api
+      .put(`admin/reviews/${id}`, {
+        json: { status: 'published' },
+      })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to approve review';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};

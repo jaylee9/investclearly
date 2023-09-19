@@ -10,7 +10,11 @@ import { DEFAULT_DEAL_IMAGE, DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 import EllipsisText from '@/components/common/EllipsisText';
 import Link from 'next/link';
 import { debounce } from 'lodash';
-import { GetUserReviewsResponse, getUserReviews } from '@/actions/reviews';
+import {
+  GetUserReviewsResponse,
+  approveReview,
+  getUserReviews,
+} from '@/actions/reviews';
 import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.interface';
 import { format } from 'date-fns';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
@@ -54,22 +58,13 @@ const ReviewModerationPage = () => {
     publish: null,
     manage: null,
   });
-
   const [openActionModals, setOpenActionModals] = useState<OpenActionModals>({
     unpublish: null,
     reject: null,
   });
+  const [isApproveLoading, setIsApproveLoading] = useState(false);
 
-  const handleOpenActionModal = (id: number, key: 'unpublish' | 'reject') =>
-    setOpenActionModals(prevModals => {
-      return { ...prevModals, [key]: id };
-    });
-
-  const handleCloseActionModal = (key: 'unpublish' | 'reject') =>
-    setOpenActionModals(prevModals => {
-      return { ...prevModals, [key]: null };
-    });
-
+  //search and change order
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
   }, 300);
@@ -83,6 +78,7 @@ const ReviewModerationPage = () => {
     setPage(1);
   };
 
+  //fetch data
   const {
     data: { total: totalPublishedReviews } = {},
     isLoading: isLoadingPublishedCountData,
@@ -98,6 +94,7 @@ const ReviewModerationPage = () => {
   const {
     data: { total: totalOnModerationReviews } = {},
     isLoading: isLoadingOnModerationCountData,
+    refetch: refetchTotalOnModerationReviews,
   } = useQuery(
     ['onModerationReviewsCount'],
     () =>
@@ -141,6 +138,7 @@ const ReviewModerationPage = () => {
     },
   ];
 
+  //table
   const columns: Column<ReviewInterface>[] = [
     {
       label: 'Sponsor',
@@ -227,7 +225,7 @@ const ReviewModerationPage = () => {
           {format(new Date(data.createdAt), 'MMMM d, yyyy h:mm aa')}
         </Typography>
       ),
-      width: activeTab === 'on moderation' ? '25%' : '35%',
+      width: activeTab === 'on moderation' ? '23%' : '35%',
     },
   ];
 
@@ -272,6 +270,17 @@ const ReviewModerationPage = () => {
       ? !!totalOnModerationReviews
       : !!totalPublishedReviews;
 
+  //modal logic
+  const handleOpenUnpublishModal = (id: number) =>
+    setOpenActionModals(prevModals => {
+      return { ...prevModals, unpublish: id };
+    });
+
+  const handleCloseActionModal = (key: 'unpublish' | 'reject') =>
+    setOpenActionModals(prevModals => {
+      return { ...prevModals, [key]: null };
+    });
+
   const reviewDetailsModalTitle = () => {
     if (!!openModals.manage) {
       return 'Manage Review';
@@ -283,13 +292,16 @@ const ReviewModerationPage = () => {
   };
 
   const handleCloseModal = () => {
+    if (isApproveLoading) {
+      return;
+    }
     setOpenModals({ manage: null, publish: null });
   };
 
   const actionButtons = openModals.publish
     ? (data: ReviewInterface) => (
         <Button
-          onClick={() => handleOpenActionModal(data.id, 'unpublish')}
+          onClick={() => handleOpenUnpublishModal(data.id)}
           color="error"
           variant="secondary"
           customStyles={classes.actionButton}
@@ -304,11 +316,18 @@ const ReviewModerationPage = () => {
             color="error"
             variant="secondary"
             customStyles={classes.actionButton}
+            disabled={isApproveLoading}
+            onClick={() => handleOpenUnpublishModal(data.id)}
           >
             <i className="icon-Cross" style={classes.iconCross} />
             Reject
           </Button>
-          <Button color="success" customStyles={classes.actionButton}>
+          <Button
+            color="success"
+            customStyles={classes.actionButton}
+            onClick={() => handleApproveReview(data.id)}
+            disabled={isApproveLoading}
+          >
             <i className="icon-Check" style={classes.iconCheck} />
             Approve
           </Button>
@@ -317,8 +336,26 @@ const ReviewModerationPage = () => {
 
   const handleSubmitCloseUnpublishModal = () => {
     refetchTotalPublishedReviews().then(() =>
-      refetch().then(() => handleCloseActionModal('unpublish'))
+      refetch().then(() => {
+        handleCloseModal();
+        handleCloseActionModal('unpublish');
+      })
     );
+  };
+
+  const handleApproveReview = (id: number) => {
+    setIsApproveLoading(true);
+    const response = approveReview({ id });
+    if (!('error' in response)) {
+      refetchTotalPublishedReviews().then(() =>
+        refetchTotalOnModerationReviews().then(() =>
+          refetch().then(() => {
+            setIsApproveLoading(false);
+            handleCloseModal();
+          })
+        )
+      );
+    }
   };
 
   const isComprehensiveLoading =

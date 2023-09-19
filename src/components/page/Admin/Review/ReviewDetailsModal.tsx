@@ -43,8 +43,6 @@ const ReviewDetailsModal = ({
     }
   };
 
-  console.log(review?.attachments);
-
   return (
     <Modal showCloseIcon={false} {...props}>
       <Box sx={classes.root}>
@@ -191,6 +189,7 @@ const ReviewDetailsModal = ({
                         label={item.label}
                         fontSize="40px"
                         labelVariant="caption"
+                        readOnly
                         value={Number(
                           review?.[
                             (item.key + 'Rating') as keyof ReviewInterface
