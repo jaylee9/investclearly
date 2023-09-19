@@ -109,3 +109,47 @@ export const uploadReviewProofs = async ({
     throw error;
   }
 };
+
+interface UnpublishReviewPayload {
+  id: number;
+  unpublishReviewMessage?: string;
+  reason: string;
+}
+
+export const unpublishReview = async ({
+  id,
+  unpublishReviewMessage,
+  reason,
+}: UnpublishReviewPayload): Promise<ReviewInterface | { error: string }> => {
+  try {
+    const response: ReviewInterface = await api
+      .put(`admin/reviews/${id}`, {
+        json: { status: 'rejected', reason, unpublishReviewMessage },
+      })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to unpublish review';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};
+
+export const approveReview = async ({
+  id,
+}: {
+  id: number;
+}): Promise<ReviewInterface | { error: string }> => {
+  try {
+    const response: ReviewInterface = await api
+      .put(`admin/reviews/${id}`, {
+        json: { status: 'published' },
+      })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to approve review';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};

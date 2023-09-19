@@ -46,7 +46,7 @@ const useAdminSponsorsStyles = () => {
     },
     activelyRisingWrapper: {
       '& .activelyRising': {
-        color: palette.success.main,
+        color: palette.success.light,
       },
       '& .notActivelyRising': {
         color: palette.text.secondary,

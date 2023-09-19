@@ -123,7 +123,7 @@ const ChooseDealStep = ({
                   sx={classes.dealVariantWrapper}
                 >
                   <PlaceholderImage
-                    src={deal.attachments?.[0].path as string}
+                    src={deal?.attachments?.[0]?.path as string}
                     alt="deal image"
                     defaultImage={DEFAULT_DEAL_IMAGE}
                     width={48}

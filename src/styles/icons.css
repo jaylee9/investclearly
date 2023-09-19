@@ -50,7 +50,6 @@
 }
 .icon-Star:before {
   content: "\e92c";
-  color: #f58f29;
 }
 .icon-Minus:before {
   content: "\e900";
