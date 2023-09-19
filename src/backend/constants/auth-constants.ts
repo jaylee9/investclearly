@@ -15,6 +15,7 @@ export const AuthConstants = {
   confirmEmailAddress: 'Please confirm your email address first',
   passwordSuccessfullyChanged: 'Password successfully changed',
   passwordNotChanged: 'Password is not changed',
+  passwordSuccessfullyAdded: 'Password successfully added',
   useAnotherEmail: 'Please use another email',
   signedOut: 'Successfully signed out.',
   successfulVerification: 'Account was successfully verifying',
