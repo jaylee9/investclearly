@@ -227,7 +227,7 @@ const ReviewModerationPage = () => {
           {format(new Date(data.createdAt), 'MMMM d, yyyy h:mm aa')}
         </Typography>
       ),
-      width: activeTab === 'on moderation' ? '22%' : '35%',
+      width: activeTab === 'on moderation' ? '25%' : '35%',
     },
   ];
 
@@ -238,6 +238,7 @@ const ReviewModerationPage = () => {
             content: (data: ReviewInterface) => (
               <Button
                 variant="secondary"
+                key={data.id}
                 onClick={() =>
                   setOpenModals(prevState => {
                     return { ...prevState, manage: data };
@@ -298,7 +299,20 @@ const ReviewModerationPage = () => {
         </Button>
       )
     : (data: ReviewInterface) => (
-        <Button onClick={() => console.log(data)}>Unpublish</Button>
+        <Box sx={classes.manageReviewButtonsWrapper}>
+          <Button
+            color="error"
+            variant="secondary"
+            customStyles={classes.actionButton}
+          >
+            <i className="icon-Cross" style={classes.iconCross} />
+            Reject
+          </Button>
+          <Button color="success" customStyles={classes.actionButton}>
+            <i className="icon-Check" style={classes.iconCheck} />
+            Approve
+          </Button>
+        </Box>
       );
 
   const handleSubmitCloseUnpublishModal = () => {

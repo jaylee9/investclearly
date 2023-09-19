@@ -130,7 +130,7 @@ export const useCheckboxStyles = ({ error }: UseCheckboxProps) => {
 };
 
 interface UseButtonStylesProps {
-  color: 'primary' | 'error';
+  color: 'primary' | 'error' | 'success';
   variant:
     | 'main'
     | 'secondary'
@@ -894,7 +894,7 @@ export const useReviewCardStyles = ({
     },
     verifiedIndicator: {
       background: palette.success.contrastText,
-      color: palette.success.main,
+      color: palette.success.light,
     },
     unverifiedIndicator: {
       background: palette.error.contrastText,
@@ -1037,7 +1037,7 @@ export const useStepsComponentStyles = () => {
         transition: 'background 0.3s',
       },
       '& .step-status-current': { background: palette.primary.light },
-      '& .step-status-completed': { background: palette.success.main },
+      '& .step-status-completed': { background: palette.success.light },
       '& .step-label': {
         fontWeight: 600,
         color: palette.text.secondary,

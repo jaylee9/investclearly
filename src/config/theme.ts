@@ -44,8 +44,10 @@ const theme = createTheme({
       contrastText: '#FBE9EB',
     },
     success: {
-      main: '#1D9E60',
+      main: '#1E8A56',
       contrastText: '#E8F5EF',
+      light: '#1D9E60',
+      dark: '#19C270',
     },
     text: {
       primary: '#1E2B43',

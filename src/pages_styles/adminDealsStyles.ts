@@ -46,7 +46,7 @@ const useAdminDealsStyles = () => {
     },
     statusWrapper: {
       '& .open': {
-        color: palette.success.main,
+        color: palette.success.light,
       },
       '& .closed': {
         color: palette.text.secondary,

@@ -50,7 +50,7 @@ const useAdminReviewModerationStyles = () => {
     },
     activelyRisingWrapper: {
       '& .activelyRising': {
-        color: palette.success.main,
+        color: palette.success.light,
       },
       '& .notActivelyRising': {
         color: palette.text.secondary,
@@ -78,6 +78,14 @@ const useAdminReviewModerationStyles = () => {
     },
     iconCross: {
       color: palette.error.light,
+    },
+    iconCheck: {
+      color: palette.common.white,
+      fontSize: '24px',
+    },
+    manageReviewButtonsWrapper: {
+      display: 'flex',
+      gap: '8px',
     },
   };
 };
