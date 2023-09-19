@@ -12,7 +12,7 @@ export enum ProfilePictureUploaderVariant {
 }
 
 interface ProfilePictureUploader {
-  username: string;
+  username?: string;
   defaultImage?: string | null;
   onChange: (value: File) => void;
   variant?: ProfilePictureUploaderVariant;
@@ -51,8 +51,13 @@ const ProfilePictureUploader = ({
       <div {...getRootProps()} style={{ width: 'fit-content' }}>
         <input {...getInputProps()} />
         <Box sx={classes.uploader}>
-          {variant === ProfilePictureUploaderVariant.USER && (
-            <UserAvatar src={src} name={username} width={120} height={120} />
+          {variant === ProfilePictureUploaderVariant.USER && !!username && (
+            <UserAvatar
+              src={src}
+              name={username as string}
+              width={120}
+              height={120}
+            />
           )}
           {variant === ProfilePictureUploaderVariant.SPONSOR && (
             <PlaceholderImage
@@ -61,6 +66,7 @@ const ProfilePictureUploader = ({
               width={120}
               height={120}
               defaultImage={DEFAULT_SPONSOR_IMAGE}
+              style={{ borderRadius: '1230px' }}
             />
           )}
           <Box sx={classes.uploadIconWrapper}>
