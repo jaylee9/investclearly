@@ -50,10 +50,12 @@ export const updateSponsorRecord = async (
       await deleteFile(sponsorRecord.businessAvatar);
     }
 
-    businessAvatar = await uploadFile(
+    const fileData = await uploadFile(
       files[0],
       TargetTypesConstants.sponsorAvatars
     );
+
+    businessAvatar = fileData.fileName;
   }
 
   await connection.manager.update(

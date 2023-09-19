@@ -27,20 +27,6 @@ export const getDealById = async (id: number, userId?: number) => {
         sponsorReviewStatus: ReviewStatuses.published,
       }
     )
-    .leftJoinAndMapMany(
-      'deals.attachments',
-      Attachment,
-      'attachments',
-      'attachments.entityId = deals.id AND attachments.entityType = :entityType',
-      { entityType: TargetTypesConstants.deals }
-    )
-    .leftJoinAndMapMany(
-      'deals.locations',
-      Location,
-      'locations',
-      'locations.entityId = deals.id AND locations.entityType = :dealEntityType',
-      { dealEntityType: LocationTargetTypesConstants.deal }
-    )
     .where('deals.id = :id', { id });
 
   if (userId) {
@@ -61,6 +47,22 @@ export const getDealById = async (id: number, userId?: number) => {
         { entityType: BookmarkConstants.entityTypes.deal, userId }
       );
   }
+
+  dealQuery = dealQuery
+    .leftJoinAndMapMany(
+      'deals.attachments',
+      Attachment,
+      'attachments',
+      'attachments.entityId = deals.id AND attachments.entityType = :entityType',
+      { entityType: TargetTypesConstants.deals }
+    )
+    .leftJoinAndMapMany(
+      'deals.locations',
+      Location,
+      'locations',
+      'locations.entityId = deals.id AND locations.entityType = :dealEntityType',
+      { dealEntityType: LocationTargetTypesConstants.deal }
+    );
 
   const deal = await dealQuery.getOne();
   if (!deal) {

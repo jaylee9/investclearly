@@ -25,8 +25,8 @@ export const getUserById = async (
       'user.locations',
       Location,
       'locations',
-      'locations.entityId = user.id AND locations.entityType = :sponsorEntityType',
-      { sponsorEntityType: LocationTargetTypesConstants.user }
+      'locations.entityId = user.id AND locations.entityType = :userEntityType',
+      { userEntityType: LocationTargetTypesConstants.user }
     )
     .getOne();
 
