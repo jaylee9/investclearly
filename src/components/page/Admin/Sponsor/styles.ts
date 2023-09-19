@@ -42,7 +42,7 @@ export const useAddEditSponsorModalStyles = () => {
       borderRadius: '12px',
       background: palette.common.white,
       boxShadow: customShadows.header,
-      padding: '40px 16px 40px',
+      padding: '40px 40px 16px',
       width: '790px',
     },
     title: {
@@ -54,6 +54,27 @@ export const useAddEditSponsorModalStyles = () => {
 
 export const useSponsorDetailsFormStyles = () => {
   return {
-    root: {},
+    profilePictureUploaderWrapper: {
+      marginBottom: '12px',
+    },
+    formWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px',
+      marginBottom: '40px',
+    },
+    doubleInputsWrapper: {
+      display: 'flex',
+      gap: '12px',
+      width: '100%',
+      '& > div': {
+        width: '50% !important',
+      },
+    },
+    buttonWrapper: {
+      display: 'flex',
+      justifyContent: 'end',
+      paddingTop: '16px',
+    },
   };
 };

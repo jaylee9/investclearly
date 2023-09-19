@@ -15,7 +15,6 @@ import { debounce } from 'lodash';
 import { GetAllSponsorsResponse, getAllSponsors } from '@/actions/sponsors';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import AddEditSponsorModal from '@/components/page/Admin/Sponsor/AddEditSponsorModal';
-import Loading from '@/components/common/Loading';
 
 interface AdminSponsorsPageProps {
   sponsorsResponse: GetAllSponsorsResponse;
@@ -35,7 +34,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
     setSearchTerm('');
   };
 
-  const { data, isLoading } = useQuery<GetAllSponsorsResponse>(
+  const { data } = useQuery<GetAllSponsorsResponse>(
     ['sponsors', page, searchTerm],
     () =>
       getAllSponsors({
@@ -153,10 +152,6 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
 
   const handleCloseModal = () => setOpenModal(null);
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
     <Layout variant={LayoutVariant.Admin}>
       <Typography variant="h3" sx={classes.title}>
@@ -176,7 +171,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
             <Button onClick={() => handleOpenModal('add')}>Add Sponsor</Button>
           </Box>
           <CustomTable<SponsorInterface>
-            data={data?.sponsors as SponsorInterface[]}
+            data={(data?.sponsors as SponsorInterface[]) || []}
             page={page}
             setPage={setPage}
             total={Number(data?.total)}
