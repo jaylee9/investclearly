@@ -1,6 +1,8 @@
+import { CreateSponsorInterface } from '@/backend/services/sponsors/interfaces/create-sponsor.interface';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import { ISponsorFilters } from '@/components/page/List/Sponsors/SponsorsFilters';
 import api from '@/config/ky';
+import { serialize } from 'object-to-formdata';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
 
@@ -125,5 +127,27 @@ export const deleteSponsorFromBookmarks = async ({
     const errorMessage = 'Failed to delete sponsor from saved';
     toast.error(errorMessage);
     return { error: errorMessage };
+  }
+};
+
+type PartialCreateSponsorInterface = Partial<CreateSponsorInterface>;
+
+export const createSponsor = async (
+  payload: PartialCreateSponsorInterface
+): Promise<SponsorInterface | { error: string }> => {
+  const formData = serialize(payload, {
+    indices: true,
+    nullsAsUndefineds: true,
+  });
+
+  try {
+    const response: SponsorInterface = await api
+      .put('profile-settings', {
+        body: formData,
+      })
+      .json();
+    return response;
+  } catch (error) {
+    return { error: 'Failed to create sponsor' };
   }
 };
