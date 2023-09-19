@@ -5,4 +5,5 @@ export const SponsorConstants = {
     defaultReviewsLimit: 4,
     defaultDealsLimit: 3,
   },
+  sponsors: 'sponsors',
 };

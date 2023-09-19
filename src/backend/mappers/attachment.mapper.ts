@@ -9,6 +9,8 @@ export const attachmentMapper = (
     id: attachment.id,
     entityId: attachment.entityId,
     entityType: attachment.entityType,
+    originalFileName: attachment.originalFileName,
+    fileSize: attachment.fileSize,
     path: buildFullImagePath(attachment.path),
     createdAt: attachment.createdAt,
     updatedAt: attachment.updatedAt,

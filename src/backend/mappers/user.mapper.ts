@@ -41,6 +41,7 @@ export const userMapper = (user: User): PublicUserInterface => {
     investments: user.investments ? user.investments.map(investmentMapper) : [],
     locations: user.locations ? user.locations.map(locationMapper) : [],
     investmentsCount: user.investmentsCount || 0,
+    isPasswordAdded: user.password !== null,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
   };

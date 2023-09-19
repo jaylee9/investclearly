@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { deleteCookie } from 'cookies-next';
 import { apiHandler } from '../../../backend/utils/api-handler';
 import { AuthConstants } from '../../../backend/constants/auth-constants';
 import { ChangePasswordInterface } from '../../../backend/services/auth/interfaces/change-password.interface';
@@ -19,6 +20,7 @@ const changePassword = async (
     await changeUserPassword(user, body);
   }
 
+  deleteCookie('accessToken', { req: request, res: response });
   response
     .status(200)
     .json({ message: AuthConstants.passwordSuccessfullyChanged });

@@ -41,10 +41,12 @@ export const updateProfileSettings = async (
       await deleteFile(userRecord.profilePicture);
     }
 
-    profilePicture = await uploadFile(
+    const fileData = await uploadFile(
       files[0],
       TargetTypesConstants.profilePictures
     );
+
+    profilePicture = fileData.fileName;
   }
 
   await connection.manager.update(
