@@ -12,7 +12,9 @@ import { useState } from 'react';
 
 const validationSchema = z.object({
   reason: z.string(),
-  unpublishReviewMessage: z.string().optional(),
+  unpublishReviewMessage: z
+    .string()
+    .min(1, 'Unpublish review message is required'),
 });
 
 type ValidationSchema = z.infer<typeof validationSchema>;
@@ -45,7 +47,12 @@ const UnpublishReviewModal = ({
     }
   };
 
-  const { handleSubmit, control, register } = useForm<ValidationSchema>({
+  const {
+    handleSubmit,
+    control,
+    register,
+    formState: { errors },
+  } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
     defaultValues: {
       reason: 'Content Guidelines',
@@ -96,6 +103,8 @@ const UnpublishReviewModal = ({
             placeholder="Message"
             height="120px"
             register={register('unpublishReviewMessage')}
+            error={!!errors.unpublishReviewMessage?.message}
+            errorText={errors.unpublishReviewMessage?.message}
           />
           <Box sx={classes.buttonsWrapper}>
             <Button
