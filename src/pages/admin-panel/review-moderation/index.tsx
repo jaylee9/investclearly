@@ -334,27 +334,22 @@ const ReviewModerationPage = () => {
         </Box>
       );
 
-  const handleSubmitCloseUnpublishModal = () => {
-    refetchTotalPublishedReviews().then(() =>
-      refetch().then(() => {
-        handleCloseModal();
-        handleCloseActionModal('unpublish');
-      })
-    );
+  const handleSubmitCloseUnpublishModal = async () => {
+    await refetchTotalPublishedReviews();
+    await refetch();
+    handleCloseModal();
+    handleCloseActionModal('unpublish');
   };
 
-  const handleApproveReview = (id: number) => {
+  const handleApproveReview = async (id: number) => {
     setIsApproveLoading(true);
-    const response = approveReview({ id });
+    const response = await approveReview({ id });
     if (!('error' in response)) {
-      refetchTotalPublishedReviews().then(() =>
-        refetchTotalOnModerationReviews().then(() =>
-          refetch().then(() => {
-            setIsApproveLoading(false);
-            handleCloseModal();
-          })
-        )
-      );
+      await refetchTotalPublishedReviews();
+      await refetchTotalOnModerationReviews();
+      await refetch();
+      setIsApproveLoading(false);
+      handleCloseModal();
     }
   };
 
