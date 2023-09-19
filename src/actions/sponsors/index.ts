@@ -142,7 +142,7 @@ export const createSponsor = async (
 
   try {
     const response: SponsorInterface = await api
-      .put('profile-settings', {
+      .post('profile-settings', {
         body: formData,
       })
       .json();
