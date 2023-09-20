@@ -11,12 +11,13 @@ import { InvestmentStructures } from '@/backend/constants/enums/investment-struc
 import { Interests } from '@/backend/constants/enums/interests';
 import Button from '@/components/common/Button';
 import { PartialCreateSponsorInterface } from '@/actions/sponsors';
+import { useEffect } from 'react';
 
 const validationSchema = z.object({
   aum: z.string().min(1, 'Required field'),
   fees: z.string().min(1, 'Required field'),
   regulations: z.array(z.string()),
-  exemption: z.array(z.string()),
+  exemptions: z.array(z.string()),
   cashOnCash: z.string().min(1, 'Required field'),
   equityMultiple: z.string().min(1, 'Required field'),
   investmentStructures: z.string().min(1, 'Required field'),
@@ -52,6 +53,8 @@ const FinancialMetricsForm = ({
     register,
     control,
     formState: { isValid },
+    setValue,
+    watch,
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
     defaultValues: {
@@ -88,6 +91,22 @@ const FinancialMetricsForm = ({
 
   const handleBack = () => setStep(0);
 
+  useEffect(() => {
+    if (payload) {
+      for (const key in payload) {
+        if (key in payload) {
+          const value = payload[key as keyof typeof payload];
+          if (typeof value !== 'undefined') {
+            setValue(
+              key as keyof ValidationSchema,
+              Array.isArray(value) ? value : String(value)
+            );
+          }
+        }
+      }
+    }
+  }, [payload, setValue]);
+
   return (
     <form onSubmit={onSubmit}>
       <Box sx={classes.formWrapper}>
@@ -105,6 +124,7 @@ const FinancialMetricsForm = ({
               ),
             }}
             type="number"
+            value={watch('aum')}
           />
           <Input
             register={register('fees')}
@@ -119,6 +139,7 @@ const FinancialMetricsForm = ({
               ),
             }}
             type="number"
+            value={watch('fees')}
           />
         </Box>
         <Box sx={classes.doubleInputsWrapper}>
@@ -139,7 +160,7 @@ const FinancialMetricsForm = ({
           />
           <Controller
             control={control}
-            name="exemption"
+            name="exemptions"
             render={({ field: { onChange, value } }) => (
               <CustomSelect
                 options={exemptionsOptions}
@@ -167,6 +188,7 @@ const FinancialMetricsForm = ({
               ),
             }}
             type="number"
+            value={watch('cashOnCash')}
           />
           <Input
             register={register('equityMultiple')}
@@ -181,6 +203,7 @@ const FinancialMetricsForm = ({
               ),
             }}
             type="number"
+            value={watch('equityMultiple')}
           />
         </Box>
         <Box sx={classes.doubleInputsWrapper}>
@@ -203,6 +226,7 @@ const FinancialMetricsForm = ({
             placeholder="1"
             showClearOption={false}
             type="number"
+            value={watch('holdPeriod')}
           />
         </Box>
         <Box sx={classes.doubleInputsWrapper}>

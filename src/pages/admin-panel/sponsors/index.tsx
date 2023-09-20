@@ -28,7 +28,9 @@ interface AdminSponsorsPageProps {
 const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
   const classes = useAdminSponsorsStyles();
 
-  const [openModal, setOpenModal] = useState<null | 'add' | 'edit'>(null);
+  const [openModal, setOpenModal] = useState<null | 'add' | SponsorInterface>(
+    null
+  );
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [isSuccessAdded, setIsSuccessAdded] = useState(false);
@@ -151,12 +153,12 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
     {
       icon: 'icon-Edit',
       //will be replaced by logic of open edit sponsor modal
-      onClick: (data: SponsorInterface) => console.log(data),
+      onClick: (data: SponsorInterface) => handleOpenModal(data),
       styles: classes.editIcon,
     },
   ];
 
-  const handleOpenModal = (modalType: 'add' | 'edit') =>
+  const handleOpenModal = (modalType: 'add' | SponsorInterface) =>
     setOpenModal(modalType);
 
   const handleCloseModal = () => setOpenModal(null);
@@ -169,6 +171,12 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
       handleCloseModal();
     }
   };
+
+  function isSponsorInterface(
+    data: 'add' | SponsorInterface | null
+  ): data is SponsorInterface {
+    return data !== null && data !== 'add';
+  }
 
   return (
     <Layout variant={LayoutVariant.Admin}>
@@ -213,6 +221,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
         onSubmit={handleCreateSponsor}
         setIsSuccessAdded={setIsSuccessAdded}
         isSuccessAdded={isSuccessAdded}
+        sponsor={isSponsorInterface(openModal) ? openModal : undefined}
       />
     </Layout>
   );

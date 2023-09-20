@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import UserAvatar from './UserAvatar';
 import { useProfilePictureUploaderStyles } from './styles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PlaceholderImage from './PlaceholderImage';
 import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 
@@ -46,6 +46,12 @@ const ProfilePictureUploader = ({
     },
   });
 
+  useEffect(() => {
+    if (defaultImage) {
+      setSrc(defaultImage);
+    }
+  }, [defaultImage]);
+
   return (
     <Box sx={classes.root}>
       <div {...getRootProps()} style={{ width: 'fit-content' }}>
@@ -66,7 +72,7 @@ const ProfilePictureUploader = ({
               width={120}
               height={120}
               defaultImage={DEFAULT_SPONSOR_IMAGE}
-              style={{ borderRadius: '1230px' }}
+              style={{ borderRadius: '1230px', objectFit: 'cover' }}
             />
           )}
           <Box sx={classes.uploadIconWrapper}>

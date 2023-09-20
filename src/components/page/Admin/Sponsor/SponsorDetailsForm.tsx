@@ -13,12 +13,15 @@ import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import CustomTextArea from '@/components/common/TextArea';
 import Button from '@/components/common/Button';
 import { PartialCreateSponsorInterface } from '@/actions/sponsors';
+import { useEffect, useState } from 'react';
 
 const isBrowser =
   typeof window !== 'undefined' && typeof window.File !== 'undefined';
 
 const validationSchema = z.object({
-  businessAvatar: isBrowser ? z.instanceof(File) : z.any(),
+  businessAvatar: isBrowser
+    ? z.union([z.instanceof(File), z.string()])
+    : z.any(),
   vanityName: z.string().optional(),
   legalName: z.string().min(1, 'Required field'),
   street1: z.string().min(1, 'Required field'),
@@ -43,11 +46,20 @@ interface SponsorDetailsFormProps {
 const SponsorDetailsForm = ({ onSave, payload }: SponsorDetailsFormProps) => {
   const classes = useSponsorDetailsFormStyles();
 
+  const [defaultImage, setDefaultImage] = useState(
+    payload.businessAvatar
+      ? typeof payload.businessAvatar === 'string'
+        ? payload.businessAvatar
+        : URL.createObjectURL(payload?.businessAvatar)
+      : undefined
+  );
+
   const {
     handleSubmit,
     control,
     register,
     watch,
+    setValue,
     formState: { isValid },
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
@@ -65,6 +77,20 @@ const SponsorDetailsForm = ({ onSave, payload }: SponsorDetailsFormProps) => {
     return { label: item, value: item };
   });
 
+  useEffect(() => {
+    if (payload) {
+      for (const key in payload) {
+        if (key in payload) {
+          setValue(
+            key as keyof ValidationSchema,
+            payload[key as keyof typeof payload]
+          );
+        }
+      }
+      setDefaultImage(payload.businessAvatar as string);
+    }
+  }, [payload, setValue]);
+
   return (
     <form onSubmit={onSubmit}>
       <Box sx={classes.formWrapper}>
@@ -76,11 +102,7 @@ const SponsorDetailsForm = ({ onSave, payload }: SponsorDetailsFormProps) => {
               <ProfilePictureUploader
                 onChange={onChange}
                 variant={ProfilePictureUploaderVariant.SPONSOR}
-                defaultImage={
-                  payload.businessAvatar
-                    ? URL.createObjectURL(payload?.businessAvatar)
-                    : undefined
-                }
+                defaultImage={defaultImage}
               />
             )}
           />

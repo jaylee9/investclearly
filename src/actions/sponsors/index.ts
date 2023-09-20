@@ -134,7 +134,7 @@ type ModifiedCreateSponsorInterface = Omit<
   CreateSponsorInterface,
   'businessAvatar'
 > & {
-  businessAvatar: Blob;
+  businessAvatar: Blob | string;
 };
 
 export type PartialCreateSponsorInterface =

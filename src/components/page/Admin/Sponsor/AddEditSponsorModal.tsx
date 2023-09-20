@@ -2,17 +2,19 @@ import Modal from '@/components/common/Modal';
 import { Box, ModalProps, Typography } from '@mui/material';
 import { useAddEditSponsorModalStyles } from './styles';
 import Logo from '@/assets/components/Logo';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import StepsComponent from '@/components/common/StepsComponent';
 import SponsorDetailsForm from './SponsorDetailsForm';
 import { PartialCreateSponsorInterface } from '@/actions/sponsors';
 import FinancialMetricsForm from './FinancialMetricsForm';
+import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 
 export interface AddEditSponsorModalProps
   extends Omit<ModalProps, 'children' | 'onSubmit'> {
   onSubmit: (data: PartialCreateSponsorInterface) => void;
   isSuccessAdded: boolean;
   setIsSuccessAdded: (v: boolean) => void;
+  sponsor?: SponsorInterface;
 }
 
 const steps = {
@@ -25,12 +27,34 @@ const AddEditSponsorModal = ({
   onSubmit,
   isSuccessAdded,
   setIsSuccessAdded,
+  sponsor,
   ...props
 }: AddEditSponsorModalProps) => {
   const classes = useAddEditSponsorModalStyles();
-
   const [step, setStep] = useState(steps['Sponsor Details']);
-  const [payload, setPayload] = useState<PartialCreateSponsorInterface>({});
+  const [payload, setPayload] = useState<PartialCreateSponsorInterface>(
+    sponsor || {}
+  );
+  useEffect(() => {
+    if (sponsor) {
+      if (!!sponsor.locations.length) {
+        const location = sponsor.locations[0];
+        const formattedSponsor = {
+          ...sponsor,
+          street1: location.street1,
+          street2: location.street2,
+          city: location.city,
+          stateOrCountry: location.stateOrCountry,
+          stateOrCountryDescription: location.stateOrCountryDescription,
+          zipCode: location.zipCode,
+        };
+        setPayload(formattedSponsor);
+      } else {
+        setPayload(sponsor);
+      }
+    }
+  }, [sponsor]);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClose = (e: MouseEvent | object) => {
