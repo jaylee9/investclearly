@@ -12,6 +12,7 @@ import { Regions } from '@/backend/constants/enums/regions';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import CustomTextArea from '@/components/common/TextArea';
 import Button from '@/components/common/Button';
+import { PartialCreateSponsorInterface } from '@/actions/sponsors';
 
 const isBrowser =
   typeof window !== 'undefined' && typeof window.File !== 'undefined';
@@ -34,13 +35,17 @@ const validationSchema = z.object({
 
 type ValidationSchema = z.infer<typeof validationSchema>;
 
-const SponsorDetailsForm = () => {
+interface SponsorDetailsFormProps {
+  onSave: (value: PartialCreateSponsorInterface) => void;
+}
+
+const SponsorDetailsForm = ({ onSave }: SponsorDetailsFormProps) => {
   const classes = useSponsorDetailsFormStyles();
 
   const { handleSubmit, control, register } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
   });
-  const onSubmit = handleSubmit(data => console.log(data));
+  const onSubmit = handleSubmit(data => onSave(data));
 
   const regionsOptions = Object.values(Regions).map(item => {
     return { label: item, value: item };
@@ -147,7 +152,7 @@ const SponsorDetailsForm = () => {
         />
       </Box>
       <Box sx={classes.buttonWrapper}>
-        <Button>Next</Button>
+        <Button type="submit">Next</Button>
       </Box>
     </form>
   );

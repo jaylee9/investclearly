@@ -5,6 +5,7 @@ import Logo from '@/assets/components/Logo';
 import { useState } from 'react';
 import StepsComponent from '@/components/common/StepsComponent';
 import SponsorDetailsForm from './SponsorDetailsForm';
+import { PartialCreateSponsorInterface } from '@/actions/sponsors';
 
 export interface AddEditSponsorModalProps
   extends Omit<ModalProps, 'children'> {}
@@ -21,11 +22,19 @@ const AddEditSponsorModal = ({
   const classes = useAddEditSponsorModalStyles();
 
   const [step, setStep] = useState(steps['Sponsor Details']);
+  const [payload, setPayload] = useState<PartialCreateSponsorInterface>({});
 
   const handleClose = (e: MouseEvent | object) => {
+    setStep(steps['Sponsor Details']);
+    setPayload({});
     if (onClose) {
       onClose(e, 'backdropClick');
     }
+  };
+
+  const handleSaveDetails = (data: PartialCreateSponsorInterface) => {
+    setPayload(data);
+    setStep(steps['Financial Metrics']);
   };
 
   return (
@@ -44,7 +53,9 @@ const AddEditSponsorModal = ({
             <Typography variant="h4" sx={classes.title}>
               {Object.keys(steps)[step]}
             </Typography>
-            {step === steps['Sponsor Details'] && <SponsorDetailsForm />}
+            {step === steps['Sponsor Details'] && (
+              <SponsorDetailsForm onSave={handleSaveDetails} />
+            )}
           </Box>
         </Box>
       </Box>

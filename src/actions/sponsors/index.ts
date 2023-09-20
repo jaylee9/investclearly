@@ -130,7 +130,7 @@ export const deleteSponsorFromBookmarks = async ({
   }
 };
 
-type PartialCreateSponsorInterface = Partial<CreateSponsorInterface>;
+export type PartialCreateSponsorInterface = Partial<CreateSponsorInterface>;
 
 export const createSponsor = async (
   payload: PartialCreateSponsorInterface
