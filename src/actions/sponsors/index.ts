@@ -130,7 +130,15 @@ export const deleteSponsorFromBookmarks = async ({
   }
 };
 
-export type PartialCreateSponsorInterface = Partial<CreateSponsorInterface>;
+type ModifiedCreateSponsorInterface = Omit<
+  CreateSponsorInterface,
+  'businessAvatar'
+> & {
+  businessAvatar: Blob;
+};
+
+export type PartialCreateSponsorInterface =
+  Partial<ModifiedCreateSponsorInterface>;
 
 export const createSponsor = async (
   payload: PartialCreateSponsorInterface
@@ -142,7 +150,7 @@ export const createSponsor = async (
 
   try {
     const response: SponsorInterface = await api
-      .post('profile-settings', {
+      .post('admin/sponsors', {
         body: formData,
       })
       .json();

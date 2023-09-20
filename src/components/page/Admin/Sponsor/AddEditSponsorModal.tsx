@@ -6,9 +6,14 @@ import { useState } from 'react';
 import StepsComponent from '@/components/common/StepsComponent';
 import SponsorDetailsForm from './SponsorDetailsForm';
 import { PartialCreateSponsorInterface } from '@/actions/sponsors';
+import FinancialMetricsForm from './FinancialMetricsForm';
 
 export interface AddEditSponsorModalProps
-  extends Omit<ModalProps, 'children'> {}
+  extends Omit<ModalProps, 'children' | 'onSubmit'> {
+  onSubmit: (data: PartialCreateSponsorInterface) => void;
+  isSuccessAdded: boolean;
+  setIsSuccessAdded: (v: boolean) => void;
+}
 
 const steps = {
   'Sponsor Details': 0,
@@ -17,14 +22,21 @@ const steps = {
 
 const AddEditSponsorModal = ({
   onClose,
+  onSubmit,
+  isSuccessAdded,
+  setIsSuccessAdded,
   ...props
 }: AddEditSponsorModalProps) => {
   const classes = useAddEditSponsorModalStyles();
 
   const [step, setStep] = useState(steps['Sponsor Details']);
   const [payload, setPayload] = useState<PartialCreateSponsorInterface>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClose = (e: MouseEvent | object) => {
+    if (isLoading) {
+      return;
+    }
     setStep(steps['Sponsor Details']);
     setPayload({});
     if (onClose) {
@@ -35,6 +47,18 @@ const AddEditSponsorModal = ({
   const handleSaveDetails = (data: PartialCreateSponsorInterface) => {
     setPayload(data);
     setStep(steps['Financial Metrics']);
+  };
+
+  const handleSubmitFinancialMetrics = (
+    data: PartialCreateSponsorInterface
+  ) => {
+    setIsLoading(true);
+    onSubmit(data);
+    if (isSuccessAdded) {
+      setIsLoading(false);
+      setStep(steps['Sponsor Details']);
+      setIsSuccessAdded(false);
+    }
   };
 
   return (
@@ -54,7 +78,18 @@ const AddEditSponsorModal = ({
               {Object.keys(steps)[step]}
             </Typography>
             {step === steps['Sponsor Details'] && (
-              <SponsorDetailsForm onSave={handleSaveDetails} />
+              <SponsorDetailsForm
+                onSave={handleSaveDetails}
+                payload={payload}
+              />
+            )}
+            {step === steps['Financial Metrics'] && (
+              <FinancialMetricsForm
+                setStep={setStep}
+                onSave={handleSubmitFinancialMetrics}
+                payload={payload}
+                isLoading={isLoading}
+              />
             )}
           </Box>
         </Box>

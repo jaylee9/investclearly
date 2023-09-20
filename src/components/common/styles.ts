@@ -458,6 +458,16 @@ export const useSelectStyles = ({ variant }: UseSelectStylesProps) => {
     singleSelectedItem: {
       color: `${palette.common.black} !important`,
     },
+    fauxPlaceholder: {
+      position: 'absolute',
+      top: '8.5px',
+      left: '16px',
+      pointerEvents: 'none',
+      color: theme.palette.text.secondary,
+    },
+    selectWrapper: {
+      position: 'relative',
+    },
   };
 };
 

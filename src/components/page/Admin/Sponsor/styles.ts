@@ -78,3 +78,31 @@ export const useSponsorDetailsFormStyles = () => {
     },
   };
 };
+
+export const useFinancialMetricsFormStyles = () => {
+  return {
+    formWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px',
+      maxWidth: '600px',
+      marginBottom: '50px',
+    },
+    doubleInputsWrapper: {
+      display: 'flex',
+      gap: '12px',
+      width: '100%',
+      '& > div': {
+        width: '50% !important',
+      },
+    },
+    symbol: {
+      color: palette.text.disabled,
+    },
+    buttonsWrapper: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+  };
+};

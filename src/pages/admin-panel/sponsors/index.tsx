@@ -12,7 +12,12 @@ import EllipsisText from '@/components/common/EllipsisText';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { debounce } from 'lodash';
-import { GetAllSponsorsResponse, getAllSponsors } from '@/actions/sponsors';
+import {
+  GetAllSponsorsResponse,
+  PartialCreateSponsorInterface,
+  createSponsor,
+  getAllSponsors,
+} from '@/actions/sponsors';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import AddEditSponsorModal from '@/components/page/Admin/Sponsor/AddEditSponsorModal';
 
@@ -26,6 +31,8 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
   const [openModal, setOpenModal] = useState<null | 'add' | 'edit'>(null);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isSuccessAdded, setIsSuccessAdded] = useState(false);
+
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
   }, 300);
@@ -34,7 +41,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
     setSearchTerm('');
   };
 
-  const { data } = useQuery<GetAllSponsorsResponse>(
+  const { data, refetch } = useQuery<GetAllSponsorsResponse>(
     ['sponsors', page, searchTerm],
     () =>
       getAllSponsors({
@@ -75,13 +82,15 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
               <EllipsisText
                 variant="body1"
                 fontWeight={500}
-                text={data.sponsorName as string}
+                text={data.legalName as string}
                 sx={classes.ellipsisText}
               />
             </Link>
-            <Typography variant="caption" sx={classes.subTitle}>
-              {data.address}
-            </Typography>
+            {!!data.locations.length && (
+              <Typography variant="caption" sx={classes.subTitle}>
+                {data.locations[0]?.street1}
+              </Typography>
+            )}
           </Box>
         </Box>
       ),
@@ -152,6 +161,15 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
 
   const handleCloseModal = () => setOpenModal(null);
 
+  const handleCreateSponsor = async (data: PartialCreateSponsorInterface) => {
+    const response = await createSponsor(data);
+    if (!('error' in response)) {
+      await refetch();
+      setIsSuccessAdded(true);
+      handleCloseModal();
+    }
+  };
+
   return (
     <Layout variant={LayoutVariant.Admin}>
       <Typography variant="h3" sx={classes.title}>
@@ -189,7 +207,13 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
           <Button onClick={() => handleOpenModal('add')}>Add Sponsor</Button>
         </Box>
       )}
-      <AddEditSponsorModal open={!!openModal} onClose={handleCloseModal} />
+      <AddEditSponsorModal
+        open={!!openModal}
+        onClose={handleCloseModal}
+        onSubmit={handleCreateSponsor}
+        setIsSuccessAdded={setIsSuccessAdded}
+        isSuccessAdded={isSuccessAdded}
+      />
     </Layout>
   );
 };

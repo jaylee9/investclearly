@@ -53,6 +53,41 @@ const CustomSelect = ({
     }
   };
 
+  const renderedValue = (selected: unknown) => {
+    // For multiple selections
+    if (Array.isArray(selected)) {
+      return (
+        <Box sx={classes.tagsWrapper}>
+          {selected.map(
+            (selectedItem, index) =>
+              index <= 1 && (
+                <Typography variant="body1" key={selectedItem} sx={classes.tag}>
+                  {selectedItem}
+                  <i
+                    className="icon-Cross"
+                    onClick={() => handleRemoveValue(selectedItem)}
+                    onMouseDown={event => event.stopPropagation()}
+                  />
+                </Typography>
+              )
+          )}
+          {selected.length > 2 && (
+            <Typography variant="body1">+{selected.length - 2}</Typography>
+          )}
+        </Box>
+      );
+    }
+
+    return (
+      <Typography variant="body1" sx={classes.singleSelectedItem}>
+        {options.find(item => item.value === selected)?.label}
+      </Typography>
+    );
+  };
+
+  const selectValue =
+    multiple && Array.isArray(value) && value.length === 0 ? ['none'] : value;
+
   return (
     <FormControl fullWidth>
       {topLabel && (
@@ -65,71 +100,55 @@ const CustomSelect = ({
           {topLabel}
         </Typography>
       )}
-      <Select
-        value={props.placeholder ? value || 'none' : value || options[0].value}
-        sx={classes.root}
-        style={customStyles}
-        MenuProps={{
-          sx: classes.menuPaper,
-          anchorOrigin: {
-            vertical: 'top',
-            horizontal: 'center',
-          },
-          transformOrigin: {
-            vertical: -44,
-            horizontal: 'center',
-          },
-        }}
-        IconComponent={KeyboardArrowDownIcon}
-        renderValue={selected =>
-          Array.isArray(selected) ? (
-            <Box sx={classes.tagsWrapper}>
-              {selected.map(
-                (selectedItem, index) =>
-                  index <= 1 && (
-                    <Typography
-                      variant="body1"
-                      key={selectedItem}
-                      sx={classes.tag}
-                    >
-                      {selectedItem}
-                      <i
-                        className="icon-Cross"
-                        onClick={() => handleRemoveValue(selectedItem)}
-                        onMouseDown={event => event.stopPropagation()}
-                      />
-                    </Typography>
-                  )
-              )}
-              {selected.length > 2 && (
-                <Typography variant="body1">+{selected.length - 2}</Typography>
-              )}
-            </Box>
-          ) : (
-            <Typography variant="body1" sx={classes.singleSelectedItem}>
-              {options.find(item => item.value === selected)?.label}
-            </Typography>
-          )
-        }
-        {...props}
-      >
-        <MenuItem value="none" disabled>
-          {props.placeholder}
-        </MenuItem>
-        {options.map(item => (
-          <MenuItem
-            disableRipple
-            value={item.value}
-            key={item.value}
-            sx={classes.menuItem}
+      <Box sx={classes.selectWrapper}>
+        <Select
+          value={selectValue}
+          sx={classes.root}
+          style={customStyles}
+          MenuProps={{
+            sx: classes.menuPaper,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'center',
+            },
+            transformOrigin: {
+              vertical: -44,
+              horizontal: 'center',
+            },
+          }}
+          IconComponent={KeyboardArrowDownIcon}
+          renderValue={renderedValue}
+          {...props}
+        >
+          {options.map(item => (
+            <MenuItem
+              disableRipple
+              value={item.value}
+              key={item.value}
+              sx={classes.menuItem}
+            >
+              {item.label}
+              {Array.isArray(value) &&
+                multiple &&
+                value.includes(item.value) && <i className="icon-Check"></i>}
+            </MenuItem>
+          ))}
+        </Select>
+        {multiple && Array.isArray(value) && value.length === 0 && (
+          <Typography
+            variant="body1"
+            sx={classes.fauxPlaceholder}
+            style={{
+              display:
+                multiple && Array.isArray(value) && value.length === 0
+                  ? 'block'
+                  : 'none',
+            }}
           >
-            {item.label}
-            {Array.isArray(value) && multiple && value.includes(item.value) && (
-              <i className="icon-Check"></i>
-            )}
-          </MenuItem>
-        ))}
-      </Select>
+            {props.placeholder}
+          </Typography>
+        )}
+      </Box>
     </FormControl>
   );
 };
