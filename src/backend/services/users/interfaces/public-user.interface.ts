@@ -27,6 +27,7 @@ export interface PublicUserInterface extends UserInterface {
   reviewsCount: number;
   investmentsCount: number;
   isPasswordAdded: boolean;
+  role: string;
   investments: InvestmentInterface[];
   locations: LocationInterface[];
 }

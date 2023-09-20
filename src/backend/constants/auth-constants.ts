@@ -21,6 +21,7 @@ export const AuthConstants = {
   successfulVerification: 'Account was successfully verifying',
   verificationFailed: 'Verification failed',
   unauthorized: 'Unauthorized',
+  forbiddenResource: 'Forbidden resource',
   verifyAccountFirst: 'Please verify account first',
   invalidGoogleToken: 'Invalid google token',
   emailSuccessfullyChanged: 'Email successfully changed',
