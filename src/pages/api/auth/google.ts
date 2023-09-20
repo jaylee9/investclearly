@@ -31,6 +31,14 @@ const googleAuth = async (
       maxAge: result.expiresIn,
     });
 
+    setCookie('userRole', result.user.role, {
+      httpOnly: true,
+      secure: false,
+      req: request,
+      res: response,
+      maxAge: result.expiresIn,
+    });
+
     response.status(200).json(result.user);
   } else {
     throw new createHttpError.BadRequest(AuthConstants.somethingGoesWrong);

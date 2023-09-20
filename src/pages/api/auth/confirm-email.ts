@@ -31,6 +31,14 @@ const confirmEmail = async (
       maxAge: result.expiresIn,
     });
 
+    setCookie('userRole', result.updatedUser.role, {
+      httpOnly: true,
+      secure: false,
+      req: request,
+      res: response,
+      maxAge: result.expiresIn,
+    });
+
     response.status(200).json(result.updatedUser);
   }
 };

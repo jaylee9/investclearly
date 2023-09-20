@@ -29,6 +29,14 @@ const changeEmail = async (
       res: response,
       maxAge: token.expiresIn,
     });
+
+    setCookie('userRole', user.role, {
+      httpOnly: true,
+      secure: false,
+      req: request,
+      res: response,
+      maxAge: token.expiresIn,
+    });
   }
 
   response

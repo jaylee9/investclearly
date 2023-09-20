@@ -41,6 +41,14 @@ const signIn = async (request: NextApiRequest, response: NextApiResponse) => {
       maxAge: token.expiresIn,
     });
 
+    setCookie('userRole', user.role, {
+      httpOnly: true,
+      secure: false,
+      req: request,
+      res: response,
+      maxAge: token.expiresIn,
+    });
+
     const userRecord = await getUserById(user.id);
 
     response.status(200).json(userRecord);
