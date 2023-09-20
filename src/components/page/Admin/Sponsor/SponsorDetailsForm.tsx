@@ -28,7 +28,7 @@ const validationSchema = z.object({
   stateOrCountry: z.string().min(1, 'Required field'),
   stateOrCountryDescription: z.string().min(1, 'Required field'),
   regions: z.array(z.string()),
-  website: z.string().min(1, 'Required field'),
+  website: z.string().min(1, 'Required field').url(),
   specialties: z.array(z.string()),
   description: z.string().min(1, 'Required field'),
 });
