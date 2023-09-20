@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import createHttpError from 'http-errors';
 import { AuthConstants } from '../../../../backend/constants/auth-constants';
 import { apiHandler } from '../../../../backend/utils/api-handler';
-import { authMiddleware } from '../../../../backend/middleware/auth';
+import { adminMiddleware } from '../../../../../src/backend/middleware/admin';
 import { parseForm } from '../../../../backend/utils/parse-form';
 import { SponsorConstants } from '../../../../backend/constants/sponsor-constants';
 import { updateSponsorRecord } from '../../../../backend/services/sponsors/update-sponsor';
@@ -20,7 +20,7 @@ const updateSponsor = async (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
-  await authMiddleware(request, response);
+  await adminMiddleware(request, response);
   const { fields, files } = await parseForm(request, response);
   const id: number = Number(request.query.id);
 
@@ -41,7 +41,7 @@ const deleteSponsor = async (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
-  await authMiddleware(request, response);
+  await adminMiddleware(request, response);
   const id: number = Number(request.query.id);
   const sponsorRecord = await getSponsorById(id);
 

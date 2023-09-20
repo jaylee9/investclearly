@@ -2,13 +2,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import createHttpError from 'http-errors';
 import { AuthConstants } from '../../../../backend/constants/auth-constants';
 import { apiHandler } from '../../../../backend/utils/api-handler';
-import { authMiddleware } from '../../../../backend/middleware/auth';
 import { update } from '../../../../backend/services/deals/update-deal';
 import { getDealById } from '../../../../backend/services/deals/get-deal-by-id';
 import { deleteDealRecord } from '../../../../backend/services/deals/delete-deal';
 import { DealConstants } from '../../../../backend/constants/deal-constants';
 import { parseForm } from '../../../../backend/utils/parse-form';
 import { UpdateDealInterface } from '../../../../backend/services/deals/interfaces/update-deal.interface';
+import { adminMiddleware } from '../../../../../src/backend/middleware/admin';
 
 export const config = {
   api: {
@@ -20,7 +20,7 @@ const updateDeal = async (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
-  await authMiddleware(request, response);
+  await adminMiddleware(request, response);
   const { fields, files } = await parseForm(request, response);
   const id: number = Number(request.query.id);
   const updatedDeal = await update(
@@ -40,7 +40,7 @@ const deleteDeal = async (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
-  await authMiddleware(request, response);
+  await adminMiddleware(request, response);
   const id: number = Number(request.query.id);
   const dealRecord = await getDealById(id);
 
