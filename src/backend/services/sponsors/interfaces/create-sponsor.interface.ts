@@ -33,4 +33,5 @@ export interface CreateSponsorInterface {
   stateOrCountry: string;
   stateOrCountryDescription: string;
   zipCode: string;
+  yearOfFoundation: number;
 }
