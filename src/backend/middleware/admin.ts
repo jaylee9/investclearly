@@ -41,7 +41,7 @@ export const adminMiddleware = async (
       throw new createHttpError.Unauthorized(AuthConstants.unauthorized);
     }
 
-    if (user && (user.role !== Roles.admin || token.userRole !== Roles.admin)) {
+    if (user && user.role !== Roles.admin) {
       throw new createHttpError.Forbidden(AuthConstants.forbiddenResource);
     }
   }
