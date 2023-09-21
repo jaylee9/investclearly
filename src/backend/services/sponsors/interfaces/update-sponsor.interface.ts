@@ -34,6 +34,7 @@ export interface UpdateSponsorInterface {
   stateOrCountry: string;
   stateOrCountryDescription: string;
   zipCode: string;
+  yearOfFoundation: number;
   createdAt: Date;
   updatedAt: Date;
 }

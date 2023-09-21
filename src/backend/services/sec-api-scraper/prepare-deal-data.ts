@@ -24,6 +24,14 @@ export const prepareDealData = async (offering: FormD) => {
     .subtract(1, 'days')
     .format(MomentConstants.yearMonthDay);
 
+  const fifteenDaysOlderDate = moment()
+    .subtract(15, 'days')
+    .format(MomentConstants.yearMonthDay);
+
+  const fourteenDaysOlderDate = moment()
+    .subtract(14, 'days')
+    .format(MomentConstants.yearMonthDay);
+
   const is06c =
     offering?.offeringData?.federalExemptionsExclusions?.item?.includes('06c');
   const is06b =
@@ -32,22 +40,30 @@ export const prepareDealData = async (offering: FormD) => {
   let investmentStructures = InvestmentStructures.equity;
   let exemption = Exemptions.Rule506C;
   let status = DealStatuses.open;
+  let isDealPublished = false;
 
   if (offering?.offeringData?.typesOfSecuritiesOffered?.isDebtType) {
     investmentStructures = InvestmentStructures.debt;
   }
 
-  if (
-    is06c &&
-    moment(offering?.filedAt) < moment(expirationDateFor500C) &&
-    offering?.offeringData?.durationOfOffering?.moreThanOneYear === true
-  ) {
-    status = DealStatuses.closedActive;
+  if (is06c) {
+    if (moment(offering?.filedAt) < moment(expirationDateFor500C)) {
+      status = DealStatuses.closedActive;
+    } else if (
+      moment(offering?.filedAt) >= moment(expirationDateFor500C) &&
+      moment(offering?.filedAt) <= moment(fifteenDaysOlderDate)
+    ) {
+      status = DealStatuses.open;
+    } else {
+      isDealPublished =
+        moment(offering?.filedAt) >= moment(fourteenDaysOlderDate);
+    }
   } else if (is06b) {
     exemption = Exemptions.Rule506B;
 
     if (moment(offering?.filedAt) < moment(expirationDateFor500B)) {
       status = DealStatuses.closedActive;
+      isDealPublished = true;
     }
   }
 
@@ -71,7 +87,7 @@ export const prepareDealData = async (offering: FormD) => {
 
     return {
       secApiId: offering?.id,
-      assetClass: AssetClasses.industryFromSec,
+      assetClass: AssetClasses.offeringDataOrIndustryGroup,
       dealTitle: offering?.primaryIssuer?.entityName,
       minimumInvestment: offering?.offeringData?.minimumInvestmentAccepted,
       investmentStructures,
@@ -115,7 +131,7 @@ export const prepareDealData = async (offering: FormD) => {
       dealSponsor: '',
       closeDate: offering?.filedAt,
       attachmentsIdsToDelete: [],
-      isDealPublished: true,
+      isDealPublished: isDealPublished,
     };
   }
 

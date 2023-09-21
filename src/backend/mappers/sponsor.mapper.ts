@@ -37,6 +37,7 @@ export const sponsorMapper = (sponsor: Sponsor): SponsorInterface => {
     holdPeriod: sponsor.holdPeriod,
     targetIRR: sponsor.targetIRR,
     actualIRR: sponsor.actualIRR,
+    yearOfFoundation: sponsor.yearOfFoundation,
     regulations: sponsor.regulations || [],
     interests: sponsor.interests || [],
     admin: sponsor.user ? userMapper(sponsor.user) : null,

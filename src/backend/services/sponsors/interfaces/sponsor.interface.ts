@@ -31,6 +31,7 @@ export interface SponsorInterface {
   targetIRR: number;
   actualIRR: number;
   fees: number;
+  yearOfFoundation: number;
   regulations: string | string[];
   interests: string | string[];
   admin?: UserInterface | null;

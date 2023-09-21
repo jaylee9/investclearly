@@ -130,6 +130,9 @@ export class Sponsor {
 
   isInBookmarks: boolean;
 
+  @Column({ type: 'int', nullable: true })
+  yearOfFoundation: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
