@@ -17,6 +17,7 @@ import Loading from '@/components/common/Loading';
 import { useEffect, useState } from 'react';
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
 import sanitizeUserUpdatePayload from '@/helpers/sanitizeUserUpdatePayload';
+import { LocationInterface } from '@/backend/services/locations/interfaces/location.interface';
 
 const isBrowser =
   typeof window !== 'undefined' && typeof window.File !== 'undefined';
@@ -54,17 +55,13 @@ const EditProfile = () => {
 
   const onSubmit = handleSubmit(async data => {
     setIsLoading(true);
-    //that will be replaced by data after backend add address fields
-    const { profilePicture, regions, firstName, lastName } = data;
+
     const formattedUser = sanitizeUserUpdatePayload(
       user as PublicUserInterface
     );
     const response = await updateProfileSettings({
       ...formattedUser,
-      profilePicture,
-      firstName,
-      lastName,
-      regions: regions as Regions[],
+      ...data,
     } as UpdateProfileSettingPayload);
     if (!('error' in response)) {
       setUser(response);
@@ -80,6 +77,18 @@ const EditProfile = () => {
 
   useEffect(() => {
     if (user) {
+      const locationFields: (keyof LocationInterface)[] = [
+        'street1',
+        'street2',
+        'city',
+        'zipCode',
+        'stateOrCountry',
+        'stateOrCountryDescription',
+      ];
+      const location = user.locations[0];
+      locationFields.forEach(field => {
+        setValue(field as keyof ValidationSchema, location[field]);
+      });
       setValue('firstName', user.firstName);
       setValue('lastName', user.lastName);
       setValue('regions', user.regions);
