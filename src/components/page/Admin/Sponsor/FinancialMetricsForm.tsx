@@ -114,14 +114,12 @@ const FinancialMetricsForm = ({
   useEffect(() => {
     if (payload) {
       for (const key in payload) {
-        if (key in payload) {
-          const value = payload[key as keyof typeof payload];
-          if (typeof value !== 'undefined' && key !== 'investmentStructures') {
-            setValue(
-              key as keyof ValidationSchema,
-              Array.isArray(value) ? value : String(value)
-            );
-          }
+        const value = payload[key as keyof typeof payload];
+        if (typeof value !== 'undefined' && key !== 'investmentStructures') {
+          setValue(
+            key as keyof ValidationSchema,
+            Array.isArray(value) ? value : String(value)
+          );
         }
       }
       if (payload.investmentStructures?.length) {
