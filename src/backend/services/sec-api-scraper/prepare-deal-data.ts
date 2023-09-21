@@ -24,7 +24,13 @@ export const prepareDealData = async (offering: FormD) => {
     .subtract(1, 'days')
     .format(MomentConstants.yearMonthDay);
 
-  const 
+  const fifteenDaysOlderDate = moment()
+    .subtract(15, 'days')
+    .format(MomentConstants.yearMonthDay);
+
+  const fourteenDaysOlderDate = moment()
+    .subtract(14, 'days')
+    .format(MomentConstants.yearMonthDay);
 
   const is06c =
     offering?.offeringData?.federalExemptionsExclusions?.item?.includes('06c');
@@ -40,12 +46,18 @@ export const prepareDealData = async (offering: FormD) => {
     investmentStructures = InvestmentStructures.debt;
   }
 
-  if (
-    is06c &&
-    moment(offering?.filedAt) < moment(expirationDateFor500C) &&
-    offering?.offeringData?.durationOfOffering?.moreThanOneYear === true
-  ) {
-    status = DealStatuses.closedActive;
+  if (is06c) {
+    if (moment(offering?.filedAt) < moment(expirationDateFor500C)) {
+      status = DealStatuses.closedActive;
+    } else if (
+      moment(offering?.filedAt) >= moment(expirationDateFor500C) &&
+      moment(offering?.filedAt) <= moment(fifteenDaysOlderDate)
+    ) {
+      status = DealStatuses.open;
+    } else {
+      isDealPublished =
+        moment(offering?.filedAt) >= moment(fourteenDaysOlderDate);
+    }
   } else if (is06b) {
     exemption = Exemptions.Rule506B;
 
