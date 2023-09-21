@@ -25,6 +25,7 @@ import Loading from '@/components/common/Loading';
 import Button from '@/components/common/Button';
 import ReviewDetailsModal from '@/components/page/Admin/Review/ReviewDetailsModal';
 import UnpublishReviewModal from '@/components/page/Admin/Review/UnpublishReviewModal';
+import withAdminPrivateRoute from '@/HOC/withAdminPrivateRoute';
 
 const sortOptions = [
   { label: 'Newest Reviews', value: 'DESC' },
@@ -439,4 +440,4 @@ const ReviewModerationPage = () => {
   );
 };
 
-export default ReviewModerationPage;
+export default withAdminPrivateRoute(ReviewModerationPage);

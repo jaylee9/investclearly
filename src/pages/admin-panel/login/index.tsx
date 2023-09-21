@@ -1,13 +1,20 @@
+import { useRouter } from 'next/router';
 import LayoutAdminPanel from '../../../components/common/LayoutAdminPanel';
 import LoginForm, {
   LoginFormValidationSchema,
 } from '@/components/common/LoginFrom';
+import { adminLogin } from '@/actions/auth';
 
 const Login = () => {
+  const router = useRouter();
+
   const handleSubmit = async (data: LoginFormValidationSchema) => {
-    const { email, password } = data;
-    console.log(email, password);
+    const response = await adminLogin(data);
+    if (!('error' in response)) {
+      router.push('/admin-panel/deals');
+    }
   };
+
   return (
     <LayoutAdminPanel>
       <LoginForm

@@ -178,3 +178,23 @@ export const addPassword = async ({
     return { error: errorMessage };
   }
 };
+
+export const adminLogin = async ({
+  password,
+  email,
+}: LoginFields): Promise<UserInterface | { error: string }> => {
+  try {
+    const user: UserInterface = await api
+      .post('auth/sign-in', {
+        json: { email, password },
+      })
+      .json();
+    localStorage.setItem('admin', JSON.stringify(user));
+    toast.success('Login Successful!');
+    return user;
+  } catch (error) {
+    const errorMessage = 'Failed to login';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};
