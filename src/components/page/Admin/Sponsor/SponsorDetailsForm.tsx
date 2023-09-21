@@ -61,13 +61,15 @@ const SponsorDetailsForm = ({
 }: SponsorDetailsFormProps) => {
   const classes = useSponsorDetailsFormStyles();
 
-  const [defaultImage, setDefaultImage] = useState(
-    payload.businessAvatar
-      ? typeof payload.businessAvatar === 'string'
+  let businessAvatarUrl;
+  if (payload.businessAvatar) {
+    businessAvatarUrl =
+      typeof payload.businessAvatar === 'string'
         ? payload.businessAvatar
-        : URL.createObjectURL(payload?.businessAvatar)
-      : undefined
-  );
+        : URL.createObjectURL(payload?.businessAvatar);
+  }
+
+  const [defaultImage, setDefaultImage] = useState(businessAvatarUrl);
 
   const {
     handleSubmit,
@@ -136,9 +138,11 @@ const SponsorDetailsForm = ({
           );
         }
       }
-      setDefaultImage(payload.businessAvatar as string);
+      if (isEdit) {
+        setDefaultImage(payload.businessAvatar as string);
+      }
     }
-  }, [payload, setValue]);
+  }, [payload, setValue, isEdit]);
 
   return (
     <form onSubmit={onSubmit}>
