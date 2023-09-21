@@ -14,6 +14,7 @@ import CustomTextArea from '@/components/common/TextArea';
 import Button from '@/components/common/Button';
 import { PartialCreateSponsorInterface } from '@/actions/sponsors';
 import { useEffect, useState } from 'react';
+import { LocationInterface } from '@/backend/services/locations/interfaces/location.interface';
 
 const isBrowser =
   typeof window !== 'undefined' && typeof window.File !== 'undefined';
@@ -38,12 +39,25 @@ const validationSchema = z.object({
 
 type ValidationSchema = z.infer<typeof validationSchema>;
 
-interface SponsorDetailsFormProps {
-  onSave: (value: PartialCreateSponsorInterface) => void;
-  payload: PartialCreateSponsorInterface;
+interface ModifiedCreateSponsorInterface extends PartialCreateSponsorInterface {
+  locations?: LocationInterface[];
 }
 
-const SponsorDetailsForm = ({ onSave, payload }: SponsorDetailsFormProps) => {
+interface SponsorDetailsFormProps {
+  onSave: (value: PartialCreateSponsorInterface) => void;
+  payload: ModifiedCreateSponsorInterface;
+  isEdit: boolean;
+  onClose: (e: MouseEvent | object) => void;
+  isLoading: boolean;
+}
+
+const SponsorDetailsForm = ({
+  onSave,
+  payload,
+  isEdit,
+  onClose,
+  isLoading,
+}: SponsorDetailsFormProps) => {
   const classes = useSponsorDetailsFormStyles();
 
   const [defaultImage, setDefaultImage] = useState(
@@ -60,14 +74,26 @@ const SponsorDetailsForm = ({ onSave, payload }: SponsorDetailsFormProps) => {
     register,
     watch,
     setValue,
-    formState: { isValid },
+    formState: { isValid, isDirty },
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
     defaultValues: payload as ValidationSchema,
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
-  const onSubmit = handleSubmit(data => onSave(data));
+  const onSubmit = handleSubmit(data => {
+    if (isEdit) {
+      const formattedPayload = {
+        exemptions: payload.exemptions,
+        regulations: payload.regulations,
+        interests: payload.interests,
+        investmentStructures: payload.investmentStructures,
+      };
+      onSave({ ...data, ...formattedPayload });
+    } else {
+      onSave(data);
+    }
+  });
 
   const regionsOptions = Object.values(Regions).map(item => {
     return { label: item, value: item };
@@ -78,12 +104,32 @@ const SponsorDetailsForm = ({ onSave, payload }: SponsorDetailsFormProps) => {
   });
 
   useEffect(() => {
+    const locationFields: (keyof LocationInterface)[] = [
+      'street1',
+      'street2',
+      'city',
+      'zipCode',
+      'stateOrCountry',
+      'stateOrCountryDescription',
+    ];
+    if (payload.locations && payload.locations.length > 0) {
+      const location = payload.locations[0];
+
+      locationFields.forEach(field => {
+        setValue(field as keyof ValidationSchema, location[field]);
+      });
+    }
     if (payload) {
       for (const key in payload) {
-        if (key in payload) {
+        if (
+          Object.prototype.hasOwnProperty.call(payload, key) &&
+          !locationFields.includes(key as keyof LocationInterface)
+        ) {
           setValue(
             key as keyof ValidationSchema,
-            payload[key as keyof typeof payload]
+            payload[
+              key as keyof ModifiedCreateSponsorInterface
+            ] as unknown as ValidationSchema[keyof ValidationSchema]
           );
         }
       }
@@ -212,9 +258,20 @@ const SponsorDetailsForm = ({ onSave, payload }: SponsorDetailsFormProps) => {
         />
       </Box>
       <Box sx={classes.buttonWrapper}>
-        <Button type="submit" disabled={!isValid}>
-          Next
-        </Button>
+        {isEdit ? (
+          <>
+            <Button variant="secondary" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={!isDirty || isLoading}>
+              Save
+            </Button>
+          </>
+        ) : (
+          <Button type="submit" disabled={!isValid}>
+            Next
+          </Button>
+        )}
       </Box>
     </form>
   );

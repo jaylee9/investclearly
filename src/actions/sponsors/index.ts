@@ -159,3 +159,23 @@ export const createSponsor = async (
     return { error: 'Failed to create sponsor' };
   }
 };
+
+export const editSponsor = async (
+  payload: PartialCreateSponsorInterface & { id: number }
+): Promise<SponsorInterface | { error: string }> => {
+  const formData = serialize(payload, {
+    indices: true,
+    nullsAsUndefineds: true,
+  });
+
+  try {
+    const response: SponsorInterface = await api
+      .put(`admin/sponsors/${payload.id}`, {
+        body: formData,
+      })
+      .json();
+    return response;
+  } catch (error) {
+    return { error: 'Failed to edit sponsor' };
+  }
+};

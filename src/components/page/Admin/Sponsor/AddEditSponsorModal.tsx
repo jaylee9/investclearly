@@ -5,36 +5,43 @@ import Logo from '@/assets/components/Logo';
 import { useEffect, useState } from 'react';
 import StepsComponent from '@/components/common/StepsComponent';
 import SponsorDetailsForm from './SponsorDetailsForm';
-import { PartialCreateSponsorInterface } from '@/actions/sponsors';
+import {
+  PartialCreateSponsorInterface,
+  createSponsor,
+  editSponsor,
+} from '@/actions/sponsors';
 import FinancialMetricsForm from './FinancialMetricsForm';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
+import Button from '@/components/common/Button';
 
 export interface AddEditSponsorModalProps
   extends Omit<ModalProps, 'children' | 'onSubmit'> {
-  onSubmit: (data: PartialCreateSponsorInterface) => void;
-  isSuccessAdded: boolean;
-  setIsSuccessAdded: (v: boolean) => void;
   sponsor?: SponsorInterface;
+  isEdit: boolean;
+  refetchSponsors: () => void;
 }
 
 const steps = {
   'Sponsor Details': 0,
   'Financial Metrics': 1,
+  'Sponsor Added': 2,
 };
 
 const AddEditSponsorModal = ({
   onClose,
-  onSubmit,
-  isSuccessAdded,
-  setIsSuccessAdded,
   sponsor,
+  isEdit,
+  refetchSponsors,
   ...props
 }: AddEditSponsorModalProps) => {
-  const classes = useAddEditSponsorModalStyles();
   const [step, setStep] = useState(steps['Sponsor Details']);
+  const classes = useAddEditSponsorModalStyles({
+    isAdded: step === steps['Sponsor Added'],
+  });
   const [payload, setPayload] = useState<PartialCreateSponsorInterface>(
     sponsor || {}
   );
+
   useEffect(() => {
     if (sponsor) {
       if (!!sponsor.locations.length) {
@@ -68,20 +75,42 @@ const AddEditSponsorModal = ({
     }
   };
 
-  const handleSaveDetails = (data: PartialCreateSponsorInterface) => {
-    setPayload(data);
-    setStep(steps['Financial Metrics']);
+  const handleEdit = async (data: PartialCreateSponsorInterface) => {
+    if (sponsor) {
+      setIsLoading(true);
+      const response = await editSponsor({ ...data, id: sponsor.id });
+
+      if (!('error' in response)) {
+        await refetchSponsors();
+        setPayload(response);
+      }
+      setIsLoading(false);
+    }
   };
 
-  const handleSubmitFinancialMetrics = (
+  const handleSaveDetails = (data: PartialCreateSponsorInterface) => {
+    if (isEdit) {
+      handleEdit(data);
+    } else {
+      setPayload(data);
+      setStep(steps['Financial Metrics']);
+    }
+  };
+
+  const handleSubmitFinancialMetrics = async (
     data: PartialCreateSponsorInterface
   ) => {
-    setIsLoading(true);
-    onSubmit(data);
-    if (isSuccessAdded) {
+    if (isEdit) {
+      handleEdit(data);
+    } else {
+      setIsLoading(true);
+      const response = await createSponsor(data);
+
+      if (!('error' in response && !isEdit)) {
+        await refetchSponsors();
+        setStep(steps['Sponsor Added']);
+      }
       setIsLoading(false);
-      setStep(steps['Sponsor Details']);
-      setIsSuccessAdded(false);
     }
   };
 
@@ -96,15 +125,29 @@ const AddEditSponsorModal = ({
           <i className="icon-Cross" onClick={e => handleClose(e)} />
         </Box>
         <Box sx={classes.contentWrapper}>
-          <StepsComponent steps={Object.keys(steps)} currentStep={step} />
+          {step !== steps['Sponsor Added'] && (
+            <StepsComponent
+              steps={Object.keys(steps).filter(
+                step => step !== 'Sponsor Added'
+              )}
+              currentStep={step}
+              isEditable={isEdit}
+              setStep={setStep}
+            />
+          )}
           <Box sx={classes.content}>
-            <Typography variant="h4" sx={classes.title}>
-              {Object.keys(steps)[step]}
-            </Typography>
+            {step !== steps['Sponsor Added'] && (
+              <Typography variant="h4" sx={classes.title}>
+                {Object.keys(steps)[step]}
+              </Typography>
+            )}
             {step === steps['Sponsor Details'] && (
               <SponsorDetailsForm
                 onSave={handleSaveDetails}
                 payload={payload}
+                isEdit={isEdit}
+                onClose={handleClose}
+                isLoading={isLoading}
               />
             )}
             {step === steps['Financial Metrics'] && (
@@ -113,7 +156,17 @@ const AddEditSponsorModal = ({
                 onSave={handleSubmitFinancialMetrics}
                 payload={payload}
                 isLoading={isLoading}
+                isEdit={isEdit}
+                onClose={handleClose}
               />
+            )}
+            {step === steps['Sponsor Added'] && (
+              <Box sx={classes.sponsorAddedContent}>
+                <Typography variant="h3">Sponsor has been created</Typography>
+                <Button className="sponsors-button" onClick={handleClose}>
+                  To the Sponsors
+                </Button>
+              </Box>
             )}
           </Box>
         </Box>

@@ -12,12 +12,7 @@ import EllipsisText from '@/components/common/EllipsisText';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { debounce } from 'lodash';
-import {
-  GetAllSponsorsResponse,
-  PartialCreateSponsorInterface,
-  createSponsor,
-  getAllSponsors,
-} from '@/actions/sponsors';
+import { GetAllSponsorsResponse, getAllSponsors } from '@/actions/sponsors';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import AddEditSponsorModal from '@/components/page/Admin/Sponsor/AddEditSponsorModal';
 
@@ -33,7 +28,6 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
   );
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const [isSuccessAdded, setIsSuccessAdded] = useState(false);
 
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
@@ -163,15 +157,6 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
 
   const handleCloseModal = () => setOpenModal(null);
 
-  const handleCreateSponsor = async (data: PartialCreateSponsorInterface) => {
-    const response = await createSponsor(data);
-    if (!('error' in response)) {
-      await refetch();
-      setIsSuccessAdded(true);
-      handleCloseModal();
-    }
-  };
-
   function isSponsorInterface(
     data: 'add' | SponsorInterface | null
   ): data is SponsorInterface {
@@ -218,10 +203,9 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
       <AddEditSponsorModal
         open={!!openModal}
         onClose={handleCloseModal}
-        onSubmit={handleCreateSponsor}
-        setIsSuccessAdded={setIsSuccessAdded}
-        isSuccessAdded={isSuccessAdded}
         sponsor={isSponsorInterface(openModal) ? openModal : undefined}
+        isEdit={isSponsorInterface(openModal)}
+        refetchSponsors={refetch}
       />
     </Layout>
   );

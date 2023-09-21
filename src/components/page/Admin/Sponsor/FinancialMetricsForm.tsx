@@ -32,6 +32,8 @@ interface FinancialMetricsFormProps {
   onSave: (value: PartialCreateSponsorInterface) => void;
   payload: PartialCreateSponsorInterface;
   isLoading: boolean;
+  isEdit: boolean;
+  onClose: (e: MouseEvent | object) => void;
 }
 
 const FinancialMetricsForm = ({
@@ -39,6 +41,8 @@ const FinancialMetricsForm = ({
   onSave,
   payload,
   isLoading,
+  isEdit,
+  onClose,
 }: FinancialMetricsFormProps) => {
   const classes = useFinancialMetricsFormStyles();
 
@@ -52,7 +56,7 @@ const FinancialMetricsForm = ({
     handleSubmit,
     register,
     control,
-    formState: { isValid },
+    formState: { isValid, isDirty },
     setValue,
     watch,
   } = useForm<ValidationSchema>({
@@ -66,15 +70,28 @@ const FinancialMetricsForm = ({
 
   const onSubmit = handleSubmit(data => {
     const { aum, cashOnCash, fees, equityMultiple, holdPeriod } = data;
-    onSave({
-      ...data,
-      ...payload,
+    const formattedValues = {
       aum: +aum,
       cashOnCash: +cashOnCash,
       fees: +fees,
       equityMultiple: +equityMultiple,
       holdPeriod: +holdPeriod,
-    });
+      regions: payload.regions,
+      specialties: payload.specialties,
+    };
+
+    const formattedPayload = isEdit
+      ? {
+          ...data,
+          ...formattedValues,
+        }
+      : {
+          ...data,
+          ...payload,
+          ...formattedValues,
+        };
+
+    onSave(formattedPayload);
   });
 
   const regulationsOptions = Object.values(Regulations).map(item => {
@@ -96,13 +113,16 @@ const FinancialMetricsForm = ({
       for (const key in payload) {
         if (key in payload) {
           const value = payload[key as keyof typeof payload];
-          if (typeof value !== 'undefined') {
+          if (typeof value !== 'undefined' && key !== 'investmentStructures') {
             setValue(
               key as keyof ValidationSchema,
               Array.isArray(value) ? value : String(value)
             );
           }
         }
+      }
+      if (payload.investmentStructures?.length) {
+        setValue('investmentStructures', payload.investmentStructures?.[0]);
       }
     }
   }, [payload, setValue]);
@@ -247,19 +267,30 @@ const FinancialMetricsForm = ({
           />
         </Box>
       </Box>
-      <Box sx={classes.buttonsWrapper}>
-        <Button
-          variant="tertiary"
-          customStyles={{ padding: 0 }}
-          onClick={handleBack}
-          disabled={isLoading}
-        >
-          Back
-        </Button>
-        <Button disabled={!isValid || isLoading} type="submit">
-          List Sponsor
-        </Button>
-      </Box>
+      {isEdit ? (
+        <Box sx={classes.editButtonsWrapper}>
+          <Button variant="secondary" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={!isDirty || isLoading}>
+            Save
+          </Button>
+        </Box>
+      ) : (
+        <Box sx={classes.buttonsWrapper}>
+          <Button
+            variant="tertiary"
+            customStyles={{ padding: 0 }}
+            onClick={handleBack}
+            disabled={isLoading}
+          >
+            Back
+          </Button>
+          <Button disabled={!isValid || isLoading} type="submit">
+            List Sponsor
+          </Button>
+        </Box>
+      )}
     </form>
   );
 };

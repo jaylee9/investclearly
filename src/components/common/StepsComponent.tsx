@@ -5,31 +5,58 @@ import clsx from 'clsx';
 interface StepsComponentProps {
   currentStep: number;
   steps: string[];
+  isEditable?: boolean;
+  setStep?: (v: number) => void;
 }
 
-const StepsComponent = ({ currentStep, steps }: StepsComponentProps) => {
+const StepsComponent = ({
+  currentStep,
+  steps,
+  isEditable,
+  setStep,
+}: StepsComponentProps) => {
   const classes = useStepsComponentStyles();
   const stepIndicatorClassName = (index: number) =>
     clsx('step-status', {
       'step-status-current': index === currentStep,
-      'step-status-completed': index < currentStep,
+      'step-status-completed':
+        index < currentStep || (index !== currentStep && isEditable),
     });
 
   const stepLabelClassName = (index: number) =>
     clsx('step-label', {
       'step-label-current': index === currentStep,
-      'step-label-completed': index < currentStep,
+      'step-label-completed':
+        index < currentStep || (index !== currentStep && isEditable),
     });
+
+  const handleChangeStep = (value: number) => {
+    if (setStep) {
+      setStep(value);
+    }
+  };
+
   return (
     <Box sx={classes.root}>
       {steps.map((step, index) => (
         <Box key={index} sx={classes.stepWrapper}>
-          <Box sx={classes.defaultStep}>
+          <Box
+            sx={{
+              ...classes.defaultStep,
+              cursor:
+                isEditable && index !== currentStep ? 'pointer' : 'default',
+            }}
+            onClick={() => handleChangeStep(index)}
+          >
             <Typography
               variant="body1"
               className={stepIndicatorClassName(index)}
             >
-              {index < currentStep ? <i className="icon-Check"></i> : index + 1}
+              {index < currentStep || isEditable ? (
+                <i className="icon-Check"></i>
+              ) : (
+                index + 1
+              )}
             </Typography>
             <Typography variant="body1" className={stepLabelClassName(index)}>
               {step}
