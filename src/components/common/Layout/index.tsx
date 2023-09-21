@@ -79,7 +79,8 @@ const Layout = ({
   const handleLogout = async () => {
     const response = await logout();
     if (!('error' in response)) {
-      push('/');
+      localStorage.removeItem('admin');
+      push('/admin-panel/login');
     }
   };
 

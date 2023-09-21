@@ -14,6 +14,7 @@ import clsx from 'clsx';
 import { debounce } from 'lodash';
 import { GetAllSponsorsResponse, getAllSponsors } from '@/actions/sponsors';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
+import withAdminPrivateRoute from '@/HOC/withAdminPrivateRoute';
 
 interface AdminSponsorsPageProps {
   sponsorsResponse: GetAllSponsorsResponse;
@@ -204,4 +205,4 @@ export const getServerSideProps = async () => {
   };
 };
 
-export default SponsorsPage;
+export default withAdminPrivateRoute(SponsorsPage);

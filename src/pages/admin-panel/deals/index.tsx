@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { DealStatuses } from '@/backend/constants/enums/deal-statuses';
 import clsx from 'clsx';
 import { debounce } from 'lodash';
+import withAdminPrivateRoute from '@/HOC/withAdminPrivateRoute';
 
 interface AdminDealsPageProps {
   dealsResponse: GetAllDealsResponse;
@@ -196,4 +197,4 @@ export const getServerSideProps = async () => {
   };
 };
 
-export default DealsPage;
+export default withAdminPrivateRoute(DealsPage);
