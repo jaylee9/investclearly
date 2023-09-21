@@ -19,6 +19,7 @@ import { IncomeAndNetWorth } from '../constants/enums/income-and-worth';
 import { Investment } from './investments.entity';
 import { Bookmark } from './bookmark.entity';
 import { Location } from './locations.entity';
+import { Roles } from '../constants/enums/roles';
 
 @Entity({ name: 'user' })
 export class User {
@@ -96,6 +97,13 @@ export class User {
 
   @Column({ type: 'int', nullable: true })
   holdPeriodMax: number;
+
+  @Column({
+    type: 'enum',
+    enum: Roles,
+    default: Roles.user,
+  })
+  role: string;
 
   reviewsCount: number;
 
