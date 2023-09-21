@@ -157,11 +157,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
 
   const handleCloseModal = () => setOpenModal(null);
 
-  function isSponsorInterface(
-    data: 'add' | SponsorInterface | null
-  ): data is SponsorInterface {
-    return data !== null && data !== 'add';
-  }
+  const isSponsorInterface = openModal !== null && openModal !== 'add';
 
   return (
     <Layout variant={LayoutVariant.Admin}>
@@ -203,8 +199,8 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
       <AddEditSponsorModal
         open={!!openModal}
         onClose={handleCloseModal}
-        sponsor={isSponsorInterface(openModal) ? openModal : undefined}
-        isEdit={isSponsorInterface(openModal)}
+        sponsor={isSponsorInterface ? openModal : undefined}
+        isEdit={isSponsorInterface}
         refetchSponsors={refetch}
       />
     </Layout>
