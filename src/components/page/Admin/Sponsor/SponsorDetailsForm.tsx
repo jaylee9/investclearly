@@ -1,20 +1,21 @@
+import { Box } from '@mui/material';
+import { Controller, useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { AssetClasses } from '@/backend/constants/enums/asset-classes';
+import { Regions } from '@/backend/constants/enums/regions';
+import { LocationInterface } from '@/backend/services/locations/interfaces/location.interface';
+import { PartialCreateSponsorInterface } from '@/actions/sponsors';
+import Button from '@/components/common/Button';
+import CustomSelect, { SelectVariant } from '@/components/common/Select';
+import CustomTextArea from '@/components/common/TextArea';
+import Input from '@/components/common/Input';
 import ProfilePictureUploader, {
   ProfilePictureUploaderVariant,
 } from '@/components/common/ProfilePictureUploader';
-import { Controller, useForm } from 'react-hook-form';
-import z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import Input from '@/components/common/Input';
-import { Box } from '@mui/material';
 import { useSponsorDetailsFormStyles } from './styles';
-import CustomSelect, { SelectVariant } from '@/components/common/Select';
-import { Regions } from '@/backend/constants/enums/regions';
-import { AssetClasses } from '@/backend/constants/enums/asset-classes';
-import CustomTextArea from '@/components/common/TextArea';
-import Button from '@/components/common/Button';
-import { PartialCreateSponsorInterface } from '@/actions/sponsors';
-import { useEffect, useState } from 'react';
-import { LocationInterface } from '@/backend/services/locations/interfaces/location.interface';
 
 const isBrowser =
   typeof window !== 'undefined' && typeof window.File !== 'undefined';
