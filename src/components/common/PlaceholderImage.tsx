@@ -14,10 +14,8 @@ const PlaceholderImage: React.FC<SkeletonImageProps> = ({
   const { alt, src, ...rest } = props;
   const [srcState, setSrcState] = useState(src || defaultImage);
   useEffect(() => {
-    if (src) {
-      setSrcState(src);
-    }
-  }, [src]);
+    setSrcState(src || defaultImage);
+  }, [src, defaultImage]);
   return (
     <SkeletonImage
       alt={alt}
