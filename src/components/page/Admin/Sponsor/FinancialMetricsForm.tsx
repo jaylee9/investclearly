@@ -94,17 +94,20 @@ const FinancialMetricsForm = ({
     onSave(formattedPayload);
   });
 
-  const regulationsOptions = Object.values(Regulations).map(item => {
-    return { label: item, value: item };
-  });
+  const regulationsOptions = Object.values(Regulations).map(item => ({
+    label: item,
+    value: item,
+  }));
 
-  const exemptionsOptions = Object.values(Exemptions).map(item => {
-    return { label: item, value: item };
-  });
+  const exemptionsOptions = Object.values(Exemptions).map(item => ({
+    label: item,
+    value: item,
+  }));
 
-  const interestsOptions = Object.values(Interests).map(item => {
-    return { label: item, value: item };
-  });
+  const interestsOptions = Object.values(Interests).map(item => ({
+    label: item,
+    value: item,
+  }));
 
   const handleBack = () => setStep(0);
 

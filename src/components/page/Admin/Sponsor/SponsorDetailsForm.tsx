@@ -96,13 +96,15 @@ const SponsorDetailsForm = ({
     }
   });
 
-  const regionsOptions = Object.values(Regions).map(item => {
-    return { label: item, value: item };
-  });
+  const regionsOptions = Object.values(Regions).map(item => ({
+    label: item,
+    value: item,
+  }));
 
-  const specialitiesOptions = Object.values(AssetClasses).map(item => {
-    return { label: item, value: item };
-  });
+  const specialitiesOptions = Object.values(AssetClasses).map(item => ({
+    label: item,
+    value: item,
+  }));
 
   useEffect(() => {
     const locationFields: (keyof LocationInterface)[] = [
