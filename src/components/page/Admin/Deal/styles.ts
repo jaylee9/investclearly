@@ -58,6 +58,7 @@ export const useGeneralInfoFormStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       gap: '12px',
+      marginBottom: '40px',
     },
     noResults: {
       color: palette.text.secondary,
@@ -95,6 +96,20 @@ export const useGeneralInfoFormStyles = () => {
     },
     address: {
       color: palette.text.secondary,
+    },
+    doubleInputsWrapper: {
+      display: 'flex',
+      gap: '12px',
+      width: '100%',
+      '& > div': {
+        width: '50% !important',
+      },
+    },
+    buttonsWrapper: {
+      display: 'flex',
+      justifyContent: 'end',
+      paddingTop: '16px',
+      gap: '8px',
     },
   };
 };

@@ -38,7 +38,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
     setSearchTerm('');
   };
 
-  const { data, isLoading } = useQuery<GetAllDealsResponse>(
+  const { data, isLoading, refetch } = useQuery<GetAllDealsResponse>(
     ['deals', page, searchTerm],
     () =>
       getAllDeals({
@@ -194,6 +194,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
         open={openEditModal}
         onClose={handleCloseEditModal}
         deal={choosedDeal as DealInterface}
+        refetch={refetch}
       />
     </Layout>
   );

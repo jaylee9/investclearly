@@ -1134,6 +1134,7 @@ export const useFileUploaderStyles = () => {
     },
     infoText: {
       color: palette.text.secondary,
+      textAlign: 'center',
       '& .fileLength': {
         transition: 'color 0.3s ease, font-weight 0.3s ease',
       },
@@ -1202,6 +1203,32 @@ export const useFileUploaderStyles = () => {
     additionalInfo: {
       maxWidth: '75%',
       color: palette.text.secondary,
+    },
+    previewImageWrapper: {
+      position: 'relative',
+      '& img': {
+        borderRadius: '8px',
+        width: '100%',
+        height: '188px',
+      },
+    },
+    iconCrossWrapper: {
+      width: '40px',
+      height: '40px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: '1230px',
+      position: 'absolute',
+      top: '8px',
+      right: '8px',
+      background: palette.primary.light,
+      boxShadow: customShadows.header,
+      cursor: 'pointer',
+      '& .icon-Cross': {
+        fontSize: '24px',
+        color: palette.common.white,
+      },
     },
   };
 };

@@ -10,12 +10,14 @@ interface CustomDateRangePickerProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
   topLabel?: string;
+  placeholder?: string;
 }
 
 const CustomDateRangePicker = <T extends FieldValues>({
   control,
   name,
   topLabel,
+  placeholder,
 }: CustomDateRangePickerProps<T>) => {
   return (
     <Box>
@@ -36,6 +38,7 @@ const CustomDateRangePicker = <T extends FieldValues>({
           <DatePicker
             selected={value}
             onChange={onChange}
+            placeholderText={placeholder}
             customInput={
               <Input
                 showClearOption={false}
