@@ -1326,6 +1326,7 @@ export const useForgotPasswordFormStyles = () => {
   return {
     root: {
       textAlign: 'center',
+      width: '420px',
     },
     infoText: {
       marginBottom: '40px',
@@ -1335,7 +1336,6 @@ export const useForgotPasswordFormStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       gap: '32px',
-      width: '420px',
       marginBottom: '16px',
     },
     rememberPassword: {
@@ -1348,10 +1348,13 @@ export const useForgotPasswordFormStyles = () => {
 
 export const useResetPasswordFormStyles = () => {
   return {
+    root: {
+      textAlign: 'center',
+      width: '420px',
+    },
     formWrapper: {
       display: 'flex',
       flexDirection: 'column',
-      width: '420px',
       marginBottom: '16px',
     },
   };
@@ -1359,6 +1362,9 @@ export const useResetPasswordFormStyles = () => {
 
 export const usePasswordChangedSuccessfullyStyles = () => {
   return {
+    root: {
+      textAlign: 'center',
+    },
     text: {
       marginBottom: '40px',
       color: palette.text.secondary,

@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import Button from '@/components/common/Button';
 import Link, { LinkProps } from 'next/link';
 
@@ -14,7 +14,7 @@ const PasswordChangedSuccessfully = ({
   const styles = usePasswordChangedSuccessfullyStyles();
 
   return (
-    <>
+    <Box sx={styles.root}>
       <Typography
         variant="h2"
         fontWeight={600}
@@ -29,7 +29,7 @@ const PasswordChangedSuccessfully = ({
       <Link href={href}>
         <Button customStyles={{ width: '100%' }}>Log in</Button>
       </Link>
-    </>
+    </Box>
   );
 };
 
