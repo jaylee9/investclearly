@@ -8,6 +8,7 @@ import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import { addPassword } from '@/actions/auth';
 import { useState } from 'react';
+import { useUser } from '@/contexts/User';
 
 const validationSchema = z
   .object({
@@ -43,6 +44,8 @@ const AddPasswordModal = ({
 
   const [isAddedPassword, setIsAddedPassword] = useState(false);
 
+  const { setUser } = useUser();
+
   const {
     handleSubmit,
     register,
@@ -56,6 +59,8 @@ const AddPasswordModal = ({
     const { newPassword } = data;
     const response = await addPassword({ newPassword });
     if (!('error' in response)) {
+      localStorage.removeItem('user');
+      setUser(null);
       setIsAddedPassword(true);
     }
   });

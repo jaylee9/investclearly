@@ -12,6 +12,7 @@ import { useState } from 'react';
 import DeactivateAccountModal from './Modals/DeactivateAccount';
 import ChangePasswordModal from './Modals/ChangePassword';
 import AddPasswordModal from './Modals/AddPassword';
+import { useRouter } from 'next/router';
 
 const validationSchema = z.object({
   newEmail: z.string().email({ message: 'Email must be a valid email' }),
@@ -31,6 +32,8 @@ enum ModalTypes {
 const CredentialsSettings = () => {
   const classes = useCredentialsSettingsStyles();
 
+  const router = useRouter();
+
   const { user, setUser } = useUser();
 
   const [openModals, setOpenModals] = useState({
@@ -46,6 +49,9 @@ const CredentialsSettings = () => {
   };
 
   const handleCloseModal = (key: ModalTypes) => {
+    if (!user) {
+      router.push('/login');
+    }
     setOpenModals(prevState => {
       return { ...prevState, [key]: false };
     });
@@ -94,12 +100,14 @@ const CredentialsSettings = () => {
     });
   };
 
+  const isGoogleAccount = !!user?.googleId && !user.isPasswordAdded;
+
   return (
     <Box sx={classes.root}>
       <Typography variant="h5" sx={classes.title}>
         Email
       </Typography>
-      {!!user?.googleId && (
+      {isGoogleAccount && (
         <Typography variant="caption" sx={classes.googleWarning}>
           <i className="icon-Warning" />
           You can&apos;t change the email since you&apos;ve been authenticated
@@ -109,7 +117,7 @@ const CredentialsSettings = () => {
       <form onSubmit={onSubmit}>
         <Input
           topLabel="Email"
-          disabled={!!user?.googleId}
+          disabled={isGoogleAccount}
           register={register('newEmail')}
           value={watch('newEmail')}
           showClearOption={false}
@@ -120,7 +128,7 @@ const CredentialsSettings = () => {
         />
         <Input
           topLabel="Password"
-          disabled={!!user?.googleId}
+          disabled={isGoogleAccount}
           register={register('password')}
           value={watch('password')}
           isPassword
@@ -130,7 +138,7 @@ const CredentialsSettings = () => {
           errorText={errors.password?.message}
           error={!!errors.password?.message}
         />
-        {!user?.googleId && (
+        {!isGoogleAccount && (
           <Box sx={classes.buttonsWrapper}>
             <Button
               variant="tertiary"
@@ -153,13 +161,13 @@ const CredentialsSettings = () => {
           customStyles={{ padding: 0, marginBottom: '32px', display: 'block' }}
           onClick={() =>
             handleOpenModal(
-              !!user?.googleId
+              isGoogleAccount
                 ? ModalTypes.ADD_PASSWORD
                 : ModalTypes.CHANGE_PASSWORD
             )
           }
         >
-          {!!user?.googleId ? 'Add' : 'Change'} password
+          {isGoogleAccount ? 'Add' : 'Change'} password
         </Button>
         <Button
           color="error"
