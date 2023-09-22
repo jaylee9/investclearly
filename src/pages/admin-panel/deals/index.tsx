@@ -2,7 +2,6 @@ import Layout, { LayoutVariant } from '@/components/common/Layout';
 import { Box, Typography } from '@mui/material';
 import useAdminDealsStyles from '@/pages_styles/adminDealsStyles';
 import Input from '@/components/common/Input';
-import Button from '@/components/common/Button';
 import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
@@ -155,7 +154,6 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
               onChange={e => handleSearch(e.target.value)}
               onClear={handleClearSearch}
             />
-            <Button>Add Deal</Button>
           </Box>
           <CustomTable<DealInterface>
             data={data?.deals as DealInterface[]}
@@ -171,7 +169,6 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
       ) : (
         <Box sx={classes.noDealsContent}>
           <Typography variant="h4">There are no published Deals yet</Typography>
-          <Button>Add Deal</Button>
         </Box>
       )}
     </Layout>
