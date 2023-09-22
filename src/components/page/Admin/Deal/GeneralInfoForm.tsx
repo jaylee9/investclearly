@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Typography } from '@mui/material';
@@ -12,10 +12,16 @@ import PlaceholderImage from '@/components/common/PlaceholderImage';
 import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 import TagSelector from '@/components/common/TagSelector';
 import { useQuery } from 'react-query';
+import CustomSelect, { SelectVariant } from '@/components/common/Select';
+import { AssetClasses } from '@/backend/constants/enums/asset-classes';
+import FileUploader from '@/components/common/FileUploader';
+import CustomTextArea from '@/components/common/TextArea';
+import CustomDateRangePicker from '@/components/common/DateRangePicker';
+import Button from '@/components/common/Button';
+import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 
 const validationSchema = z.object({
   dealTitle: z.string().min(1),
-  dealSponsor: z.string().min(1),
   assetClass: z.string().min(1),
   description: z.string().min(1),
   closeDate: z.string().min(1),
@@ -29,11 +35,28 @@ interface Tag {
   id?: number;
 }
 
-const GeneralInfoForm = () => {
+interface GeneralInfoFormProps {
+  onClose: (e: MouseEvent | object) => void;
+  refetch: () => void;
+  deal: DealInterface;
+}
+
+const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
   const classes = useGeneralInfoFormStyles();
   const [tagSelectorValue, setTagSelectorValue] = useState('');
   const [debouncedValue, setDebouncedValue] = useState(tagSelectorValue);
   const [showVariants, setShowVariants] = useState(false);
+  const [choosedFile, setChoosedFile] = useState<File | null>();
+  const [defaultImage, setDefaultImage] = useState('');
+
+  const onUpload = (file: File) => {
+    setChoosedFile(file);
+  };
+
+  const onDelete = () => {
+    setDefaultImage('');
+    setChoosedFile(null);
+  };
 
   const handleOpen = () => setShowVariants(true);
   const handleClose = () => setShowVariants(false);
@@ -60,7 +83,6 @@ const GeneralInfoForm = () => {
 
   const defaultTag = { name: '', id: undefined };
   const [tag, setTag] = useState<Tag>(defaultTag);
-  const dirtyTag = tag.name !== defaultTag.name && tag.id !== defaultTag.id;
 
   const handleClearTag = () => {
     setTag(defaultTag);
@@ -73,10 +95,38 @@ const GeneralInfoForm = () => {
     setTagSelectorValue('');
   };
 
-  const { handleSubmit, register, watch } = useForm<ValidationSchema>({
-    resolver: zodResolver(validationSchema),
-  });
+  const { handleSubmit, register, watch, control, setValue } =
+    useForm<ValidationSchema>({
+      resolver: zodResolver(validationSchema),
+    });
   const onSubmit = handleSubmit(data => console.log(data));
+
+  const assetClassOptions = Object.values(AssetClasses).map(item => ({
+    label: item,
+    value: item,
+  }));
+
+  useEffect(() => {
+    if (deal) {
+      Object.keys(validationSchema.shape).forEach(key => {
+        const keyOfDeal = key as keyof DealInterface;
+        if (keyOfDeal && deal[keyOfDeal] !== undefined) {
+          const value = deal[keyOfDeal];
+
+          if (typeof value === 'string') {
+            setValue(key as keyof ValidationSchema, value);
+          }
+        }
+      });
+      if (deal.attachments.length) setDefaultImage(deal.attachments?.[0].path);
+      if (deal.sponsor) {
+        if (deal.sponsor.id && deal.sponsor.legalName)
+          setTag({ id: deal.sponsor.id, name: deal.sponsor.legalName });
+      }
+    }
+  }, [deal, setValue]);
+
+  console.log(deal);
 
   return (
     <form onSubmit={onSubmit}>
@@ -147,6 +197,60 @@ const GeneralInfoForm = () => {
             </Box>
           </TagSelector>
         </Box>
+        <Controller
+          control={control}
+          name="assetClass"
+          render={({ field: { onChange, value } }) => (
+            <CustomSelect
+              options={assetClassOptions}
+              variant={SelectVariant.Dark}
+              onChange={onChange}
+              value={{ label: value, value }}
+              topLabel="Asset Class"
+              placeholder="Class"
+            />
+          )}
+        />
+        <Box>
+          <Typography variant="caption" fontWeight={600}>
+            Primary Deal Image
+          </Typography>
+          <FileUploader
+            type="SingleImage"
+            onUpload={onUpload}
+            onDelete={onDelete}
+            defaultImage={defaultImage}
+          />
+        </Box>
+        <CustomTextArea
+          placeholder="Tell us more about your deal"
+          topLabel="Description"
+          register={register('description')}
+          value={watch('description')}
+          height="140px"
+        />
+        <Box sx={classes.doubleInputsWrapper}>
+          {/* <CustomDateRangePicker
+            topLabel="Close Date"
+            control={control}
+            name="closeDate"
+            placeholder="mm/dd/yyyy"
+          /> */}
+          <Input
+            register={register('holdPeriod')}
+            topLabel="Hold Period, years"
+            placeholder="1"
+            showClearOption={false}
+            type="number"
+            value={watch('holdPeriod')}
+          />
+        </Box>
+      </Box>
+      <Box sx={classes.buttonsWrapper}>
+        <Button variant="secondary" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button type="submit">Save</Button>
       </Box>
     </form>
   );

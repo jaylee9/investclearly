@@ -9,6 +9,7 @@ import GeneralInfoForm from './GeneralInfoForm';
 
 interface EditDealModal extends Omit<ModalProps, 'children'> {
   deal: DealInterface;
+  refetch: () => void;
 }
 
 const steps = {
@@ -16,7 +17,7 @@ const steps = {
   'Financial Metrics': 1,
 };
 
-const EditDealModal = ({ onClose, ...props }: EditDealModal) => {
+const EditDealModal = ({ onClose, deal, refetch, ...props }: EditDealModal) => {
   const classes = useEditDealModalStyles();
 
   const [step, setStep] = useState(steps['General Info']);
@@ -48,7 +49,13 @@ const EditDealModal = ({ onClose, ...props }: EditDealModal) => {
             <Typography variant="h4" sx={classes.title}>
               {Object.keys(steps)[step]}
             </Typography>
-            {step === steps['General Info'] && <GeneralInfoForm />}
+            {step === steps['General Info'] && (
+              <GeneralInfoForm
+                deal={deal}
+                refetch={refetch}
+                onClose={handleClose}
+              />
+            )}
           </Box>
         </Box>
       </Box>
