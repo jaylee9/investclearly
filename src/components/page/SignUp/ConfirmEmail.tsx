@@ -25,7 +25,7 @@ const ConfirmEmail = ({ email }: ConfirmEmailProps) => {
     }
   };
   return (
-    <Box>
+    <Box sx={classes.root}>
       <Typography variant="h2" fontWeight={600} marginBottom="8px">
         Confirm your email
       </Typography>

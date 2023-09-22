@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import Layout, { LayoutVariant } from '@/components/common/Layout';
 import SignUpForm from '@/components/page/SignUp/SignUpForm';
 import { useState } from 'react';
@@ -9,13 +8,11 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   return (
     <Layout variant={LayoutVariant.Entry}>
-      <Box>
-        {email ? (
-          <ConfirmEmail email={email} />
-        ) : (
-          <SignUpForm setEmail={setEmail} />
-        )}
-      </Box>
+      {email ? (
+        <ConfirmEmail email={email} />
+      ) : (
+        <SignUpForm setEmail={setEmail} />
+      )}
     </Layout>
   );
 };

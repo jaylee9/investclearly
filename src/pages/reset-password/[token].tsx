@@ -1,6 +1,4 @@
 import Layout, { LayoutVariant } from '@/components/common/Layout';
-import { Box } from '@mui/material';
-import useResetPasswordStyles from '../../pages_styles/resetPasswordStyles';
 import PasswordChangedSuccessfully from '@/components/common/PasswordChangedSuccessfully';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
@@ -10,7 +8,6 @@ import ResetPasswordForm, {
 } from '@/components/common/ResetPasswordForm';
 
 const ResetPassword = () => {
-  const styles = useResetPasswordStyles();
   const router = useRouter();
 
   const [isPasswordChangedSuccessfully, setIsPasswordChangedSuccessfully] =
@@ -30,13 +27,11 @@ const ResetPassword = () => {
 
   return (
     <Layout variant={LayoutVariant.Entry}>
-      <Box sx={styles.root}>
-        {isPasswordChangedSuccessfully ? (
-          <PasswordChangedSuccessfully href="/login" />
-        ) : (
-          <ResetPasswordForm onSubmit={handleSubmit} />
-        )}
-      </Box>
+      {isPasswordChangedSuccessfully ? (
+        <PasswordChangedSuccessfully href="/login" />
+      ) : (
+        <ResetPasswordForm onSubmit={handleSubmit} />
+      )}
     </Layout>
   );
 };
