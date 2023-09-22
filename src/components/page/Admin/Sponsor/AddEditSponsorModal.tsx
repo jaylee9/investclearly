@@ -120,7 +120,14 @@ const AddEditSponsorModal = ({
         <Box sx={classes.header}>
           <Box sx={classes.leftPart}>
             <Logo />
-            <Typography variant="body1">List Sponsor</Typography>
+            <Box>
+              <Typography variant="body1">
+                {isEdit ? 'Edit' : 'List'} Sponsor
+              </Typography>
+              {sponsor?.legalName && (
+                <Typography variant="caption">{sponsor.legalName}</Typography>
+              )}
+            </Box>
           </Box>
           <i className="icon-Cross" onClick={e => handleClose(e)} />
         </Box>

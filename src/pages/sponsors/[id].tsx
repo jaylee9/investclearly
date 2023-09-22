@@ -313,7 +313,9 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
                 <i className="icon-Calendar"></i>
                 <Box>
                   <Typography variant="caption">Year Founded</Typography>
-                  <Typography variant="body1">2002</Typography>
+                  <Typography variant="body1">
+                    {sponsor.yearOfFoundation}
+                  </Typography>
                 </Box>
               </Box>
             </Box>

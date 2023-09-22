@@ -36,6 +36,7 @@ const validationSchema = z.object({
   website: z.string().min(1, 'Required field').url(),
   specialties: z.array(z.string()),
   description: z.string().min(1, 'Required field'),
+  yearOfFoundation: z.string().min(1, 'Required field'),
 });
 
 type ValidationSchema = z.infer<typeof validationSchema>;
@@ -80,7 +81,10 @@ const SponsorDetailsForm = ({
     formState: { isValid, isDirty },
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
-    defaultValues: payload as ValidationSchema,
+    defaultValues: {
+      ...payload,
+      yearOfFoundation: String(payload.yearOfFoundation),
+    } as ValidationSchema,
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
@@ -91,10 +95,11 @@ const SponsorDetailsForm = ({
         regulations: payload.regulations,
         interests: payload.interests,
         investmentStructures: payload.investmentStructures,
+        yearOfFoundation: Number(data.yearOfFoundation),
       };
       onSave({ ...data, ...formattedPayload });
     } else {
-      onSave(data);
+      onSave({ ...data, yearOfFoundation: Number(data.yearOfFoundation) });
     }
   });
 
@@ -174,6 +179,16 @@ const SponsorDetailsForm = ({
           value={watch('legalName')}
           showClearOption={false}
         />
+        <Box sx={classes.doubleInputsWrapper}>
+          <Input
+            placeholder="yyyy"
+            topLabel="Year Foundation"
+            register={register('yearOfFoundation')}
+            value={watch('yearOfFoundation')}
+            showClearOption={false}
+            type="number"
+          />
+        </Box>
         <Input
           placeholder="123 First street"
           topLabel="Address line 1"
