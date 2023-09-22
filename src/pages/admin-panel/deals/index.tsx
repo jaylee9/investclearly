@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { DealStatuses } from '@/backend/constants/enums/deal-statuses';
 import clsx from 'clsx';
 import { debounce } from 'lodash';
+import EditDealModal from '@/components/page/Admin/Deal/EditDealModal';
 
 interface AdminDealsPageProps {
   dealsResponse: GetAllDealsResponse;
@@ -22,6 +23,10 @@ interface AdminDealsPageProps {
 const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
   const classes = useAdminDealsStyles();
 
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [choosedDeal, setChoosedDeal] = useState<DealInterface | undefined>(
+    undefined
+  );
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const handleSearch = debounce((value: string) => {
@@ -129,11 +134,20 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
     },
   ];
 
+  const handleOpenEditModal = (data: DealInterface) => {
+    setChoosedDeal(data);
+    setOpenEditModal(true);
+  };
+  const handleCloseEditModal = () => {
+    setChoosedDeal(undefined);
+    setOpenEditModal(false);
+  };
+
   const actions = [
     {
       icon: 'icon-Edit',
       //will be replaced by logic of open edit deal modal
-      onClick: (data: DealInterface) => console.log(data),
+      onClick: (data: DealInterface) => handleOpenEditModal(data),
       styles: classes.editIcon,
     },
   ];
@@ -171,6 +185,11 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
           <Typography variant="h4">There are no published Deals yet</Typography>
         </Box>
       )}
+      <EditDealModal
+        open={openEditModal}
+        onClose={handleCloseEditModal}
+        deal={choosedDeal as DealInterface}
+      />
     </Layout>
   );
 };
