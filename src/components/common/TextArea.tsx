@@ -13,6 +13,7 @@ interface CustomTextAreaProps extends TextareaAutosizeProps {
   errorText?: string;
   error?: boolean;
   register?: UseFormRegisterReturn;
+  topLabel?: string;
 }
 
 const CustomTextArea = ({
@@ -20,6 +21,7 @@ const CustomTextArea = ({
   errorText,
   error,
   register,
+  topLabel,
   ...props
 }: CustomTextAreaProps) => {
   const classes = useCustomTextAreaStyles();
@@ -33,26 +35,33 @@ const CustomTextArea = ({
     }
   };
   return (
-    <Box sx={{ height, position: 'relative' }}>
-      <TextareaAutosize
-        className={`text-area ${error || errorText ? 'text-area-error' : ''}`}
-        style={{ resize: 'none', ...classes.root }}
-        value={value}
-        onChange={handleChange}
-        {...props}
-        {...(register
-          ? {
-              name: register.name,
-              ref: register.ref,
-              onBlur: register.onBlur,
-            }
-          : {})}
-      />
-      {errorText && (
-        <Typography variant="caption" sx={classes.errorText}>
-          {errorText}
+    <Box>
+      {!!topLabel && (
+        <Typography variant="caption" fontWeight={600}>
+          {topLabel}
         </Typography>
       )}
+      <Box sx={{ height, position: 'relative' }}>
+        <TextareaAutosize
+          className={`text-area ${error || errorText ? 'text-area-error' : ''}`}
+          style={{ resize: 'none', ...classes.root }}
+          value={value}
+          onChange={handleChange}
+          {...props}
+          {...(register
+            ? {
+                name: register.name,
+                ref: register.ref,
+                onBlur: register.onBlur,
+              }
+            : {})}
+        />
+        {errorText && (
+          <Typography variant="caption" sx={classes.errorText}>
+            {errorText}
+          </Typography>
+        )}
+      </Box>
     </Box>
   );
 };
