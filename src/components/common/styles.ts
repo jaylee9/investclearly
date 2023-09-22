@@ -1064,7 +1064,7 @@ export const useStepsComponentStyles = () => {
   };
 };
 
-export const useTagSelectorStyles = () => {
+export const useTagSelectorStyles = (isSearch: boolean) => {
   return {
     root: {
       position: 'relative',
@@ -1091,7 +1091,7 @@ export const useTagSelectorStyles = () => {
     tag: {
       position: 'absolute',
       top: 6,
-      left: 50,
+      left: isSearch ? 50 : 10,
       background: palette.common.white,
       padding: '2px 12px',
       borderRadius: '16px',

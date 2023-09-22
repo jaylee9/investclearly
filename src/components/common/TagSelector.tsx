@@ -1,10 +1,10 @@
 import { Box, Fade, InputAdornment, Typography } from '@mui/material';
 import { useTagSelectorStyles } from './styles';
-import Input from './Input';
+import Input, { InputProps } from './Input';
 import { ReactNode, useRef } from 'react';
 import { useOnClickOutside } from 'usehooks-ts';
 
-interface TagSelectorProps {
+interface TagSelectorProps extends Omit<InputProps, 'onChange'> {
   inputValue: string;
   onChange: (value: string) => void;
   activeTag: string;
@@ -24,8 +24,11 @@ const TagSelector = ({
   open,
   handleClose,
   handleOpen,
+  isSearch = true,
+  placeholder,
+  ...props
 }: TagSelectorProps) => {
-  const classes = useTagSelectorStyles();
+  const classes = useTagSelectorStyles(isSearch);
   const ref = useRef(null);
 
   const onClearInput = () => {
@@ -42,8 +45,9 @@ const TagSelector = ({
         autoComplete="off"
         variant="filled"
         disabled={!!activeTag}
+        placeholder={!!activeTag ? '' : placeholder}
         InputProps={{
-          startAdornment: (
+          startAdornment: isSearch && (
             <InputAdornment position="start">
               <i className="icon-Search" style={{ fontSize: 24 }}></i>
             </InputAdornment>
@@ -61,6 +65,7 @@ const TagSelector = ({
             </InputAdornment>
           ),
         }}
+        {...props}
       />
       <Fade in={!!activeTag}>
         <Box sx={classes.tag}>
