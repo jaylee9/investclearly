@@ -47,9 +47,7 @@ const FinancialMetricsForm = ({
   const classes = useFinancialMetricsFormStyles();
 
   const investmentStructuresOptions = Object.values(InvestmentStructures).map(
-    item => {
-      return { label: item, value: item };
-    }
+    item => ({ label: item, value: item })
   );
 
   const {
