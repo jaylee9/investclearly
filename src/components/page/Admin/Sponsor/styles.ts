@@ -36,6 +36,9 @@ export const useAddEditSponsorModalStyles = ({
       '& p': {
         fontWeight: 600,
       },
+      '& span': {
+        color: palette.text.secondary,
+      },
     },
     contentWrapper: {
       display: 'flex',
