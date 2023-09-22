@@ -16,6 +16,7 @@ import clsx from 'clsx';
 import { debounce } from 'lodash';
 import withAdminPrivateRoute from '@/HOC/withAdminPrivateRoute';
 import EditDealModal from '@/components/page/Admin/Deal/EditDealModal';
+import Loading from '@/components/common/Loading';
 
 interface AdminDealsPageProps {
   dealsResponse: GetAllDealsResponse;
@@ -38,7 +39,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
     setSearchTerm('');
   };
 
-  const { data } = useQuery<GetAllDealsResponse>(
+  const { data, isLoading } = useQuery<GetAllDealsResponse>(
     ['deals', page, searchTerm],
     () =>
       getAllDeals({
@@ -152,6 +153,10 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
       styles: classes.editIcon,
     },
   ];
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Layout variant={LayoutVariant.Admin}>
