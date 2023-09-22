@@ -10,6 +10,8 @@ import { useRouter } from 'next/router';
 const ResetPassword = () => {
   const router = useRouter();
 
+  const router = useRouter();
+
   const [isPasswordChangedSuccessfully, setIsPasswordChangedSuccessfully] =
     useState(false);
 
