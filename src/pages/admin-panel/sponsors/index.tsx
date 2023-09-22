@@ -15,6 +15,7 @@ import { debounce } from 'lodash';
 import { GetAllSponsorsResponse, getAllSponsors } from '@/actions/sponsors';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import AddEditSponsorModal from '@/components/page/Admin/Sponsor/AddEditSponsorModal';
+import withAdminPrivateRoute from '@/HOC/withAdminPrivateRoute';
 
 interface AdminSponsorsPageProps {
   sponsorsResponse: GetAllSponsorsResponse;
@@ -225,4 +226,4 @@ export const getServerSideProps = async () => {
   };
 };
 
-export default SponsorsPage;
+export default withAdminPrivateRoute(SponsorsPage);

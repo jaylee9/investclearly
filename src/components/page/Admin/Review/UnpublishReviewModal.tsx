@@ -9,6 +9,7 @@ import CustomTextArea from '@/components/common/TextArea';
 import Button from '@/components/common/Button';
 import { unpublishReview } from '@/actions/reviews';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const validationSchema = z.object({
   reason: z.string(),
@@ -38,6 +39,7 @@ const UnpublishReviewModal = ({
 }: UnpublishReviewModalProps) => {
   const classes = useUnpublishReviewModalStyles();
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleClose = (e: MouseEvent | object) => {
     if (isLoading) {
@@ -66,6 +68,7 @@ const UnpublishReviewModal = ({
       reason,
       unpublishReviewMessage,
       id: reviewId,
+      router,
     });
 
     if (!('error' in response)) {

@@ -1,3 +1,4 @@
+import { forgotPassword } from '@/actions/auth';
 import LayoutAdminPanel from '../../../components/common/LayoutAdminPanel';
 import ForgotPasswordForm, {
   ForgotPasswordValidationSchema,
@@ -6,7 +7,7 @@ import ForgotPasswordForm, {
 const ForgotPassword = () => {
   const handleSubmit = async (data: ForgotPasswordValidationSchema) => {
     const { email } = data;
-    console.log(email);
+    await forgotPassword({ email });
   };
   return (
     <LayoutAdminPanel>
