@@ -39,4 +39,5 @@ export interface CreateDealInterface {
   stateOrCountry?: string | '';
   stateOrCountryDescription?: string | '';
   zipCode?: string | '';
+  sponsorId?: number;
 }
