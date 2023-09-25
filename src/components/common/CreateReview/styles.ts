@@ -246,6 +246,15 @@ export const useReviewDetailsStepStyles = () => {
       },
     },
     form: {
+      height: '100%',
+    },
+    formContainer: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    },
+    formContent: {
       display: 'flex',
       flexDirection: 'column',
       gap: '32px',
