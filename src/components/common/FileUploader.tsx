@@ -146,8 +146,7 @@ const FileUploader = ({
         <div {...getRootProps()}>
           <input {...getInputProps()} />
           {((files.length < 3 && type === 'MultipleFile') ||
-            ((files.length < 1 || !defaultImage) &&
-              type === 'SingleImage')) && (
+            (files.length < 1 && !defaultImage && type === 'SingleImage')) && (
             <Box sx={classes.dropZone}>
               {isLoading ? <Loading /> : <i className="icon-Upload"></i>}
               <Box sx={classes.dropZoneContent}>
