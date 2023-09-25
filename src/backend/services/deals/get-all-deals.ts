@@ -129,7 +129,8 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
         maxRating,
       }
     )
-    .groupBy('deals.id, attachments.id, locations.id');
+    .leftJoinAndSelect('deals.sponsor', 'sponsor')
+    .groupBy('deals.id, attachments.id, locations.id, sponsor.id');
 
   if (assetClasses?.length) {
     searchQuery = searchQuery.where('deals.assetClass IN (:...assetClasses)', {
