@@ -2,7 +2,6 @@ import Layout, { LayoutVariant } from '@/components/common/Layout';
 import { Box, Typography } from '@mui/material';
 import useAdminDealsStyles from '@/pages_styles/adminDealsStyles';
 import Input from '@/components/common/Input';
-import Button from '@/components/common/Button';
 import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
@@ -16,6 +15,8 @@ import { DealStatuses } from '@/backend/constants/enums/deal-statuses';
 import clsx from 'clsx';
 import { debounce } from 'lodash';
 import withAdminPrivateRoute from '@/HOC/withAdminPrivateRoute';
+import EditDealModal from '@/components/page/Admin/Deal/EditDealModal';
+import Loading from '@/components/common/Loading';
 
 interface AdminDealsPageProps {
   dealsResponse: GetAllDealsResponse;
@@ -24,6 +25,10 @@ interface AdminDealsPageProps {
 const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
   const classes = useAdminDealsStyles();
 
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [choosedDeal, setChoosedDeal] = useState<DealInterface | undefined>(
+    undefined
+  );
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const handleSearch = debounce((value: string) => {
@@ -34,7 +39,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
     setSearchTerm('');
   };
 
-  const { data } = useQuery<GetAllDealsResponse>(
+  const { data, isLoading, refetch } = useQuery<GetAllDealsResponse>(
     ['deals', page, searchTerm],
     () =>
       getAllDeals({
@@ -131,14 +136,27 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
     },
   ];
 
+  const handleOpenEditModal = (data: DealInterface) => {
+    setChoosedDeal(data);
+    setOpenEditModal(true);
+  };
+  const handleCloseEditModal = () => {
+    setChoosedDeal(undefined);
+    setOpenEditModal(false);
+  };
+
   const actions = [
     {
       icon: 'icon-Edit',
       //will be replaced by logic of open edit deal modal
-      onClick: (data: DealInterface) => console.log(data),
+      onClick: (data: DealInterface) => handleOpenEditModal(data),
       styles: classes.editIcon,
     },
   ];
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Layout variant={LayoutVariant.Admin}>
@@ -156,7 +174,6 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
               onChange={e => handleSearch(e.target.value)}
               onClear={handleClearSearch}
             />
-            <Button>Add Deal</Button>
           </Box>
           <CustomTable<DealInterface>
             data={data?.deals as DealInterface[]}
@@ -172,9 +189,14 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
       ) : (
         <Box sx={classes.noDealsContent}>
           <Typography variant="h4">There are no published Deals yet</Typography>
-          <Button>Add Deal</Button>
         </Box>
       )}
+      <EditDealModal
+        open={openEditModal}
+        onClose={handleCloseEditModal}
+        deal={choosedDeal as DealInterface}
+        refetch={refetch}
+      />
     </Layout>
   );
 };

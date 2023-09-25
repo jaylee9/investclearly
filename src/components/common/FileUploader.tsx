@@ -1,9 +1,10 @@
 import { Box, Fade, Typography } from '@mui/material';
 import { useFileUploaderStyles } from './styles';
-import { useDropzone } from 'react-dropzone';
+import { Accept, useDropzone } from 'react-dropzone';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Loading from './Loading';
+import Image from 'next/image';
 
 interface FileItem {
   id: string;
@@ -15,11 +16,19 @@ interface FileItem {
 
 interface FileUploaderProps {
   onUpload: (file: File) => void;
-  onDelete: (file: File) => void;
+  onDelete: (file?: File) => void;
   isLoading?: boolean;
+  type?: 'MultipleFile' | 'SingleImage';
+  defaultImage?: string;
 }
 
-const FileUploader = ({ onUpload, onDelete, isLoading }: FileUploaderProps) => {
+const FileUploader = ({
+  onUpload,
+  onDelete,
+  isLoading,
+  type = 'MultipleFile',
+  defaultImage,
+}: FileUploaderProps) => {
   const classes = useFileUploaderStyles();
   const [files, setFiles] = useState<FileItem[]>([]);
   const [fileLengthError, setFileLengthError] = useState<boolean>(false);
@@ -70,96 +79,141 @@ const FileUploader = ({ onUpload, onDelete, isLoading }: FileUploaderProps) => {
     setFiles(prevFiles => prevFiles.filter(f => f.id !== fileId));
   };
 
+  const singleDelete = () => {
+    setFiles([]);
+    onDelete();
+  };
+
   const retryUpload = (file: File) => {
     setFiles(prevFiles => prevFiles.filter(f => f.file !== file));
     handleFiles([file]);
   };
 
+  const accept =
+    type === 'MultipleFile'
+      ? {
+          'image/jpeg': ['.jpg', '.jpeg'],
+          'image/png': ['.png'],
+          'image/gif': ['.gif'],
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            ['.docx'],
+          'application/pdf': ['.pdf'],
+          'application/msword': ['.doc'],
+        }
+      : {
+          'image/jpeg': ['.jpg', '.jpeg'],
+          'image/png': ['.png'],
+        };
+
   const { getRootProps, getInputProps } = useDropzone({
     maxSize,
     disabled: isLoading,
-    accept: {
-      'image/jpeg': ['.jpg', '.jpeg'],
-      'image/png': ['.png'],
-      'image/gif': ['.gif'],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-        ['.docx'],
-      'application/pdf': ['.pdf'],
-      'application/msword': ['.doc'],
-    },
+    accept: accept as Accept,
     onDrop: handleFiles,
+    multiple: type === 'MultipleFile',
   });
+
+  const rules =
+    type === 'MultipleFile' ? (
+      <Typography variant="caption" sx={classes.infoText}>
+        <span className={fileLengthError ? 'fileLengthError' : 'fileLength'}>
+          Max 3 files
+        </span>
+        , 10 MB each. Accepted formats: *.jpg, *.jpeg,*.png, *.gif, *.docx,
+        *.doc, *.pdf
+      </Typography>
+    ) : (
+      <Typography variant="caption" sx={classes.infoText}>
+        Max 10 MB.
+        <br />
+        Accepted formats: *.jpg, *.jpeg, *.png
+      </Typography>
+    );
 
   return (
     <Box sx={classes.root}>
-      <Fade in={files.length < 3}>
+      <Fade
+        in={
+          (files.length < 3 && type === 'MultipleFile') ||
+          (files.length < 1 && type === 'SingleImage')
+        }
+      >
         <div {...getRootProps()}>
           <input {...getInputProps()} />
-          {files.length < 3 && (
+          {((files.length < 3 && type === 'MultipleFile') ||
+            (files.length < 1 && !defaultImage && type === 'SingleImage')) && (
             <Box sx={classes.dropZone}>
               {isLoading ? <Loading /> : <i className="icon-Upload"></i>}
               <Box sx={classes.dropZoneContent}>
                 <Typography variant="body1" fontWeight={600} marginBottom="4px">
                   Drag and drop or Click to upload files
                 </Typography>
-                <Typography variant="caption" sx={classes.infoText}>
-                  <span
-                    className={
-                      fileLengthError ? 'fileLengthError' : 'fileLength'
-                    }
-                  >
-                    Max 3 files
-                  </span>
-                  , 10 MB each. Accepted formats: *.jpg, *.jpeg,*.png, *.gif,
-                  *.docx, *.doc, *.pdf
-                </Typography>
+                {rules}
               </Box>
             </Box>
           )}
         </div>
       </Fade>
-      <Box sx={classes.filesWrapper}>
-        {files.map(item => (
-          <Fade in={true} key={item.id}>
-            <Box sx={classes.file} className={item.status}>
-              <Box sx={classes.mainFileInfo}>
-                <i className="icon-File"></i>
-                <Box>
-                  <Typography variant="body1" sx={classes.fileName}>
-                    {item.file.name}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    sx={classes.fileSize}
-                    className={`${item.status}-text`}
-                  >
-                    {item.status === 'error'
-                      ? 'Error while uploading file'
-                      : `${(item.file.size / 1048576).toFixed(2)} MB`}
-                  </Typography>
+      {(defaultImage || !!files.length) && (
+        <Box sx={classes.previewImageWrapper}>
+          <Image
+            src={defaultImage || URL.createObjectURL(files?.[0].file)}
+            alt="123"
+            width={300}
+            height={200}
+            style={{ objectFit: 'cover' }}
+          />
+          <Box sx={classes.iconCrossWrapper} onClick={singleDelete}>
+            <i className="icon-Cross" />
+          </Box>
+        </Box>
+      )}
+      {type === 'MultipleFile' && (
+        <Box sx={classes.filesWrapper}>
+          {files.map(item => (
+            <Fade in={true} key={item.id}>
+              <Box sx={classes.file} className={item.status}>
+                <Box sx={classes.mainFileInfo}>
+                  <i className="icon-File"></i>
+                  <Box>
+                    <Typography variant="body1" sx={classes.fileName}>
+                      {item.file.name}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      sx={classes.fileSize}
+                      className={`${item.status}-text`}
+                    >
+                      {item.status === 'error'
+                        ? 'Error while uploading file'
+                        : `${(item.file.size / 1048576).toFixed(2)} MB`}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box sx={classes.actionsWrapper}>
+                  {item.status === 'error' && (
+                    <i
+                      className="icon-Reload"
+                      onClick={() => retryUpload(item.file)}
+                    ></i>
+                  )}
+                  <i
+                    className="icon-Delete"
+                    onClick={() => deleteFile(item.id)}
+                  ></i>
                 </Box>
               </Box>
-              <Box sx={classes.actionsWrapper}>
-                {item.status === 'error' && (
-                  <i
-                    className="icon-Reload"
-                    onClick={() => retryUpload(item.file)}
-                  ></i>
-                )}
-                <i
-                  className="icon-Delete"
-                  onClick={() => deleteFile(item.id)}
-                ></i>
-              </Box>
-            </Box>
-          </Fade>
-        ))}
-      </Box>
-      <Typography sx={classes.additionalInfo}>
-        Your provided files are securely processed and immediately deleted after
-        verification, ensuring the privacy and confidentiality of your
-        information.
-      </Typography>
+            </Fade>
+          ))}
+        </Box>
+      )}
+      {type === 'MultipleFile' && (
+        <Typography sx={classes.additionalInfo}>
+          Your provided files are securely processed and immediately deleted
+          after verification, ensuring the privacy and confidentiality of your
+          information.
+        </Typography>
+      )}
     </Box>
   );
 };

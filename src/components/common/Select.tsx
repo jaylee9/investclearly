@@ -86,7 +86,7 @@ const CustomSelect = ({
   };
 
   const selectValue =
-    multiple && Array.isArray(value) && value.length === 0 ? ['none'] : value;
+    multiple && Array.isArray(value) && value.length === 0 ? [''] : value;
 
   return (
     <FormControl fullWidth>
@@ -120,6 +120,9 @@ const CustomSelect = ({
           renderValue={renderedValue}
           {...props}
         >
+          <MenuItem value="" style={{ display: 'none' }}>
+            None
+          </MenuItem>
           {options.map(item => (
             <MenuItem
               disableRipple
@@ -134,13 +137,15 @@ const CustomSelect = ({
             </MenuItem>
           ))}
         </Select>
-        {multiple && Array.isArray(value) && value.length === 0 && (
+        {((multiple && Array.isArray(value) && value.length === 0) ||
+          (!multiple && !value)) && (
           <Typography
             variant="body1"
             sx={classes.fauxPlaceholder}
             style={{
               display:
-                multiple && Array.isArray(value) && value.length === 0
+                (multiple && Array.isArray(value) && value.length === 0) ||
+                (!multiple && !value)
                   ? 'block'
                   : 'none',
             }}

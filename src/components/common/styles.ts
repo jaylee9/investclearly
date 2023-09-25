@@ -1075,7 +1075,7 @@ export const useStepsComponentStyles = () => {
   };
 };
 
-export const useTagSelectorStyles = () => {
+export const useTagSelectorStyles = (isSearch: boolean) => {
   return {
     root: {
       position: 'relative',
@@ -1102,7 +1102,7 @@ export const useTagSelectorStyles = () => {
     tag: {
       position: 'absolute',
       top: 6,
-      left: 50,
+      left: isSearch ? 50 : 10,
       background: palette.common.white,
       padding: '2px 12px',
       borderRadius: '16px',
@@ -1145,6 +1145,7 @@ export const useFileUploaderStyles = () => {
     },
     infoText: {
       color: palette.text.secondary,
+      textAlign: 'center',
       '& .fileLength': {
         transition: 'color 0.3s ease, font-weight 0.3s ease',
       },
@@ -1214,6 +1215,32 @@ export const useFileUploaderStyles = () => {
       maxWidth: { xs: '100%', lg: '75%' },
       color: palette.text.secondary,
       paddingBottom: { xs: '32px', md: '0px' },
+    },
+    previewImageWrapper: {
+      position: 'relative',
+      '& img': {
+        borderRadius: '8px',
+        width: '100%',
+        height: '188px',
+      },
+    },
+    iconCrossWrapper: {
+      width: '40px',
+      height: '40px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: '1230px',
+      position: 'absolute',
+      top: '8px',
+      right: '8px',
+      background: palette.primary.light,
+      boxShadow: customShadows.header,
+      cursor: 'pointer',
+      '& .icon-Cross': {
+        fontSize: '24px',
+        color: palette.common.white,
+      },
     },
   };
 };
