@@ -29,12 +29,16 @@ const VerifyReviewModal = ({
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const onUpload = (file: File) => {
-    setFiles(prevFiles => [...prevFiles, file]);
+  const onUpload = (file?: File) => {
+    if (file) {
+      setFiles(prevFiles => [...prevFiles, file]);
+    }
   };
 
-  const onDelete = (file: File) => {
-    setFiles(prevFiles => prevFiles.filter(f => f.name !== file.name));
+  const onDelete = (file?: File) => {
+    if (file) {
+      setFiles(prevFiles => prevFiles.filter(f => f.name !== file.name));
+    }
   };
 
   const handleClose = (e: MouseEvent | object) => {
