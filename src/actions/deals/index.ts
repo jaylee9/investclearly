@@ -1,6 +1,13 @@
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
+import { UpdateDealInterface } from '@/backend/services/deals/interfaces/update-deal.interface';
 import { IFilters } from '@/components/page/List/Deals/DealsFilters';
 import api from '@/config/ky';
+import notAuthorizedErrorHandler, {
+  Roles,
+} from '@/helpers/notAuthorizedErrorHandler';
+import { HTTPError } from 'ky';
+import { NextRouter } from 'next/router';
+import { serialize } from 'object-to-formdata';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
 
@@ -148,5 +155,42 @@ export const deleteDealFromBookmarks = async ({
     const errorMessage = 'Failed to delete deal from saved';
     toast.error(errorMessage);
     return { error: errorMessage };
+  }
+};
+
+type ModifiedUpdateDealInterface = UpdateDealInterface & {
+  photoOfTheObjects?: Blob;
+};
+
+export type PartialEditDealInterface = Partial<ModifiedUpdateDealInterface>;
+
+export const editDeal = async ({
+  payload,
+  router,
+}: {
+  payload: PartialEditDealInterface & { id: number };
+  router: NextRouter;
+}): Promise<DealInterface | { error: string }> => {
+  const formData = serialize(payload, {
+    indices: true,
+    allowEmptyArrays: false,
+  });
+
+  try {
+    const response: DealInterface = await api
+      .put(`admin/deals/${payload.id}`, {
+        body: formData,
+      })
+      .json();
+    return response;
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      notAuthorizedErrorHandler({
+        status: error.response.status,
+        router,
+        role: Roles.ADMIN,
+      });
+    }
+    return { error: 'Failed to edit deal' };
   }
 };

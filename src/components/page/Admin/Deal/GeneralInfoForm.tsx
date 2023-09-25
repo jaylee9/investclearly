@@ -16,15 +16,17 @@ import CustomSelect, { SelectVariant } from '@/components/common/Select';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import FileUploader from '@/components/common/FileUploader';
 import CustomTextArea from '@/components/common/TextArea';
-import CustomDateRangePicker from '@/components/common/DateRangePicker';
+// import CustomDateRangePicker from '@/components/common/DateRangePicker';
 import Button from '@/components/common/Button';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
+import { editDeal } from '@/actions/deals';
+import { useRouter } from 'next/router';
 
 const validationSchema = z.object({
   dealTitle: z.string().min(1),
   assetClass: z.string().min(1),
   description: z.string().min(1),
-  closeDate: z.string().min(1),
+  // closeDate: z.string().min(1),
   holdPeriod: z.string().min(1),
 });
 
@@ -43,11 +45,18 @@ interface GeneralInfoFormProps {
 
 const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
   const classes = useGeneralInfoFormStyles();
+
+  const router = useRouter();
+
   const [tagSelectorValue, setTagSelectorValue] = useState('');
   const [debouncedValue, setDebouncedValue] = useState(tagSelectorValue);
   const [showVariants, setShowVariants] = useState(false);
-  const [choosedFile, setChoosedFile] = useState<File | null>();
+  const [choosedFile, setChoosedFile] = useState<File | undefined>(undefined);
+  const [fileToDelete, setFileToDelete] = useState<number | undefined>(
+    undefined
+  );
   const [defaultImage, setDefaultImage] = useState('');
+  const [isUpdateDealLoading, setIsUpdateDealLoading] = useState(false);
 
   const onUpload = (file: File) => {
     setChoosedFile(file);
@@ -55,7 +64,10 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
 
   const onDelete = () => {
     setDefaultImage('');
-    setChoosedFile(null);
+    setChoosedFile(undefined);
+    if (deal.attachments.length) {
+      setFileToDelete(deal.attachments?.[0].id);
+    }
   };
 
   const handleOpen = () => setShowVariants(true);
@@ -99,7 +111,24 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
     useForm<ValidationSchema>({
       resolver: zodResolver(validationSchema),
     });
-  const onSubmit = handleSubmit(data => console.log(data));
+  const onSubmit = handleSubmit(async data => {
+    setIsUpdateDealLoading(true);
+    const response = await editDeal({
+      payload: {
+        ...data,
+        id: deal.id,
+        holdPeriod: +data.holdPeriod,
+        attachmentsIdsToDelete: fileToDelete,
+        photoOfTheObjects: choosedFile,
+        sponsorId: tag.id,
+      },
+      router,
+    });
+    if (!('error' in response)) {
+      await refetch();
+      setIsUpdateDealLoading(false);
+    }
+  });
 
   const assetClassOptions = Object.values(AssetClasses).map(item => ({
     label: item,
@@ -112,9 +141,8 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
         const keyOfDeal = key as keyof DealInterface;
         if (keyOfDeal && deal[keyOfDeal] !== undefined) {
           const value = deal[keyOfDeal];
-
-          if (typeof value === 'string') {
-            setValue(key as keyof ValidationSchema, value);
+          if (typeof value === 'string' || typeof value === 'number') {
+            setValue(key as keyof ValidationSchema, String(value));
           }
         }
       });
@@ -248,7 +276,9 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
         <Button variant="secondary" onClick={onClose}>
           Cancel
         </Button>
-        <Button type="submit">Save</Button>
+        <Button type="submit" disabled={isUpdateDealLoading}>
+          Save
+        </Button>
       </Box>
     </form>
   );
