@@ -126,8 +126,6 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
     }
   }, [deal, setValue]);
 
-  console.log(deal);
-
   return (
     <form onSubmit={onSubmit}>
       <Box sx={classes.formWrapper}>
@@ -205,7 +203,7 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
               options={assetClassOptions}
               variant={SelectVariant.Dark}
               onChange={onChange}
-              value={{ label: value, value }}
+              value={value || ''}
               topLabel="Asset Class"
               placeholder="Class"
             />

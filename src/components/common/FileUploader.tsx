@@ -130,11 +130,6 @@ const FileUploader = ({
       </Typography>
     );
 
-  console.log(
-    (files.length < 3 && type === 'MultipleFile') ||
-      ((files.length < 1 || !defaultImage) && type === 'SingleImage')
-  );
-
   return (
     <Box sx={classes.root}>
       <Fade
