@@ -146,6 +146,7 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
           }
         }
       });
+
       if (deal.attachments.length) setDefaultImage(deal.attachments?.[0].path);
       if (deal.sponsor) {
         if (deal.sponsor.id && deal.sponsor.legalName)
