@@ -137,13 +137,25 @@ const ReviewDetailsStep = ({
       'add-comment-active': isValue,
     });
 
+  const handleBackButton = () => {
+    setStep(step - 1);
+  };
+
   return (
     <Box sx={classes.root}>
-      <Box>
+      <Box sx={classes.container}>
         <Typography variant="h4" fontWeight={600} marginBottom="32px">
           Review Details
         </Typography>
-        <form onSubmit={onSubmit}>
+        <form
+          onSubmit={onSubmit}
+          style={{
+            height: '100%',
+            justifyContent: 'space-between',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
           <Box sx={classes.form}>
             <Input
               topLabel="Short Title for the Review"
@@ -229,7 +241,18 @@ const ReviewDetailsStep = ({
             </Box>
           </Box>
           <Box sx={classes.buttonWrapper}>
-            <Button type="submit" disabled={!isValid}>
+            <Button
+              variant="tertiary"
+              onClick={handleBackButton}
+              sxCustomStyles={classes.buttonBack}
+            >
+              Back
+            </Button>
+            <Button
+              type="submit"
+              disabled={!isValid}
+              sxCustomStyles={classes.buttonNext}
+            >
               Next
             </Button>
           </Box>

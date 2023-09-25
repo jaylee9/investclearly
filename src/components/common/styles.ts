@@ -1019,15 +1019,25 @@ export const useStepsComponentStyles = () => {
     root: {
       display: 'flex',
       alignItems: 'center',
-      gap: '16px',
+      gap: { xs: '8px', md: '16px' },
+      margin: '0px -16px',
+      width: { xs: '100%', md: 'auto' },
     },
-    stepWrapper: {
+    desktopStepWrapper: {
       display: 'flex',
       alignItems: 'center',
       gap: '16px',
     },
+    defaultMobileStepWrapper: {
+      border: `4px solid ${palette.background.paper}`,
+      width: '100%',
+    },
+    activeMobileStepWrapper: {
+      border: `4px solid ${palette.primary.light}`,
+      width: '100%',
+    },
     defaultStep: {
-      display: 'flex',
+      display: { xs: 'none', md: 'flex' },
       alignItems: 'center',
       gap: '14px',
       '& .icon-Check': {
@@ -1060,6 +1070,7 @@ export const useStepsComponentStyles = () => {
       width: '24px',
       height: '2px',
       background: palette.background.paper,
+      display: { xs: 'none', md: 'block' },
     },
   };
 };
@@ -1113,7 +1124,7 @@ export const useFileUploaderStyles = () => {
       width: '100%',
       borderRadius: '8px',
       border: `1px dashed ${palette.background.paper}`,
-      padding: '32px 0px',
+      padding: '32px 16px',
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
@@ -1200,8 +1211,9 @@ export const useFileUploaderStyles = () => {
       },
     },
     additionalInfo: {
-      maxWidth: '75%',
+      maxWidth: { xs: '100%', lg: '75%' },
       color: palette.text.secondary,
+      paddingBottom: { xs: '32px', md: '0px' },
     },
   };
 };

@@ -55,34 +55,42 @@ const UploadProofStep = ({
 
   return (
     <Box sx={classes.root}>
-      <Box sx={classes.content}>
-        <Typography variant="h4" fontWeight={600}>
-          Upload proof that you have worked with this sponsor
-        </Typography>
-        <Typography variant="body1" sx={classes.subTitle}>
-          Attach any documents or screenshots that prove your involvement with
-          Cloud Investment Ltd.
-        </Typography>
-        <FileUploader
-          onUpload={onUpload}
-          onDelete={onDelete}
-          isLoading={isLoading}
-        />
-      </Box>
-      <Box sx={classes.buttonsWrapper}>
-        <Button variant="tertiary" onClick={handleBackButton}>
-          Back
-        </Button>
-        <Box sx={classes.mainButtonsWrapper}>
+      <Box sx={classes.container}>
+        <Box sx={classes.content}>
+          <Box sx={classes.titleBox}>
+            <Typography variant="h4" fontWeight={600}>
+              Upload proof that you have worked with this sponsor
+            </Typography>
+            <Typography variant="body1" sx={classes.subTitle}>
+              Attach any documents or screenshots that prove your involvement
+              with Cloud Investment Ltd.
+            </Typography>
+          </Box>
+          <FileUploader
+            onUpload={onUpload}
+            onDelete={onDelete}
+            isLoading={isLoading}
+          />
+        </Box>
+        <Box sx={classes.buttonsWrapper}>
           <Button
-            variant="secondary"
-            onClick={() => handleSubmit('withoutProof')}
+            variant="tertiary"
+            onClick={handleBackButton}
+            sxCustomStyles={classes.buttonBack}
           >
-            Submit without proof
+            Back
           </Button>
-          <Button onClick={() => handleSubmit('withProof')}>
-            Submit review
-          </Button>
+          <Box sx={classes.mainButtonsWrapper}>
+            <Button
+              variant="secondary"
+              onClick={() => handleSubmit('withoutProof')}
+            >
+              Submit without proof
+            </Button>
+            <Button onClick={() => handleSubmit('withProof')}>
+              Submit review
+            </Button>
+          </Box>
         </Box>
       </Box>
     </Box>

@@ -18,19 +18,26 @@ const ReviewSubmitted = ({ handleClose, setStep }: ReviewSubmittedProps) => {
 
   return (
     <Box sx={classes.root}>
-      <Typography variant="h3" fontWeight={600} marginBottom="4px">
-        Your review has been submitted!
-      </Typography>
-      <Typography variant="body1" sx={classes.subTitle}>
-        It will be published after moderation.
-      </Typography>
-      <Box sx={classes.buttonsWrapper}>
-        <Button variant="secondary" onClick={handleFirstStep}>
-          Leave another review
-        </Button>
-        <Link href="/" onClick={handleGoToHomepage}>
-          <Button>To the homepage</Button>
-        </Link>
+      <Box sx={classes.container}>
+        <Typography
+          variant="h3"
+          fontWeight={600}
+          marginBottom="4px"
+          textAlign="center"
+        >
+          Your review has been submitted!
+        </Typography>
+        <Typography variant="body1" sx={classes.subTitle} textAlign="center">
+          It will be published after moderation.
+        </Typography>
+        <Box sx={classes.buttonsWrapper}>
+          <Button variant="secondary" onClick={handleFirstStep}>
+            Leave another review
+          </Button>
+          <Link href="/" onClick={handleGoToHomepage}>
+            <Button sxCustomStyles={classes.link}>To the homepage</Button>
+          </Link>
+        </Box>
       </Box>
     </Box>
   );
