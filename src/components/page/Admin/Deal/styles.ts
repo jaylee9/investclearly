@@ -37,6 +37,8 @@ export const useEditDealModalStyles = () => {
       alignItems: 'center',
       padding: '32px 0px 32px',
       gap: '32px',
+      flex: 1,
+      minHeight: '90%',
     },
     content: {
       borderRadius: '12px',
@@ -44,6 +46,7 @@ export const useEditDealModalStyles = () => {
       boxShadow: customShadows.header,
       padding: '40px 40px 16px',
       width: '790px',
+      flex: 1,
     },
     title: {
       fontWeight: 600,
@@ -104,6 +107,39 @@ export const useGeneralInfoFormStyles = () => {
       '& > div': {
         width: '50% !important',
       },
+    },
+    buttonsWrapper: {
+      display: 'flex',
+      justifyContent: 'end',
+      paddingTop: '16px',
+      gap: '8px',
+    },
+  };
+};
+
+export const useFinancialMetricsFormStyles = () => {
+  return {
+    formWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      flex: 1,
+      justifyContent: 'space-between',
+    },
+    contentWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px',
+    },
+    doubleInputsWrapper: {
+      display: 'flex',
+      gap: '12px',
+      width: '100%',
+      '& > div': {
+        width: '50% !important',
+      },
+    },
+    symbol: {
+      color: palette.text.disabled,
     },
     buttonsWrapper: {
       display: 'flex',

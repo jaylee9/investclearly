@@ -70,7 +70,7 @@ const CustomTable = <RowData,>({
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row, rowIndex) => (
+          {data?.map((row, rowIndex) => (
             <TableRow key={rowIndex}>
               {columns.map((column, index) => (
                 <TableCell

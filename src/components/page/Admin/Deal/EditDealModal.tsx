@@ -6,6 +6,7 @@ import { Box, ModalProps, Typography } from '@mui/material';
 import { useEditDealModalStyles } from './styles';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import GeneralInfoForm from './GeneralInfoForm';
+import FinancialMetricsForm from './FinancialMetricsForm';
 
 interface EditDealModal extends Omit<ModalProps, 'children'> {
   deal: DealInterface;
@@ -23,6 +24,7 @@ const EditDealModal = ({ onClose, deal, refetch, ...props }: EditDealModal) => {
   const [step, setStep] = useState(steps['General Info']);
 
   const handleClose = (e: MouseEvent | object) => {
+    setStep(steps['General Info']);
     if (onClose) {
       onClose(e, 'backdropClick');
     }
@@ -51,6 +53,13 @@ const EditDealModal = ({ onClose, deal, refetch, ...props }: EditDealModal) => {
             </Typography>
             {step === steps['General Info'] && (
               <GeneralInfoForm
+                deal={deal}
+                refetch={refetch}
+                onClose={handleClose}
+              />
+            )}
+            {step === steps['Financial Metrics'] && (
+              <FinancialMetricsForm
                 deal={deal}
                 refetch={refetch}
                 onClose={handleClose}

@@ -186,7 +186,7 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
                   No results found
                 </Typography>
               )}
-              {data?.sponsors.map(sponsor => (
+              {data?.sponsors?.map(sponsor => (
                 <Box
                   key={sponsor.id}
                   onClick={event =>
@@ -256,6 +256,7 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
           height="140px"
         />
         <Box sx={classes.doubleInputsWrapper}>
+          {/* maybe will be added after client answer */}
           {/* <CustomDateRangePicker
             topLabel="Close Date"
             control={control}
