@@ -39,6 +39,10 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
     item => item !== 'Review Submitted'
   );
 
+  const isStepsShown = step !== steps['Review Submitted'];
+  const isSubtitleShown = step > 1;
+  const isMobileButtonBackShown = step !== 0 && step !== 4;
+
   return (
     <Modal
       onClose={e => {
@@ -48,14 +52,40 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
     >
       <Box sx={classes.root}>
         <Box sx={classes.header}>
-          <Box sx={classes.leftPart}>
+          <Box sx={classes.logoBox}>
             <Logo />
-            <Typography variant="body1">Write a Review</Typography>
           </Box>
+
+          <Box sx={classes.buttonBack}>
+            {isMobileButtonBackShown && (
+              <i
+                className="icon-Arrow-left"
+                onClick={() => {
+                  setStep(step - 1);
+                }}
+                style={classes.iconBack}
+              />
+            )}
+          </Box>
+
+          <Box sx={classes.titleBox}>
+            <Typography variant="body1" fontWeight={600}>
+              Write a Review
+            </Typography>
+            {isSubtitleShown && (
+              <Typography variant="body1" sx={classes.subTitle}>
+                Cloud Investment Ltd
+              </Typography>
+            )}
+          </Box>
+
           <i className="icon-Cross" onClick={e => handleClose(e)} />
         </Box>
+
         <Box sx={classes.content}>
-          <StepsComponent steps={stepsArray} currentStep={step} />
+          {isStepsShown && (
+            <StepsComponent steps={stepsArray} currentStep={step} />
+          )}
           {step === steps['Choose Sponsor'] && (
             <ChooseSponsorStep
               step={step}

@@ -137,101 +137,118 @@ const ReviewDetailsStep = ({
       'add-comment-active': isValue,
     });
 
+  const handleBackButton = () => {
+    setStep(step - 1);
+  };
+
   return (
     <Box sx={classes.root}>
-      <Box>
+      <Box sx={classes.container}>
         <Typography variant="h4" fontWeight={600} marginBottom="32px">
           Review Details
         </Typography>
-        <form onSubmit={onSubmit}>
-          <Box sx={classes.form}>
-            <Input
-              topLabel="Short Title for the Review"
-              placeholder="Enter short title to sum up your experience"
-              required
-              customStyles={classes.titleInput}
-              showClearOption={false}
-              register={register('title')}
-              value={watch('title')}
-              onChange={e => setValue('title', e.target.value)}
-            />
-            {ratings.map(item => (
-              <Controller
-                key={item.name}
-                name={item.name}
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <Box>
+        <form onSubmit={onSubmit} style={classes.form}>
+          <Box sx={classes.formContainer}>
+            <Box sx={classes.formContent}>
+              <Input
+                topLabel="Short Title for the Review"
+                placeholder="Enter short title to sum up your experience"
+                required
+                customStyles={classes.titleInput}
+                showClearOption={false}
+                register={register('title')}
+                value={watch('title')}
+                onChange={e => setValue('title', e.target.value)}
+              />
+              {ratings.map(item => (
+                <Controller
+                  key={item.name}
+                  name={item.name}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <Box>
+                      <CustomRating
+                        fontSize="40px"
+                        label={item.label}
+                        required
+                        onChange={(e, value) => onChange(Number(value))}
+                        sx={classes.ratingField}
+                        value={Number(value)}
+                      />
+                      {!activeComments[item.commentName] && (
+                        <Typography
+                          variant="body1"
+                          className={addCommentClassname(!!value)}
+                          onClick={() =>
+                            handleOpenComment(item.commentName, !!value)
+                          }
+                        >
+                          <i className="icon-Plus"></i> Add comment
+                        </Typography>
+                      )}
+                      {activeComments[item.commentName] && (
+                        <Box marginTop="4px">
+                          <Typography variant="body1" fontWeight={600}>
+                            Comment
+                          </Typography>
+                          <CustomTextArea
+                            register={register(item.commentName)}
+                            placeholder="Tell in details about your experience"
+                            height="148px"
+                            value={watch(item.commentName)}
+                            onChange={e =>
+                              setValue(item.commentName, e.target.value)
+                            }
+                          />
+                        </Box>
+                      )}
+                    </Box>
+                  )}
+                />
+              ))}
+              <Box marginBottom="40px">
+                <Controller
+                  name="overallRating"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
                     <CustomRating
                       fontSize="40px"
-                      label={item.label}
+                      label="Overall Rating"
                       required
                       onChange={(e, value) => onChange(Number(value))}
-                      sx={classes.ratingField}
-                      value={Number(value)}
+                      sx={classes.overallRatingField}
+                      value={value}
                     />
-                    {!activeComments[item.commentName] && (
-                      <Typography
-                        variant="body1"
-                        className={addCommentClassname(!!value)}
-                        onClick={() =>
-                          handleOpenComment(item.commentName, !!value)
-                        }
-                      >
-                        <i className="icon-Plus"></i> Add comment
-                      </Typography>
-                    )}
-                    {activeComments[item.commentName] && (
-                      <Box marginTop="4px">
-                        <Typography variant="body1" fontWeight={600}>
-                          Comment
-                        </Typography>
-                        <CustomTextArea
-                          register={register(item.commentName)}
-                          placeholder="Tell in details about your experience"
-                          height="148px"
-                          value={watch(item.commentName)}
-                          onChange={e =>
-                            setValue(item.commentName, e.target.value)
-                          }
-                        />
-                      </Box>
-                    )}
-                  </Box>
-                )}
-              />
-            ))}
-            <Box marginBottom="40px">
-              <Controller
-                name="overallRating"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <CustomRating
-                    fontSize="40px"
-                    label="Overall Rating"
-                    required
-                    onChange={(e, value) => onChange(Number(value))}
-                    sx={classes.overallRatingField}
-                    value={value}
-                  />
-                )}
-              />
-              <Typography variant="body1" fontWeight={600}>
-                Overall Comment <span className="required-star">*</span>
-              </Typography>
-              <CustomTextArea
-                register={register('overallComment')}
-                placeholder="Tell in details about your experience"
-                height="148px"
-                value={watch('overallComment')}
-                onChange={e => setValue('overallComment', e.target.value)}
-              />
+                  )}
+                />
+                <Typography variant="body1" fontWeight={600}>
+                  Overall Comment <span className="required-star">*</span>
+                </Typography>
+                <CustomTextArea
+                  register={register('overallComment')}
+                  placeholder="Tell in details about your experience"
+                  height="148px"
+                  value={watch('overallComment')}
+                  onChange={e => setValue('overallComment', e.target.value)}
+                />
+              </Box>
             </Box>
-          </Box>
-          <Box sx={classes.buttonWrapper}>
-            <Button type="submit" disabled={!isValid}>
-              Next
-            </Button>
+            <Box sx={classes.buttonWrapper}>
+              <Button
+                variant="tertiary"
+                onClick={handleBackButton}
+                sxCustomStyles={classes.buttonBack}
+              >
+                Back
+              </Button>
+              <Button
+                type="submit"
+                disabled={!isValid}
+                sxCustomStyles={classes.buttonNext}
+              >
+                Next
+              </Button>
+            </Box>
           </Box>
         </form>
       </Box>

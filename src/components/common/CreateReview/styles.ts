@@ -9,6 +9,8 @@ export const useCreateReviewFormStyles = () => {
       height: '100vh',
       background: palette.common.white,
       overflow: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
     },
     header: {
       padding: '16px 24px',
@@ -23,20 +25,31 @@ export const useCreateReviewFormStyles = () => {
         color: palette.text.secondary,
       },
     },
-    leftPart: {
-      display: 'flex',
-      gap: '32px',
-      alignItems: 'center',
-      '& p': {
-        fontWeight: 600,
-      },
+    subTitle: {
+      color: palette.text.secondary,
+    },
+    logoBox: {
+      display: { xs: 'none', lg: 'block' },
+      marginRight: '32px',
+    },
+    buttonBack: {
+      display: { xs: 'flex', md: 'none' },
+      width: '24px',
+    },
+    iconBack: {
+      fontSize: '24px',
+    },
+    titleBox: {
+      width: { xs: 'auto', md: '100%' },
+      textAlign: { xs: 'center', md: 'left' },
     },
     content: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: '32px 0px 32px',
+      padding: { xs: '32px 16px 0px', md: '32px 16px 0px' },
       gap: '32px',
+      height: '100%',
     },
   };
 };
@@ -44,13 +57,22 @@ export const useCreateReviewFormStyles = () => {
 export const useChooseSponsorStepStyles = () => {
   return {
     root: {
-      padding: '64px 32px 16px',
+      paddingBottom: { xs: '0px', md: '16px' },
+      maxWidth: '796px',
+      width: '100%',
+      height: { xs: '100%', md: 'auto' },
+    },
+    container: {
+      height: '100%',
+      width: '100%',
+      padding: { xs: '64px 0px 0px', md: '64px 32px 0px' },
       display: 'flex',
       flexDirection: 'column',
-      gap: '64px',
+      justifyContent: 'space-between',
+      gap: { xs: '0px', md: '64px' },
       borderRadius: '12px',
       background: palette.common.white,
-      boxShadow: customShadows.header,
+      boxShadow: { xs: 'none', md: customShadows.header },
     },
     content: {
       display: 'flex',
@@ -60,6 +82,10 @@ export const useChooseSponsorStepStyles = () => {
     buttonsWrapper: {
       display: 'flex',
       justifyContent: 'end',
+      paddingBottom: '16px',
+    },
+    buttonNext: {
+      width: { xs: '100%', md: 'auto' },
     },
     noResults: {
       color: palette.text.secondary,
@@ -70,7 +96,9 @@ export const useChooseSponsorStepStyles = () => {
       cursor: 'pointer',
     },
     tagSelectorWrapper: {
-      width: '520px',
+      maxWidth: '520px',
+      width: '100%',
+      marginBottom: { xs: '24px', md: '0px' },
     },
     tagSelectorContent: {
       display: 'flex',
@@ -104,13 +132,22 @@ export const useChooseSponsorStepStyles = () => {
 export const useChooseDealStepStyles = () => {
   return {
     root: {
-      padding: '64px 32px 16px',
+      paddingBottom: { xs: '0px', md: '16px' },
+      maxWidth: '796px',
+      width: '100%',
+      height: { xs: '100%', md: 'auto' },
+    },
+    container: {
+      height: '100%',
+      width: '100%',
+      padding: { xs: '64px 0px 0px', md: '64px 32px 0px' },
       display: 'flex',
       flexDirection: 'column',
-      gap: '64px',
+      justifyContent: 'space-between',
+      gap: { xs: '0px', md: '64px' },
       borderRadius: '12px',
       background: palette.common.white,
-      boxShadow: customShadows.header,
+      boxShadow: { xs: 'none', md: customShadows.header },
     },
     content: {
       display: 'flex',
@@ -125,8 +162,18 @@ export const useChooseDealStepStyles = () => {
     },
     buttonsWrapper: {
       display: 'flex',
+      justifyContent: 'space-between',
+    },
+    mainButtonsWrapper: {
+      display: 'flex',
       justifyContent: 'end',
       gap: '8px',
+      flexDirection: { xs: 'column', md: 'row' },
+      paddingBottom: '16px',
+      width: '100%',
+    },
+    buttonBack: {
+      display: { xs: 'none', md: 'block' },
     },
     noResults: {
       color: palette.text.secondary,
@@ -137,7 +184,9 @@ export const useChooseDealStepStyles = () => {
       cursor: 'pointer',
     },
     tagSelectorWrapper: {
-      width: '520px',
+      maxWidth: '520px',
+      width: '100%',
+      marginBottom: { xs: '24px', md: '0px' },
     },
     tagSelectorContent: {
       display: 'flex',
@@ -158,10 +207,24 @@ export const useChooseDealStepStyles = () => {
 export const useReviewDetailsStepStyles = () => {
   return {
     root: {
+      paddingBottom: { xs: '0px', md: '16px' },
+      maxWidth: '796px',
+      width: '100%',
+      height: { xs: '100%', md: 'auto' },
+    },
+    container: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%',
       borderRadius: '12px',
       background: palette.common.white,
-      boxShadow: customShadows.header,
-      padding: '40px 40px 16px',
+      boxShadow: { xs: 'none', md: customShadows.header },
+      padding: {
+        xs: '24px 0px 0px',
+        md: '24px 16px 0px',
+        lg: '40px 40px 0px',
+      },
       '& .add-comment': {
         display: 'flex',
         gap: '8px',
@@ -183,11 +246,23 @@ export const useReviewDetailsStepStyles = () => {
       },
     },
     form: {
+      height: '100%',
+    },
+    formContainer: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    },
+    formContent: {
       display: 'flex',
       flexDirection: 'column',
       gap: '32px',
     },
-    titleInput: { minWidth: '700px' },
+    titleInput: {
+      maxWidth: '796px',
+      width: '100%',
+    },
     ratingField: {
       marginBottom: '12px',
     },
@@ -196,7 +271,14 @@ export const useReviewDetailsStepStyles = () => {
     },
     buttonWrapper: {
       display: 'flex',
-      justifyContent: 'end',
+      justifyContent: 'space-between',
+      paddingBottom: '16px',
+    },
+    buttonBack: {
+      display: { xs: 'none', md: 'block' },
+    },
+    buttonNext: {
+      width: { xs: '100%', md: 'auto' },
     },
   };
 };
@@ -204,18 +286,34 @@ export const useReviewDetailsStepStyles = () => {
 export const useUploadProofStepStyles = () => {
   return {
     root: {
+      paddingBottom: { xs: '0px', md: '16px' },
+      maxWidth: '796px',
+      width: '100%',
+      height: { xs: '100%', md: 'auto' },
+    },
+    container: {
+      height: '100%',
+      width: '100%',
+      padding: { xs: '64px 0px 0px', md: '64px 32px 0px' },
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      gap: { xs: '0px', md: '64px' },
       borderRadius: '12px',
       background: palette.common.white,
-      boxShadow: customShadows.header,
-      padding: '40px 40px 16px',
+      boxShadow: { xs: 'none', md: customShadows.header },
+    },
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    titleBox: {
+      width: '100%',
     },
     subTitle: {
       color: palette.text.secondary,
       margin: '4px 0px 32px',
-    },
-    content: {
-      paddingBottom: '40px',
-      marginBottom: '100px',
     },
     buttonsWrapper: {
       display: 'flex',
@@ -223,7 +321,14 @@ export const useUploadProofStepStyles = () => {
     },
     mainButtonsWrapper: {
       display: 'flex',
+      justifyContent: 'end',
       gap: '8px',
+      flexDirection: { xs: 'column', md: 'row' },
+      paddingBottom: '16px',
+      width: '100%',
+    },
+    buttonBack: {
+      display: { xs: 'none', md: 'block' },
     },
   };
 };
@@ -231,22 +336,37 @@ export const useUploadProofStepStyles = () => {
 export const useReviewSubmittedStyles = () => {
   return {
     root: {
-      padding: '64px 32px',
+      paddingBottom: { xs: '0px', md: '16px' },
+      maxWidth: '796px',
+      width: '100%',
+      height: { xs: '100%', md: 'auto' },
+    },
+    container: {
+      height: '100%',
+      width: '100%',
+      padding: { xs: '64px 0px 0px', md: '64px 32px 0px' },
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: { xs: 'flex-start', md: 'center' },
       borderRadius: '12px',
       background: palette.common.white,
-      boxShadow: customShadows.header,
+      boxShadow: { xs: 'none', md: customShadows.header },
     },
     subTitle: {
       color: palette.text.secondary,
       marginBottom: '24px',
     },
     buttonsWrapper: {
+      width: { xs: '100%', md: 'auto' },
       display: 'flex',
+      flexDirection: { xs: 'column-reverse', md: 'row' },
+      justifyContent: 'space-between',
       gap: '8px',
+      paddingBottom: '16px',
+    },
+    link: {
+      width: '100%',
     },
   };
 };
