@@ -175,9 +175,9 @@ const GlobalSearch = ({
                     href={`/list?type=deals&search=${globalSearchValue}`}
                     onClick={handleShowAllLinkClick}
                   >
-                    <Typography variant="body1" sx={classes.showAllLink}>
-                      Show all
-                    </Typography>
+                    <Button variant="tertiary" customStyles={{ padding: 0 }}>
+                      Show all results for {globalSearchValue}
+                    </Button>
                   </Link>
                 </Box>
                 <Box>
@@ -251,9 +251,9 @@ const GlobalSearch = ({
                     href={`/list?type=sponsors&search=${globalSearchValue}`}
                     onClick={handleShowAllLinkClick}
                   >
-                    <Typography variant="body1" sx={classes.showAllLink}>
-                      Show all
-                    </Typography>
+                    <Button variant="tertiary" customStyles={{ padding: 0 }}>
+                      Show all results for {globalSearchValue}
+                    </Button>
                   </Link>
                 </Box>
                 <Box>
