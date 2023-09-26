@@ -5,6 +5,7 @@ import CustomPopover from '@/components/common/Popover';
 import { HeaderType } from '@/hooks/useHeaderProps';
 import getStyles from '../styles';
 import { links } from '..';
+import Button from '@/components/common/Button';
 
 interface DealsPopoverProps {
   type?: HeaderType;
@@ -62,13 +63,15 @@ export const DealsPopover: FC<DealsPopoverProps> = ({
                 href={item.href}
                 key={item.value}
                 onClick={() => setIsArrowRotated(false)}
-                style={
-                  item.value === 'All Deals'
-                    ? { ...classes.popoverItem, ...classes.dealsLink }
-                    : classes.popoverItem
-                }
+                style={classes.popoverItem}
               >
-                {item.value}
+                {item.value === 'All Deals' ? (
+                  <Button variant="tertiary" customStyles={{ padding: 0 }}>
+                    {item.value}
+                  </Button>
+                ) : (
+                  item.value
+                )}
               </Link>
             ))}
           </Box>
