@@ -25,6 +25,7 @@ import Loading from '@/components/common/Loading';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
+import EllipsisText from '@/components/common/EllipsisText';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -193,7 +194,11 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
                 style={{ borderRadius: '1230px' }}
               />
               <Box>
-                <Typography variant="h5">{sponsor.legalName}</Typography>
+                <EllipsisText
+                  variant="h5"
+                  width="186px"
+                  text={sponsor.legalName}
+                />
                 <Typography variant="body1" sx={classes.sponsorRating}>
                   <i className="icon-Star"></i>
                   {sponsor.avgTotalRating}
