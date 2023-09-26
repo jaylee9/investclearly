@@ -127,6 +127,10 @@
   border: 1px solid #4f7ff8 !important;
 }
 
+.text-area::placeholder {
+  color: #a1a6b0;
+}
+
 .text-area-error {
   border: 1px solid #d72638 !important;
 }

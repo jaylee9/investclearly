@@ -984,10 +984,16 @@ export const useCustomTextAreaStyles = () => {
       padding: '9px 16px',
       fontSize: '15px',
       borderRadius: '12px',
-      border: `1px solid ${palette.background.paper}`,
+      border: `1px solid ${palette.secondary.dark}`,
       transition: 'border 0.3s ease-in-out',
       color: palette.common.black,
       outline: 'none',
+      '&.input': {
+        '&::placeholder': {
+          textOverflow: 'ellipsis !important',
+          color: 'blue',
+        },
+      },
     },
     errorText: {
       position: 'absolute',

@@ -34,6 +34,7 @@ const CustomTextArea = ({
       register.onChange(e);
     }
   };
+
   return (
     <Box>
       {!!topLabel && (
