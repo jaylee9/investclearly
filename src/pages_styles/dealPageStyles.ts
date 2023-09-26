@@ -21,13 +21,13 @@ const useDealPageStyles = () => {
       },
     },
     leftColumn: {
-      width: { xs: '100%', lg: '78%' },
+      width: { xs: '100%', lg: '75%' },
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
     },
     rightColumn: {
-      width: { xs: '100%', lg: '22%' },
+      width: { xs: '100%', lg: '25%' },
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
