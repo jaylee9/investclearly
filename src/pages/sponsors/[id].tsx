@@ -142,13 +142,27 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
     event: SyntheticEvent<Element, Event>,
     newValue: string | number
   ) => {
+    let elementToScrollTo: HTMLDivElement | null = null;
     if (newValue === 'overview' && overviewRef.current) {
-      overviewRef.current.scrollIntoView({ behavior: 'smooth' });
+      elementToScrollTo = overviewRef.current;
     } else if (newValue === 'reviews' && reviewsRef.current) {
-      reviewsRef.current.scrollIntoView({ behavior: 'smooth' });
+      elementToScrollTo = reviewsRef.current;
     } else if (newValue === 'deals' && dealsRef.current) {
-      dealsRef.current.scrollIntoView({ behavior: 'smooth' });
+      elementToScrollTo = dealsRef.current;
     }
+
+    if (elementToScrollTo) {
+      const integerHeight = newValue === 'overview' ? 30 : 50;
+      const headerHeight = isStickyHeader ? integerHeight : 0;
+      window.scrollTo({
+        top:
+          elementToScrollTo.getBoundingClientRect().top +
+          window.scrollY -
+          headerHeight,
+        behavior: 'smooth',
+      });
+    }
+
     setActiveTab(newValue as ActiveTab);
   };
   const handleOpenModal = () => {
