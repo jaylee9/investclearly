@@ -66,41 +66,44 @@ const EditDealModal = ({
 
   return (
     <Modal {...props}>
-      <Box>
+      <Box sx={classes.root}>
         <Typography variant="h3" fontWeight={600} marginBottom="24px">
           Edit deal
         </Typography>
-        <form onSubmit={onFormSubmit}>
-          <Box>
-            <CustomDateRangePicker
-              topLabel="Date of Investment"
-              control={control}
-              name="dateOfInvestment"
-            />
+        <form onSubmit={onFormSubmit} style={classes.form}>
+          <Box sx={classes.formContainer}>
+            <Box sx={classes.formContent}>
+              <Box>
+                <CustomDateRangePicker
+                  topLabel="Date of Investment"
+                  control={control}
+                  name="dateOfInvestment"
+                />
+              </Box>
+              <Input
+                topLabel="Total Invested"
+                showClearOption={false}
+                register={register('totalInvested')}
+                value={watch('totalInvested')}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Typography variant="body1" sx={classes.symbol}>
+                        $
+                      </Typography>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
+            <Button
+              type="submit"
+              customStyles={classes.submitButton}
+              disabled={!isDirty}
+            >
+              Save
+            </Button>
           </Box>
-          <Input
-            topLabel="Total Invested"
-            showClearOption={false}
-            register={register('totalInvested')}
-            value={watch('totalInvested')}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Typography variant="body1" sx={classes.symbol}>
-                    $
-                  </Typography>
-                </InputAdornment>
-              ),
-            }}
-            customStyles={{ marginBottom: '24px' }}
-          />
-          <Button
-            type="submit"
-            customStyles={classes.submitButton}
-            disabled={!isDirty}
-          >
-            Save
-          </Button>
         </form>
       </Box>
     </Modal>

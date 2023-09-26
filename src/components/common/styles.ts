@@ -589,12 +589,18 @@ export const useLoadingStyles = () => {
 export const useTabsStyles = () => {
   return {
     root: {
-      '& .MuiTabs-indicator': {
-        backgroundColor: palette.primary.light,
+      '&.MuiTabs-root': {
+        '& .MuiTabs-indicator': {
+          backgroundColor: palette.primary.light,
+        },
+        '& .MuiTabs-flexContainer': {
+          gap: '24px',
+        },
       },
     },
     tab: {
       '&.MuiTab-root': {
+        padding: '0px',
         '&.Mui-selected': {
           '& p': {
             color: palette.primary.light,
@@ -1109,7 +1115,7 @@ export const useTagSelectorStyles = (isSearch: boolean) => {
       border: `1px solid ${palette.background.paper}`,
       '& .tag-title': {
         whiteSpace: 'nowrap',
-        maxWidth: '300px',
+        maxWidth: { xs: '220px', md: '300px' },
         overflow: 'hidden',
         textOverflow: 'ellipsis',
       },
@@ -1260,35 +1266,55 @@ export const useTableStyles = () => {
         color: palette.text.secondary,
         fontSize: typography.caption,
         fontWeight: 600,
+        whiteSpace: 'nowrap',
         borderBottom: 'none',
         padding: '8px',
         '&:first-of-type': {
           paddingLeft: '24px',
         },
+        '&:last-of-type': {
+          paddingRight: '24px',
+        },
       },
     },
     bodyCell: {
       fontSize: typography.body1,
-      borderBottom: `1px solid ${palette.background.paper}`,
+      borderBottom: 'none',
+      whiteSpace: 'nowrap',
+      '&:first-of-type': {
+        paddingLeft: '24px',
+      },
       '& p': {
         margin: 0,
       },
     },
+    rowWithBorderBottom: {
+      borderBottom: `1px solid ${palette.background.paper}`,
+    },
+    actionsCell: {
+      borderBottom: 'none',
+    },
     actionCell: {
-      paddingRight: '24px',
+      paddingRight: '8px',
       display: 'flex',
       gap: '8px',
       alignItems: 'center',
     },
     pagination: {
       display: 'flex',
-      justifyContent: 'space-between',
+      justifyContent: { xs: 'center', md: 'space-between' },
       width: '100%',
       alignItems: 'center',
       padding: '8px 24px',
       '& span': {
         color: palette.text.secondary,
       },
+      '& .MuiPagination-root': {
+        margin: '0px',
+      },
+    },
+    paginationResults: {
+      display: { xs: 'none', md: 'block' },
     },
   };
 };

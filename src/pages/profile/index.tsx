@@ -79,7 +79,7 @@ const UserProfilePage = () => {
           </Box>
           <Box sx={classes.contentWrapper}>
             <Box sx={classes.content}>
-              <Typography variant="h3" fontWeight={600} marginBottom="20px">
+              <Typography variant="h3" sx={classes.title}>
                 {activeTab?.label}
               </Typography>
               {activeTab?.component}
