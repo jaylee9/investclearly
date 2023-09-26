@@ -50,6 +50,10 @@ export const useWorthStepStyles = () => {
     bold: {
       fontWeight: 600,
     },
+    actionButtons: {
+      display: 'flex',
+      gap: '8px',
+    },
   };
 };
 

@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { useWorthStepStyles } from './styles';
 import YesNoButtons from '@/components/common/YesNoButtons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@/components/common/Button';
 import { useRouter } from 'next/router';
 import { IncomeAndNetWorth } from '@/backend/constants/enums/income-and-worth';
@@ -9,9 +9,7 @@ import { IncomeAndNetWorth } from '@/backend/constants/enums/income-and-worth';
 const WorthStep = () => {
   const classes = useWorthStepStyles();
   const router = useRouter();
-  const [worth, setWorth] = useState<'yes' | 'no'>(
-    (localStorage.getItem('incomeAndNetWorth') as 'yes' | 'no') || 'yes'
-  );
+  const [worth, setWorth] = useState<'yes' | 'no'>('yes');
   const handleBackClick = () => {
     router.push('/onboarding?step=1');
   };
@@ -26,6 +24,15 @@ const WorthStep = () => {
     }
     router.push('/onboarding?step=3');
   };
+
+  useEffect(() => {
+    const isWorth =
+      localStorage.getItem('incomeAndNetWorth') === IncomeAndNetWorth.yesIHave
+        ? 'yes'
+        : 'no';
+    setWorth(isWorth || 'yes');
+  }, []);
+
   return (
     <Box sx={classes.root}>
       <Box>
@@ -64,7 +71,7 @@ const WorthStep = () => {
             Back
           </Button>
         </Box>
-        <Box>
+        <Box sx={classes.actionButtons}>
           <Button variant="secondary" onClick={() => handleStepClick('skip')}>
             Skip
           </Button>
