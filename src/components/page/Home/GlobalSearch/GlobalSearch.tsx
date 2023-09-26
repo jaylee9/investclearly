@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import PlaceholderImage from '@/components/common/PlaceholderImage';
 import { GlobalSearchInput } from './GlobalSearchInput';
 import { HeaderType } from '../../../../hooks/useHeaderProps';
+import Button from '@/components/common/Button';
 
 export enum GlobalSearchVariant {
   BASE = 'base',
@@ -306,9 +307,9 @@ const GlobalSearch = ({
               (!!data?.deals?.length || !!data?.sponsors?.length) && (
                 <Fade in={Boolean(globalSearchValue)}>
                   <Link href={searchLink} onClick={handleShowAllLinkClick}>
-                    <Typography sx={classes.showAllLink} variant="body1">
+                    <Button variant="tertiary" customStyles={{ padding: 0 }}>
                       Show all results for {globalSearchValue}
-                    </Typography>
+                    </Button>
                   </Link>
                 </Fade>
               )}
