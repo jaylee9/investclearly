@@ -26,11 +26,12 @@
 }
 
 .vi__character-error {
-  border: 1px solid red;
+  border: 1px solid red !important;
   animation: border-fade 0.5s ease-in-out;
 }
 
 .vi__character--selected {
+  border: 1px solid #4f7ff8;
   outline: none;
 }
 
