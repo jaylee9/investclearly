@@ -840,6 +840,11 @@ export const useMultiButtonsStyles = () => {
       border: `1px solid ${palette.background.paper}`,
       cursor: 'pointer',
       transition: 'background 0.3s ease, color 0.3s ease, border 0.3s ease',
+      '&:hover': {
+        background: palette.common.white,
+        color: palette.common.black,
+        border: `1px solid ${palette.primary.main}`,
+      },
     },
     activeMultiButton: {
       color: palette.common.white,

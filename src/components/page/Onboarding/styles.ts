@@ -81,6 +81,7 @@ export const useInvestmentPreferencesStepStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       gap: '32px',
+      maxWidth: '600px',
     },
     actionButtons: {
       display: 'flex',
