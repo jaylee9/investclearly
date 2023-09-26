@@ -12,7 +12,7 @@ const useSponsorPageStyles = () => {
       width: '100%',
       zIndex: 100,
       top: 0,
-      padding: { xs: '0 16px', md: '16px', lg: '12px 48px 0px' },
+      padding: { xs: '0 16px', md: '16px', lg: '12px 48px' },
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: { lg: 'center' },
@@ -22,7 +22,6 @@ const useSponsorPageStyles = () => {
       display: 'flex',
       gap: '16px',
       alignItems: 'center',
-      paddingBottom: '12px',
       '& img': {
         borderRadius: '1230px',
       },
@@ -306,7 +305,7 @@ const useSponsorPageStyles = () => {
       },
       '& .MuiTabs-indicator': {
         backgroundColor: palette.primary.light,
-        bottom: { md: '-16px', lg: '-9px' },
+        bottom: { md: '-16px', lg: '-14px' },
       },
     },
   };
