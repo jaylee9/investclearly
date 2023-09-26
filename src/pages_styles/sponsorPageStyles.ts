@@ -306,7 +306,7 @@ const useSponsorPageStyles = () => {
       },
       '& .MuiTabs-indicator': {
         backgroundColor: palette.primary.light,
-        bottom: { md: '-16px', lg: '-13px' },
+        bottom: { md: '-16px', lg: '-9px' },
       },
     },
   };
