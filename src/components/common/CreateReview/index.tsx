@@ -23,7 +23,9 @@ const steps = {
 const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
   const { onClose, ...other } = props;
   const [step, setStep] = useState(steps['Choose Sponsor']);
-  const [payload, setPayload] = useState<CreateReviewPayloadInterface>({});
+  const [payload, setPayload] = useState<
+    CreateReviewPayloadInterface & { sponsorName?: string }
+  >({});
 
   const classes = useCreateReviewFormStyles();
 

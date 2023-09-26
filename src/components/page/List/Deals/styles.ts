@@ -145,6 +145,7 @@ export const useColumnsComponentStyles = () => {
       background: palette.common.white,
       borderRadius: '12px',
       boxShadow: customShadows.header,
+      blockSize: 'fit-content',
       '& .MuiPaper-root': {
         '&:first-of-type': {
           borderRadius: '100px 100px 0px 0px !important',
