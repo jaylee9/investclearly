@@ -154,11 +154,11 @@ const FileUploader = ({
           )}
         </div>
       </Fade>
-      {(defaultImage || !!files.length) && (
+      {(defaultImage || !!files.length) && type === 'SingleImage' && (
         <Box sx={classes.previewImageWrapper}>
           <Image
             src={defaultImage || URL.createObjectURL(files?.[0].file)}
-            alt="123"
+            alt="deal image"
             width={300}
             height={200}
             style={{ objectFit: 'cover' }}
