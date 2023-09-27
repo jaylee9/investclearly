@@ -16,9 +16,11 @@ import Button from '@/components/common/Button';
 import CreateReviewForm from '@/components/common/CreateReview';
 import CustomPagination from '@/components/common/Pagination';
 import VerifyReviewModal from './Modals/VerifyReview';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 
 const ProfileReviews = () => {
   const classes = useProfileReviewsStyles();
+  const { isDesktop } = useBreakpoints();
   const [activeTab, setActiveTab] = useState('published');
   const [counters, setCounters] = useState({
     published: 0,
@@ -143,7 +145,12 @@ const ProfileReviews = () => {
   return (
     <Box sx={{ overflow: 'auto' }}>
       <Box sx={classes.tabsWrapper}>
-        <CustomTabs value={activeTab} onChange={handleChangeTab} tabs={tabs} />
+        <CustomTabs
+          value={activeTab}
+          onChange={handleChangeTab}
+          tabs={tabs}
+          isDivider={isDesktop}
+        />
       </Box>
       {!counters[activeTab as keyof typeof counters] &&
         !!user &&

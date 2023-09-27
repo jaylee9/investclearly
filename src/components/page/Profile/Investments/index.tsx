@@ -5,7 +5,7 @@ import {
 import { OrderDirectionConstants } from '@/backend/constants/order-direction-constants';
 import CustomTabs from '@/components/common/CustomTabs';
 import Loading from '@/components/common/Loading';
-import { Box, Typography, Divider } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { SyntheticEvent, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useInvestmentsStyles } from './styles';
@@ -20,6 +20,7 @@ import { debounce } from 'lodash';
 import EditDealModal, { DealToEdit } from './Modals/EditDeal';
 import DeleteDealModal from './Modals/DeleteDeal';
 import EllipsisText from '@/components/common/EllipsisText';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 
 const tabs = [
   {
@@ -42,6 +43,7 @@ enum ModalTypes {
 }
 
 const ProfileInvestments = () => {
+  const { isDesktop } = useBreakpoints();
   const [activeTab, setActiveTab] = useState('all');
   const handleChangeTab = (
     event: SyntheticEvent<Element, Event>,
@@ -164,8 +166,12 @@ const ProfileInvestments = () => {
 
   return (
     <Box>
-      <CustomTabs tabs={tabs} onChange={handleChangeTab} value={activeTab} />
-      <Divider sx={classes.divider} />
+      <CustomTabs
+        tabs={tabs}
+        onChange={handleChangeTab}
+        value={activeTab}
+        isDivider={isDesktop}
+      />
       <Box sx={classes.root}>
         {isLoading && (
           <Box marginBottom="24px">
