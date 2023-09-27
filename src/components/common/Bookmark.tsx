@@ -6,14 +6,16 @@ interface BookmarkProps {
   addBookmark?: () => void;
   deleteBookmark?: () => void;
   isInBookmarks?: boolean;
+  isFilledWhite?: boolean;
 }
 
 const Bookmark = ({
   isInBookmarks,
   addBookmark,
   deleteBookmark,
+  isFilledWhite,
 }: BookmarkProps) => {
-  const classes = useBookmarkStyles();
+  const classes = useBookmarkStyles(!!isFilledWhite);
 
   return isInBookmarks ? (
     <BookmarkIcon sx={classes.filledBookmarkIcon} onClick={deleteBookmark} />

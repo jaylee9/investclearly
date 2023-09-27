@@ -64,7 +64,7 @@ const SavedSponsors = ({ setSponsorCountChanged }: SavedSponsorsProps) => {
           placeholder="Search"
           isSearch
           variant="filled"
-          customStyles={classes.searchInput}
+          sxCustomStyles={classes.searchInput}
           onChange={e => handleSearch(e.target.value)}
           onClear={handleClearSearch}
         />
@@ -109,7 +109,7 @@ const SavedSponsors = ({ setSponsorCountChanged }: SavedSponsorsProps) => {
 
       {data?.sponsors && data.sponsors.length > 0 && (
         <Box sx={classes.pagination}>
-          <Typography variant="caption">
+          <Typography variant="caption" sx={classes.paginationResults}>
             Showing {firstItem}-{lastItem} of {data?.total} results
           </Typography>
           <CustomPagination

@@ -5,12 +5,12 @@ const { palette } = theme;
 export const useProfileReviewsStyles = () => {
   return {
     content: {
-      padding: { lg: '24px 0px', sm: '24px 16px' },
-      borderRadius: { sm: '12px', lg: '0px' },
+      padding: { lg: '24px 0px', xs: '24px 16px' },
+      borderRadius: { xs: '12px', lg: '0px' },
       background: palette.common.white,
     },
     tabsWrapper: {
-      padding: { sm: '0px 16px', lg: '0px' },
+      padding: { xs: '0px 16px', lg: '0px' },
     },
     searchInput: {
       maxWidth: '320px',
@@ -21,7 +21,7 @@ export const useProfileReviewsStyles = () => {
       gap: '8px',
       color: palette.primary.light,
       padding: '8px',
-      borderRadius: { sm: '8px', md: '36px' },
+      borderRadius: { xs: '8px', md: '36px' },
       background: palette.primary.contrastText,
       width: '100%',
       fontWeight: 600,
@@ -52,14 +52,18 @@ export const useProfileReviewsStyles = () => {
       flexDirection: 'column',
       alignItems: 'center',
       background: palette.common.white,
+      borderRadius: '8px',
+      minHeight: { xs: '78vh', md: '65vh', lg: 'initial' },
     },
     noReviewTitle: {
       fontWeight: 600,
       marginBottom: '4px',
+      textAlign: 'center',
     },
     subTitle: {
       color: palette.text.secondary,
       marginBottom: '24px',
+      textAlign: 'center',
     },
     writeReviewButton: {
       minWidth: '240px',

@@ -281,8 +281,9 @@ export const useDealCardStyles = () => {
       borderRadius: '12px',
       width: '100%',
       background: palette.common.white,
-      gap: '16px',
+      gap: { md: '16px' },
       alignItems: 'stretch',
+      position: { xs: 'relative', md: 'initial' },
       '& img': {
         borderRadius: '12px 0px 0px 12px',
         height: 'auto',
@@ -292,6 +293,9 @@ export const useDealCardStyles = () => {
       padding: { xs: '16px 20px', md: '24px 24px 24px 0px' },
       boxSizing: 'border-box',
       width: '100%',
+      borderRadius: { xs: '0px 0px 12px 12px', md: 'initital' },
+      border: { xs: `1px solid ${palette.background.paper}`, md: 'initital' },
+      borderTop: 'none !important',
     },
     largeHeader: {
       display: 'flex',
@@ -367,6 +371,17 @@ export const useDealCardStyles = () => {
         fontSize: '24px',
         color: palette.primary.light,
       },
+    },
+    bookmarkWrapper: {
+      position: { xs: 'absolute', md: 'inherit' },
+      top: 12,
+      right: 12,
+      display: { xs: 'flex', md: 'block' },
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: { xs: '8px', md: '0px' },
+      background: { xs: 'rgba(26, 31, 40, 0.70)', md: 'transparent' },
+      borderRadius: { xs: '8px', md: 0 },
     },
   };
 };
@@ -668,10 +683,11 @@ export const useSponsorCardStyles = () => {
       borderRadius: '12px',
       width: '100%',
       background: palette.common.white,
-      gap: '16px',
+      gap: { md: '16px' },
       alignItems: 'stretch',
       padding: '24px',
       position: { xs: 'relative', md: 'initial' },
+      border: { xs: `1px solid ${palette.background.paper}`, md: 'none' },
     },
     largeContent: {
       boxSizing: 'border-box',
@@ -758,6 +774,11 @@ export const useSponsorCardStyles = () => {
       color: palette.primary.light,
       cursor: 'pointer',
       width: '24px',
+    },
+    bookmarkWrapper: {
+      position: { xs: 'absolute', md: 'initial' },
+      top: 12,
+      right: 12,
     },
   };
 };
@@ -1344,15 +1365,15 @@ export const useEllipsisTextStyles = () => {
   };
 };
 
-export const useBookmarkStyles = () => {
+export const useBookmarkStyles = (isFilledWhite: boolean) => {
   return {
     bookmarkIcon: {
-      color: palette.text.secondary,
+      color: isFilledWhite ? palette.common.white : palette.text.secondary,
       cursor: 'pointer',
       width: '24px',
     },
     filledBookmarkIcon: {
-      color: palette.primary.light,
+      color: isFilledWhite ? palette.common.white : palette.primary.light,
       cursor: 'pointer',
       width: '24px',
     },
