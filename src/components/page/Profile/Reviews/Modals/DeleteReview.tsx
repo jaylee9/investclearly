@@ -43,7 +43,7 @@ const DeleteReviewModal = ({
           >
             Cancel
           </Button>
-          <Button onClick={handleDelete} disabled={isLoading}>
+          <Button onClick={handleDelete} disabled={isLoading} color="error">
             Delete
           </Button>
         </Box>
