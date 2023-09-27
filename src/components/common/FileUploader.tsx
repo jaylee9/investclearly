@@ -6,6 +6,11 @@ import { v4 as uuidv4 } from 'uuid';
 import Loading from './Loading';
 import Image from 'next/image';
 
+export enum FileType {
+  MULTIPLE_FILE = 'MultipleFile',
+  SINGLE_IMAGE = 'SingleImage',
+}
+
 interface FileItem {
   id: string;
   file: File;
@@ -18,7 +23,7 @@ interface FileUploaderProps {
   onUpload: (file: File) => void;
   onDelete: (file?: File) => void;
   isLoading?: boolean;
-  type?: 'MultipleFile' | 'SingleImage';
+  type?: FileType;
   defaultImage?: string;
 }
 
@@ -26,7 +31,7 @@ const FileUploader = ({
   onUpload,
   onDelete,
   isLoading,
-  type = 'MultipleFile',
+  type = FileType.MULTIPLE_FILE,
   defaultImage,
 }: FileUploaderProps) => {
   const classes = useFileUploaderStyles();
@@ -90,7 +95,7 @@ const FileUploader = ({
   };
 
   const accept =
-    type === 'MultipleFile'
+    type === FileType.MULTIPLE_FILE
       ? {
           'image/jpeg': ['.jpg', '.jpeg'],
           'image/png': ['.png'],
@@ -110,11 +115,11 @@ const FileUploader = ({
     disabled: isLoading,
     accept: accept as Accept,
     onDrop: handleFiles,
-    multiple: type === 'MultipleFile',
+    multiple: type === FileType.MULTIPLE_FILE,
   });
 
   const rules =
-    type === 'MultipleFile' ? (
+    type === FileType.MULTIPLE_FILE ? (
       <Typography variant="caption" sx={classes.infoText}>
         <span className={fileLengthError ? 'fileLengthError' : 'fileLength'}>
           Max 3 files
@@ -134,14 +139,16 @@ const FileUploader = ({
     <Box sx={classes.root}>
       <Fade
         in={
-          (files.length < 3 && type === 'MultipleFile') ||
-          (files.length < 1 && type === 'SingleImage')
+          (files.length < 3 && type === FileType.MULTIPLE_FILE) ||
+          (files.length < 1 && type === FileType.SINGLE_IMAGE)
         }
       >
         <div {...getRootProps()}>
           <input {...getInputProps()} />
-          {((files.length < 3 && type === 'MultipleFile') ||
-            (files.length < 1 && !defaultImage && type === 'SingleImage')) && (
+          {((files.length < 3 && type === FileType.MULTIPLE_FILE) ||
+            (files.length < 1 &&
+              !defaultImage &&
+              type === FileType.SINGLE_IMAGE)) && (
             <Box sx={classes.dropZone}>
               {isLoading ? <Loading /> : <i className="icon-Upload"></i>}
               <Box sx={classes.dropZoneContent}>
@@ -154,7 +161,7 @@ const FileUploader = ({
           )}
         </div>
       </Fade>
-      {(defaultImage || !!files.length) && type === 'SingleImage' && (
+      {(defaultImage || !!files.length) && type === FileType.SINGLE_IMAGE && (
         <Box sx={classes.previewImageWrapper}>
           <Image
             src={defaultImage || URL.createObjectURL(files?.[0].file)}
@@ -168,7 +175,7 @@ const FileUploader = ({
           </Box>
         </Box>
       )}
-      {type === 'MultipleFile' && (
+      {type === FileType.MULTIPLE_FILE && (
         <Box sx={classes.filesWrapper}>
           {files.map(item => (
             <Fade in={true} key={item.id}>
@@ -207,7 +214,7 @@ const FileUploader = ({
           ))}
         </Box>
       )}
-      {type === 'MultipleFile' && (
+      {type === FileType.MULTIPLE_FILE && (
         <Typography sx={classes.additionalInfo}>
           Your provided files are securely processed and immediately deleted
           after verification, ensuring the privacy and confidentiality of your

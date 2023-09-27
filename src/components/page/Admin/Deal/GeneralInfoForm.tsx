@@ -14,7 +14,7 @@ import TagSelector from '@/components/common/TagSelector';
 import { useQuery } from 'react-query';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
-import FileUploader from '@/components/common/FileUploader';
+import FileUploader, { FileType } from '@/components/common/FileUploader';
 import CustomTextArea from '@/components/common/TextArea';
 // import CustomDateRangePicker from '@/components/common/DateRangePicker';
 import Button from '@/components/common/Button';
@@ -243,7 +243,7 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
             Primary Deal Image
           </Typography>
           <FileUploader
-            type="SingleImage"
+            type={FileType.SINGLE_IMAGE}
             onUpload={onUpload}
             onDelete={onDelete}
             defaultImage={defaultImage}
