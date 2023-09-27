@@ -59,7 +59,7 @@ export const useDeleteDealModalStyles = () => {
       width: '100%',
       alignItems: 'center',
       justifyContent: 'center',
-      flexDirection: { xs: 'column', md: 'row' },
+      flexDirection: { xs: 'column-reverse', md: 'row' },
     },
     button: {
       width: { xs: '100%', md: '50%' },

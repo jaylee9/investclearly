@@ -918,8 +918,8 @@ export const useReviewCardStyles = ({
       color: palette.success.light,
     },
     unverifiedIndicator: {
-      background: palette.error.contrastText,
-      color: palette.error.main,
+      background: palette.background.default,
+      color: palette.text.secondary,
     },
     ratingWrapper: {
       display: 'flex',
@@ -1136,7 +1136,6 @@ export const useTagSelectorStyles = (isSearch: boolean) => {
 
 export const useFileUploaderStyles = () => {
   return {
-    root: {},
     dropZone: {
       width: '100%',
       borderRadius: '8px',
@@ -1153,6 +1152,11 @@ export const useFileUploaderStyles = () => {
         color: palette.text.secondary,
       },
       marginBottom: '12px',
+    },
+    title: {
+      textAlign: 'center',
+      fontWeight: 600,
+      marginBottom: '4px',
     },
     dropZoneContent: {
       display: 'flex',

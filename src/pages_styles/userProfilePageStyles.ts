@@ -2,7 +2,7 @@ import theme from '@/config/theme';
 
 const { palette } = theme;
 
-const useUserProfilePageStyles = () => {
+const useUserProfilePageStyles = ({ href }: { href: string }) => {
   return {
     root: {
       display: 'flex',
@@ -13,7 +13,7 @@ const useUserProfilePageStyles = () => {
       display: 'flex',
       borderRadius: '12px',
       background: { xs: palette.background.default, lg: palette.common.white },
-      height: '80vh',
+      height: '100%',
       width: '100%',
     },
     sideBar: {
@@ -59,7 +59,11 @@ const useUserProfilePageStyles = () => {
     title: {
       marginBottom: '20px',
       fontWeight: '600',
-      padding: { xs: '0px 16px', md: '0px' },
+      padding: {
+        xs: '0px 16px',
+        md: href === 'reviews' ? '0px 16px' : '0px',
+        lg: '0px',
+      },
     },
   };
 };

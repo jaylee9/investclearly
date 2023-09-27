@@ -1,6 +1,5 @@
 import Logo from '@/assets/components/Logo';
-import Modal from '@/components/common/Modal';
-import { Box, ModalProps, Typography } from '@mui/material';
+import { Box, ModalProps, Modal, Typography } from '@mui/material';
 import { useVerifyReviewModalStyles } from './styles';
 import { useState } from 'react';
 import FileUploader from '@/components/common/FileUploader';
@@ -16,11 +15,13 @@ const steps = {
 interface VerifyReviewModalProps extends Omit<ModalProps, 'children'> {
   refetchFunction: () => Promise<unknown>;
   reviewId: number;
+  reviewerName: string;
 }
 
 const VerifyReviewModal = ({
   refetchFunction,
   reviewId,
+  reviewerName,
   ...props
 }: VerifyReviewModalProps) => {
   const { onClose, ...other } = props;
@@ -68,14 +69,18 @@ const VerifyReviewModal = ({
       onClose={e => {
         handleClose(e);
       }}
-      showCloseIcon={false}
       {...other}
     >
       <Box sx={classes.root}>
         <Box sx={classes.header}>
           <Box sx={classes.leftPart}>
             <Logo />
-            <Typography variant="body1">Verify Review</Typography>
+            <Box sx={classes.titleWrapper}>
+              <Typography variant="body1">Verify Review</Typography>
+              <Typography variant="caption" sx={classes.reviewerName}>
+                {reviewerName}
+              </Typography>
+            </Box>
           </Box>
           <i className="icon-Cross" onClick={e => handleClose(e)} />
         </Box>
@@ -98,7 +103,10 @@ const VerifyReviewModal = ({
                   />
                 </Box>
                 <Box sx={classes.buttonWrapper}>
-                  <Button onClick={handleVerify} disabled={!files.length}>
+                  <Button
+                    onClick={handleVerify}
+                    disabled={!files.length || isLoading}
+                  >
                     Verify review
                   </Button>
                 </Box>
