@@ -14,8 +14,10 @@ import { CreateReviewPayloadInterface } from '@/actions/reviews';
 interface ChooseSponsorStepProps {
   setStep: (value: number) => void;
   step: number;
-  payload: CreateReviewPayloadInterface;
-  setPayload: (value: CreateReviewPayloadInterface) => void;
+  payload: CreateReviewPayloadInterface & { sponsorName?: string };
+  setPayload: (
+    value: CreateReviewPayloadInterface & { sponsorName?: string }
+  ) => void;
 }
 
 interface Tag {
@@ -57,16 +59,19 @@ const ChooseSponsorStep = ({
     fetchSponsors
   );
 
-  const defaultTag = { name: '', id: undefined };
-  const [tag, setTag] = useState<Tag>(defaultTag);
-  const dirtyTag = tag.name !== defaultTag.name && tag.id !== defaultTag.id;
+  const clearTag = { name: '', id: undefined };
+  const [tag, setTag] = useState<Tag>({
+    name: payload.sponsorName || '',
+    id: payload.sponsorId,
+  });
+  const dirtyTag = tag.name !== clearTag.name && tag.id !== clearTag.id;
 
   const handleClearTag = () => {
-    setTag(defaultTag);
+    setTag(clearTag);
   };
 
   const handleNextPage = () => {
-    setPayload({ ...payload, sponsorId: tag.id });
+    setPayload({ ...payload, sponsorId: tag.id, sponsorName: tag.name });
     setStep(step + 1);
   };
   const handleChooseSponsor = (event: React.MouseEvent, { name, id }: Tag) => {
@@ -78,85 +83,69 @@ const ChooseSponsorStep = ({
 
   return (
     <Box sx={classes.root}>
-      <Box sx={classes.container}>
-        <Box sx={classes.content}>
-          <Typography
-            variant="h4"
-            fontWeight={600}
-            marginBottom="24px"
-            textAlign="center"
+      <Box sx={classes.content}>
+        <Typography variant="h4" fontWeight={600} marginBottom="24px">
+          What sponsor are you reviewing?
+        </Typography>
+        <Box sx={classes.tagSelectorWrapper}>
+          <TagSelector
+            inputValue={tagSelectorValue}
+            onChange={setTagSelectorValue}
+            activeTag={tag.name}
+            onClearTags={handleClearTag}
+            open={showVariants}
+            handleClose={handleClose}
+            handleOpen={handleOpen}
           >
-            What sponsor are you reviewing?
-          </Typography>
-          <Box sx={classes.tagSelectorWrapper}>
-            <TagSelector
-              inputValue={tagSelectorValue}
-              onChange={setTagSelectorValue}
-              activeTag={tag.name}
-              onClearTags={handleClearTag}
-              open={showVariants}
-              handleClose={handleClose}
-              handleOpen={handleOpen}
-            >
-              {showVariants && (
-                <Box sx={classes.tagSelectorContent}>
-                  {isLoading && <Loading />}
-                  {!data?.sponsors.length && !isLoading && (
-                    <Typography variant="caption" sx={classes.noResults}>
-                      No results found
-                    </Typography>
-                  )}
-                  {data?.sponsors.map(sponsor => (
-                    <Box
-                      key={sponsor.id}
-                      onClick={event =>
-                        handleChooseSponsor(event, {
-                          name: sponsor.legalName as string,
-                          id: sponsor.id,
-                        })
-                      }
-                      sx={classes.sponsorVariantWrapper}
-                    >
-                      <PlaceholderImage
-                        src={sponsor.businessAvatar as string}
-                        alt="sponsor image"
-                        defaultImage={DEFAULT_SPONSOR_IMAGE}
-                        width={48}
-                        height={48}
-                        style={{ borderRadius: '1230px', maxHeight: '48px' }}
-                      />
-                      <Box>
-                        <Typography variant="body1" fontWeight={600}>
-                          {sponsor.legalName}
-                        </Typography>
-                        <Typography
-                          variant="caption"
-                          sx={classes.sponsorRating}
-                        >
-                          <i className="icon-Star"></i>
-                          <span>{sponsor.avgTotalRating}</span>
-                          <span>({sponsor.reviewsCount})</span>
-                        </Typography>
-                        <Typography variant="caption" sx={classes.address}>
-                          {sponsor.address}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  ))}
-                </Box>
+            <Box sx={classes.tagSelectorContent}>
+              {isLoading && <Loading />}
+              {!data?.sponsors.length && !isLoading && (
+                <Typography variant="caption" sx={classes.noResults}>
+                  No results found
+                </Typography>
               )}
-            </TagSelector>
-          </Box>
+              {data?.sponsors.map(sponsor => (
+                <Box
+                  key={sponsor.id}
+                  onClick={event =>
+                    handleChooseSponsor(event, {
+                      name: sponsor.legalName as string,
+                      id: sponsor.id,
+                    })
+                  }
+                  sx={classes.sponsorVariantWrapper}
+                >
+                  <PlaceholderImage
+                    src={sponsor.businessAvatar as string}
+                    alt="sponsor image"
+                    defaultImage={DEFAULT_SPONSOR_IMAGE}
+                    width={48}
+                    height={48}
+                    style={{ borderRadius: '1230px', maxHeight: '48px' }}
+                  />
+                  <Box>
+                    <Typography variant="body1" fontWeight={600}>
+                      {sponsor.legalName}
+                    </Typography>
+                    <Typography variant="caption" sx={classes.sponsorRating}>
+                      <i className="icon-Star"></i>
+                      <span>{sponsor.avgTotalRating}</span>
+                      <span>({sponsor.reviewsCount})</span>
+                    </Typography>
+                    <Typography variant="caption" sx={classes.address}>
+                      {sponsor.address}
+                    </Typography>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </TagSelector>
         </Box>
-        <Box sx={classes.buttonsWrapper}>
-          <Button
-            onClick={handleNextPage}
-            disabled={!dirtyTag}
-            sxCustomStyles={classes.buttonNext}
-          >
-            Next
-          </Button>
-        </Box>
+      </Box>
+      <Box sx={classes.buttonsWrapper}>
+        <Button onClick={handleNextPage} disabled={!dirtyTag}>
+          Next
+        </Button>
       </Box>
     </Box>
   );

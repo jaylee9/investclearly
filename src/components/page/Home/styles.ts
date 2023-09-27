@@ -148,10 +148,6 @@ export const useGlobalSearchStyles = ({
       msOverflowStyle: 'none',
       scrollbarWidth: 'none',
     },
-    showAllLink: {
-      fontWeight: 600,
-      color: theme.palette.primary.light,
-    },
     block: {
       marginBottom: '8px',
     },

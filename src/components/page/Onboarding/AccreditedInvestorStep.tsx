@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { useAccreditedInvestorStepStyles } from './styles';
 import YesNoButtons from '@/components/common/YesNoButtons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@/components/common/Button';
 import { useRouter } from 'next/router';
 import { InvestorStatuses } from '@/backend/constants/enums/investor-statuses';
@@ -9,9 +9,7 @@ import { InvestorStatuses } from '@/backend/constants/enums/investor-statuses';
 const AccreditedInvestorStep = () => {
   const classes = useAccreditedInvestorStepStyles();
   const router = useRouter();
-  const [accredited, setAccredited] = useState<'yes' | 'no'>(
-    (localStorage.getItem('investorStatus') as 'yes' | 'no') || 'yes'
-  );
+  const [accredited, setAccredited] = useState<'yes' | 'no'>('yes');
   const handleStepClick = (type: 'skip' | 'next') => {
     if (type === 'next') {
       localStorage.setItem(
@@ -23,6 +21,16 @@ const AccreditedInvestorStep = () => {
     }
     router.push('/onboarding?step=2');
   };
+
+  useEffect(() => {
+    const investorStatus =
+      localStorage.getItem('investorStatus') ===
+      InvestorStatuses.accreditedInvestor
+        ? 'yes'
+        : 'no';
+    setAccredited(investorStatus || 'yes');
+  }, []);
+
   return (
     <Box sx={classes.root}>
       <Box>

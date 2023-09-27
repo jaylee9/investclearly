@@ -6,7 +6,6 @@ import { TLinks } from '@/types/common';
 
 const links: TLinks = [
   { href: '/review', label: 'Write a Review' },
-  { href: '/sponsor-profile', label: 'Claim Sponsor Profile' },
   { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
   { href: '/terms-conditions', label: 'Terms & Conditions' },

@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { useInvestmentPreferencesStepStyles } from './styles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@/components/common/Button';
 import { useRouter } from 'next/router';
 import MultiButtons from '@/components/common/MultiButtons';
@@ -39,15 +39,15 @@ const InvestmentPreferencesStep = () => {
   const classes = useInvestmentPreferencesStepStyles();
   const router = useRouter();
   const [investmentPreferences, setInvestmentPreferences] =
-    useState<InvestmentPreferences>(
-      {
-        ...JSON.parse(localStorage.getItem('investmentPreferences') as string),
-        ...defaultInvestmentPreferences,
-      } || defaultInvestmentPreferences
-    );
+    useState<InvestmentPreferences>(defaultInvestmentPreferences);
   const handleBackClick = () => {
+    localStorage.setItem(
+      'investmentPreferences',
+      JSON.stringify(investmentPreferences)
+    );
     router.push('/onboarding?step=2');
   };
+
   const handleStepClick = async (type: 'skip' | 'next') => {
     if (type === 'next') {
       const investorStatus = localStorage.getItem(
@@ -123,6 +123,15 @@ const InvestmentPreferencesStep = () => {
       },
     }));
   };
+
+  useEffect(
+    () =>
+      setInvestmentPreferences(
+        JSON.parse(localStorage.getItem('investmentPreferences') as string)
+      ),
+    []
+  );
+
   return (
     <Box sx={classes.root}>
       <Box>

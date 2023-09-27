@@ -14,8 +14,10 @@ import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
 interface ChooseDealStepProps {
   setStep: (value: number) => void;
   step: number;
-  payload: CreateReviewPayloadInterface;
-  setPayload: (value: CreateReviewPayloadInterface) => void;
+  payload: CreateReviewPayloadInterface & { dealName?: string };
+  setPayload: (
+    value: CreateReviewPayloadInterface & { dealName?: string }
+  ) => void;
 }
 
 interface Tag {
@@ -62,19 +64,22 @@ const ChooseDealStep = ({
     fetchDeals
   );
 
-  const defaultTag = { name: '', id: undefined };
-  const [tag, setTag] = useState<Tag>(defaultTag);
-  const dirtyTag = tag.name !== defaultTag.name && tag.id !== defaultTag.id;
+  const clearTag = { name: '', id: undefined };
+  const [tag, setTag] = useState<Tag>({
+    name: payload.dealName || '',
+    id: payload.dealId as number,
+  });
+  const dirtyTag = tag.name !== clearTag.name && tag.id !== clearTag.id;
 
   const handleClearTag = () => {
-    setTag(defaultTag);
+    setTag(clearTag);
   };
 
   const handleSkipPage = () => {
     setStep(step + 1);
   };
   const handleNextPage = () => {
-    setPayload({ ...payload, dealId: tag.id });
+    setPayload({ ...payload, dealId: tag.id, dealName: tag.name });
     setStep(step + 1);
   };
   const handleChooseDeal = (event: React.MouseEvent, { name, id }: Tag) => {

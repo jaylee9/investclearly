@@ -44,6 +44,7 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
       >
         {tabs.map(tab => (
           <Tab
+            disableRipple
             sx={classes.tab}
             key={tab.value}
             label={

@@ -50,6 +50,10 @@ export const useWorthStepStyles = () => {
     bold: {
       fontWeight: 600,
     },
+    actionButtons: {
+      display: 'flex',
+      gap: '8px',
+    },
   };
 };
 
@@ -77,6 +81,7 @@ export const useInvestmentPreferencesStepStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       gap: '32px',
+      maxWidth: '600px',
     },
     actionButtons: {
       display: 'flex',

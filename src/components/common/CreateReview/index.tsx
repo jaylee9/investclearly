@@ -23,7 +23,9 @@ const steps = {
 const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
   const { onClose, ...other } = props;
   const [step, setStep] = useState(steps['Choose Sponsor']);
-  const [payload, setPayload] = useState<CreateReviewPayloadInterface>({});
+  const [payload, setPayload] = useState<
+    CreateReviewPayloadInterface & { sponsorName?: string; dealName?: string }
+  >({});
 
   const classes = useCreateReviewFormStyles();
 
@@ -40,7 +42,7 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
   );
 
   const isStepsShown = step !== steps['Review Submitted'];
-  const isSubtitleShown = step > 1;
+  const isSubtitleShown = step > 0 && payload.sponsorName;
   const isMobileButtonBackShown = step !== 0 && step !== 4;
 
   return (
@@ -74,7 +76,7 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
             </Typography>
             {isSubtitleShown && (
               <Typography variant="body1" sx={classes.subTitle}>
-                Cloud Investment Ltd
+                {payload.sponsorName}
               </Typography>
             )}
           </Box>

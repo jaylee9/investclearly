@@ -27,6 +27,11 @@ export const useCreateReviewFormStyles = () => {
     },
     subTitle: {
       color: palette.text.secondary,
+      maxWidth: { xs: '200px' },
+      display: 'block',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
     },
     logoBox: {
       display: { xs: 'none', lg: 'block' },
