@@ -21,6 +21,7 @@ export const useDeleteReviewModalStyles = () => {
       width: '100%',
       alignItems: 'center',
       justifyContent: 'center',
+      flexDirection: { xs: 'column-reverse', md: 'row' },
       '& button': {
         width: '250px',
       },
