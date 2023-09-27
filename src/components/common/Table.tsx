@@ -53,61 +53,71 @@ const CustomTable = <RowData,>({
     setPage(page);
   };
   return (
-    <TableContainer component={Paper} sx={classes.root}>
-      <Table>
-        <TableHead sx={classes.tableHeader}>
-          <TableRow>
-            {columns.map((column, index) => (
-              <TableCell
-                key={index}
-                align={'left'}
-                sx={{ width: column.width }}
-              >
-                {column.label}
-              </TableCell>
-            ))}
-            {actions && actions.length > 0 && <TableCell></TableCell>}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data?.map((row, rowIndex) => (
-            <TableRow key={rowIndex}>
+    <>
+      <TableContainer component={Paper} sx={classes.root}>
+        <Table>
+          <TableHead sx={classes.tableHeader}>
+            <TableRow>
               {columns.map((column, index) => (
                 <TableCell
                   key={index}
-                  align={column.align || 'left'}
-                  sx={{ width: column.width, ...classes.bodyCell }}
+                  align={'left'}
+                  sx={{ width: column.width }}
                 >
-                  {column.accessor
-                    ? column.accessor(row)
-                    : column.key && String(row[column.key])}
+                  {column.label}
                 </TableCell>
               ))}
-              {actions && (
-                <TableCell>
-                  <Box sx={classes.actionCell}>
-                    {actions.map(
-                      (action, actionIndex) =>
-                        (action.content && action.content(row)) || (
-                          <i
-                            key={actionIndex}
-                            onClick={() =>
-                              action.onClick && action.onClick(row)
-                            }
-                            className={action.icon}
-                            style={{ cursor: 'pointer', ...action.styles }}
-                          ></i>
-                        )
-                    )}
-                  </Box>
-                </TableCell>
-              )}
+              {actions && actions.length > 0 && <TableCell></TableCell>}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {data?.map((row, rowIndex) => {
+              const withBorderBottom = data.length - 1 !== rowIndex;
+
+              const rowStyles = withBorderBottom
+                ? classes.rowWithBorderBottom
+                : undefined;
+
+              return (
+                <TableRow key={rowIndex} sx={rowStyles}>
+                  {columns.map((column, index) => (
+                    <TableCell
+                      key={index}
+                      align={column.align || 'left'}
+                      sx={{ width: column.width, ...classes.bodyCell }}
+                    >
+                      {column.accessor
+                        ? column.accessor(row)
+                        : column.key && String(row[column.key])}
+                    </TableCell>
+                  ))}
+                  {actions && (
+                    <TableCell sx={classes.actionsCell}>
+                      <Box sx={classes.actionCell}>
+                        {actions.map(
+                          (action, actionIndex) =>
+                            (action.content && action.content(row)) || (
+                              <i
+                                key={actionIndex}
+                                onClick={() =>
+                                  action.onClick && action.onClick(row)
+                                }
+                                className={action.icon}
+                                style={{ cursor: 'pointer', ...action.styles }}
+                              ></i>
+                            )
+                        )}
+                      </Box>
+                    </TableCell>
+                  )}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <Box sx={classes.pagination}>
-        <Typography variant="caption">
+        <Typography variant="caption" sx={classes.paginationResults}>
           Showing {firstItem}-{lastItem} of {total} results
         </Typography>
         <CustomPagination
@@ -116,7 +126,7 @@ const CustomTable = <RowData,>({
           onChange={(event, value) => handleChangePaginate(value)}
         />
       </Box>
-    </TableContainer>
+    </>
   );
 };
 

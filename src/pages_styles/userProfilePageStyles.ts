@@ -7,17 +7,17 @@ const useUserProfilePageStyles = () => {
     root: {
       display: 'flex',
       justifyContent: 'center',
-      padding: '24px 48px',
+      padding: { xs: '0px', lg: '24px 48px' },
     },
     wrapper: {
       display: 'flex',
       borderRadius: '12px',
-      background: palette.common.white,
+      background: { xs: palette.background.default, lg: palette.common.white },
       height: '80vh',
       width: '100%',
     },
     sideBar: {
-      display: 'flex',
+      display: { xs: 'none', lg: 'flex' },
       flexDirection: 'column',
       gap: '4px',
       padding: '24px 16px',
@@ -26,6 +26,7 @@ const useUserProfilePageStyles = () => {
       '& .section': {
         padding: '8px 16px',
         display: 'flex',
+        whiteSpace: 'nowrap',
         alignItems: 'center',
         color: palette.text.secondary,
         gap: '8px',
@@ -43,8 +44,8 @@ const useUserProfilePageStyles = () => {
       },
     },
     contentWrapper: {
-      padding: '24px',
-      width: '80%',
+      padding: { xs: '24px 0px', md: '24px' },
+      width: { xs: '100%', lg: '80%' },
       height: '100%',
       overflow: 'hidden',
     },
@@ -54,6 +55,11 @@ const useUserProfilePageStyles = () => {
       '&::-webkit-scrollbar': {
         display: 'none',
       },
+    },
+    title: {
+      marginBottom: '20px',
+      fontWeight: '600',
+      padding: { xs: '0px 16px', md: '0px' },
     },
   };
 };

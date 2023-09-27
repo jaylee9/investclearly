@@ -30,20 +30,28 @@ const DeleteDealModal = ({
   return (
     <Modal showCloseIcon={false} {...props}>
       <Box sx={classes.root}>
-        <Typography variant="h3" fontWeight={600}>
-          Delete deal from your profile?
-        </Typography>
-        <Typography variant="body1" sx={classes.subTitle}>
-          This action can not be undone.
-        </Typography>
+        <Box sx={classes.textBox}>
+          <Typography variant="h3" sx={classes.title}>
+            Delete deal from your profile?
+          </Typography>
+          <Typography variant="body1" sx={classes.subTitle}>
+            This action can not be undone.
+          </Typography>
+        </Box>
         <Box sx={classes.buttonsWrapper}>
           <Button
             variant="secondary"
             onClick={e => props.onClose && props.onClose(e, 'backdropClick')}
+            sxCustomStyles={classes.button}
           >
             Cancel
           </Button>
-          <Button color="error" onClick={handleDelete} disabled={isLoading}>
+          <Button
+            color="error"
+            onClick={handleDelete}
+            disabled={isLoading}
+            sxCustomStyles={classes.button}
+          >
             Delete
           </Button>
         </Box>
