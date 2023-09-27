@@ -32,6 +32,7 @@ const ProfileReviews = () => {
   const [openVerifyReviewModal, setOpenVerifyReviewModal] = useState<
     null | number
   >(null);
+  const [choosedReviewer, setChoosedReviewer] = useState('');
 
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
@@ -106,8 +107,10 @@ const ProfileReviews = () => {
     handleRefetchFunction().then(handleCloseWriteReviewForm);
   };
 
-  const handleOpenVerifyReviewModal = (value: number) =>
+  const handleOpenVerifyReviewModal = (value: number, reviewerName: string) => {
     setOpenVerifyReviewModal(value);
+    setChoosedReviewer(reviewerName);
+  };
   const handleCloseVerifyReviewModal = () => setOpenVerifyReviewModal(null);
 
   const handleChangeTab = (
@@ -206,7 +209,7 @@ const ProfileReviews = () => {
                 />
               ))}
               <Box sx={classes.pagination}>
-                <Typography variant="caption">
+                <Typography variant="caption" sx={classes.paginationResults}>
                   Showing {firstItem}-{lastItem} of {data.total} results
                 </Typography>
                 <CustomPagination
@@ -226,6 +229,7 @@ const ProfileReviews = () => {
                 onClose={handleCloseVerifyReviewModal}
                 refetchFunction={handleRefetchFunction}
                 reviewId={openVerifyReviewModal as number}
+                reviewerName={choosedReviewer}
               />
             </Box>
           )}

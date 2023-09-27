@@ -66,13 +66,19 @@ export const useProfileReviewsStyles = () => {
     },
     pagination: {
       display: 'flex',
-      justifyContent: 'space-between',
+      justifyContent: { xs: 'center', md: 'space-between' },
       width: '100%',
       alignItems: 'center',
       padding: '8px 0px',
       '& span': {
         color: palette.text.secondary,
       },
+      '& .MuiPagination-root': {
+        margin: '0px',
+      },
+    },
+    paginationResults: {
+      display: { xs: 'none', md: 'block' },
     },
   };
 };

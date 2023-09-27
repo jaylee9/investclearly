@@ -9,6 +9,7 @@ export const useDeleteReviewModalStyles = () => {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
+      height: { xs: '100%', md: 'initial' },
     },
     subTitle: {
       color: palette.text.secondary,
@@ -38,7 +39,7 @@ export const useVerifyReviewModalStyles = () => {
       flexDirection: 'column',
     },
     header: {
-      padding: '16px 24px',
+      padding: { sm: '12px', md: '16px 24px' },
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -54,21 +55,39 @@ export const useVerifyReviewModalStyles = () => {
       display: 'flex',
       gap: '32px',
       alignItems: 'center',
+      flex: { xs: 1, md: 'initial' },
       '& p': {
         fontWeight: 600,
       },
+      '& a': {
+        display: { xs: 'none', lg: 'block' },
+      },
+    },
+    titleWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: { xs: 'center', md: 'start' },
+      flex: { xs: 1, md: 'initial' },
+    },
+    reviewerName: {
+      color: palette.text.secondary,
     },
     contentWrapper: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: '32px 0px 32px',
+      padding: { md: '32px 16px', lg: '32px 0px' },
       flex: 1,
       '& .content': {
         borderRadius: '12px',
-        background: palette.common.white,
-        boxShadow: customShadows.header,
-        padding: '40px 40px 16px',
+        height: { xs: '100%', md: 'initial' },
+        background: { md: palette.common.white },
+        boxShadow: { md: customShadows.header },
+        padding: {
+          xs: '24px 16px',
+          md: '24px 24px 16px',
+          lg: '40px 40px 16px',
+        },
       },
       '& .stretched-content': {
         height: '100%',
@@ -76,6 +95,7 @@ export const useVerifyReviewModalStyles = () => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        maxWidth: { lg: '790px' },
       },
     },
     title: {
@@ -88,11 +108,15 @@ export const useVerifyReviewModalStyles = () => {
     },
     buttonWrapper: {
       display: 'flex',
-      justifyContent: 'end',
+      justifyContent: { xs: 'center', md: 'end' },
+      '& button': {
+        width: { xs: '100%', md: 'fit-content' },
+      },
     },
     submittedReviewTitle: {
       fontWeight: 600,
       marginBottom: '4px',
+      textAlign: { xs: 'center', md: 'start' },
     },
     submittedReviewSubTitle: {
       color: palette.text.secondary,
@@ -102,6 +126,8 @@ export const useVerifyReviewModalStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      justifyContent: 'center',
+      height: { xs: '100%', md: 'initial' },
     },
   };
 };
