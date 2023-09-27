@@ -84,7 +84,7 @@ const ReviewCard = ({
             ],
           }}
         >
-          <i className={review.isVerified ? 'icon-Check' : 'icon-Cross'}></i>
+          {review.isVerified && <i className="icon-Check" />}
           <Typography variant="body1">
             {review.isVerified ? 'Verified' : 'Unverified'} review
           </Typography>

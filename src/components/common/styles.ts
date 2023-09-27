@@ -918,8 +918,8 @@ export const useReviewCardStyles = ({
       color: palette.success.light,
     },
     unverifiedIndicator: {
-      background: palette.error.contrastText,
-      color: palette.error.main,
+      background: palette.background.default,
+      color: palette.text.secondary,
     },
     ratingWrapper: {
       display: 'flex',
