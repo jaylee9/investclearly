@@ -18,6 +18,12 @@ export class Attachment implements PolymorphicChildInterface {
   @Column({ type: 'varchar', nullable: false })
   entityType: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  originalFileName: string;
+
+  @Column({ type: 'bigint', nullable: true })
+  fileSize: number;
+
   @Column({ name: 'path', type: 'varchar', nullable: false })
   path: string;
 

@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import UserAvatar from './UserAvatar';
 import { useProfilePictureUploaderStyles } from './styles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PlaceholderImage from './PlaceholderImage';
 import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 
@@ -12,7 +12,7 @@ export enum ProfilePictureUploaderVariant {
 }
 
 interface ProfilePictureUploader {
-  username: string;
+  username?: string;
   defaultImage?: string | null;
   onChange: (value: File) => void;
   variant?: ProfilePictureUploaderVariant;
@@ -46,13 +46,24 @@ const ProfilePictureUploader = ({
     },
   });
 
+  useEffect(() => {
+    if (defaultImage) {
+      setSrc(defaultImage);
+    }
+  }, [defaultImage]);
+
   return (
     <Box sx={classes.root}>
       <div {...getRootProps()} style={{ width: 'fit-content' }}>
         <input {...getInputProps()} />
         <Box sx={classes.uploader}>
-          {variant === ProfilePictureUploaderVariant.USER && (
-            <UserAvatar src={src} name={username} width={120} height={120} />
+          {variant === ProfilePictureUploaderVariant.USER && !!username && (
+            <UserAvatar
+              src={src}
+              name={username as string}
+              width={120}
+              height={120}
+            />
           )}
           {variant === ProfilePictureUploaderVariant.SPONSOR && (
             <PlaceholderImage
@@ -61,6 +72,7 @@ const ProfilePictureUploader = ({
               width={120}
               height={120}
               defaultImage={DEFAULT_SPONSOR_IMAGE}
+              style={{ borderRadius: '1230px', objectFit: 'cover' }}
             />
           )}
           <Box sx={classes.uploadIconWrapper}>
@@ -72,7 +84,9 @@ const ProfilePictureUploader = ({
       </div>
       <Box>
         <Typography variant="caption" sx={classes.title}>
-          Profile Picture
+          {variant === ProfilePictureUploaderVariant.USER
+            ? 'Profile Picture'
+            : 'Business Avatar'}
         </Typography>
         <Box sx={classes.rules}>
           <Typography variant="caption">

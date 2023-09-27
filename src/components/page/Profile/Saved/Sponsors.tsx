@@ -50,45 +50,75 @@ const SavedSponsors = ({ setSponsorCountChanged }: SavedSponsorsProps) => {
       refetch();
     }
   };
+
   const handlePaginate = (value: number) => setPage(value);
   const firstItem = (page - 1) * 10 + 1;
   const lastItem = data && page * 10 > data?.total ? data?.total : page * 10;
 
   return (
     <Box sx={classes.root}>
-      <Input
-        placeholder="Search"
-        isSearch
-        variant="filled"
-        customStyles={classes.searchInput}
-        onChange={e => handleSearch(e.target.value)}
-        onClear={handleClearSearch}
-      />
+      {(isLoading ||
+        (data?.sponsors && data?.sponsors.length > 0) ||
+        searchTerm) && (
+        <Input
+          placeholder="Search"
+          isSearch
+          variant="filled"
+          customStyles={classes.searchInput}
+          onChange={e => handleSearch(e.target.value)}
+          onClear={handleClearSearch}
+        />
+      )}
       {isLoading ? (
         <Loading />
       ) : (
-        <Box sx={classes.sponsorsWrapper}>
-          {data?.sponsors.map(sponsor => (
-            <SponsorCard
-              key={sponsor.id}
-              sponsor={sponsor}
-              variant={SponsorCardVariant.Large}
-              deleteBookmark={handleDeleteBookmark}
-              sx={classes.sponsorCard}
-            />
-          ))}
+        <>
+          {data?.sponsors && data.sponsors.length > 0 ? (
+            <Box sx={classes.sponsorsWrapper}>
+              {data.sponsors.map(sponsor => (
+                <SponsorCard
+                  key={sponsor.id}
+                  sponsor={sponsor}
+                  variant={SponsorCardVariant.Large}
+                  deleteBookmark={handleDeleteBookmark}
+                  sx={classes.sponsorCard}
+                />
+              ))}
+            </Box>
+          ) : searchTerm ? (
+            <Box sx={classes.noSponsorsRoot}>
+              <Typography variant="h4" fontWeight={600}>
+                No sponsors found
+              </Typography>
+              <Typography variant="body1">
+                Try different search terms
+              </Typography>
+            </Box>
+          ) : (
+            <Box sx={classes.noSponsorsRoot}>
+              <Typography variant="h4" fontWeight={600}>
+                You don’t have sponsors saved yet
+              </Typography>
+              <Typography variant="body1">
+                All sponsors you save will be displayed here
+              </Typography>
+            </Box>
+          )}
+        </>
+      )}
+
+      {data?.sponsors && data.sponsors.length > 0 && (
+        <Box sx={classes.pagination}>
+          <Typography variant="caption">
+            Showing {firstItem}-{lastItem} of {data?.total} results
+          </Typography>
+          <CustomPagination
+            page={page}
+            count={data?.lastPage}
+            onChange={(event, value) => handlePaginate(value)}
+          />
         </Box>
       )}
-      <Box sx={classes.pagination}>
-        <Typography variant="caption">
-          Showing {firstItem}-{lastItem} of {data?.total} results
-        </Typography>
-        <CustomPagination
-          page={page}
-          count={data?.lastPage}
-          onChange={(event, value) => handlePaginate(value)}
-        />
-      </Box>
     </Box>
   );
 };

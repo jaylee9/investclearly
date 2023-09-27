@@ -14,8 +14,10 @@ import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
 interface ChooseDealStepProps {
   setStep: (value: number) => void;
   step: number;
-  payload: CreateReviewPayloadInterface;
-  setPayload: (value: CreateReviewPayloadInterface) => void;
+  payload: CreateReviewPayloadInterface & { dealName?: string };
+  setPayload: (
+    value: CreateReviewPayloadInterface & { dealName?: string }
+  ) => void;
 }
 
 interface Tag {
@@ -62,19 +64,22 @@ const ChooseDealStep = ({
     fetchDeals
   );
 
-  const defaultTag = { name: '', id: undefined };
-  const [tag, setTag] = useState<Tag>(defaultTag);
-  const dirtyTag = tag.name !== defaultTag.name && tag.id !== defaultTag.id;
+  const clearTag = { name: '', id: undefined };
+  const [tag, setTag] = useState<Tag>({
+    name: payload.dealName || '',
+    id: payload.dealId as number,
+  });
+  const dirtyTag = tag.name !== clearTag.name && tag.id !== clearTag.id;
 
   const handleClearTag = () => {
-    setTag(defaultTag);
+    setTag(clearTag);
   };
 
   const handleSkipPage = () => {
     setStep(step + 1);
   };
   const handleNextPage = () => {
-    setPayload({ ...payload, dealId: tag.id });
+    setPayload({ ...payload, dealId: tag.id, dealName: tag.name });
     setStep(step + 1);
   };
   const handleChooseDeal = (event: React.MouseEvent, { name, id }: Tag) => {
@@ -84,96 +89,114 @@ const ChooseDealStep = ({
     setTagSelectorValue('');
   };
 
+  const handleBackButton = () => {
+    setStep(step - 1);
+  };
+
   return (
     <Box sx={classes.root}>
-      <Box sx={classes.content}>
-        <Typography variant="h4" fontWeight={600}>
-          What Deal have you worked with the Sponsor on?
-        </Typography>
-        <Typography sx={classes.subTitle}>
-          You can share any previous deal. Providing this information is
-          optional, feel free to skip this step if you prefer.
-        </Typography>
-        <Box sx={classes.tagSelectorWrapper}>
-          <TagSelector
-            inputValue={tagSelectorValue}
-            onChange={setTagSelectorValue}
-            activeTag={tag.name}
-            onClearTags={handleClearTag}
-            open={showVariants}
-            handleClose={handleClose}
-            handleOpen={handleOpen}
-          >
-            <Box sx={classes.tagSelectorContent}>
-              {isLoading && <Loading />}
-              {!data?.deals.length && !isLoading && (
-                <Typography variant="caption" sx={classes.noResults}>
-                  No results found
-                </Typography>
-              )}
-              {data?.deals.map(deal => (
-                <Box
-                  key={deal.id}
-                  onClick={event =>
-                    handleChooseDeal(event, {
-                      name: deal.dealLegalName as string,
-                      id: deal.id,
-                    })
-                  }
-                  sx={classes.dealVariantWrapper}
-                >
-                  <PlaceholderImage
-                    src={deal.attachments?.[0].path as string}
-                    alt="deal image"
-                    defaultImage={DEFAULT_DEAL_IMAGE}
-                    width={48}
-                    height={48}
-                    style={{
-                      borderRadius: '1230px',
-                      objectFit: 'cover',
-                      maxHeight: '48px',
-                    }}
-                  />
-                  <Box>
-                    <Typography variant="body1" fontWeight={600}>
-                      {deal.dealLegalName}
-                    </Typography>
-                    <Typography variant="caption" sx={classes.address}>
-                      {deal.dealAddress}
-                    </Typography>
-                    <Box sx={classes.assetClassesWrapper}>
-                      {Array.isArray(deal.assetClass) ? (
-                        deal.assetClass.map((type, index) => (
-                          <React.Fragment key={type}>
-                            <Typography variant="caption" sx={classes.address}>
-                              {type}
-                            </Typography>
-                            {deal.assetClass &&
-                              index !== deal?.assetClass?.length - 1 && (
-                                <Box className="round-divider" />
-                              )}
-                          </React.Fragment>
-                        ))
-                      ) : (
-                        <Typography variant="caption" sx={classes.address}>
-                          {deal.assetClass}
-                        </Typography>
-                      )}
+      <Box sx={classes.container}>
+        <Box sx={classes.content}>
+          <Typography variant="h4" fontWeight={600} textAlign="center">
+            What Deal have you worked with the Sponsor on?
+          </Typography>
+          <Typography sx={classes.subTitle}>
+            You can share any previous deal. Providing this information is
+            optional, feel free to skip this step if you prefer.
+          </Typography>
+          <Box sx={classes.tagSelectorWrapper}>
+            <TagSelector
+              inputValue={tagSelectorValue}
+              onChange={setTagSelectorValue}
+              activeTag={tag.name}
+              onClearTags={handleClearTag}
+              open={showVariants}
+              handleClose={handleClose}
+              handleOpen={handleOpen}
+            >
+              <Box sx={classes.tagSelectorContent}>
+                {isLoading && <Loading />}
+                {!data?.deals.length && !isLoading && (
+                  <Typography variant="caption" sx={classes.noResults}>
+                    No results found
+                  </Typography>
+                )}
+                {data?.deals.map(deal => (
+                  <Box
+                    key={deal.id}
+                    onClick={event =>
+                      handleChooseDeal(event, {
+                        name: deal.dealLegalName as string,
+                        id: deal.id,
+                      })
+                    }
+                    sx={classes.dealVariantWrapper}
+                  >
+                    <PlaceholderImage
+                      src={deal?.attachments?.[0]?.path as string}
+                      alt="deal image"
+                      defaultImage={DEFAULT_DEAL_IMAGE}
+                      width={48}
+                      height={48}
+                      style={{
+                        borderRadius: '1230px',
+                        objectFit: 'cover',
+                        maxHeight: '48px',
+                      }}
+                    />
+                    <Box>
+                      <Typography variant="body1" fontWeight={600}>
+                        {deal.dealLegalName}
+                      </Typography>
+                      <Typography variant="caption" sx={classes.address}>
+                        {deal.dealAddress}
+                      </Typography>
+                      <Box sx={classes.assetClassesWrapper}>
+                        {Array.isArray(deal.assetClass) ? (
+                          deal.assetClass.map((type, index) => (
+                            <React.Fragment key={type}>
+                              <Typography
+                                variant="caption"
+                                sx={classes.address}
+                              >
+                                {type}
+                              </Typography>
+                              {deal.assetClass &&
+                                index !== deal?.assetClass?.length - 1 && (
+                                  <Box className="round-divider" />
+                                )}
+                            </React.Fragment>
+                          ))
+                        ) : (
+                          <Typography variant="caption" sx={classes.address}>
+                            {deal.assetClass}
+                          </Typography>
+                        )}
+                      </Box>
                     </Box>
                   </Box>
-                </Box>
-              ))}
-            </Box>
-          </TagSelector>
+                ))}
+              </Box>
+            </TagSelector>
+          </Box>
         </Box>
-      </Box>
-      <Box sx={classes.buttonsWrapper}>
-        <Button variant="secondary" onClick={handleSkipPage}>
-          Skip
-        </Button>
-        <Button onClick={handleNextPage} disabled={!dirtyTag}>
-          Next
-        </Button>
+        <Box sx={classes.buttonsWrapper}>
+          <Button
+            variant="tertiary"
+            onClick={handleBackButton}
+            sxCustomStyles={classes.buttonBack}
+          >
+            Back
+          </Button>
+          <Box sx={classes.mainButtonsWrapper}>
+            <Button variant="secondary" onClick={handleSkipPage}>
+              Skip
+            </Button>
+            <Button onClick={handleNextPage} disabled={!dirtyTag}>
+              Next
+            </Button>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

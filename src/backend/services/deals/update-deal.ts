@@ -1,4 +1,3 @@
-import { DeepPartial } from 'typeorm';
 import { TargetTypesConstants } from '../../../backend/constants/target-types-constants';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { Deal } from '../../entities/deals.entity';
@@ -10,10 +9,12 @@ import { deleteFile } from '../files/delete-file';
 import { deleteAttachment } from '../attachments/delete-attachments';
 import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
 import { UpdateDealInterface } from './interfaces/update-deal.interface';
+import { createOrUpdateLocation } from '../locations/create-or-update-location';
+import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 
 export const update = async (
   id: number,
-  fields: DeepPartial<UpdateDealInterface>,
+  fields: UpdateDealInterface,
   files: Express.Multer.File[]
 ) => {
   const connection = await getDatabaseConnection();
@@ -21,6 +22,12 @@ export const update = async (
     attachmentsIdsToDelete,
     investmentStructures,
     regions,
+    street1,
+    street2,
+    city,
+    stateOrCountry,
+    stateOrCountryDescription,
+    zipCode,
     ...updateDealData
   } = fields;
 
@@ -34,6 +41,7 @@ export const update = async (
   });
 
   await getDealById(id);
+
   await connection.manager.update(
     Deal,
     { id },
@@ -45,8 +53,8 @@ export const update = async (
 
   if (files?.length) {
     for (const file of files) {
-      const fileUrl = await uploadFile(file, TargetTypesConstants.deals);
-      await createAttachment(fileUrl, id, TargetTypesConstants.deals);
+      const fileData = await uploadFile(file, TargetTypesConstants.deals);
+      await createAttachment(fileData, id, TargetTypesConstants.deals);
     }
   }
 
@@ -61,5 +69,19 @@ export const update = async (
       await deleteAttachment(attachment.id);
     }
   }
+
+  await createOrUpdateLocation(
+    {
+      street1,
+      street2,
+      city,
+      stateOrCountry,
+      stateOrCountryDescription,
+      zipCode,
+    },
+    LocationTargetTypesConstants.deal,
+    id
+  );
+
   return getDealById(id);
 };

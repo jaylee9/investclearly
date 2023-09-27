@@ -21,7 +21,6 @@ import { useUser } from '@/contexts/User';
 
 export const links: TModalHandlers = [
   { type: 'review', label: 'Write a Review' },
-  { type: 'sponsor-profile', label: 'Claim Sponsor Profile' },
 ];
 
 const Header = ({

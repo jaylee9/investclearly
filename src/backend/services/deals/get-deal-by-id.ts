@@ -9,6 +9,8 @@ import { TargetTypesConstants } from '../../../backend/constants/target-types-co
 import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
 import { BookmarkConstants } from '../../../backend/constants/bookmark-constants';
 import { Bookmark } from '../../../backend/entities/bookmark.entity';
+import { Location } from '../../entities/locations.entity';
+import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 
 export const getDealById = async (id: number, userId?: number) => {
   const connection = await getDatabaseConnection();
@@ -24,13 +26,6 @@ export const getDealById = async (id: number, userId?: number) => {
       {
         sponsorReviewStatus: ReviewStatuses.published,
       }
-    )
-    .leftJoinAndMapMany(
-      'deals.attachments',
-      Attachment,
-      'attachments',
-      'attachments.entityId = deals.id AND attachments.entityType = :entityType',
-      { entityType: TargetTypesConstants.deals }
     )
     .where('deals.id = :id', { id });
 
@@ -52,6 +47,22 @@ export const getDealById = async (id: number, userId?: number) => {
         { entityType: BookmarkConstants.entityTypes.deal, userId }
       );
   }
+
+  dealQuery = dealQuery
+    .leftJoinAndMapMany(
+      'deals.attachments',
+      Attachment,
+      'attachments',
+      'attachments.entityId = deals.id AND attachments.entityType = :entityType',
+      { entityType: TargetTypesConstants.deals }
+    )
+    .leftJoinAndMapMany(
+      'deals.locations',
+      Location,
+      'locations',
+      'locations.entityId = deals.id AND locations.entityType = :dealEntityType',
+      { dealEntityType: LocationTargetTypesConstants.deal }
+    );
 
   const deal = await dealQuery.getOne();
   if (!deal) {

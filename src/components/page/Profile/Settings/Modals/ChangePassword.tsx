@@ -9,6 +9,7 @@ import Link from 'next/link';
 import Button from '@/components/common/Button';
 import { changePassword } from '@/actions/auth';
 import { useState } from 'react';
+import { useUser } from '@/contexts/User';
 
 const validationSchema = z
   .object({
@@ -47,6 +48,7 @@ const ChangePasswordModal = ({
   const classes = useActionPasswordStyles();
 
   const [isChangedPassword, setIsChangedPassword] = useState(false);
+  const { setUser } = useUser();
 
   const {
     handleSubmit,
@@ -61,6 +63,8 @@ const ChangePasswordModal = ({
     const { newPassword, password } = data;
     const response = await changePassword({ newPassword, password });
     if (!('error' in response)) {
+      localStorage.removeItem('user');
+      setUser(null);
       setIsChangedPassword(true);
     }
   });

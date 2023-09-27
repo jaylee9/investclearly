@@ -16,26 +16,29 @@ export const useEntryLayoutStyles = (isEntrySpacing: boolean) => {
   return {
     root: {
       minHeight: '100vh',
-      display: 'flex',
       background: palette.common.white,
     },
+    container: {
+      height: { xl: '100vh' },
+    },
     leftPartWrapper: {
-      padding: '24px 0px 24px 24px',
-      width: '35%',
+      padding: { xs: '0px', xl: '24px 0px 24px 24px' },
+      height: { xs: '152px', md: '196px', xl: '100%' },
     },
     leftPartContent: {
       backgroundImage: 'url(/assets/signUpBanner.jpg)',
       height: '100%',
-      borderRadius: '24px',
+      borderRadius: { xs: '0px', xl: '24px' },
       backgroundPosition: 'center',
       backgroundSize: 'cover',
-      padding: '64px 64px 120px',
+      padding: { xs: '0px 0px 24px', xl: '64px 64px 120px' },
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'space-between',
+      justifyContent: { xs: 'center', xl: 'space-between' },
+      alignItems: { xs: 'center', xl: 'flex-start' },
     },
     textContent: {
-      display: 'flex',
+      display: { xs: 'none', xl: 'flex' },
       flexDirection: 'column',
       gap: '16px',
       color: theme.palette.common.white,
@@ -43,13 +46,17 @@ export const useEntryLayoutStyles = (isEntrySpacing: boolean) => {
         fontWeight: 600,
       },
     },
+    rightContainer: {
+      borderRadius: { xs: '24px 24px 0px 0px', xl: '0px' },
+      marginTop: { xs: '-24px', xl: '0px' },
+      background: palette.common.white,
+    },
     rightPartWrapper: {
-      width: '65%',
       display: 'flex',
       flexdirection: 'column',
       justifyContent: isEntrySpacing ? 'normal' : 'center',
-      paddingTop: '135px',
-      padding: isEntrySpacing ? '135px 65px 0px' : '125px 0px',
+      paddingTop: { xs: '56px', md: '120px', xl: '135px' },
+      padding: isEntrySpacing ? '135px 65px 24px' : '125px 16px 24px',
     },
   };
 };

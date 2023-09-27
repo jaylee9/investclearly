@@ -8,6 +8,7 @@ import {
   OneToMany,
   Relation,
 } from 'typeorm';
+import { PolymorphicParent } from 'typeorm-polymorphic';
 import * as bcrypt from 'bcryptjs';
 import { Sponsor } from './sponsors.entity';
 import { Review } from './reviews.entity';
@@ -17,6 +18,8 @@ import { InvestorStatuses } from '../constants/enums/investor-statuses';
 import { IncomeAndNetWorth } from '../constants/enums/income-and-worth';
 import { Investment } from './investments.entity';
 import { Bookmark } from './bookmark.entity';
+import { Location } from './locations.entity';
+import { Roles } from '../constants/enums/roles';
 
 @Entity({ name: 'user' })
 export class User {
@@ -95,9 +98,18 @@ export class User {
   @Column({ type: 'int', nullable: true })
   holdPeriodMax: number;
 
+  @Column({
+    type: 'enum',
+    enum: Roles,
+    default: Roles.user,
+  })
+  role: string;
+
   reviewsCount: number;
 
   investmentsCount: number;
+
+  isPasswordAdded: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -125,4 +137,7 @@ export class User {
 
   @OneToMany(() => Bookmark, bookmarks => bookmarks.user)
   bookmarks: Relation<Bookmark>[];
+
+  @PolymorphicParent(() => Location, { eager: false, cascade: true })
+  locations: Relation<Location[]>;
 }

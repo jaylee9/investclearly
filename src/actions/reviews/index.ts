@@ -6,6 +6,11 @@ import api from '@/config/ky';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
 import { serialize } from 'object-to-formdata';
+import { NextRouter } from 'next/router';
+import notAuthorizedErrorHandler, {
+  Roles,
+} from '@/helpers/notAuthorizedErrorHandler';
+import { HTTPError } from 'ky';
 
 export type OptionalCreateReviewInterface = Partial<CreateReviewInterface>;
 
@@ -107,5 +112,67 @@ export const uploadReviewProofs = async ({
   } catch (error) {
     console.error('Error uploading review proof', error);
     throw error;
+  }
+};
+
+interface UnpublishReviewPayload {
+  id: number;
+  unpublishReviewMessage?: string;
+  reason: string;
+  router: NextRouter;
+}
+
+export const unpublishReview = async ({
+  id,
+  unpublishReviewMessage,
+  reason,
+  router,
+}: UnpublishReviewPayload): Promise<ReviewInterface | { error: string }> => {
+  try {
+    const response: ReviewInterface = await api
+      .put(`admin/reviews/${id}`, {
+        json: { status: 'rejected', reason, unpublishReviewMessage },
+      })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to unpublish review';
+    toast.error(errorMessage);
+    if (error instanceof HTTPError) {
+      notAuthorizedErrorHandler({
+        status: error.response.status,
+        router,
+        role: Roles.ADMIN,
+      });
+    }
+    return { error: errorMessage };
+  }
+};
+
+export const approveReview = async ({
+  id,
+  router,
+}: {
+  id: number;
+  router: NextRouter;
+}): Promise<ReviewInterface | { error: string }> => {
+  try {
+    const response: ReviewInterface = await api
+      .put(`admin/reviews/${id}`, {
+        json: { status: 'published' },
+      })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to approve review';
+    toast.error(errorMessage);
+    if (error instanceof HTTPError) {
+      notAuthorizedErrorHandler({
+        status: error.response.status,
+        router,
+        role: Roles.ADMIN,
+      });
+    }
+    return { error: errorMessage };
   }
 };

@@ -4,6 +4,26 @@ const { palette } = theme;
 
 export const useEditDealModalStyles = () => {
   return {
+    root: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    form: {
+      height: '100%',
+    },
+    formContainer: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      gap: '24px',
+    },
+    formContent: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px',
+    },
     symbol: {
       color: palette.text.disabled,
     },
@@ -20,10 +40,18 @@ export const useDeleteDealModalStyles = () => {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
+      height: '100%',
+    },
+    textBox: {
+      textAlign: 'center',
+      marginBottom: '24px',
+    },
+    title: {
+      fontWeight: '600',
+      marginBottom: '4px',
     },
     subTitle: {
       color: palette.text.secondary,
-      marginBottom: '24px',
     },
     buttonsWrapper: {
       display: 'flex',
@@ -31,9 +59,10 @@ export const useDeleteDealModalStyles = () => {
       width: '100%',
       alignItems: 'center',
       justifyContent: 'center',
-      '& button': {
-        width: '50%',
-      },
+      flexDirection: { xs: 'column', md: 'row' },
+    },
+    button: {
+      width: { xs: '100%', md: '50%' },
     },
   };
 };

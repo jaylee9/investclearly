@@ -6,6 +6,8 @@ import { UserConstants } from '../../constants/users-constants';
 import { Review } from '../../../backend/entities/reviews.entity';
 import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
 import { Investment } from '../../../backend/entities/investments.entity';
+import { Location } from '../../entities/locations.entity';
+import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 
 export const getUserById = async (
   id: number,
@@ -19,6 +21,13 @@ export const getUserById = async (
     .select('user')
     .from(User, 'user')
     .where('user.id = :id', { id })
+    .leftJoinAndMapMany(
+      'user.locations',
+      Location,
+      'locations',
+      'locations.entityId = user.id AND locations.entityType = :userEntityType',
+      { userEntityType: LocationTargetTypesConstants.user }
+    )
     .getOne();
 
   if (!user) {

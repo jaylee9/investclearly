@@ -12,6 +12,8 @@ import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses
 import { ReviewConstants } from '../../../backend/constants/review-constants';
 import { Bookmark } from '../../../backend/entities/bookmark.entity';
 import { BookmarkConstants } from '../../../backend/constants/bookmark-constants';
+import { Location } from '../../entities/locations.entity';
+import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 
 export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
   const {
@@ -93,7 +95,14 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
         maxRating,
       }
     )
-    .groupBy('sponsors.id, deals.id');
+    .leftJoinAndMapMany(
+      'sponsors.locations',
+      Location,
+      'locations',
+      'locations.entityId = sponsors.id AND locations.entityType = :sponsorEntityType',
+      { sponsorEntityType: LocationTargetTypesConstants.sponsor }
+    )
+    .groupBy('sponsors.id, deals.id, locations.id');
 
   if (primaryAssetClasses?.length) {
     searchQuery = searchQuery.where(

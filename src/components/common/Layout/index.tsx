@@ -1,4 +1,4 @@
-import { Box, CssBaseline, Typography } from '@mui/material';
+import { Box, CssBaseline, Typography, Grid } from '@mui/material';
 import Header from './Header';
 import { ReactNode } from 'react';
 import { ThemeProvider } from '@emotion/react';
@@ -79,7 +79,8 @@ const Layout = ({
   const handleLogout = async () => {
     const response = await logout();
     if (!('error' in response)) {
-      push('/');
+      localStorage.removeItem('admin');
+      push('/admin-panel/login');
     }
   };
 
@@ -110,23 +111,29 @@ const Layout = ({
       )}
       {variant === LayoutVariant.Entry && (
         <Box sx={entryStyles.root}>
-          <Box sx={entryStyles.leftPartWrapper}>
-            <Box sx={entryStyles.leftPartContent}>
-              <Logo variant={LogoVariant.LightText} />
-              <Box sx={entryStyles.textContent}>
-                <Typography variant="h1">
-                  Invest Clearly.
-                  <br /> Invest Confidently.
-                </Typography>
-                <Typography variant="body1">
-                  Real Estate syndications and funds in one place, paired with
-                  sponsor reviews from investors like you, so that you can
-                  invest with confidence.
-                </Typography>
+          <Grid container sx={entryStyles.container}>
+            <Grid item xs={12} xl={4}>
+              <Box sx={entryStyles.leftPartWrapper}>
+                <Box sx={entryStyles.leftPartContent}>
+                  <Logo variant={LogoVariant.LightText} />
+                  <Box sx={entryStyles.textContent}>
+                    <Typography variant="h1">
+                      Invest Clearly.
+                      <br /> Invest Confidently.
+                    </Typography>
+                    <Typography variant="body1">
+                      Real Estate syndications and funds in one place, paired
+                      with sponsor reviews from investors like you, so that you
+                      can invest with confidence.
+                    </Typography>
+                  </Box>
+                </Box>
               </Box>
-            </Box>
-          </Box>
-          <Box sx={entryStyles.rightPartWrapper}>{children}</Box>
+            </Grid>
+            <Grid item xs={12} xl={8} sx={entryStyles.rightContainer}>
+              <Box sx={entryStyles.rightPartWrapper}>{children}</Box>
+            </Grid>
+          </Grid>
         </Box>
       )}
       {variant === LayoutVariant.Admin && (

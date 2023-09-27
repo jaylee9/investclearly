@@ -10,7 +10,11 @@ import { DEFAULT_DEAL_IMAGE, DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 import EllipsisText from '@/components/common/EllipsisText';
 import Link from 'next/link';
 import { debounce } from 'lodash';
-import { GetUserReviewsResponse, getUserReviews } from '@/actions/reviews';
+import {
+  GetUserReviewsResponse,
+  approveReview,
+  getUserReviews,
+} from '@/actions/reviews';
 import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.interface';
 import { format } from 'date-fns';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
@@ -19,6 +23,10 @@ import { ReviewStatuses } from '@/backend/constants/enums/review-statuses';
 import CustomTabs from '@/components/common/CustomTabs';
 import Loading from '@/components/common/Loading';
 import Button from '@/components/common/Button';
+import ReviewDetailsModal from '@/components/page/Admin/Review/ReviewDetailsModal';
+import UnpublishReviewModal from '@/components/page/Admin/Review/UnpublishReviewModal';
+import withAdminPrivateRoute from '@/HOC/withAdminPrivateRoute';
+import { useRouter } from 'next/router';
 
 const sortOptions = [
   { label: 'Newest Reviews', value: 'DESC' },
@@ -27,8 +35,20 @@ const sortOptions = [
 
 type AllowedReviewStatuses = 'published' | 'on moderation';
 
+interface OpenModals {
+  publish: ReviewInterface | null;
+  manage: ReviewInterface | null;
+}
+
+interface OpenActionModals {
+  unpublish: number | null;
+  reject: number | null;
+}
+
 const ReviewModerationPage = () => {
   const classes = useAdminReviewModerationStyles();
+
+  const router = useRouter();
 
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -38,7 +58,17 @@ const ReviewModerationPage = () => {
   const [activeTab, setActiveTab] = useState<AllowedReviewStatuses>(
     ReviewStatuses.onModeration
   );
+  const [openModals, setOpenModals] = useState<OpenModals>({
+    publish: null,
+    manage: null,
+  });
+  const [openActionModals, setOpenActionModals] = useState<OpenActionModals>({
+    unpublish: null,
+    reject: null,
+  });
+  const [isApproveLoading, setIsApproveLoading] = useState(false);
 
+  //search and change order
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
   }, 300);
@@ -52,9 +82,11 @@ const ReviewModerationPage = () => {
     setPage(1);
   };
 
+  //fetch data
   const {
     data: { total: totalPublishedReviews } = {},
     isLoading: isLoadingPublishedCountData,
+    refetch: refetchTotalPublishedReviews,
   } = useQuery<GetUserReviewsResponse>(
     ['publishedReviewsCount'],
     () =>
@@ -66,6 +98,7 @@ const ReviewModerationPage = () => {
   const {
     data: { total: totalOnModerationReviews } = {},
     isLoading: isLoadingOnModerationCountData,
+    refetch: refetchTotalOnModerationReviews,
   } = useQuery(
     ['onModerationReviewsCount'],
     () =>
@@ -74,7 +107,7 @@ const ReviewModerationPage = () => {
       }) as Promise<GetUserReviewsResponse>
   );
 
-  const { data, isLoading } = useQuery<GetUserReviewsResponse>(
+  const { data, isLoading, refetch } = useQuery<GetUserReviewsResponse>(
     ['reviews', page, searchTerm, orderDirection, activeTab],
     () =>
       getUserReviews({
@@ -109,6 +142,7 @@ const ReviewModerationPage = () => {
     },
   ];
 
+  //table
   const columns: Column<ReviewInterface>[] = [
     {
       label: 'Sponsor',
@@ -195,18 +229,37 @@ const ReviewModerationPage = () => {
           {format(new Date(data.createdAt), 'MMMM d, yyyy h:mm aa')}
         </Typography>
       ),
-      width: activeTab === 'on moderation' ? '22%' : '35%',
+      width: activeTab === 'on moderation' ? '23%' : '35%',
     },
   ];
 
   const actions =
     activeTab === 'on moderation'
-      ? [{ content: <Button variant="secondary">Manage Review</Button> }]
+      ? [
+          {
+            content: (data: ReviewInterface) => (
+              <Button
+                variant="secondary"
+                key={data.id}
+                onClick={() =>
+                  setOpenModals(prevState => {
+                    return { ...prevState, manage: data };
+                  })
+                }
+              >
+                Manage Review
+              </Button>
+            ),
+          },
+        ]
       : [
           {
             icon: 'icon-Eye-opened',
             //will be replaced by logic of open unpublish review modal
-            onClick: (data: ReviewInterface) => console.log(data),
+            onClick: (data: ReviewInterface) =>
+              setOpenModals(prevState => {
+                return { ...prevState, publish: data };
+              }),
             styles: classes.editIcon,
           },
         ];
@@ -220,6 +273,89 @@ const ReviewModerationPage = () => {
     activeTab === 'on moderation'
       ? !!totalOnModerationReviews
       : !!totalPublishedReviews;
+
+  //modal logic
+  const handleOpenUnpublishModal = (id: number) =>
+    setOpenActionModals(prevModals => {
+      return { ...prevModals, unpublish: id };
+    });
+
+  const handleCloseActionModal = (key: 'unpublish' | 'reject') =>
+    setOpenActionModals(prevModals => {
+      return { ...prevModals, [key]: null };
+    });
+
+  const reviewDetailsModalTitle = () => {
+    if (!!openModals.manage) {
+      return 'Manage Review';
+    } else if (!!openModals.publish) {
+      return 'Review';
+    } else {
+      return '';
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (isApproveLoading) {
+      return;
+    }
+    setOpenModals({ manage: null, publish: null });
+  };
+
+  const actionButtons = openModals.publish
+    ? (data: ReviewInterface) => (
+        <Button
+          onClick={() => handleOpenUnpublishModal(data.id)}
+          color="error"
+          variant="secondary"
+          customStyles={classes.actionButton}
+        >
+          <i className="icon-Cross" style={classes.iconCross} />
+          Unpublish
+        </Button>
+      )
+    : (data: ReviewInterface) => (
+        <Box sx={classes.manageReviewButtonsWrapper}>
+          <Button
+            color="error"
+            variant="secondary"
+            customStyles={classes.actionButton}
+            disabled={isApproveLoading}
+            onClick={() => handleOpenUnpublishModal(data.id)}
+          >
+            <i className="icon-Cross" style={classes.iconCross} />
+            Reject
+          </Button>
+          <Button
+            color="success"
+            customStyles={classes.actionButton}
+            onClick={() => handleApproveReview(data.id)}
+            disabled={isApproveLoading}
+          >
+            <i className="icon-Check" style={classes.iconCheck} />
+            Approve
+          </Button>
+        </Box>
+      );
+
+  const handleSubmitCloseUnpublishModal = async () => {
+    await refetchTotalPublishedReviews();
+    await refetch();
+    handleCloseModal();
+    handleCloseActionModal('unpublish');
+  };
+
+  const handleApproveReview = async (id: number) => {
+    setIsApproveLoading(true);
+    const response = await approveReview({ id, router });
+    if (!('error' in response)) {
+      await refetchTotalPublishedReviews();
+      await refetchTotalOnModerationReviews();
+      await refetch();
+      setIsApproveLoading(false);
+      handleCloseModal();
+    }
+  };
 
   const isComprehensiveLoading =
     isLoading || isLoadingOnModerationCountData || isLoadingPublishedCountData;
@@ -273,6 +409,21 @@ const ReviewModerationPage = () => {
                 actions={actions}
                 pageSize={10}
               />
+              <ReviewDetailsModal
+                open={!!openModals.manage || !!openModals.publish}
+                title={reviewDetailsModalTitle()}
+                onClose={handleCloseModal}
+                review={
+                  (openModals.manage || openModals.publish) as ReviewInterface
+                }
+                actionButtons={actionButtons}
+              />
+              <UnpublishReviewModal
+                open={!!openActionModals.unpublish}
+                onClose={() => handleCloseActionModal('unpublish')}
+                reviewId={Number(openActionModals.unpublish)}
+                onSubmitClose={handleSubmitCloseUnpublishModal}
+              />
             </Box>
           ) : (
             <Box sx={classes.noReviewsContent}>
@@ -292,4 +443,4 @@ const ReviewModerationPage = () => {
   );
 };
 
-export default ReviewModerationPage;
+export default withAdminPrivateRoute(ReviewModerationPage);

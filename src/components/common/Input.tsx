@@ -12,7 +12,7 @@ import { CSSProperties, ChangeEvent, ReactNode, useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import { useInputStyles } from './styles';
 
-interface InputProps extends Omit<TextFieldProps, 'variant'> {
+export interface InputProps extends Omit<TextFieldProps, 'variant'> {
   variant?: 'filled' | 'outlined';
   isFilledWhite?: boolean;
   errorText?: string;

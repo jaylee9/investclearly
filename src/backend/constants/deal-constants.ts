@@ -3,4 +3,5 @@ export const DealConstants = {
   dealSuccessfullyDeleted: 'Deal successfully deleted',
   maxAmountOfDealsMatchedOnUserInvestmentPreferences: 3,
   maxAmountNewDealsAtBookmarkedSponsor: 2,
+  deals: 'deals',
 };

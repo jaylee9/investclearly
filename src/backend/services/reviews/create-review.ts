@@ -23,9 +23,12 @@ export const createReview = async (
 
   if (files?.length) {
     for (const file of files) {
-      const fileUrl = await uploadFile(file, TargetTypesConstants.reviewProofs);
+      const fileData = await uploadFile(
+        file,
+        TargetTypesConstants.reviewProofs
+      );
       await createAttachment(
-        fileUrl,
+        fileData,
         reviewRecord.id,
         TargetTypesConstants.reviewProofs
       );

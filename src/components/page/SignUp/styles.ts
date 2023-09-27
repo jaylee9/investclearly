@@ -46,7 +46,9 @@ export const useSignUpFormStyles = () => {
 
 export const useConfirmEmailStyles = () => {
   return {
-    root: {},
+    root: {
+      textAlign: 'center',
+    },
     infoText: {
       color: theme.palette.text.secondary,
       marginBottom: '40px',

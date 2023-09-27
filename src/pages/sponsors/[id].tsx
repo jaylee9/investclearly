@@ -25,6 +25,7 @@ import Loading from '@/components/common/Loading';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
+import EllipsisText from '@/components/common/EllipsisText';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -141,13 +142,27 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
     event: SyntheticEvent<Element, Event>,
     newValue: string | number
   ) => {
+    let elementToScrollTo: HTMLDivElement | null = null;
     if (newValue === 'overview' && overviewRef.current) {
-      overviewRef.current.scrollIntoView({ behavior: 'smooth' });
+      elementToScrollTo = overviewRef.current;
     } else if (newValue === 'reviews' && reviewsRef.current) {
-      reviewsRef.current.scrollIntoView({ behavior: 'smooth' });
+      elementToScrollTo = reviewsRef.current;
     } else if (newValue === 'deals' && dealsRef.current) {
-      dealsRef.current.scrollIntoView({ behavior: 'smooth' });
+      elementToScrollTo = dealsRef.current;
     }
+
+    if (elementToScrollTo) {
+      const integerHeight = newValue === 'overview' ? 30 : 50;
+      const headerHeight = isStickyHeader ? integerHeight : 0;
+      window.scrollTo({
+        top:
+          elementToScrollTo.getBoundingClientRect().top +
+          window.scrollY -
+          headerHeight,
+        behavior: 'smooth',
+      });
+    }
+
     setActiveTab(newValue as ActiveTab);
   };
   const handleOpenModal = () => {
@@ -193,7 +208,11 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
                 style={{ borderRadius: '1230px' }}
               />
               <Box>
-                <Typography variant="h5">{sponsor.legalName}</Typography>
+                <EllipsisText
+                  variant="h5"
+                  width="186px"
+                  text={sponsor.legalName}
+                />
                 <Typography variant="body1" sx={classes.sponsorRating}>
                   <i className="icon-Star"></i>
                   {sponsor.avgTotalRating}
@@ -313,7 +332,9 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
                 <i className="icon-Calendar"></i>
                 <Box>
                   <Typography variant="caption">Year Founded</Typography>
-                  <Typography variant="body1">2002</Typography>
+                  <Typography variant="body1">
+                    {sponsor.yearOfFoundation}
+                  </Typography>
                 </Box>
               </Box>
             </Box>

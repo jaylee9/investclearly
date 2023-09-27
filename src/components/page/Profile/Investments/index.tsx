@@ -5,7 +5,7 @@ import {
 import { OrderDirectionConstants } from '@/backend/constants/order-direction-constants';
 import CustomTabs from '@/components/common/CustomTabs';
 import Loading from '@/components/common/Loading';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Divider } from '@mui/material';
 import { SyntheticEvent, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useInvestmentsStyles } from './styles';
@@ -165,6 +165,7 @@ const ProfileInvestments = () => {
   return (
     <Box>
       <CustomTabs tabs={tabs} onChange={handleChangeTab} value={activeTab} />
+      <Divider sx={classes.divider} />
       <Box sx={classes.root}>
         {isLoading && (
           <Box marginBottom="24px">
@@ -172,15 +173,17 @@ const ProfileInvestments = () => {
           </Box>
         )}
         {!isLoading && (
-          <Box marginBottom="24px">
-            <Typography variant="caption" sx={classes.title}>
-              Total Invested
-            </Typography>
-            <Typography variant="h2" sx={classes.totalInvested}>
-              ${data?.totalInvested || 0}
-            </Typography>
+          <Box marginBottom="16px">
+            <Box sx={classes.totalInvest}>
+              <Typography variant="caption" sx={classes.title}>
+                Total Invested
+              </Typography>
+              <Typography variant="h2" sx={classes.totalInvested}>
+                ${data?.totalInvested || 0}
+              </Typography>
+            </Box>
             {!data?.deals.length && !searchTerm ? (
-              <Box>
+              <Box sx={classes.noDeals}>
                 <Typography variant="h5" sx={classes.noDealsTitle}>
                   Deals
                 </Typography>
@@ -188,11 +191,13 @@ const ProfileInvestments = () => {
                   You have no deals yet. You can add your deals here
                 </Typography>
                 <Link href="/list?type=deals">
-                  <Button>Search for deals</Button>
+                  <Button sxCustomStyles={classes.buttonSearchDeals}>
+                    Search for deals
+                  </Button>
                 </Link>
               </Box>
             ) : (
-              <Box>
+              <Box sx={classes.dealWrapper}>
                 <Box sx={classes.tableWrapperHeader}>
                   <Typography variant="h5">Deals</Typography>
                   <Box sx={classes.searchWrapper}>
@@ -202,9 +207,12 @@ const ProfileInvestments = () => {
                       placeholder="Search my deals"
                       onChange={e => handleSearch(e.target.value)}
                       onClear={handleClearSearch}
+                      sxCustomStyles={classes.input}
                     />
                     <Link href="/list?type=deals">
-                      <Button>Search for deals</Button>
+                      <Button sxCustomStyles={classes.buttonSearchDeals}>
+                        Search for deals
+                      </Button>
                     </Link>
                   </Box>
                 </Box>
@@ -239,7 +247,7 @@ const ProfileInvestments = () => {
             Can’t find a deal? Contact us and we’ll resolve it!
           </Typography>
           <Link href="mailto:support@investclearly.io?subject=Can’t find a deal">
-            <Button>Contact Us</Button>
+            <Button sxCustomStyles={classes.buttonContact}>Contact Us</Button>
           </Link>
         </Box>
       </Box>

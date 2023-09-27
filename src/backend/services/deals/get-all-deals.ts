@@ -13,6 +13,8 @@ import { ReviewConstants } from '../../../backend/constants/review-constants';
 import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
 import { Bookmark } from '../../../backend/entities/bookmark.entity';
 import { BookmarkConstants } from '../../../backend/constants/bookmark-constants';
+import { Location } from '../../entities/locations.entity';
+import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 
 export const getAllDeals = async (params: FindAllDealsInterface) => {
   const {
@@ -110,6 +112,13 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
       'attachments.entityId = deals.id AND attachments.entityType = :entityType',
       { entityType: TargetTypesConstants.deals }
     )
+    .leftJoinAndMapMany(
+      'deals.locations',
+      Location,
+      'locations',
+      'locations.entityId = deals.id AND locations.entityType = :dealEntityType',
+      { dealEntityType: LocationTargetTypesConstants.deal }
+    )
     .leftJoin('deals.reviews', 'reviews', 'reviews.status = :reviewStatus', {
       reviewStatus: ReviewStatuses.published,
     })
@@ -120,7 +129,8 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
         maxRating,
       }
     )
-    .groupBy('deals.id, attachments.id');
+    .leftJoinAndSelect('deals.sponsor', 'sponsor')
+    .groupBy('deals.id, attachments.id, locations.id, sponsor.id');
 
   if (assetClasses?.length) {
     searchQuery = searchQuery.where('deals.assetClass IN (:...assetClasses)', {

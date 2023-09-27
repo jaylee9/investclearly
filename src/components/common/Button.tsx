@@ -16,7 +16,7 @@ interface IButtonProps extends Omit<MUIButtonProps, 'color' | 'variant'> {
     | 'auth'
     | 'dark'
     | 'transparent';
-  color?: 'primary' | 'error';
+  color?: 'primary' | 'error' | 'success';
   customStyles?: CSSProperties;
   sxCustomStyles?: SxProps<Theme>;
 }

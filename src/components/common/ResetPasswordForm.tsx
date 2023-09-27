@@ -42,7 +42,7 @@ const ResetPasswordForm = ({
   });
 
   return (
-    <>
+    <Box sx={styles.root}>
       <Typography variant="h2" fontWeight={600} marginBottom="40px">
         Change password
       </Typography>
@@ -69,7 +69,7 @@ const ResetPasswordForm = ({
           </Button>
         </Box>
       </form>
-    </>
+    </Box>
   );
 };
 

@@ -14,6 +14,8 @@ import clsx from 'clsx';
 import { debounce } from 'lodash';
 import { GetAllSponsorsResponse, getAllSponsors } from '@/actions/sponsors';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
+import AddEditSponsorModal from '@/components/page/Admin/Sponsor/AddEditSponsorModal';
+import withAdminPrivateRoute from '@/HOC/withAdminPrivateRoute';
 
 interface AdminSponsorsPageProps {
   sponsorsResponse: GetAllSponsorsResponse;
@@ -22,8 +24,12 @@ interface AdminSponsorsPageProps {
 const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
   const classes = useAdminSponsorsStyles();
 
+  const [openModal, setOpenModal] = useState<null | 'add' | SponsorInterface>(
+    null
+  );
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
   }, 300);
@@ -32,7 +38,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
     setSearchTerm('');
   };
 
-  const { data } = useQuery<GetAllSponsorsResponse>(
+  const { data, refetch } = useQuery<GetAllSponsorsResponse>(
     ['sponsors', page, searchTerm],
     () =>
       getAllSponsors({
@@ -73,13 +79,15 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
               <EllipsisText
                 variant="body1"
                 fontWeight={500}
-                text={data.sponsorName as string}
+                text={data.legalName as string}
                 sx={classes.ellipsisText}
               />
             </Link>
-            <Typography variant="caption" sx={classes.subTitle}>
-              {data.address}
-            </Typography>
+            {!!data.locations.length && (
+              <Typography variant="caption" sx={classes.subTitle}>
+                {data.locations[0]?.street1}
+              </Typography>
+            )}
           </Box>
         </Box>
       ),
@@ -140,10 +148,17 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
     {
       icon: 'icon-Edit',
       //will be replaced by logic of open edit sponsor modal
-      onClick: (data: SponsorInterface) => console.log(data),
+      onClick: (data: SponsorInterface) => handleOpenModal(data),
       styles: classes.editIcon,
     },
   ];
+
+  const handleOpenModal = (modalType: 'add' | SponsorInterface) =>
+    setOpenModal(modalType);
+
+  const handleCloseModal = () => setOpenModal(null);
+
+  const isSponsorInterface = openModal !== null && openModal !== 'add';
 
   return (
     <Layout variant={LayoutVariant.Admin}>
@@ -161,10 +176,10 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
               onChange={e => handleSearch(e.target.value)}
               onClear={handleClearSearch}
             />
-            <Button>Add Sponsor</Button>
+            <Button onClick={() => handleOpenModal('add')}>Add Sponsor</Button>
           </Box>
           <CustomTable<SponsorInterface>
-            data={data?.sponsors as SponsorInterface[]}
+            data={(data?.sponsors as SponsorInterface[]) || []}
             page={page}
             setPage={setPage}
             total={Number(data?.total)}
@@ -179,9 +194,16 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
           <Typography variant="h4">
             There are no published Sponsors yet
           </Typography>
-          <Button>Add Sponsor</Button>
+          <Button onClick={() => handleOpenModal('add')}>Add Sponsor</Button>
         </Box>
       )}
+      <AddEditSponsorModal
+        open={!!openModal}
+        onClose={handleCloseModal}
+        sponsor={isSponsorInterface ? openModal : undefined}
+        isEdit={isSponsorInterface}
+        refetchSponsors={refetch}
+      />
     </Layout>
   );
 };
@@ -204,4 +226,4 @@ export const getServerSideProps = async () => {
   };
 };
 
-export default SponsorsPage;
+export default withAdminPrivateRoute(SponsorsPage);

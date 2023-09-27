@@ -9,6 +9,8 @@ import { loadEnvConfig } from './load-env-config';
 import { Review } from '../entities/reviews.entity';
 import { Investment } from '../entities/investments.entity';
 import { Bookmark } from '../entities/bookmark.entity';
+import { Location } from '../entities/locations.entity';
+import { RelatedPerson } from '../entities/relatedPersons.entity';
 
 loadEnvConfig();
 
@@ -22,7 +24,17 @@ const config = {
   synchronize: false,
   namingStrategy: new SnakeNamingStrategy(),
   logging: false,
-  entities: [User, Deal, Sponsor, Attachment, Review, Investment, Bookmark],
+  entities: [
+    User,
+    Deal,
+    Sponsor,
+    Attachment,
+    Review,
+    Investment,
+    Bookmark,
+    Location,
+    RelatedPerson,
+  ],
 };
 
 export const AppDataSource = new DataSource({

@@ -1,17 +1,23 @@
 import createHttpError from 'http-errors';
+import { createClient } from '@supabase/supabase-js';
 import { loadEnvConfig } from '../../config/load-env-config';
-import { s3, bucketName } from '../../config/aws-s3-config';
 
 loadEnvConfig();
 
+const supabase = createClient(
+  process.env.SUPABASE_URL || '',
+  process.env.SUPABASE_KEY || ''
+);
+
 export const deleteFile = async (fileName: string) => {
   try {
-    const deleteParams = {
-      Bucket: bucketName,
-      Key: fileName,
-    };
+    const { error } = await supabase.storage
+      .from(process.env.SUPABASE_BUCKET_NAME || '')
+      .remove([fileName]);
 
-    await s3.deleteObject(deleteParams).promise();
+    if (error) {
+      throw new createHttpError.BadRequest();
+    }
   } catch (error) {
     throw new createHttpError.BadRequest();
   }

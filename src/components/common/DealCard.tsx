@@ -122,7 +122,9 @@ const DealCard = ({
               />
             </Link>
             <Box sx={classes.sponsorInfo}>
-              <Typography variant="caption">{deal.dealSponsor}</Typography>
+              <Typography variant="caption">
+                {deal?.sponsor?.legalName}
+              </Typography>
               <Typography variant="caption" sx={classes.sponsorRating}>
                 <i className="icon-Star"></i>
                 <span>{deal.avgTotalRating}</span>

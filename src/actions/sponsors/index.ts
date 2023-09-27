@@ -1,6 +1,13 @@
+import { CreateSponsorInterface } from '@/backend/services/sponsors/interfaces/create-sponsor.interface';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import { ISponsorFilters } from '@/components/page/List/Sponsors/SponsorsFilters';
 import api from '@/config/ky';
+import notAuthorizedErrorHandler, {
+  Roles,
+} from '@/helpers/notAuthorizedErrorHandler';
+import { HTTPError } from 'ky';
+import { NextRouter } from 'next/router';
+import { serialize } from 'object-to-formdata';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
 
@@ -125,5 +132,77 @@ export const deleteSponsorFromBookmarks = async ({
     const errorMessage = 'Failed to delete sponsor from saved';
     toast.error(errorMessage);
     return { error: errorMessage };
+  }
+};
+
+type ModifiedCreateSponsorInterface = Omit<
+  CreateSponsorInterface,
+  'businessAvatar'
+> & {
+  businessAvatar: Blob | string;
+};
+
+export type PartialCreateSponsorInterface =
+  Partial<ModifiedCreateSponsorInterface>;
+
+export const createSponsor = async ({
+  payload,
+  router,
+}: {
+  payload: PartialCreateSponsorInterface;
+  router: NextRouter;
+}): Promise<SponsorInterface | { error: string }> => {
+  const formData = serialize(payload, {
+    indices: true,
+    nullsAsUndefineds: true,
+  });
+
+  try {
+    const response: SponsorInterface = await api
+      .post('admin/sponsors', {
+        body: formData,
+      })
+      .json();
+    return response;
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      notAuthorizedErrorHandler({
+        status: error.response.status,
+        router,
+        role: Roles.ADMIN,
+      });
+    }
+    return { error: 'Failed to create sponsor' };
+  }
+};
+
+export const editSponsor = async ({
+  payload,
+  router,
+}: {
+  payload: PartialCreateSponsorInterface & { id: number };
+  router: NextRouter;
+}): Promise<SponsorInterface | { error: string }> => {
+  const formData = serialize(payload, {
+    indices: true,
+    nullsAsUndefineds: true,
+  });
+
+  try {
+    const response: SponsorInterface = await api
+      .put(`admin/sponsors/${payload.id}`, {
+        body: formData,
+      })
+      .json();
+    return response;
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      notAuthorizedErrorHandler({
+        status: error.response.status,
+        router,
+        role: Roles.ADMIN,
+      });
+    }
+    return { error: 'Failed to edit sponsor' };
   }
 };

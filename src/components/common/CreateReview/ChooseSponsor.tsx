@@ -14,8 +14,10 @@ import { CreateReviewPayloadInterface } from '@/actions/reviews';
 interface ChooseSponsorStepProps {
   setStep: (value: number) => void;
   step: number;
-  payload: CreateReviewPayloadInterface;
-  setPayload: (value: CreateReviewPayloadInterface) => void;
+  payload: CreateReviewPayloadInterface & { sponsorName?: string };
+  setPayload: (
+    value: CreateReviewPayloadInterface & { sponsorName?: string }
+  ) => void;
 }
 
 interface Tag {
@@ -57,16 +59,19 @@ const ChooseSponsorStep = ({
     fetchSponsors
   );
 
-  const defaultTag = { name: '', id: undefined };
-  const [tag, setTag] = useState<Tag>(defaultTag);
-  const dirtyTag = tag.name !== defaultTag.name && tag.id !== defaultTag.id;
+  const clearTag = { name: '', id: undefined };
+  const [tag, setTag] = useState<Tag>({
+    name: payload.sponsorName || '',
+    id: payload.sponsorId,
+  });
+  const dirtyTag = tag.name !== clearTag.name && tag.id !== clearTag.id;
 
   const handleClearTag = () => {
-    setTag(defaultTag);
+    setTag(clearTag);
   };
 
   const handleNextPage = () => {
-    setPayload({ ...payload, sponsorId: tag.id });
+    setPayload({ ...payload, sponsorId: tag.id, sponsorName: tag.name });
     setStep(step + 1);
   };
   const handleChooseSponsor = (event: React.MouseEvent, { name, id }: Tag) => {

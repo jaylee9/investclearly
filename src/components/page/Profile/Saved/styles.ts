@@ -7,6 +7,17 @@ export const useSavedDealsStyles = () => {
     root: {
       padding: '24px',
     },
+    noDealsRoot: {
+      paddingTop: '80px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '4px',
+      alignItems: 'center',
+      justifyContent: 'center',
+      '& p': {
+        color: palette.text.secondary,
+      },
+    },
     dealsWrapper: {
       display: 'flex',
       flexDirection: 'column',
@@ -56,6 +67,17 @@ export const useSavedSponsorsStyles = () => {
       alignItems: 'center',
       padding: '8px 0px',
       '& span': {
+        color: palette.text.secondary,
+      },
+    },
+    noSponsorsRoot: {
+      paddingTop: '80px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '4px',
+      alignItems: 'center',
+      justifyContent: 'center',
+      '& p': {
         color: palette.text.secondary,
       },
     },

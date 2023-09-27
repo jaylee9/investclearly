@@ -8,6 +8,12 @@ export interface UpdateProfileSettingsInterface {
   lastName: string;
   profilePicture?: string;
   address?: string;
+  street1?: string;
+  street2?: string;
+  city?: string;
+  stateOrCountry?: string;
+  stateOrCountryDescription?: string;
+  zipCode?: string;
   totalInvestedAmountVisibility: boolean;
   yourDealsVisibility: boolean;
   weeklyDigestEmail: boolean;

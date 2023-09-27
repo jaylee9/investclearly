@@ -130,7 +130,7 @@ export const useCheckboxStyles = ({ error }: UseCheckboxProps) => {
 };
 
 interface UseButtonStylesProps {
-  color: 'primary' | 'error';
+  color: 'primary' | 'error' | 'success';
   variant:
     | 'main'
     | 'secondary'
@@ -458,6 +458,16 @@ export const useSelectStyles = ({ variant }: UseSelectStylesProps) => {
     singleSelectedItem: {
       color: `${palette.common.black} !important`,
     },
+    fauxPlaceholder: {
+      position: 'absolute',
+      top: '8.5px',
+      left: '16px',
+      pointerEvents: 'none',
+      color: theme.palette.text.secondary,
+    },
+    selectWrapper: {
+      position: 'relative',
+    },
   };
 };
 
@@ -579,12 +589,18 @@ export const useLoadingStyles = () => {
 export const useTabsStyles = () => {
   return {
     root: {
-      '& .MuiTabs-indicator': {
-        backgroundColor: palette.primary.light,
+      '&.MuiTabs-root': {
+        '& .MuiTabs-indicator': {
+          backgroundColor: palette.primary.light,
+        },
+        '& .MuiTabs-flexContainer': {
+          gap: '24px',
+        },
       },
     },
     tab: {
       '&.MuiTab-root': {
+        padding: '0px',
         '&.Mui-selected': {
           '& p': {
             color: palette.primary.light,
@@ -830,6 +846,11 @@ export const useMultiButtonsStyles = () => {
       border: `1px solid ${palette.background.paper}`,
       cursor: 'pointer',
       transition: 'background 0.3s ease, color 0.3s ease, border 0.3s ease',
+      '&:hover': {
+        background: palette.common.white,
+        color: palette.common.black,
+        border: `1px solid ${palette.primary.main}`,
+      },
     },
     activeMultiButton: {
       color: palette.common.white,
@@ -894,7 +915,7 @@ export const useReviewCardStyles = ({
     },
     verifiedIndicator: {
       background: palette.success.contrastText,
-      color: palette.success.main,
+      color: palette.success.light,
     },
     unverifiedIndicator: {
       background: palette.error.contrastText,
@@ -974,10 +995,16 @@ export const useCustomTextAreaStyles = () => {
       padding: '9px 16px',
       fontSize: '15px',
       borderRadius: '12px',
-      border: `1px solid ${palette.background.paper}`,
+      border: `1px solid ${palette.secondary.dark}`,
       transition: 'border 0.3s ease-in-out',
       color: palette.common.black,
       outline: 'none',
+      '&.input': {
+        '&::placeholder': {
+          textOverflow: 'ellipsis !important',
+          color: 'blue',
+        },
+      },
     },
     errorText: {
       position: 'absolute',
@@ -1009,15 +1036,25 @@ export const useStepsComponentStyles = () => {
     root: {
       display: 'flex',
       alignItems: 'center',
-      gap: '16px',
+      gap: { xs: '8px', md: '16px' },
+      margin: '0px -16px',
+      width: { xs: '100%', md: 'auto' },
     },
-    stepWrapper: {
+    desktopStepWrapper: {
       display: 'flex',
       alignItems: 'center',
       gap: '16px',
     },
+    defaultMobileStepWrapper: {
+      border: `4px solid ${palette.background.paper}`,
+      width: '100%',
+    },
+    activeMobileStepWrapper: {
+      border: `4px solid ${palette.primary.light}`,
+      width: '100%',
+    },
     defaultStep: {
-      display: 'flex',
+      display: { xs: 'none', md: 'flex' },
       alignItems: 'center',
       gap: '14px',
       '& .icon-Check': {
@@ -1037,7 +1074,7 @@ export const useStepsComponentStyles = () => {
         transition: 'background 0.3s',
       },
       '& .step-status-current': { background: palette.primary.light },
-      '& .step-status-completed': { background: palette.success.main },
+      '& .step-status-completed': { background: palette.success.light },
       '& .step-label': {
         fontWeight: 600,
         color: palette.text.secondary,
@@ -1050,11 +1087,12 @@ export const useStepsComponentStyles = () => {
       width: '24px',
       height: '2px',
       background: palette.background.paper,
+      display: { xs: 'none', md: 'block' },
     },
   };
 };
 
-export const useTagSelectorStyles = () => {
+export const useTagSelectorStyles = (isSearch: boolean) => {
   return {
     root: {
       position: 'relative',
@@ -1081,14 +1119,14 @@ export const useTagSelectorStyles = () => {
     tag: {
       position: 'absolute',
       top: 6,
-      left: 50,
+      left: isSearch ? 50 : 10,
       background: palette.common.white,
       padding: '2px 12px',
       borderRadius: '16px',
       border: `1px solid ${palette.background.paper}`,
       '& .tag-title': {
         whiteSpace: 'nowrap',
-        maxWidth: '300px',
+        maxWidth: { xs: '220px', md: '300px' },
         overflow: 'hidden',
         textOverflow: 'ellipsis',
       },
@@ -1103,7 +1141,7 @@ export const useFileUploaderStyles = () => {
       width: '100%',
       borderRadius: '8px',
       border: `1px dashed ${palette.background.paper}`,
-      padding: '32px 0px',
+      padding: '32px 16px',
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
@@ -1124,6 +1162,7 @@ export const useFileUploaderStyles = () => {
     },
     infoText: {
       color: palette.text.secondary,
+      textAlign: 'center',
       '& .fileLength': {
         transition: 'color 0.3s ease, font-weight 0.3s ease',
       },
@@ -1190,8 +1229,35 @@ export const useFileUploaderStyles = () => {
       },
     },
     additionalInfo: {
-      maxWidth: '75%',
+      maxWidth: { xs: '100%', lg: '75%' },
       color: palette.text.secondary,
+      paddingBottom: { xs: '32px', md: '0px' },
+    },
+    previewImageWrapper: {
+      position: 'relative',
+      '& img': {
+        borderRadius: '8px',
+        width: '100%',
+        height: '188px',
+      },
+    },
+    iconCrossWrapper: {
+      width: '40px',
+      height: '40px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: '1230px',
+      position: 'absolute',
+      top: '8px',
+      right: '8px',
+      background: palette.primary.light,
+      boxShadow: customShadows.header,
+      cursor: 'pointer',
+      '& .icon-Cross': {
+        fontSize: '24px',
+        color: palette.common.white,
+      },
     },
   };
 };
@@ -1211,35 +1277,55 @@ export const useTableStyles = () => {
         color: palette.text.secondary,
         fontSize: typography.caption,
         fontWeight: 600,
+        whiteSpace: 'nowrap',
         borderBottom: 'none',
         padding: '8px',
         '&:first-of-type': {
           paddingLeft: '24px',
         },
+        '&:last-of-type': {
+          paddingRight: '24px',
+        },
       },
     },
     bodyCell: {
       fontSize: typography.body1,
-      borderBottom: `1px solid ${palette.background.paper}`,
+      borderBottom: 'none',
+      whiteSpace: 'nowrap',
+      '&:first-of-type': {
+        paddingLeft: '24px',
+      },
       '& p': {
         margin: 0,
       },
     },
+    rowWithBorderBottom: {
+      borderBottom: `1px solid ${palette.background.paper}`,
+    },
+    actionsCell: {
+      borderBottom: 'none',
+    },
     actionCell: {
-      paddingRight: '24px',
+      paddingRight: '8px',
       display: 'flex',
       gap: '8px',
       alignItems: 'center',
     },
     pagination: {
       display: 'flex',
-      justifyContent: 'space-between',
+      justifyContent: { xs: 'center', md: 'space-between' },
       width: '100%',
       alignItems: 'center',
       padding: '8px 24px',
       '& span': {
         color: palette.text.secondary,
       },
+      '& .MuiPagination-root': {
+        margin: '0px',
+      },
+    },
+    paginationResults: {
+      display: { xs: 'none', md: 'block' },
     },
   };
 };
@@ -1316,6 +1402,7 @@ export const useForgotPasswordFormStyles = () => {
   return {
     root: {
       textAlign: 'center',
+      width: '420px',
     },
     infoText: {
       marginBottom: '40px',
@@ -1325,7 +1412,6 @@ export const useForgotPasswordFormStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       gap: '32px',
-      width: '420px',
       marginBottom: '16px',
     },
     rememberPassword: {
@@ -1338,10 +1424,13 @@ export const useForgotPasswordFormStyles = () => {
 
 export const useResetPasswordFormStyles = () => {
   return {
+    root: {
+      textAlign: 'center',
+      width: '420px',
+    },
     formWrapper: {
       display: 'flex',
       flexDirection: 'column',
-      width: '420px',
       marginBottom: '16px',
     },
   };
@@ -1349,6 +1438,9 @@ export const useResetPasswordFormStyles = () => {
 
 export const usePasswordChangedSuccessfullyStyles = () => {
   return {
+    root: {
+      textAlign: 'center',
+    },
     text: {
       marginBottom: '40px',
       color: palette.text.secondary,

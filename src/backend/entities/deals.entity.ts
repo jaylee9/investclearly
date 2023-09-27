@@ -7,6 +7,7 @@ import {
   ManyToOne,
   Relation,
   OneToMany,
+  ManyToMany,
 } from 'typeorm';
 import { PolymorphicParent } from 'typeorm-polymorphic';
 import { DealStatuses } from '../constants/enums/deal-statuses';
@@ -21,6 +22,8 @@ import { SecIndustries } from '../constants/enums/sec-industries';
 import { Regulations } from '../constants/enums/regulations';
 import { Investment } from './investments.entity';
 import { Bookmark } from './bookmark.entity';
+import { RelatedPerson } from './relatedPersons.entity';
+import { Location } from './locations.entity';
 
 @Entity({ name: 'deals' })
 export class Deal {
@@ -48,7 +51,7 @@ export class Deal {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'bigint', nullable: true })
   minimumInvestment: number;
 
   @Column({ type: 'int', nullable: true })
@@ -65,7 +68,7 @@ export class Deal {
   @Column({ type: 'int', nullable: true })
   fees: number;
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'bigint', nullable: true })
   targetRaise: number;
 
   @Column({ type: 'int', nullable: true })
@@ -109,6 +112,45 @@ export class Deal {
 
   isInBookmarks: boolean;
 
+  @Column({ type: 'varchar', nullable: true })
+  secApiId: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  accessionNumber: string;
+
+  @Column({ type: 'date', nullable: true })
+  fileDate: Date;
+
+  @Column({ type: 'varchar', nullable: true })
+  submissionType: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  cik: string;
+
+  @Column({ type: 'varchar', array: true, nullable: true })
+  previousNames: string[];
+
+  @Column({ type: 'varchar', nullable: true })
+  entityType: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  yearsOfIncorporation: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  issuerPhoneNumber: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  jurisdictionOfInc: string;
+
+  @Column({ type: 'date', nullable: true })
+  dateOfFirstSale: Date;
+
+  @Column({ type: 'boolean', nullable: false, default: false })
+  isMoreThanOneYear: boolean;
+
+  @Column({ type: 'boolean', nullable: false, default: true })
+  isDealPublished: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -124,9 +166,17 @@ export class Deal {
   @PolymorphicParent(() => Attachment, { eager: false, cascade: true })
   attachments: Relation<Attachment[]>;
 
+  @PolymorphicParent(() => Location, { eager: false, cascade: true })
+  locations: Relation<Location[]>;
+
   @OneToMany(() => Investment, investments => investments.deal)
   investments: Relation<Investment>[];
 
   @PolymorphicParent(() => Bookmark, { eager: false, cascade: true })
   bookmarks: Relation<Bookmark[]>;
+
+  @ManyToMany(() => RelatedPerson, relatedPerson => relatedPerson.deals, {
+    onDelete: 'CASCADE',
+  })
+  relatedPersons: RelatedPerson[];
 }

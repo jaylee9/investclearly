@@ -1,4 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { deleteCookie, setCookie } from 'cookies-next';
+import { createToken } from '../../../backend/services/auth/create-token';
 import { apiHandler } from '../../../backend/utils/api-handler';
 import { AuthConstants } from '../../../backend/constants/auth-constants';
 import { authMiddleware } from '../../../backend/middleware/auth';
@@ -16,7 +18,17 @@ const changeEmail = async (
   const body: ChangeEmailInterface = authRequest.body;
 
   if (user && !user.googleId) {
-    await changeUserEmail(user, body);
+    const updatedUserRecord = await changeUserEmail(user, body);
+    const token = createToken(updatedUserRecord);
+
+    deleteCookie('accessToken', { req: request, res: response });
+    setCookie('accessToken', token.accessToken, {
+      httpOnly: true,
+      secure: false,
+      req: request,
+      res: response,
+      maxAge: token.expiresIn,
+    });
   }
 
   response

@@ -11,6 +11,17 @@ export const deactivateUserAccount = async (user: User) => {
   const randomPassword = crypto.randomBytes(10).toString('hex');
   const hashedPassword = await bcrypt.hash(randomPassword, 10);
 
+  if (user.googleId) {
+    const randomValueForGoogleId = crypto.randomBytes(10).toString('hex');
+    await connection.manager.update(
+      User,
+      { id: user.id },
+      {
+        googleId: randomValueForGoogleId,
+      }
+    );
+  }
+
   await connection.manager.update(
     User,
     { id: user.id },
@@ -20,7 +31,6 @@ export const deactivateUserAccount = async (user: User) => {
       email: `${DeleteUserConstants.deleteUserEmailName}${user.id}${DeleteUserConstants.deleteUserEmail}`,
       password: hashedPassword,
       profilePicture: '',
-      googleId: '',
       totalInvestedAmountVisibility: false,
       yourDealsVisibility: false,
       weeklyDigestEmail: false,
