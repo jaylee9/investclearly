@@ -44,7 +44,10 @@ const useUserProfilePageStyles = ({ href }: { href: string }) => {
       },
     },
     contentWrapper: {
-      padding: { xs: href === 'investments' ? '24px 0px' : '0px', md: '24px' },
+      padding: {
+        xs: href === 'investments' ? '24px 0px' : '0px',
+        md: '24px 0px',
+      },
       width: { xs: '100%', lg: '80%' },
       height: '100%',
       overflow: 'hidden',
@@ -61,8 +64,7 @@ const useUserProfilePageStyles = ({ href }: { href: string }) => {
       fontWeight: '600',
       padding: {
         xs: '0px 16px',
-        md: href !== 'investments' ? '0px 16px' : '0px',
-        lg: '0px',
+        lg: '0px 24px',
       },
     },
   };

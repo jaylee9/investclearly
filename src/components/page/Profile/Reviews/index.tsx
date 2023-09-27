@@ -143,105 +143,106 @@ const ProfileReviews = () => {
     return <Loading />;
   }
   return (
-    <Box sx={{ overflow: 'auto' }}>
-      <Box sx={classes.tabsWrapper}>
-        <CustomTabs
-          value={activeTab}
-          onChange={handleChangeTab}
-          tabs={tabs}
-          isDivider={isDesktop}
-        />
-      </Box>
-      {!counters[activeTab as keyof typeof counters] &&
-        !!user &&
-        !isLoading && (
-          <Box sx={classes.noContentWrapper}>
-            <Typography variant="h4" sx={classes.noReviewTitle}>
-              There are no{' '}
-              {activeTab === ReviewStatuses.published && 'published '}
-              Reviews
-              {activeTab === ReviewStatuses.onModeration &&
-                ' on moderation'}{' '}
-              yet
-            </Typography>
-            <Typography variant="body1" sx={classes.subTitle}>
-              All reviews
-              {activeTab === ReviewStatuses.onModeration && ' on moderation'}
-              {activeTab === ReviewStatuses.published && ' you publish'} will be
-              displayed here
-            </Typography>
-            <Button
-              customStyles={classes.writeReviewButton}
-              onClick={handleOpenWriteReviewForm}
-            >
-              Write a review
-            </Button>
-            <CreateReviewForm
-              open={openWriteReviewForm}
-              onClose={onCloseWriteReviewForm}
-            />
-          </Box>
-        )}
-      {!!counters[activeTab as keyof typeof counters] && data && (
-        <Box sx={classes.content}>
-          <Input
-            variant="filled"
-            isSearch
-            placeholder="Search"
-            customStyles={classes.searchInput}
-            onChange={e => handleSearch(e.target.value)}
-            onClear={handleClearSearch}
-          />
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <Box sx={classes.reviewsWrapper}>
-              {activeTab === ReviewStatuses.published &&
-                !!data.totalUnverifiedReviews && (
-                  <Typography variant="caption" sx={classes.warning}>
-                    <i className="icon-Warning"></i>
-                    You have {data.totalUnverifiedReviews} unverified review
-                    {data.totalUnverifiedReviews > 1 && 's'}. Please, upload
-                    proofs to help us maintain accurate information.
-                  </Typography>
-                )}
-              {data?.reviews.map(review => (
-                <ReviewCard
-                  review={review}
-                  key={review.id}
-                  showVerifyOption={activeTab === ReviewStatuses.published}
-                  isDelete={activeTab === ReviewStatuses.onModeration}
-                  onDelete={handleOpenDeleteModal}
-                  onVerify={handleOpenVerifyReviewModal}
-                />
-              ))}
-              <Box sx={classes.pagination}>
-                <Typography variant="caption" sx={classes.paginationResults}>
-                  Showing {firstItem}-{lastItem} of {data.total} results
-                </Typography>
-                <CustomPagination
-                  page={page}
-                  count={data.lastPage}
-                  onChange={(event, value) => handlePaginate(value)}
-                />
-              </Box>
-              <DeleteReviewModal
-                open={!!openDeleteModal}
-                id={openDeleteModal}
-                onSubmitClose={onDeleteSubmit}
-                onClose={handleCloseDeleteModal}
-              />
-              <VerifyReviewModal
-                open={!!openVerifyReviewModal}
-                onClose={handleCloseVerifyReviewModal}
-                refetchFunction={handleRefetchFunction}
-                reviewId={openVerifyReviewModal as number}
-                reviewerName={choosedReviewer}
+    <Box>
+      <CustomTabs
+        value={activeTab}
+        onChange={handleChangeTab}
+        tabs={tabs}
+        isDivider={isDesktop}
+        isSpacing
+      />
+      <Box sx={classes.wrapper}>
+        {!counters[activeTab as keyof typeof counters] &&
+          !!user &&
+          !isLoading && (
+            <Box sx={classes.noContentWrapper}>
+              <Typography variant="h4" sx={classes.noReviewTitle}>
+                There are no{' '}
+                {activeTab === ReviewStatuses.published && 'published '}
+                Reviews
+                {activeTab === ReviewStatuses.onModeration &&
+                  ' on moderation'}{' '}
+                yet
+              </Typography>
+              <Typography variant="body1" sx={classes.subTitle}>
+                All reviews
+                {activeTab === ReviewStatuses.onModeration && ' on moderation'}
+                {activeTab === ReviewStatuses.published && ' you publish'} will
+                be displayed here
+              </Typography>
+              <Button
+                customStyles={classes.writeReviewButton}
+                onClick={handleOpenWriteReviewForm}
+              >
+                Write a review
+              </Button>
+              <CreateReviewForm
+                open={openWriteReviewForm}
+                onClose={onCloseWriteReviewForm}
               />
             </Box>
           )}
-        </Box>
-      )}
+        {!!counters[activeTab as keyof typeof counters] && data && (
+          <Box sx={classes.content}>
+            <Input
+              variant="filled"
+              isSearch
+              placeholder="Search"
+              customStyles={classes.searchInput}
+              onChange={e => handleSearch(e.target.value)}
+              onClear={handleClearSearch}
+            />
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <Box sx={classes.reviewsWrapper}>
+                {activeTab === ReviewStatuses.published &&
+                  !!data.totalUnverifiedReviews && (
+                    <Typography variant="caption" sx={classes.warning}>
+                      <i className="icon-Warning"></i>
+                      You have {data.totalUnverifiedReviews} unverified review
+                      {data.totalUnverifiedReviews > 1 && 's'}. Please, upload
+                      proofs to help us maintain accurate information.
+                    </Typography>
+                  )}
+                {data?.reviews.map(review => (
+                  <ReviewCard
+                    review={review}
+                    key={review.id}
+                    showVerifyOption={activeTab === ReviewStatuses.published}
+                    isDelete={activeTab === ReviewStatuses.onModeration}
+                    onDelete={handleOpenDeleteModal}
+                    onVerify={handleOpenVerifyReviewModal}
+                  />
+                ))}
+                <Box sx={classes.pagination}>
+                  <Typography variant="caption" sx={classes.paginationResults}>
+                    Showing {firstItem}-{lastItem} of {data.total} results
+                  </Typography>
+                  <CustomPagination
+                    page={page}
+                    count={data.lastPage}
+                    onChange={(event, value) => handlePaginate(value)}
+                  />
+                </Box>
+                <DeleteReviewModal
+                  open={!!openDeleteModal}
+                  id={openDeleteModal}
+                  onSubmitClose={onDeleteSubmit}
+                  onClose={handleCloseDeleteModal}
+                />
+                <VerifyReviewModal
+                  open={!!openVerifyReviewModal}
+                  onClose={handleCloseVerifyReviewModal}
+                  refetchFunction={handleRefetchFunction}
+                  reviewId={openVerifyReviewModal as number}
+                  reviewerName={choosedReviewer}
+                />
+              </Box>
+            )}
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };

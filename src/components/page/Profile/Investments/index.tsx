@@ -171,6 +171,7 @@ const ProfileInvestments = () => {
         onChange={handleChangeTab}
         value={activeTab}
         isDivider={isDesktop}
+        isSpacing
       />
       <Box sx={classes.root}>
         {isLoading && (

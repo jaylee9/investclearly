@@ -10,11 +10,9 @@ import { useQuery } from 'react-query';
 import SavedDeals from './Deals';
 import SavedSponsors from './Sponsors';
 import { Box } from '@mui/material';
-import { useSavedWrapperStyles } from './styles';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 
 const ProfileSaved = () => {
-  const classes = useSavedWrapperStyles();
   const { isDesktop } = useBreakpoints();
   const [activeTab, setActiveTab] = useState('deals');
   const [dealCountChanged, setDealCountChanged] = useState(0);
@@ -53,12 +51,13 @@ const ProfileSaved = () => {
   ];
 
   return (
-    <Box sx={classes.tabsWrapper}>
+    <Box>
       <CustomTabs
         tabs={tabs}
         value={activeTab}
         onChange={handleChangeTab}
         isDivider={isDesktop}
+        isSpacing
       />
     </Box>
   );

@@ -24,6 +24,7 @@ interface CustomTabsProps extends TabsProps {
   customStyles?: CSSProperties;
   sxCustomRootStyles?: SxProps<Theme>;
   isDivider?: boolean;
+  isSpacing?: boolean;
 }
 
 const CustomTabs: React.FC<CustomTabsProps> = ({
@@ -32,9 +33,10 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
   customStyles,
   sxCustomRootStyles,
   isDivider,
+  isSpacing,
   ...props
 }) => {
-  const classes = useTabsStyles();
+  const classes = useTabsStyles(!!isSpacing);
   const activeTab = tabs.find(tab => value === tab.value);
   return (
     <>
