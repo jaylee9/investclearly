@@ -45,9 +45,9 @@ const UserProfilePage = () => {
     isSearch: true,
     isShadow: false,
   });
-  const classes = useUserProfilePageStyles();
   const router = useRouter();
   const activeTab = sections.find(item => item.href === router.query.section);
+  const classes = useUserProfilePageStyles({ href: activeTab?.href as string });
   const layoutProps = { isFooter: false, ...headerProps };
   const sectionClassName = (href: string) =>
     clsx('section', {

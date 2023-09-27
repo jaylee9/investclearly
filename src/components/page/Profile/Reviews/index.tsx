@@ -139,7 +139,9 @@ const ProfileReviews = () => {
   }
   return (
     <Box sx={{ overflow: 'auto' }}>
-      <CustomTabs value={activeTab} onChange={handleChangeTab} tabs={tabs} />
+      <Box sx={classes.tabsWrapper}>
+        <CustomTabs value={activeTab} onChange={handleChangeTab} tabs={tabs} />
+      </Box>
       {!counters[activeTab as keyof typeof counters] &&
         !!user &&
         !isLoading && (
