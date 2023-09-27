@@ -62,7 +62,7 @@ const SavedDeals = ({ setDealCountChanged }: SavedDealsProps) => {
           placeholder="Search"
           isSearch
           variant="filled"
-          customStyles={classes.searchInput}
+          sxCustomStyles={classes.searchInput}
           onChange={e => handleSearch(e.target.value)}
           onClear={handleClearSearch}
         />
@@ -108,7 +108,7 @@ const SavedDeals = ({ setDealCountChanged }: SavedDealsProps) => {
 
       {data?.deals && data.deals.length > 0 && (
         <Box sx={classes.pagination}>
-          <Typography variant="caption">
+          <Typography variant="caption" sx={classes.paginationResults}>
             Showing {firstItem}-{lastItem} of {data?.total} results
           </Typography>
           <CustomPagination

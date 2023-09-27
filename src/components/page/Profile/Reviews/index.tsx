@@ -160,7 +160,7 @@ const ProfileReviews = () => {
             <Typography variant="body1" sx={classes.subTitle}>
               All reviews
               {activeTab === ReviewStatuses.onModeration && ' on moderation'}
-              {activeTab === ReviewStatuses.published && 'you publish'} will be
+              {activeTab === ReviewStatuses.published && ' you publish'} will be
               displayed here
             </Typography>
             <Button

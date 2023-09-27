@@ -5,13 +5,15 @@ import {
   getSponsorsBookmarks,
 } from '@/actions/bookmarks';
 import CustomTabs from '@/components/common/CustomTabs';
-import { Box } from '@mui/material';
 import { SyntheticEvent, useState } from 'react';
 import { useQuery } from 'react-query';
 import SavedDeals from './Deals';
 import SavedSponsors from './Sponsors';
+import { Box } from '@mui/material';
+import { useSavedWrapperStyles } from './styles';
 
 const ProfileSaved = () => {
+  const classes = useSavedWrapperStyles();
   const [activeTab, setActiveTab] = useState('deals');
   const [dealCountChanged, setDealCountChanged] = useState(0);
   const [sponsorCountChanged, setSponsorCountChanged] = useState(0);
@@ -49,7 +51,7 @@ const ProfileSaved = () => {
   ];
 
   return (
-    <Box>
+    <Box sx={classes.tabsWrapper}>
       <CustomTabs tabs={tabs} value={activeTab} onChange={handleChangeTab} />
     </Box>
   );
