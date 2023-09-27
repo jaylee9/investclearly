@@ -7,12 +7,22 @@ const useUserProfilePageStyles = ({ href }: { href: string }) => {
     root: {
       display: 'flex',
       justifyContent: 'center',
-      padding: { xs: '24px 0px 0px', lg: '24px 48px' },
+      padding: {
+        xs: href !== 'settings' ? '24px 0px 0px' : '0px',
+        md: href === 'settings' ? '16px' : '24px 0px 0px',
+        lg: '24px 48px',
+      },
     },
     wrapper: {
       display: 'flex',
       borderRadius: '12px',
-      background: { xs: palette.background.default, lg: palette.common.white },
+      background: {
+        xs:
+          href === 'settings'
+            ? palette.common.white
+            : palette.background.default,
+        lg: palette.common.white,
+      },
       minHeight: '80vh',
       width: '100%',
     },
@@ -45,8 +55,11 @@ const useUserProfilePageStyles = ({ href }: { href: string }) => {
     },
     contentWrapper: {
       padding: {
-        xs: href === 'investments' ? '24px 0px' : '0px',
-        md: '24px 0px',
+        xs:
+          href === 'investments' || href === 'settings'
+            ? `24px 0px 0px`
+            : '0px',
+        md: `24px 0px ${href === 'investments' ? '24px' : '0px'}`,
       },
       width: { xs: '100%', lg: '80%' },
       height: '100%',
