@@ -172,7 +172,7 @@ const CredentialsSettings = () => {
         <Button
           color="error"
           variant="secondary"
-          customStyles={classes.deactivateButton}
+          sxCustomStyles={classes.deactivateButton}
           onClick={() => handleOpenModal(ModalTypes.DEACTIVATE_ACCOUNT)}
         >
           Deactivate my account

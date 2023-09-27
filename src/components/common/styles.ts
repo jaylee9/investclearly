@@ -789,13 +789,14 @@ export const useYesNoButtonStyles = () => {
     root: {
       display: 'flex',
       gap: '12px',
+      flexDirection: { xs: 'column', md: 'row' },
     },
     block: {
       padding: '12px 12px 24px 24px',
       border: `1px solid ${palette.background.paper}`,
       cursor: 'pointer',
       borderRadius: '8px',
-      width: '240px',
+      width: { xs: '100%', md: '240px' },
       transition: 'border 0.3s ease-in-out',
     },
     header: {

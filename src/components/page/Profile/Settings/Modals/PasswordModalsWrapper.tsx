@@ -28,7 +28,9 @@ const PasswordModalsWrapper = ({
         <Box sx={classes.header}>
           <Box sx={classes.leftPart}>
             <Logo />
-            <Typography variant="body1">{label}</Typography>
+            <Typography variant="body1" sx={classes.titleWrapper}>
+              {label}
+            </Typography>
           </Box>
           <i className="icon-Cross" onClick={handleClose} />
         </Box>

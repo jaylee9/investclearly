@@ -5,11 +5,13 @@ const { palette, customShadows } = theme;
 export const useDeactivateAccountModalStyles = () => {
   return {
     root: {
-      maxWidth: '530px',
+      width: { md: '530px' },
     },
     title: {
       fontWeight: 600,
       marginBottom: '4px',
+      paddingTop: { xs: '16px', md: 0 },
+      textAlign: 'center',
     },
     subTitle: {
       color: palette.text.secondary,
@@ -25,15 +27,18 @@ export const useDeactivateAccountModalStyles = () => {
     buttonsWrapper: {
       display: 'flex',
       gap: '12px',
+      flexDirection: { xs: 'column-reverse', md: 'row' },
       '& button': {
-        width: '50%',
+        width: { xs: '100%', md: '50%' },
       },
     },
     content: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      width: '520px',
+      justifyContent: { xs: 'center', md: 'start' },
+      height: { xs: '55vh', md: 'auto' },
+      width: { md: '530px' },
     },
     iconWrapper: {
       borderRadius: '40px',
@@ -64,7 +69,7 @@ export const usePasswordModalsWrapperStyles = () => {
       overflow: 'auto',
     },
     header: {
-      padding: '16px 24px',
+      padding: { xs: '12px', md: '16px 24px' },
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -80,25 +85,35 @@ export const usePasswordModalsWrapperStyles = () => {
       display: 'flex',
       gap: '32px',
       alignItems: 'center',
+      flex: { xs: 1, md: 'initial' },
       '& p': {
         fontWeight: 600,
       },
+      '& a': {
+        display: { xs: 'none', lg: 'block' },
+      },
+    },
+    titleWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: { xs: 'center', md: 'start' },
+      flex: { xs: 1, md: 'initial' },
     },
     content: {
-      paddingTop: '32px',
+      paddingTop: { xs: '24px', md: '32px' },
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
     },
     formWrapper: {
       width: '700px',
-      background: palette.common.white,
+      background: { xs: 'transparent', md: palette.common.white },
       borderRadius: '12px',
-      boxShadow: customShadows.header,
+      boxShadow: { md: customShadows.header },
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: '40px 0px 40px',
+      padding: { md: '40px 0px 40px' },
     },
     title: {
       fontSize: '20px',
@@ -120,13 +135,19 @@ export const useActionPasswordStyles = () => {
       fontWeight: 600,
       color: palette.primary.light,
     },
+    changedWrapper: {
+      padding: { xs: '0px 16px', md: '0px' },
+    },
     changedTitle: {
       fontWeight: 600,
       marginBottom: '8px',
+      paddingTop: { xs: '106px', md: '0px' },
+      textAlign: 'center',
     },
     changedSubTitle: {
       marginBottom: '40px',
       color: palette.text.secondary,
+      textAlign: 'center',
     },
     successWrapper: {
       textAlign: 'center',

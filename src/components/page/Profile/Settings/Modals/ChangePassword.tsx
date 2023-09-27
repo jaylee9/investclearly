@@ -47,7 +47,7 @@ const ChangePasswordModal = ({
 }: Omit<ModalProps, 'children'>) => {
   const classes = useActionPasswordStyles();
 
-  const [isChangedPassword, setIsChangedPassword] = useState(false);
+  const [isChangedPassword, setIsChangedPassword] = useState(true);
   const { setUser } = useUser();
 
   const {
@@ -85,7 +85,7 @@ const ChangePasswordModal = ({
       {...props}
     >
       {isChangedPassword ? (
-        <Box>
+        <Box sx={classes.changedWrapper}>
           <Typography variant="h3" sx={classes.changedTitle}>
             Password changed successfully!
           </Typography>

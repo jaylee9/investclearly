@@ -22,7 +22,7 @@ export const useProfileSettingsWrapperStyles = () => {
 export const useEditProfileStyles = () => {
   return {
     root: {
-      padding: { xs: '24px 16px', lg: '24px' },
+      padding: { xs: '24px 16px 0px', lg: '24px' },
       height: '95%',
       '& .form': {
         height: '100%',
@@ -106,7 +106,7 @@ export const useBooleanSettingsStyles = () => {
 export const useInvestmentPreferencesStyles = () => {
   return {
     root: {
-      padding: '24px',
+      padding: { xs: '24px 0px 24px 16px', md: '24px' },
     },
     sectionTitle: {
       fontWeight: 600,
@@ -114,6 +114,7 @@ export const useInvestmentPreferencesStyles = () => {
     },
     section: {
       marginBottom: '32px',
+      paddingRight: { xs: '16px', md: '0px' },
     },
     description: {
       marginBottom: '16px',
@@ -124,6 +125,7 @@ export const useInvestmentPreferencesStyles = () => {
     bold: { fontWeight: 600 },
     investmentPreferencesSection: {
       maxWidth: '600px',
+      paddingRight: { xs: '16px', md: '0px' },
     },
     multiButtonWrapper: {
       marginBottom: '24px',
@@ -141,7 +143,7 @@ export const useInvestmentPreferencesStyles = () => {
 export const useCredentialsSettingsStyles = () => {
   return {
     root: {
-      padding: '24px',
+      padding: { xs: '24px 16px', md: '24px' },
       maxWidth: '650px',
     },
     title: {
@@ -170,7 +172,7 @@ export const useCredentialsSettingsStyles = () => {
       marginBottom: '32px',
     },
     deactivateButton: {
-      width: '320px',
+      width: { xs: '100%', md: '320px' },
     },
     iconWrapper: {},
   };
