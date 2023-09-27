@@ -132,11 +132,14 @@ const DealCard = ({
               </Typography>
             </Box>
           </Box>
-          <Bookmark
-            addBookmark={() => handleAddBookmark(deal.id)}
-            deleteBookmark={() => handleDeleteBookmark(deal.id)}
-            isInBookmarks={deal.isInBookmarks}
-          />
+          <Box sx={classes.bookmarkWrapper}>
+            <Bookmark
+              addBookmark={() => handleAddBookmark(deal.id)}
+              deleteBookmark={() => handleDeleteBookmark(deal.id)}
+              isInBookmarks={deal.isInBookmarks}
+              isFilledWhite={isMobile}
+            />
+          </Box>
         </Box>
         <Box sx={classes.sponsorProperties}>
           <Box sx={classes.sponsorPropertiesColumn}>

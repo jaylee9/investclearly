@@ -105,13 +105,13 @@ const SponsorCard = ({
               </Typography>
             </Box>
           </Box>
-          <div>
+          <Box sx={classes.bookmarkWrapper}>
             <Bookmark
               isInBookmarks={sponsor.isInBookmarks}
               addBookmark={() => handleAddBookmark(sponsor.id)}
               deleteBookmark={() => handleDeleteBookmark(sponsor.id)}
             />
-          </div>
+          </Box>
         </Box>
         <Box sx={classes.sponsorProperties}>
           <Box sx={classes.sponsorPropertiesColumn}>
