@@ -26,6 +26,8 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import EllipsisText from '@/components/common/EllipsisText';
+import { useRouter } from 'next/router';
+import { useUser } from '@/contexts/User';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -37,6 +39,8 @@ interface SponsorPageProps {
 
 const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
   const classes = useSponsorPageStyles();
+  const router = useRouter();
+  const { user } = useUser();
   const { isMobile, isDesktop } = useBreakpoints();
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('overview');
@@ -51,10 +55,14 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
   const [isInBookmarks, setIsInBookmarks] = useState(sponsor.isInBookmarks);
 
   const handleAddBookmark = async (entityId: number) => {
-    setIsInBookmarks(true);
-    const response = await addSponsorToBookmark({ entityId });
-    if ('error' in response) {
-      setIsInBookmarks(false);
+    if (!!user) {
+      setIsInBookmarks(true);
+      const response = await addSponsorToBookmark({ entityId });
+      if ('error' in response) {
+        setIsInBookmarks(false);
+      }
+    } else {
+      router.push('/login');
     }
   };
 
@@ -166,7 +174,11 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
     setActiveTab(newValue as ActiveTab);
   };
   const handleOpenModal = () => {
-    setOpenClaimModal(true);
+    if (!!user) {
+      setOpenClaimModal(true);
+    } else {
+      router.push('/login');
+    }
   };
 
   const handleCloseModal = () => {
@@ -174,7 +186,11 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
   };
 
   const handleShowCreateReviewForm = () => {
-    setShowCreateReviewForm(true);
+    if (!!user) {
+      setShowCreateReviewForm(true);
+    } else {
+      router.push('/login');
+    }
   };
 
   const handleHideCreateReviewForm = () => {

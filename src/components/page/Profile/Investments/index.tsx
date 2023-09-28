@@ -44,6 +44,7 @@ enum ModalTypes {
 
 const ProfileInvestments = () => {
   const { isDesktop } = useBreakpoints();
+
   const [activeTab, setActiveTab] = useState('all');
   const handleChangeTab = (
     event: SyntheticEvent<Element, Event>,

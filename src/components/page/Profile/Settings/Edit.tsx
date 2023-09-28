@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
 import sanitizeUserUpdatePayload from '@/helpers/sanitizeUserUpdatePayload';
 import { LocationInterface } from '@/backend/services/locations/interfaces/location.interface';
+import { USER_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
 
 const isBrowser =
   typeof window !== 'undefined' && typeof window.File !== 'undefined';
@@ -65,7 +66,10 @@ const EditProfile = () => {
     } as UpdateProfileSettingPayload);
     if (!('error' in response)) {
       setUser(response);
-      localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem(
+        USER_OBJECT_LOCALSTORAGE_KEY,
+        JSON.stringify(response)
+      );
       reset();
     }
     setIsLoading(false);

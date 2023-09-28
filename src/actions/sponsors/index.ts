@@ -2,11 +2,6 @@ import { CreateSponsorInterface } from '@/backend/services/sponsors/interfaces/c
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import { ISponsorFilters } from '@/components/page/List/Sponsors/SponsorsFilters';
 import api from '@/config/ky';
-import notAuthorizedErrorHandler, {
-  Roles,
-} from '@/helpers/notAuthorizedErrorHandler';
-import { HTTPError } from 'ky';
-import { NextRouter } from 'next/router';
 import { serialize } from 'object-to-formdata';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
@@ -147,10 +142,8 @@ export type PartialCreateSponsorInterface =
 
 export const createSponsor = async ({
   payload,
-  router,
 }: {
   payload: PartialCreateSponsorInterface;
-  router: NextRouter;
 }): Promise<SponsorInterface | { error: string }> => {
   const formData = serialize(payload, {
     indices: true,
@@ -165,23 +158,14 @@ export const createSponsor = async ({
       .json();
     return response;
   } catch (error) {
-    if (error instanceof HTTPError) {
-      notAuthorizedErrorHandler({
-        status: error.response.status,
-        router,
-        role: Roles.ADMIN,
-      });
-    }
     return { error: 'Failed to create sponsor' };
   }
 };
 
 export const editSponsor = async ({
   payload,
-  router,
 }: {
   payload: PartialCreateSponsorInterface & { id: number };
-  router: NextRouter;
 }): Promise<SponsorInterface | { error: string }> => {
   const formData = serialize(payload, {
     indices: true,
@@ -196,13 +180,6 @@ export const editSponsor = async ({
       .json();
     return response;
   } catch (error) {
-    if (error instanceof HTTPError) {
-      notAuthorizedErrorHandler({
-        status: error.response.status,
-        router,
-        role: Roles.ADMIN,
-      });
-    }
     return { error: 'Failed to edit sponsor' };
   }
 };

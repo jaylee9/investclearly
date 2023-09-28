@@ -8,6 +8,8 @@ import { DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 import EllipsisText from './EllipsisText';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import Bookmark from './Bookmark';
+import { useUser } from '@/contexts/User';
+import { useRouter } from 'next/router';
 
 export enum SponsorCardVariant {
   Base = 'base',
@@ -29,16 +31,23 @@ const SponsorCard = ({
   ...props
 }: SponsorCardProps) => {
   const classes = useSponsorCardStyles();
+  const { user } = useUser();
+  const router = useRouter();
   const { isMobile } = useBreakpoints();
 
   const handleAddBookmark = (value: number) => {
-    if (addBookmark) {
+    if (addBookmark && !!user) {
       addBookmark(value);
+    } else {
+      router.push('/login');
     }
   };
+
   const handleDeleteBookmark = (value: number) => {
-    if (deleteBookmark) {
+    if (deleteBookmark && !!user) {
       deleteBookmark(value);
+    } else {
+      router.push('/login');
     }
   };
   return variant === SponsorCardVariant.Base ? (

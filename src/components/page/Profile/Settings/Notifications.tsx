@@ -14,6 +14,7 @@ import {
 import Button from '@/components/common/Button';
 import sanitizeUserUpdatePayload from '@/helpers/sanitizeUserUpdatePayload';
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
+import { USER_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
 
 const headerLabels = ['Email', 'Notifications'];
 
@@ -101,7 +102,10 @@ const Notifications = () => {
     } as UpdateProfileSettingPayload);
     if (!('error' in response)) {
       setUser(response);
-      localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem(
+        USER_OBJECT_LOCALSTORAGE_KEY,
+        JSON.stringify(response)
+      );
       reset();
     }
     setIsLoading(false);
