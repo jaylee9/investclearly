@@ -2,7 +2,6 @@ import { Deal } from '../entities/deals.entity';
 import { DealInterface } from '../services/deals/interfaces/deal.interface';
 import { attachmentMapper } from './attachment.mapper';
 import { locationMapper } from './locations.mapper';
-import { relatedPersonMapper } from './relatedPerson.mapper';
 import { reviewMapper } from './review.mapper';
 import { sponsorMapper } from './sponsor.mapper';
 
@@ -31,9 +30,6 @@ export const dealMapper = (deal: Deal): DealInterface => {
     sponsor: deal.sponsor ? sponsorMapper(deal.sponsor) : null,
     attachments: deal.attachments ? deal.attachments.map(attachmentMapper) : [],
     locations: deal.locations ? deal.locations.map(locationMapper) : [],
-    relatedPersons: deal.relatedPersons
-      ? deal.relatedPersons.map(relatedPersonMapper)
-      : [],
     reviews: deal.reviews ? deal.reviews.map(reviewMapper) : [],
     reviewsCount: deal.reviewsCount || 0,
     avgTotalRating: deal.avgTotalRating || 0,

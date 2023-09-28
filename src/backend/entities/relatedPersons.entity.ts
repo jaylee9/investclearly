@@ -41,5 +41,5 @@ export class RelatedPerson {
     () => DealsRelatedPersons,
     dealsRelatedPerson => dealsRelatedPerson.relatedPerson
   )
-  dealsRelatedPersons: Relation<DealsRelatedPersons>[];
+  dealRelatedPersons: Relation<DealsRelatedPersons>[];
 }
