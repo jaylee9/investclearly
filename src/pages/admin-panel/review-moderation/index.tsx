@@ -26,7 +26,6 @@ import Button from '@/components/common/Button';
 import ReviewDetailsModal from '@/components/page/Admin/Review/ReviewDetailsModal';
 import UnpublishReviewModal from '@/components/page/Admin/Review/UnpublishReviewModal';
 import withAdminPrivateRoute from '@/HOC/withAdminPrivateRoute';
-import { useRouter } from 'next/router';
 
 const sortOptions = [
   { label: 'Newest Reviews', value: 'DESC' },
@@ -47,8 +46,6 @@ interface OpenActionModals {
 
 const ReviewModerationPage = () => {
   const classes = useAdminReviewModerationStyles();
-
-  const router = useRouter();
 
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -347,7 +344,7 @@ const ReviewModerationPage = () => {
 
   const handleApproveReview = async (id: number) => {
     setIsApproveLoading(true);
-    const response = await approveReview({ id, router });
+    const response = await approveReview({ id });
     if (!('error' in response)) {
       await refetchTotalPublishedReviews();
       await refetchTotalOnModerationReviews();
