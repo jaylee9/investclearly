@@ -19,7 +19,7 @@ export const sendUnverifiedReviewPublishedEmailToBmRecipients = async (
     const userEmails = bmRecipientEmails.map(recipientEmail => {
       const mailDataForRecipient: MailDataRequired = {
         to: { email: recipientEmail },
-        from: { email: MailConfig.sendFromHost, name: MailConfig.sendFromName },
+        from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },
         templateId: TemplatesIds.unverifiedReviewPublishedEmailToBmRecipients,
         dynamicTemplateData: {
           frontendUrl: MailConfig.frontendUrl,

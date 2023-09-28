@@ -23,7 +23,7 @@ export const sendReviewRejectedEmail = async (
   ) {
     const mailData: MailDataRequired = {
       to: { email: reviewRecord.reviewer.email },
-      from: { email: MailConfig.sendFromHost, name: MailConfig.sendFromName },
+      from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },
       templateId: TemplatesIds.reviewRejectedEmail,
       dynamicTemplateData: {
         frontendUrl: MailConfig.frontendUrl,

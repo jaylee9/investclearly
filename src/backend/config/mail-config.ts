@@ -7,7 +7,7 @@ export const MailConfig = {
   host: process.env.MAIL_CONFIG_HOST || '',
   port: process.env.MAIL_CONFIG_PORT || '',
   secure: process.env.MAIL_CONFIG_SECURE || '',
-  sendFromHost: `no-reply@${process.env.INVEST_CLEARLY_SENDER_EMAIL}` || '',
+  sendFrom: process.env.INVEST_CLEARLY_SENDER_EMAIL || '',
   sendFromName: 'Invest Clearly',
   frontendUrl: process.env.FRONTEND_URL || '',
   backendUrl: process.env.BACKEND_URL || '',

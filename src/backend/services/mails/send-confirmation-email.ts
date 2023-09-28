@@ -14,7 +14,7 @@ export const sendConfirmationEmail = async (
   const mailData: MailDataRequired = {
     to: user.email,
     from: {
-      email: MailConfig.sendFromHost,
+      email: MailConfig.sendFrom,
       name: MailConfig.sendFromName,
     },
     templateId: TemplatesIds.confirmEmail,
