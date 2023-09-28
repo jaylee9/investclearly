@@ -6,6 +6,7 @@ import FileUploader from '@/components/common/FileUploader';
 import Button from '@/components/common/Button';
 import clsx from 'clsx';
 import { uploadReviewProofs } from '@/actions/reviews';
+import { useRouter } from 'next/router';
 
 const steps = {
   'Upload Proof': 0,
@@ -26,6 +27,7 @@ const VerifyReviewModal = ({
 }: VerifyReviewModalProps) => {
   const { onClose, ...other } = props;
   const classes = useVerifyReviewModalStyles();
+  const router = useRouter();
   const [step, setStep] = useState(steps['Upload Proof']);
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +53,7 @@ const VerifyReviewModal = ({
 
   const handleVerify = async () => {
     setIsLoading(true);
-    const result = await uploadReviewProofs({ file: files, reviewId });
+    const result = await uploadReviewProofs({ file: files, reviewId }, router);
     if (result) {
       refetchFunction().then(() => {
         setIsLoading(false);

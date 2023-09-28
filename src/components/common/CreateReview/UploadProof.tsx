@@ -4,6 +4,7 @@ import FileUploader from '../FileUploader';
 import { useState } from 'react';
 import Button from '../Button';
 import { CreateReviewPayloadInterface, createReview } from '@/actions/reviews';
+import { useRouter } from 'next/router';
 
 interface UploadProofStepProps {
   setStep: (value: number) => void;
@@ -19,6 +20,7 @@ const UploadProofStep = ({
   setPayload,
 }: UploadProofStepProps) => {
   const classes = useUploadProofStepStyles();
+  const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const onUpload = (file?: File) => {
@@ -40,7 +42,7 @@ const UploadProofStep = ({
   const handleSubmit = async (type: 'withProof' | 'withoutProof') => {
     if (type === 'withoutProof') {
       setIsLoading(true);
-      const result = await createReview(payload);
+      const result = await createReview(payload, router);
       if (!('error' in result)) {
         setStep(step + 1);
         setIsLoading(false);
@@ -48,7 +50,7 @@ const UploadProofStep = ({
       }
     } else if (type === 'withProof') {
       setIsLoading(true);
-      const result = await createReview({ ...payload, file: files });
+      const result = await createReview({ ...payload, file: files }, router);
       if (!('error' in result)) {
         setStep(step + 1);
         setIsLoading(false);

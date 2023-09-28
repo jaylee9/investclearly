@@ -20,7 +20,8 @@ export interface CreateReviewPayloadInterface
 }
 
 export const createReview = async (
-  payload: CreateReviewPayloadInterface
+  payload: CreateReviewPayloadInterface,
+  router: NextRouter
 ): Promise<ReviewInterface | { error: string }> => {
   const formData = serialize(payload, {
     indices: true,
@@ -34,6 +35,13 @@ export const createReview = async (
     });
     return response.json();
   } catch (error) {
+    if (error instanceof HTTPError) {
+      notAuthorizedErrorHandler({
+        status: error.response.status,
+        router,
+        role: Roles.USER,
+      });
+    }
     const errorMessage = 'Failed to create review';
     toast.error(errorMessage);
     return { error: errorMessage };
@@ -77,8 +85,10 @@ export const getUserReviews = async ({
 
 export const deleteReview = async ({
   id,
+  router,
 }: {
   id: number;
+  router: NextRouter;
 }): Promise<{ message: string } | { error: string }> => {
   try {
     const response: { message: string } = await api
@@ -87,6 +97,13 @@ export const deleteReview = async ({
     toast.success('Review successfuly deleted');
     return response;
   } catch (error) {
+    if (error instanceof HTTPError) {
+      notAuthorizedErrorHandler({
+        status: error.response.status,
+        router,
+        role: Roles.USER,
+      });
+    }
     const errorMessage = 'Failed to delete reviews';
     toast.error(errorMessage);
     return { error: errorMessage };
@@ -98,10 +115,10 @@ export interface UploadProofPayloadInterface {
   reviewId: number;
 }
 
-export const uploadReviewProofs = async ({
-  file,
-  reviewId,
-}: UploadProofPayloadInterface): Promise<ReviewInterface> => {
+export const uploadReviewProofs = async (
+  { file, reviewId }: UploadProofPayloadInterface,
+  router: NextRouter
+): Promise<ReviewInterface> => {
   const formData = serialize({ file: file }, { indices: true });
 
   try {
@@ -110,6 +127,13 @@ export const uploadReviewProofs = async ({
     });
     return response.json();
   } catch (error) {
+    if (error instanceof HTTPError) {
+      notAuthorizedErrorHandler({
+        status: error.response.status,
+        router,
+        role: Roles.USER,
+      });
+    }
     console.error('Error uploading review proof', error);
     throw error;
   }

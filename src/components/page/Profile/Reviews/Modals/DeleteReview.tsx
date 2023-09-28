@@ -4,6 +4,7 @@ import { useDeleteReviewModalStyles } from './styles';
 import Button from '@/components/common/Button';
 import { useState } from 'react';
 import { deleteReview } from '@/actions/reviews';
+import { useRouter } from 'next/router';
 
 interface DeleteReviewModalProps extends Omit<ModalProps, 'children' | 'id'> {
   onSubmitClose: () => void;
@@ -16,11 +17,12 @@ const DeleteReviewModal = ({
   ...props
 }: DeleteReviewModalProps) => {
   const classes = useDeleteReviewModalStyles();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
     setIsLoading(true);
-    const response = await deleteReview({ id });
+    const response = await deleteReview({ id, router });
     if (!('error' in response)) {
       onSubmitClose();
     }
