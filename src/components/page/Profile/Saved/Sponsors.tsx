@@ -14,6 +14,7 @@ import CustomPagination from '@/components/common/Pagination';
 import SponsorCard, {
   SponsorCardVariant,
 } from '@/components/common/SponsorCard';
+import { useRouter } from 'next/router';
 
 interface SavedSponsorsProps {
   setSponsorCountChanged: (value: number) => void;
@@ -21,6 +22,7 @@ interface SavedSponsorsProps {
 
 const SavedSponsors = ({ setSponsorCountChanged }: SavedSponsorsProps) => {
   const classes = useSavedSponsorsStyles();
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
 
@@ -31,6 +33,7 @@ const SavedSponsors = ({ setSponsorCountChanged }: SavedSponsorsProps) => {
         page,
         pageSize: 10,
         search: searchTerm,
+        router,
       }) as Promise<GetSponsorsBookmarksResponse>
   );
 
@@ -44,7 +47,7 @@ const SavedSponsors = ({ setSponsorCountChanged }: SavedSponsorsProps) => {
   };
 
   const handleDeleteBookmark = async (entityId: number) => {
-    const response = await deleteSponsorBookmark({ entityId });
+    const response = await deleteSponsorBookmark({ entityId, router });
     if (!('error' in response)) {
       setSponsorCountChanged(entityId);
       refetch();

@@ -11,9 +11,11 @@ import SavedDeals from './Deals';
 import SavedSponsors from './Sponsors';
 import { Box } from '@mui/material';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { useRouter } from 'next/router';
 
 const ProfileSaved = () => {
   const { isDesktop } = useBreakpoints();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('deals');
   const [dealCountChanged, setDealCountChanged] = useState(0);
   const [sponsorCountChanged, setSponsorCountChanged] = useState(0);
@@ -26,11 +28,12 @@ const ProfileSaved = () => {
 
   const { data: savedDeals } = useQuery<GetDealsBookmarksResponse>(
     ['savedDealsTotal', dealCountChanged],
-    () => getDealsBookmarks({}) as Promise<GetDealsBookmarksResponse>
+    () => getDealsBookmarks({ router }) as Promise<GetDealsBookmarksResponse>
   );
   const { data: savedSponsors } = useQuery<GetSponsorsBookmarksResponse>(
     ['savedSponsorsTotal', sponsorCountChanged],
-    () => getSponsorsBookmarks({}) as Promise<GetSponsorsBookmarksResponse>
+    () =>
+      getSponsorsBookmarks({ router }) as Promise<GetSponsorsBookmarksResponse>
   );
 
   const tabs = [

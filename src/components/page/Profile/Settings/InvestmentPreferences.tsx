@@ -14,6 +14,7 @@ import { PublicUserInterface } from '@/backend/services/users/interfaces/public-
 import { useState } from 'react';
 import Button from '@/components/common/Button';
 import InvestmentPreferencesForm from './InvestmentPreferencesForm';
+import { useRouter } from 'next/router';
 
 const validationSchema = z.object({
   investorStatus: z.string().optional(),
@@ -28,6 +29,8 @@ type ValidationSchema = z.infer<typeof validationSchema>;
 
 const InvestmentPreferences = () => {
   const classes = useInvestmentPreferencesStyles();
+
+  const router = useRouter();
 
   const { user, setUser } = useUser();
 
@@ -64,20 +67,23 @@ const InvestmentPreferences = () => {
     const formattedUser = sanitizeUserUpdatePayload(
       user as PublicUserInterface
     );
-    const response = await updateProfileSettings({
-      ...formattedUser,
-      minimumInvestmentMin: minInvestment?.[0],
-      minimumInvestmentMax: minInvestment?.[1],
-      holdPeriodMin: holdPeriod?.[0],
-      holdPeriodMax: holdPeriod?.[1],
-      investorStatus:
-        investorStatus === 'yes'
-          ? 'Accredited Investor'
-          : 'Not Accredited Investor',
-      incomeAndNetWorth:
-        incomeAndNetWorth === 'yes' ? 'Yes, I have' : 'No, I do not have',
-      ...rest,
-    } as UpdateProfileSettingPayload);
+    const response = await updateProfileSettings(
+      {
+        ...formattedUser,
+        minimumInvestmentMin: minInvestment?.[0],
+        minimumInvestmentMax: minInvestment?.[1],
+        holdPeriodMin: holdPeriod?.[0],
+        holdPeriodMax: holdPeriod?.[1],
+        investorStatus:
+          investorStatus === 'yes'
+            ? 'Accredited Investor'
+            : 'Not Accredited Investor',
+        incomeAndNetWorth:
+          incomeAndNetWorth === 'yes' ? 'Yes, I have' : 'No, I do not have',
+        ...rest,
+      } as UpdateProfileSettingPayload,
+      router
+    );
     if (!('error' in response)) {
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));
