@@ -20,7 +20,6 @@ import CustomTextArea from '@/components/common/TextArea';
 import Button from '@/components/common/Button';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { editDeal } from '@/actions/deals';
-import { useRouter } from 'next/router';
 
 const validationSchema = z.object({
   dealTitle: z.string().min(1),
@@ -45,8 +44,6 @@ interface GeneralInfoFormProps {
 
 const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
   const classes = useGeneralInfoFormStyles();
-
-  const router = useRouter();
 
   const [tagSelectorValue, setTagSelectorValue] = useState('');
   const [debouncedValue, setDebouncedValue] = useState(tagSelectorValue);
@@ -122,7 +119,6 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
         photoOfTheObjects: choosedFile,
         sponsorId: tag.id,
       },
-      router,
     });
     if (!('error' in response)) {
       await refetch();
