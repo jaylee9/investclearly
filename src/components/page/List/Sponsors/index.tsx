@@ -23,6 +23,7 @@ import SponsorCard, {
 import CustomPagination from '@/components/common/Pagination';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import Button from '@/components/common/Button';
+import { useRouter } from 'next/router';
 
 const sortOptions = [
   { label: 'Newest Sponsors', value: 'DESC' },
@@ -52,6 +53,7 @@ const SponsorsComponent = ({
   setSponsorsCount,
 }: SponsorsComponentProps) => {
   const classes = useSponsorComponentStyles();
+  const router = useRouter();
   const { isMobile, isDesktop } = useBreakpoints();
   const defaultFilters = {
     ratings: [],
@@ -217,29 +219,32 @@ const SponsorsComponent = ({
     setIsSponsorsFilterMobile(false);
   };
 
-  const handleAddBookmark = useCallback(async (entityId: number) => {
-    setSponsorsData(prevSponsors => {
-      const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
-        if (sponsor.id === entityId) {
-          return { ...sponsor, isInBookmarks: true };
-        }
-        return sponsor;
-      });
-      return { ...prevSponsors, sponsors: formattedSponsors };
-    });
-    const response = await addSponsorToBookmark({ entityId });
-    if ('error' in response) {
+  const handleAddBookmark = useCallback(
+    async (entityId: number) => {
       setSponsorsData(prevSponsors => {
         const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
           if (sponsor.id === entityId) {
-            return { ...sponsor, isInBookmarks: false };
+            return { ...sponsor, isInBookmarks: true };
           }
           return sponsor;
         });
-        return { ...prevSponsors, deals: formattedSponsors };
+        return { ...prevSponsors, sponsors: formattedSponsors };
       });
-    }
-  }, []);
+      const response = await addSponsorToBookmark({ entityId, router });
+      if ('error' in response) {
+        setSponsorsData(prevSponsors => {
+          const formattedSponsors = prevSponsors.sponsors.map(sponsor => {
+            if (sponsor.id === entityId) {
+              return { ...sponsor, isInBookmarks: false };
+            }
+            return sponsor;
+          });
+          return { ...prevSponsors, deals: formattedSponsors };
+        });
+      }
+    },
+    [router]
+  );
 
   const handleDeleteBookmark = useCallback(async (entityId: number) => {
     setSponsorsData(prevSponsors => {
@@ -251,7 +256,7 @@ const SponsorsComponent = ({
       });
       return { ...prevSponsors, sponsors: formattedSponsors };
     });
-    const response = await deleteSponsorFromBookmarks({ entityId });
+    const response = await deleteSponsorFromBookmarks({ entityId, router });
     if ('error' in response) {
       setSponsorsData(prevSponsors => {
         const formattedSponsors = prevSponsors.sponsors.map(sponsor => {

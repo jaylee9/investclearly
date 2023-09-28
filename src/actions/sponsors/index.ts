@@ -99,8 +99,10 @@ export const getSponsor = async ({
 
 export const addSponsorToBookmark = async ({
   entityId,
+  router,
 }: {
   entityId: number;
+  router: NextRouter;
 }): Promise<{ message: string } | { error: string }> => {
   try {
     const response: { message: string } = await api
@@ -108,6 +110,13 @@ export const addSponsorToBookmark = async ({
       .json();
     return response;
   } catch (error) {
+    if (error instanceof HTTPError) {
+      notAuthorizedErrorHandler({
+        status: error.response.status,
+        router,
+        role: Roles.USER,
+      });
+    }
     const errorMessage = 'Failed to save sponsor';
     toast.error(errorMessage);
     return { error: errorMessage };
@@ -116,8 +125,10 @@ export const addSponsorToBookmark = async ({
 
 export const deleteSponsorFromBookmarks = async ({
   entityId,
+  router,
 }: {
   entityId: number;
+  router: NextRouter;
 }): Promise<{ message: string } | { error: string }> => {
   try {
     const stringifiedParameters = queryString.stringify({
@@ -129,6 +140,13 @@ export const deleteSponsorFromBookmarks = async ({
       .json();
     return response;
   } catch (error) {
+    if (error instanceof HTTPError) {
+      notAuthorizedErrorHandler({
+        status: error.response.status,
+        router,
+        role: Roles.USER,
+      });
+    }
     const errorMessage = 'Failed to delete sponsor from saved';
     toast.error(errorMessage);
     return { error: errorMessage };
