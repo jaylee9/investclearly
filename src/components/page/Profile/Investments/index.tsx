@@ -21,6 +21,7 @@ import EditDealModal, { DealToEdit } from './Modals/EditDeal';
 import DeleteDealModal from './Modals/DeleteDeal';
 import EllipsisText from '@/components/common/EllipsisText';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { useRouter } from 'next/router';
 
 const tabs = [
   {
@@ -44,6 +45,7 @@ enum ModalTypes {
 
 const ProfileInvestments = () => {
   const { isDesktop } = useBreakpoints();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('all');
   const handleChangeTab = (
     event: SyntheticEvent<Element, Event>,
@@ -67,14 +69,17 @@ const ProfileInvestments = () => {
   const { data, isLoading, refetch } = useQuery<GetAllInvestmentsResponse>(
     ['allInvestments', activeTab, page, searchTerm],
     () =>
-      getAllInvestments({
-        page,
-        pageSize: 4,
-        orderDirection: OrderDirectionConstants.DESC,
-        status:
-          activeTab === 'all' ? undefined : (activeTab as InvestmentStatuses),
-        search: searchTerm,
-      }) as Promise<GetAllInvestmentsResponse>,
+      getAllInvestments(
+        {
+          page,
+          pageSize: 4,
+          orderDirection: OrderDirectionConstants.DESC,
+          status:
+            activeTab === 'all' ? undefined : (activeTab as InvestmentStatuses),
+          search: searchTerm,
+        },
+        router
+      ) as Promise<GetAllInvestmentsResponse>,
     {
       keepPreviousData: true,
     }
