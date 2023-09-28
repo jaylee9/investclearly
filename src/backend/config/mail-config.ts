@@ -33,10 +33,7 @@ export const TemplatesIds = {
 };
 
 export const DefaultImages = {
-  dealImage:
-    'https://okcclpkpkpacuteeaoul.supabase.co/storage/v1/object/public/invest-clearly-prod/default-images/Deal-placeholder.png',
-  sponsorImage:
-    'https://okcclpkpkpacuteeaoul.supabase.co/storage/v1/object/public/invest-clearly-prod/default-images/Sponsor-placeholder.png',
-  userImage:
-    'https://okcclpkpkpacuteeaoul.supabase.co/storage/v1/object/public/invest-clearly-prod/default-images/User-Avatar.png',
+  dealImage: process.env.DEAL_DEFAULT_IMAGE,
+  sponsorImage: process.env.SPONSOR_DEFAULT_IMAGE,
+  userImage: process.env.USER_DEFAULT_IMAGE,
 };
