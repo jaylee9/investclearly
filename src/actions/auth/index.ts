@@ -1,5 +1,8 @@
 import { UserInterface } from '@/backend/services/users/interfaces/user.interface';
-import { ADMIN_ROLE, USER_ROLE } from '@/config/constants';
+import {
+  ADMIN_OBJECT_LOCALSTORAGE_KEY,
+  USER_OBJECT_LOCALSTORAGE_KEY,
+} from '@/config/constants';
 import api from '@/config/ky';
 import { LoginFields, SignUpFields } from '@/types/auth';
 import { toast } from 'react-toastify';
@@ -54,7 +57,7 @@ export const login = async ({
         json: { email, password },
       })
       .json();
-    localStorage.setItem(USER_ROLE, JSON.stringify(user));
+    localStorage.setItem(USER_OBJECT_LOCALSTORAGE_KEY, JSON.stringify(user));
     toast.success('Login Successful!');
     return user;
   } catch (error) {
@@ -115,7 +118,7 @@ export const googleLogin = async ({
         json: { token },
       })
       .json();
-    localStorage.setItem(USER_ROLE, JSON.stringify(user));
+    localStorage.setItem(USER_OBJECT_LOCALSTORAGE_KEY, JSON.stringify(user));
     return user;
   } catch (error) {
     const errorMessage = 'Failed to authenticate';
@@ -131,7 +134,7 @@ export const logout = async (): Promise<
     const response: { message: string } = await api
       .post('auth/sign-out')
       .json();
-    localStorage.removeItem(USER_ROLE);
+    localStorage.removeItem(USER_OBJECT_LOCALSTORAGE_KEY);
     return response;
   } catch (error) {
     const errorMessage = 'Failed to log out';
@@ -190,7 +193,7 @@ export const adminLogin = async ({
         json: { email, password },
       })
       .json();
-    localStorage.setItem(ADMIN_ROLE, JSON.stringify(user));
+    localStorage.setItem(ADMIN_OBJECT_LOCALSTORAGE_KEY, JSON.stringify(user));
     toast.success('Login Successful!');
     return user;
   } catch (error) {

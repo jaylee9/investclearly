@@ -9,7 +9,7 @@ import Button from '@/components/common/Button';
 import { addPassword } from '@/actions/auth';
 import { useState } from 'react';
 import { useUser } from '@/contexts/User';
-import { USER_ROLE } from '@/config/constants';
+import { USER_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
 
 const validationSchema = z
   .object({
@@ -60,7 +60,7 @@ const AddPasswordModal = ({
     const { newPassword } = data;
     const response = await addPassword({ newPassword });
     if (!('error' in response)) {
-      localStorage.removeItem(USER_ROLE);
+      localStorage.removeItem(USER_OBJECT_LOCALSTORAGE_KEY);
       setUser(null);
       setIsAddedPassword(true);
     }

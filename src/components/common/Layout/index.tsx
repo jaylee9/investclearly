@@ -17,7 +17,7 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { logout } from '@/actions/auth';
-import { ADMIN_ROLE } from '@/config/constants';
+import { ADMIN_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
 
 export enum LayoutVariant {
   Default = 'default',
@@ -80,7 +80,7 @@ const Layout = ({
   const handleLogout = async () => {
     const response = await logout();
     if (!('error' in response)) {
-      localStorage.removeItem(ADMIN_ROLE);
+      localStorage.removeItem(ADMIN_OBJECT_LOCALSTORAGE_KEY);
       push('/admin-panel/login');
     }
   };

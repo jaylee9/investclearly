@@ -17,7 +17,7 @@ import CreateReviewForm from '@/components/common/CreateReview';
 import CustomPagination from '@/components/common/Pagination';
 import VerifyReviewModal from './Modals/VerifyReview';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import { USER_ROLE } from '@/config/constants';
+import { USER_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
 
 const ProfileReviews = () => {
   const classes = useProfileReviewsStyles();
@@ -45,7 +45,9 @@ const ProfileReviews = () => {
   };
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem(USER_ROLE) as string));
+    setUser(
+      JSON.parse(localStorage.getItem(USER_OBJECT_LOCALSTORAGE_KEY) as string)
+    );
   }, []);
 
   const { isLoading: isLoadingPublishedCountData } = useQuery(
