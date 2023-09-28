@@ -1,7 +1,7 @@
 import { createOrUpdateRelatedPerson } from '../relatedPersons/create-or-update-related-person';
 import { FormD } from './interfaces/form-D.interface';
 
-export const prepareRelatedPersonData = async (offering: FormD) => {
+export const saveAndUpdateRelatedPersonData = async (offering: FormD) => {
   const relatedPersonRecords = [];
 
   for (const relatedPerson of offering?.relatedPersonsList?.relatedPersonInfo ||
