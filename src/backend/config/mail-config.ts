@@ -33,5 +33,7 @@ export const TemplatesIds = {
 };
 
 export const DefaultImages = {
-  dealImage: 'https://i.imgur.com/jrK2kh4.jpg',
+  dealImage: process.env.DEAL_DEFAULT_IMAGE,
+  sponsorImage: process.env.SPONSOR_DEFAULT_IMAGE,
+  userImage: process.env.USER_DEFAULT_IMAGE,
 };
