@@ -6,6 +6,7 @@ export const useInvestmentsStyles = () => {
   return {
     root: {
       width: '100%',
+      padding: { xs: '0px 16px', lg: '0px 24px' },
     },
     totalInvest: {
       padding: { xs: '24px 16px', lg: '24px 0px' },
@@ -59,7 +60,7 @@ export const useInvestmentsStyles = () => {
     noDeals: {
       background: palette.common.white,
       borderRadius: { xs: '0px', md: '12px' },
-      padding: { xs: '24px 16px', lg: '0px' },
+      padding: { xs: '0px 16px', lg: '0px 24px' },
     },
     noDealsTitle: {
       fontWeight: 600,

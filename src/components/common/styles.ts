@@ -294,8 +294,8 @@ export const useDealCardStyles = () => {
       boxSizing: 'border-box',
       width: '100%',
       borderRadius: { xs: '0px 0px 12px 12px', md: 'initital' },
-      border: { xs: `1px solid ${palette.background.paper}`, md: 'initital' },
-      borderTop: 'none !important',
+      border: { xs: `1px solid ${palette.background.paper}`, md: 'none' },
+      borderTop: { md: 'none !important' },
     },
     largeHeader: {
       display: 'flex',
@@ -601,10 +601,11 @@ export const useLoadingStyles = () => {
   };
 };
 
-export const useTabsStyles = () => {
+export const useTabsStyles = (isSpacing: boolean) => {
   return {
     root: {
       '&.MuiTabs-root': {
+        padding: isSpacing ? { xs: '0px 16px', lg: '0px 24px' } : 'none',
         '& .MuiTabs-indicator': {
           backgroundColor: palette.primary.light,
         },
@@ -788,13 +789,14 @@ export const useYesNoButtonStyles = () => {
     root: {
       display: 'flex',
       gap: '12px',
+      flexDirection: { xs: 'column', md: 'row' },
     },
     block: {
       padding: '12px 12px 24px 24px',
       border: `1px solid ${palette.background.paper}`,
       cursor: 'pointer',
       borderRadius: '8px',
-      width: '240px',
+      width: { xs: '100%', md: '240px' },
       transition: 'border 0.3s ease-in-out',
     },
     header: {

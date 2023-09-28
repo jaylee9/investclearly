@@ -2,18 +2,11 @@ import theme from '@/config/theme';
 
 const { palette, customShadows } = theme;
 
-export const useSavedWrapperStyles = () => {
-  return {
-    tabsWrapper: {
-      '& .MuiTabs-root': {
-        padding: { xs: '0px 16px', lg: '0px 24px' },
-      },
-    },
-  };
-};
-
 export const useSavedDealsStyles = () => {
   return {
+    wrapper: {
+      padding: { xs: '0px 16px', lg: '0px 24px' },
+    },
     root: {
       padding: { xs: '16px', lg: '24px' },
       background: palette.common.white,

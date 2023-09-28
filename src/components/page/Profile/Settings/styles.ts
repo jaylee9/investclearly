@@ -5,13 +5,24 @@ const { palette } = theme;
 export const buttonsWrapper = {
   display: 'flex',
   justifyContent: 'end',
-  padding: '16px 0px',
+  padding: { xs: '16px', lg: '16px 0px 0px' },
+};
+
+export const useProfileSettingsWrapperStyles = () => {
+  return {
+    wrapper: {
+      height: '90%',
+      '& .MuiTabs-scroller': {
+        overflow: { xs: 'scroll !important', md: 'hidden' },
+      },
+    },
+  };
 };
 
 export const useEditProfileStyles = () => {
   return {
     root: {
-      padding: '24px',
+      padding: { xs: '24px 16px 0px', lg: '24px' },
       height: '95%',
       '& .form': {
         height: '100%',
@@ -34,8 +45,9 @@ export const useEditProfileStyles = () => {
       gap: '12px',
       width: '100%',
       maxWidth: '560px',
+      flexDirection: { xs: 'column', md: 'row' },
       '& > div': {
-        width: '50% !important',
+        width: { md: '50% !important' },
       },
     },
     singleInputsWrapper: {
@@ -50,10 +62,10 @@ export const useEditProfileStyles = () => {
 export const useBooleanSettingsStyles = () => {
   return {
     root: {
-      padding: '24px',
-      height: '90%',
+      padding: { xs: '24px 0px', lg: '24px' },
+      height: { xs: '75vh', md: '90%' },
       '& .form': {
-        height: '90%',
+        height: '85%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -65,6 +77,7 @@ export const useBooleanSettingsStyles = () => {
     title: {
       color: palette.text.secondary,
       marginBottom: '24px',
+      paddingLeft: { xs: '24px', lg: '0px' },
     },
     header: {
       padding: '8px 24px',
@@ -79,7 +92,7 @@ export const useBooleanSettingsStyles = () => {
     },
     condition: {
       display: 'flex',
-      padding: '12px 24px',
+      padding: '12px 16px',
       gap: '20px',
     },
     checkboxWrapper: {
@@ -93,7 +106,7 @@ export const useBooleanSettingsStyles = () => {
 export const useInvestmentPreferencesStyles = () => {
   return {
     root: {
-      padding: '24px',
+      padding: { xs: '24px 0px 24px 16px', md: '24px' },
     },
     sectionTitle: {
       fontWeight: 600,
@@ -101,6 +114,7 @@ export const useInvestmentPreferencesStyles = () => {
     },
     section: {
       marginBottom: '32px',
+      paddingRight: { xs: '16px', md: '0px' },
     },
     description: {
       marginBottom: '16px',
@@ -111,6 +125,7 @@ export const useInvestmentPreferencesStyles = () => {
     bold: { fontWeight: 600 },
     investmentPreferencesSection: {
       maxWidth: '600px',
+      paddingRight: { xs: '16px', md: '0px' },
     },
     multiButtonWrapper: {
       marginBottom: '24px',
@@ -128,7 +143,7 @@ export const useInvestmentPreferencesStyles = () => {
 export const useCredentialsSettingsStyles = () => {
   return {
     root: {
-      padding: '24px',
+      padding: { xs: '24px 16px', md: '24px' },
       maxWidth: '650px',
     },
     title: {
@@ -157,7 +172,7 @@ export const useCredentialsSettingsStyles = () => {
       marginBottom: '32px',
     },
     deactivateButton: {
-      width: '320px',
+      width: { xs: '100%', md: '320px' },
     },
     iconWrapper: {},
   };

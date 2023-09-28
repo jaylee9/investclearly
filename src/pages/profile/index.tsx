@@ -9,6 +9,7 @@ import withPrivateRoute from '@/HOC/withPrivateRoute';
 import ProfileReviews from '@/components/page/Profile/Reviews';
 import ProfileSaved from '@/components/page/Profile/Saved';
 import ProfileSettings from '@/components/page/Profile/Settings';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 
 const sections = [
   {
@@ -38,12 +39,14 @@ const sections = [
 ];
 
 const UserProfilePage = () => {
+  const { isMobile } = useBreakpoints();
   const headerProps = useHeaderProps({
     type: 'search-dark',
     isLinks: true,
     isSignIn: true,
     isSearch: true,
-    isShadow: false,
+    isShadow: true,
+    isShadowInFront: isMobile,
   });
   const router = useRouter();
   const activeTab = sections.find(item => item.href === router.query.section);

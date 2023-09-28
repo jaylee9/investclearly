@@ -4,13 +4,13 @@ const { palette } = theme;
 
 export const useProfileReviewsStyles = () => {
   return {
+    wrapper: {
+      padding: { xs: '0px 16px', lg: '0px 24px' },
+    },
     content: {
       padding: { lg: '24px 0px', xs: '24px 16px' },
       borderRadius: { xs: '12px', lg: '0px' },
       background: palette.common.white,
-    },
-    tabsWrapper: {
-      padding: { xs: '0px 16px', lg: '0px' },
     },
     searchInput: {
       maxWidth: '320px',
@@ -47,7 +47,7 @@ export const useProfileReviewsStyles = () => {
       },
     },
     noContentWrapper: {
-      paddingTop: '80px',
+      padding: { lg: '80px 0px', xs: '80px 16px' },
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
