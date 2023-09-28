@@ -16,6 +16,7 @@ import { useForm } from 'react-hook-form';
 import InvestmentPreferencesForm from '@/components/page/Profile/Settings/InvestmentPreferencesForm';
 import Button from '@/components/common/Button';
 import { useRouter } from 'next/router';
+import { USER_ROLE } from '@/config/constants';
 
 const validationSchema = z.object({
   investorStatus: z.string().optional(),
@@ -78,7 +79,7 @@ const Onboarding = () => {
     if (!('error' in response)) {
       setUser(response);
       router.push('/');
-      localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem(USER_ROLE, JSON.stringify(response));
     }
     setIsLoading(false);
   });

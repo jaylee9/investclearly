@@ -14,6 +14,7 @@ import { PublicUserInterface } from '@/backend/services/users/interfaces/public-
 import { useState } from 'react';
 import Button from '@/components/common/Button';
 import InvestmentPreferencesForm from './InvestmentPreferencesForm';
+import { USER_ROLE } from '@/config/constants';
 
 const validationSchema = z.object({
   investorStatus: z.string().optional(),
@@ -80,7 +81,7 @@ const InvestmentPreferences = () => {
     } as UpdateProfileSettingPayload);
     if (!('error' in response)) {
       setUser(response);
-      localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem(USER_ROLE, JSON.stringify(response));
     }
     reset({}, { keepValues: true });
     setIsLoading(false);

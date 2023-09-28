@@ -1,4 +1,5 @@
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
+import { USER_ROLE } from '@/config/constants';
 import React, {
   createContext,
   useContext,
@@ -29,7 +30,7 @@ interface UserProviderProps {
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<PublicUserInterface | null>(null);
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem('user') as string) || null);
+    setUser(JSON.parse(localStorage.getItem(USER_ROLE) as string) || null);
   }, []);
 
   return (

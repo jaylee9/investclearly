@@ -1,4 +1,5 @@
 import ky from 'ky';
+import { ADMIN_ROLE, USER_ROLE } from './constants';
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -11,13 +12,13 @@ export const api = ky.create({
         if (response.status !== 401 || !window) {
           return response;
         }
-        if (!!localStorage.getItem('user')) {
+        if (!!localStorage.getItem(USER_ROLE)) {
           window.location.href = '/login';
-          localStorage.removeItem('user');
+          localStorage.removeItem(USER_ROLE);
         }
-        if (!!localStorage.getItem('admin')) {
+        if (!!localStorage.getItem(ADMIN_ROLE)) {
           window.location.href = '/admin-panel/login';
-          localStorage.removeItem('admin');
+          localStorage.removeItem(ADMIN_ROLE);
         }
       },
     ],

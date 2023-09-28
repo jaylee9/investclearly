@@ -13,6 +13,7 @@ import DeactivateAccountModal from './Modals/DeactivateAccount';
 import ChangePasswordModal from './Modals/ChangePassword';
 import AddPasswordModal from './Modals/AddPassword';
 import { useRouter } from 'next/router';
+import { USER_ROLE } from '@/config/constants';
 
 const validationSchema = z.object({
   newEmail: z.string().email({ message: 'Email must be a valid email' }),
@@ -87,7 +88,7 @@ const CredentialsSettings = () => {
         ...user,
         email: data.newEmail,
       } as PublicUserInterface;
-      localStorage.setItem('user', JSON.stringify(formattedUser));
+      localStorage.setItem(USER_ROLE, JSON.stringify(formattedUser));
       setUser(formattedUser);
       reset({ newEmail: data.newEmail, password: '' });
     }

@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
+import { ADMIN_ROLE } from '@/config/constants';
 
 interface WithAdminPrivateRouteProps {
   children?: ReactNode;
@@ -16,7 +17,7 @@ export const withAdminPrivateRoute = <P extends object>(
 
     useEffect(() => {
       const admin =
-        typeof window !== 'undefined' && localStorage.getItem('admin');
+        typeof window !== 'undefined' && localStorage.getItem(ADMIN_ROLE);
       if (!admin) {
         router.replace('/admin-panel/login');
       } else {

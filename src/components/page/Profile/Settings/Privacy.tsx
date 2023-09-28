@@ -14,6 +14,7 @@ import {
 import Button from '@/components/common/Button';
 import sanitizeUserUpdatePayload from '@/helpers/sanitizeUserUpdatePayload';
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
+import { USER_ROLE } from '@/config/constants';
 
 const headerLabels = ['Visibility', 'Personal info'];
 
@@ -67,7 +68,7 @@ const PrivacySettings = () => {
     } as UpdateProfileSettingPayload);
     if (!('error' in response)) {
       setUser(response);
-      localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem(USER_ROLE, JSON.stringify(response));
       reset();
     }
     setIsLoading(false);

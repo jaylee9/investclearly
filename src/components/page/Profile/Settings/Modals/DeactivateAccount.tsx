@@ -11,6 +11,7 @@ import CustomCheckbox from '@/components/common/CustomCheckbox';
 import Button from '@/components/common/Button';
 import { useUser } from '@/contexts/User';
 import { deactivateAccount } from '@/actions/user';
+import { USER_ROLE } from '@/config/constants';
 
 const validationSchema = z.object({
   feedback: z.string(),
@@ -53,7 +54,7 @@ const DeactivateAccountModal = ({ ...props }: Omit<ModalProps, 'children'>) => {
     if (!('error' in response)) {
       setIsDeleted(true);
       setUser(null);
-      localStorage.removeItem('user');
+      localStorage.removeItem(USER_ROLE);
     }
     setIsLoading(false);
   });
