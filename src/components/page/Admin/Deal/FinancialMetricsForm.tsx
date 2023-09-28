@@ -8,7 +8,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@/components/common/Button';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { editDeal } from '@/actions/deals';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 const financialMetricsValidationSchema = z.object({
@@ -33,8 +32,6 @@ const FinancialMetricsForm = ({
   refetch,
   deal,
 }: FinancialMetricsFormProps) => {
-  const router = useRouter();
-
   const classes = useFinancialMetricsFormStyles();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +53,6 @@ const FinancialMetricsForm = ({
     );
     const response = await editDeal({
       payload: { ...numericData, id: deal.id },
-      router,
     });
     if (!('error' in response)) {
       await refetch();
