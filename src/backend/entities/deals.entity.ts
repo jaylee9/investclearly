@@ -7,7 +7,6 @@ import {
   ManyToOne,
   Relation,
   OneToMany,
-  ManyToMany,
 } from 'typeorm';
 import { PolymorphicParent } from 'typeorm-polymorphic';
 import { DealStatuses } from '../constants/enums/deal-statuses';
@@ -22,8 +21,8 @@ import { SecIndustries } from '../constants/enums/sec-industries';
 import { Regulations } from '../constants/enums/regulations';
 import { Investment } from './investments.entity';
 import { Bookmark } from './bookmark.entity';
-import { RelatedPerson } from './relatedPersons.entity';
 import { Location } from './locations.entity';
+import { DealsRelatedPersons } from './dealsRelatedPersons.entity';
 
 @Entity({ name: 'deals' })
 export class Deal {
@@ -175,8 +174,9 @@ export class Deal {
   @PolymorphicParent(() => Bookmark, { eager: false, cascade: true })
   bookmarks: Relation<Bookmark[]>;
 
-  @ManyToMany(() => RelatedPerson, relatedPerson => relatedPerson.deals, {
-    onDelete: 'CASCADE',
-  })
-  relatedPersons: RelatedPerson[];
+  @OneToMany(
+    () => DealsRelatedPersons,
+    dealsRelatedPerson => dealsRelatedPerson.deal
+  )
+  dealsRelatedPersons: Relation<DealsRelatedPersons>[];
 }

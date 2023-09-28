@@ -5,12 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Relation,
-  ManyToMany,
-  JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { PolymorphicParent } from 'typeorm-polymorphic';
-import { Deal } from './deals.entity';
 import { Location } from './locations.entity';
+import { DealsRelatedPersons } from './dealsRelatedPersons.entity';
 
 @Entity({ name: 'related_persons' })
 export class RelatedPerson {
@@ -26,9 +25,6 @@ export class RelatedPerson {
   @Column({ type: 'varchar', nullable: true })
   lastName: string;
 
-  @Column({ type: 'varchar', array: true, nullable: true })
-  relationships: string[];
-
   @Column({ type: 'varchar', nullable: true })
   relationshipClarification: string;
 
@@ -41,20 +37,9 @@ export class RelatedPerson {
   @PolymorphicParent(() => Location, { eager: false, cascade: true })
   locations: Relation<Location[]>;
 
-  @ManyToMany(() => Deal, Deal => Deal.relatedPersons, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinTable({
-    name: 'deal_related_persons',
-    joinColumn: {
-      name: 'related_person_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'deal_id',
-      referencedColumnName: 'id',
-    },
-  })
-  deals: Deal[];
+  @OneToMany(
+    () => DealsRelatedPersons,
+    dealsRelatedPerson => dealsRelatedPerson.relatedPerson
+  )
+  dealsRelatedPersons: Relation<DealsRelatedPersons>[];
 }
