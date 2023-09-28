@@ -13,7 +13,6 @@ import {
 import FinancialMetricsForm from './FinancialMetricsForm';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import Button from '@/components/common/Button';
-import { useRouter } from 'next/router';
 
 export interface AddEditSponsorModalProps
   extends Omit<ModalProps, 'children' | 'onSubmit'> {
@@ -36,7 +35,6 @@ const AddEditSponsorModal = ({
   ...props
 }: AddEditSponsorModalProps) => {
   const [step, setStep] = useState(steps['Sponsor Details']);
-  const router = useRouter();
   const classes = useAddEditSponsorModalStyles({
     isAdded: step === steps['Sponsor Added'],
   });
@@ -82,7 +80,6 @@ const AddEditSponsorModal = ({
       setIsLoading(true);
       const response = await editSponsor({
         payload: { ...data, id: sponsor.id },
-        router,
       });
 
       if (!('error' in response)) {
@@ -109,7 +106,7 @@ const AddEditSponsorModal = ({
       handleEdit(data);
     } else {
       setIsLoading(true);
-      const response = await createSponsor({ payload: data, router: router });
+      const response = await createSponsor({ payload: data });
 
       if (!('error' in response && !isEdit)) {
         await refetchSponsors();
