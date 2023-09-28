@@ -6,6 +6,7 @@ import { createDeal } from '../deals/create-deal';
 import { FormD } from './interfaces/form-D.interface';
 import { prepareDealData } from './prepare-deal-data';
 import { prepareRelatedPersonData } from './prepare-related-person-data';
+import { DealsRelatedPersons } from '../../entities/dealsRelatedPersons.entity';
 
 const industryGroupTypes = Object.values(SecIndustries);
 
@@ -33,11 +34,17 @@ export const prepareDealsDataAndInsertOrUpdateRecords = async (
 
         if (dealRecord) {
           const relatedPersonRecords = await prepareRelatedPersonData(offering);
-
-          await connection.manager.save(Deal, {
-            id: dealRecord.id,
-            relatedPersons: relatedPersonRecords,
-          });
+          if (deal) {
+            await connection.manager.delete(DealsRelatedPersons, {
+              dealId: deal.id,
+            });
+          }
+          for (const relatedPerson of relatedPersonRecords)
+            await connection.manager.save(DealsRelatedPersons, {
+              dealId: dealRecord.id,
+              relatedPersonId: relatedPerson.id,
+              relatedPersonRoles: relatedPerson.relatedPersonRoles,
+            });
         }
       }
     }
