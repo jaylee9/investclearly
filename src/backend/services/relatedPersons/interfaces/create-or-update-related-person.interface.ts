@@ -4,7 +4,6 @@ export interface CreateOrUpdateRelatedPersonInterface {
   firstName: string;
   middleName: string;
   lastName: string;
-  relationships: string[];
   relationshipClarification: string;
   location: CreateLocationInterface;
 }
