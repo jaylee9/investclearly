@@ -14,6 +14,7 @@ import {
 import Button from '@/components/common/Button';
 import sanitizeUserUpdatePayload from '@/helpers/sanitizeUserUpdatePayload';
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
+import { useRouter } from 'next/router';
 
 const headerLabels = ['Visibility', 'Personal info'];
 
@@ -39,6 +40,8 @@ type ValidationSchema = z.infer<typeof validationSchema>;
 const PrivacySettings = () => {
   const classes = useBooleanSettingsStyles();
 
+  const router = useRouter();
+
   const { user, setUser } = useUser();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -61,10 +64,13 @@ const PrivacySettings = () => {
     const formattedUser = sanitizeUserUpdatePayload(
       user as PublicUserInterface
     );
-    const response = await updateProfileSettings({
-      ...formattedUser,
-      ...data,
-    } as UpdateProfileSettingPayload);
+    const response = await updateProfileSettings(
+      {
+        ...formattedUser,
+        ...data,
+      } as UpdateProfileSettingPayload,
+      router
+    );
     if (!('error' in response)) {
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));
