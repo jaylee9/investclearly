@@ -8,19 +8,17 @@ export const api = ky.create({
   hooks: {
     afterResponse: [
       (request, options, response) => {
-        if (response.status === 401) {
-          if (typeof window !== 'undefined') {
-            if (!!localStorage.getItem('user')) {
-              window.location.href = '/login';
-              localStorage.removeItem('user');
-            }
-            if (!!localStorage.getItem('admin')) {
-              window.location.href = '/admin-panel/login';
-              localStorage.removeItem('admin');
-            }
-          }
+        if (response.status !== 401 || !window) {
+          return response;
         }
-        return response;
+        if (!!localStorage.getItem('user')) {
+          window.location.href = '/login';
+          localStorage.removeItem('user');
+        }
+        if (!!localStorage.getItem('admin')) {
+          window.location.href = '/admin-panel/login';
+          localStorage.removeItem('admin');
+        }
       },
     ],
   },
