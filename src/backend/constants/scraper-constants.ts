@@ -1,6 +1,6 @@
 export const ScraperConstants = {
-  maxAmountOfScrapedOfferings: 2000,
-  pauseBetweenRequestsMs: 1000,
+  maxAmountOfScrapedOfferings: 300,
+  pauseBetweenRequestsMs: 100,
   maxPageSize: 50,
   from: 0,
 };
