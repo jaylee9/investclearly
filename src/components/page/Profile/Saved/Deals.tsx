@@ -12,7 +12,6 @@ import DealCard, { DealCardVariant } from '@/components/common/DealCard';
 import Input from '@/components/common/Input';
 import { debounce } from 'lodash';
 import CustomPagination from '@/components/common/Pagination';
-import { useRouter } from 'next/router';
 
 interface SavedDealsProps {
   setDealCountChanged: (value: number) => void;
@@ -20,7 +19,6 @@ interface SavedDealsProps {
 
 const SavedDeals = ({ setDealCountChanged }: SavedDealsProps) => {
   const classes = useSavedDealsStyles();
-  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
 
@@ -31,7 +29,6 @@ const SavedDeals = ({ setDealCountChanged }: SavedDealsProps) => {
         page,
         pageSize: 10,
         search: searchTerm,
-        router,
       });
       return response as GetDealsBookmarksResponse;
     }
@@ -47,7 +44,7 @@ const SavedDeals = ({ setDealCountChanged }: SavedDealsProps) => {
   };
 
   const handleDeleteBookmark = async (entityId: number) => {
-    const response = await deleteDealBookmark({ entityId, router });
+    const response = await deleteDealBookmark({ entityId });
     if (!('error' in response)) {
       setDealCountChanged(entityId);
       refetch();

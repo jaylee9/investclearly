@@ -61,23 +61,20 @@ const Onboarding = () => {
     const formattedUser = sanitizeUserUpdatePayload(
       user as PublicUserInterface
     );
-    const response = await updateProfileSettings(
-      {
-        ...formattedUser,
-        minimumInvestmentMin: minInvestment?.[0],
-        minimumInvestmentMax: minInvestment?.[1],
-        holdPeriodMin: holdPeriod?.[0],
-        holdPeriodMax: holdPeriod?.[1],
-        investorStatus:
-          investorStatus === 'yes'
-            ? 'Accredited Investor'
-            : 'Not Accredited Investor',
-        incomeAndNetWorth:
-          incomeAndNetWorth === 'yes' ? 'Yes, I have' : 'No, I do not have',
-        ...rest,
-      } as UpdateProfileSettingPayload,
-      router
-    );
+    const response = await updateProfileSettings({
+      ...formattedUser,
+      minimumInvestmentMin: minInvestment?.[0],
+      minimumInvestmentMax: minInvestment?.[1],
+      holdPeriodMin: holdPeriod?.[0],
+      holdPeriodMax: holdPeriod?.[1],
+      investorStatus:
+        investorStatus === 'yes'
+          ? 'Accredited Investor'
+          : 'Not Accredited Investor',
+      incomeAndNetWorth:
+        incomeAndNetWorth === 'yes' ? 'Yes, I have' : 'No, I do not have',
+      ...rest,
+    } as UpdateProfileSettingPayload);
     if (!('error' in response)) {
       setUser(response);
       router.push('/');

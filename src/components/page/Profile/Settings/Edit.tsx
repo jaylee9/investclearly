@@ -18,7 +18,6 @@ import { useEffect, useState } from 'react';
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
 import sanitizeUserUpdatePayload from '@/helpers/sanitizeUserUpdatePayload';
 import { LocationInterface } from '@/backend/services/locations/interfaces/location.interface';
-import { useRouter } from 'next/router';
 
 const isBrowser =
   typeof window !== 'undefined' && typeof window.File !== 'undefined';
@@ -40,7 +39,6 @@ type ValidationSchema = z.infer<typeof validationSchema>;
 
 const EditProfile = () => {
   const classes = useEditProfileStyles();
-  const router = useRouter();
   const { user, setUser } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -61,13 +59,10 @@ const EditProfile = () => {
     const formattedUser = sanitizeUserUpdatePayload(
       user as PublicUserInterface
     );
-    const response = await updateProfileSettings(
-      {
-        ...formattedUser,
-        ...data,
-      } as UpdateProfileSettingPayload,
-      router
-    );
+    const response = await updateProfileSettings({
+      ...formattedUser,
+      ...data,
+    } as UpdateProfileSettingPayload);
     if (!('error' in response)) {
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));

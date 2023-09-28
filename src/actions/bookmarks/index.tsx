@@ -2,11 +2,6 @@ import { DealInterface } from '@/backend/services/deals/interfaces/deal.interfac
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import { TPaginationInfo } from '@/backend/utils/pagination/paginate-info.type';
 import api from '@/config/ky';
-import notAuthorizedErrorHandler, {
-  Roles,
-} from '@/helpers/notAuthorizedErrorHandler';
-import { HTTPError } from 'ky';
-import { NextRouter } from 'next/router';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
 
@@ -14,7 +9,6 @@ interface GetBookmarksInterface {
   search?: string;
   page?: number;
   pageSize?: number;
-  router: NextRouter;
 }
 
 export interface GetDealsBookmarksResponse extends TPaginationInfo {
@@ -25,7 +19,6 @@ export const getDealsBookmarks = async ({
   page,
   pageSize,
   search,
-  router,
 }: GetBookmarksInterface): Promise<
   GetDealsBookmarksResponse | { error: string }
 > => {
@@ -43,13 +36,6 @@ export const getDealsBookmarks = async ({
       .json();
     return response;
   } catch (error) {
-    if (error instanceof HTTPError) {
-      notAuthorizedErrorHandler({
-        status: error.response.status,
-        router,
-        role: Roles.USER,
-      });
-    }
     const errorMessage = 'Failed to fetch saved deals';
     toast.error(errorMessage);
     return { error: errorMessage };
@@ -64,7 +50,6 @@ export const getSponsorsBookmarks = async ({
   page,
   pageSize,
   search,
-  router,
 }: GetBookmarksInterface): Promise<
   GetSponsorsBookmarksResponse | { error: string }
 > => {
@@ -82,13 +67,6 @@ export const getSponsorsBookmarks = async ({
       .json();
     return response;
   } catch (error) {
-    if (error instanceof HTTPError) {
-      notAuthorizedErrorHandler({
-        status: error.response.status,
-        router,
-        role: Roles.USER,
-      });
-    }
     const errorMessage = 'Failed to fetch saved sponsors';
     toast.error(errorMessage);
     return { error: errorMessage };
@@ -97,10 +75,8 @@ export const getSponsorsBookmarks = async ({
 
 export const deleteDealBookmark = async ({
   entityId,
-  router,
 }: {
   entityId: number;
-  router: NextRouter;
 }): Promise<{ message: string } | { error: string }> => {
   try {
     const stringifiedParameters = queryString.stringify({
@@ -112,13 +88,6 @@ export const deleteDealBookmark = async ({
       .json();
     return response;
   } catch (error) {
-    if (error instanceof HTTPError) {
-      notAuthorizedErrorHandler({
-        status: error.response.status,
-        router,
-        role: Roles.USER,
-      });
-    }
     const errorMessage = 'Failed to remove deal from saved';
     toast.error(errorMessage);
     return { error: errorMessage };
@@ -127,10 +96,8 @@ export const deleteDealBookmark = async ({
 
 export const deleteSponsorBookmark = async ({
   entityId,
-  router,
 }: {
   entityId: number;
-  router: NextRouter;
 }): Promise<{ message: string } | { error: string }> => {
   try {
     const stringifiedParameters = queryString.stringify({
@@ -142,13 +109,6 @@ export const deleteSponsorBookmark = async ({
       .json();
     return response;
   } catch (error) {
-    if (error instanceof HTTPError) {
-      notAuthorizedErrorHandler({
-        status: error.response.status,
-        router,
-        role: Roles.USER,
-      });
-    }
     const errorMessage = 'Failed to remove sponsor from saved';
     toast.error(errorMessage);
     return { error: errorMessage };

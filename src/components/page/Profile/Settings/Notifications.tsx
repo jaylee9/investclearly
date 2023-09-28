@@ -14,7 +14,6 @@ import {
 import Button from '@/components/common/Button';
 import sanitizeUserUpdatePayload from '@/helpers/sanitizeUserUpdatePayload';
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
-import { useRouter } from 'next/router';
 
 const headerLabels = ['Email', 'Notifications'];
 
@@ -66,8 +65,6 @@ type ValidationSchema = z.infer<typeof validationSchema>;
 const Notifications = () => {
   const classes = useBooleanSettingsStyles();
 
-  const router = useRouter();
-
   const { user, setUser } = useUser();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -98,13 +95,10 @@ const Notifications = () => {
     const formattedUser = sanitizeUserUpdatePayload(
       user as PublicUserInterface
     );
-    const response = await updateProfileSettings(
-      {
-        ...formattedUser,
-        ...data,
-      } as UpdateProfileSettingPayload,
-      router
-    );
+    const response = await updateProfileSettings({
+      ...formattedUser,
+      ...data,
+    } as UpdateProfileSettingPayload);
     if (!('error' in response)) {
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));

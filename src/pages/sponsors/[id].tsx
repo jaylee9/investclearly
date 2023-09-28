@@ -57,7 +57,7 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
   const handleAddBookmark = async (entityId: number) => {
     if (!!user) {
       setIsInBookmarks(true);
-      const response = await addSponsorToBookmark({ entityId, router });
+      const response = await addSponsorToBookmark({ entityId });
       if ('error' in response) {
         setIsInBookmarks(false);
       }
@@ -68,7 +68,7 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
 
   const handleDeleteBookmark = async (entityId: number) => {
     setIsInBookmarks(false);
-    const response = await deleteSponsorFromBookmarks({ entityId, router });
+    const response = await deleteSponsorFromBookmarks({ entityId });
     if ('error' in response) {
       setIsInBookmarks(true);
     }

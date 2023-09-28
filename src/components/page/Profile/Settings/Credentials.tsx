@@ -81,7 +81,7 @@ const CredentialsSettings = () => {
   };
 
   const onSubmit = handleSubmit(async data => {
-    const response = await updateEmail(data, router);
+    const response = await updateEmail(data);
     if (!('error' in response)) {
       const formattedUser = {
         ...user,

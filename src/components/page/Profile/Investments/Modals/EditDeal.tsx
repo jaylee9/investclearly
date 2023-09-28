@@ -10,7 +10,6 @@ import { useEditDealModalStyles } from './styles';
 import { useEffect } from 'react';
 import { updateInvestment } from '@/actions/investments';
 import { format } from 'date-fns';
-import { useRouter } from 'next/router';
 
 const validationSchema = z.object({
   dateOfInvestment: z.date(),
@@ -37,8 +36,6 @@ const EditDealModal = ({
 }: EditDealModalProps) => {
   const classes = useEditDealModalStyles();
 
-  const router = useRouter();
-
   const {
     register,
     control,
@@ -55,7 +52,7 @@ const EditDealModal = ({
       id: dealToEdit.id,
       totalInvested: data.totalInvested,
     };
-    const response = await updateInvestment(payload, router);
+    const response = await updateInvestment(payload);
     if (!('error' in response)) {
       onSubmitClose();
     }

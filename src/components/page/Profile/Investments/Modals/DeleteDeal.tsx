@@ -4,7 +4,6 @@ import { useDeleteDealModalStyles } from './styles';
 import Button from '@/components/common/Button';
 import { deleteInvestment } from '@/actions/investments';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 
 interface DeleteDealModalProps extends Omit<ModalProps, 'children' | 'id'> {
   onSubmitClose: () => void;
@@ -17,12 +16,11 @@ const DeleteDealModal = ({
   ...props
 }: DeleteDealModalProps) => {
   const classes = useDeleteDealModalStyles();
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
     setIsLoading(true);
-    const response = await deleteInvestment({ id, router });
+    const response = await deleteInvestment({ id });
     if (!('error' in response)) {
       onSubmitClose();
     }

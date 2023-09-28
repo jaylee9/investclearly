@@ -2,11 +2,6 @@ import { FindAllInvestmentsInterface } from '@/backend/services/investments/inte
 import { InvestmentInterface } from '@/backend/services/investments/interfaces/investment.interface';
 import { TPaginationInfo } from '@/backend/utils/pagination/paginate-info.type';
 import api from '@/config/ky';
-import notAuthorizedErrorHandler, {
-  Roles,
-} from '@/helpers/notAuthorizedErrorHandler';
-import { HTTPError } from 'ky';
-import { NextRouter } from 'next/router';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
 
@@ -15,16 +10,15 @@ export interface GetAllInvestmentsResponse extends TPaginationInfo {
   totalInvested: number;
 }
 
-export const getAllInvestments = async (
-  {
-    page,
-    pageSize,
-    orderDirection,
-    status,
-    search,
-  }: FindAllInvestmentsInterface,
-  router: NextRouter
-): Promise<GetAllInvestmentsResponse | { error: string }> => {
+export const getAllInvestments = async ({
+  page,
+  pageSize,
+  orderDirection,
+  status,
+  search,
+}: FindAllInvestmentsInterface): Promise<
+  GetAllInvestmentsResponse | { error: string }
+> => {
   try {
     const stringifiedParameters = queryString.stringify(
       { page, pageSize, orderDirection, status, search },
@@ -39,13 +33,6 @@ export const getAllInvestments = async (
       .json();
     return response;
   } catch (error) {
-    if (error instanceof HTTPError) {
-      notAuthorizedErrorHandler({
-        status: error.response.status,
-        router,
-        role: Roles.USER,
-      });
-    }
     const errorMessage = 'Failed to fetch investments';
     toast.error(errorMessage);
     return { error: errorMessage };
@@ -58,10 +45,11 @@ interface UpdateInvestment {
   id: number;
 }
 
-export const updateInvestment = async (
-  { dateOfInvestment, totalInvested, id }: UpdateInvestment,
-  router: NextRouter
-): Promise<InvestmentInterface | { error: string }> => {
+export const updateInvestment = async ({
+  dateOfInvestment,
+  totalInvested,
+  id,
+}: UpdateInvestment): Promise<InvestmentInterface | { error: string }> => {
   try {
     const response: InvestmentInterface = await api
       .put(`investments/${id}`, {
@@ -71,13 +59,6 @@ export const updateInvestment = async (
     toast.success('Investment successfuly updated');
     return response;
   } catch (error) {
-    if (error instanceof HTTPError) {
-      notAuthorizedErrorHandler({
-        status: error.response.status,
-        router,
-        role: Roles.USER,
-      });
-    }
     const errorMessage = 'Failed to update investment';
     toast.error(errorMessage);
     return { error: errorMessage };
@@ -86,10 +67,8 @@ export const updateInvestment = async (
 
 export const deleteInvestment = async ({
   id,
-  router,
 }: {
   id: number;
-  router: NextRouter;
 }): Promise<{ message: string } | { error: string }> => {
   try {
     const response: { message: string } = await api
@@ -98,13 +77,6 @@ export const deleteInvestment = async ({
     toast.success('Investment successfuly deleted');
     return response;
   } catch (error) {
-    if (error instanceof HTTPError) {
-      notAuthorizedErrorHandler({
-        status: error.response.status,
-        router,
-        role: Roles.USER,
-      });
-    }
     const errorMessage = 'Failed to delete investment';
     toast.error(errorMessage);
     return { error: errorMessage };
