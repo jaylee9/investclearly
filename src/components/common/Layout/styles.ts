@@ -17,13 +17,15 @@ export const useEntryLayoutStyles = (isEntrySpacing: boolean) => {
     root: {
       minHeight: '100vh',
       background: palette.common.white,
+      overflow: 'hidden',
     },
     container: {
       height: { xl: '100vh' },
     },
     leftPartWrapper: {
       padding: { xs: '0px', xl: '24px 0px 24px 24px' },
-      height: { xs: '152px', md: '196px', xl: '100%' },
+      height: { xs: '152px', md: '196px', xl: '100vh' },
+      overflow: 'hidden',
     },
     leftPartContent: {
       backgroundImage: 'url(/assets/signUpBanner.jpg)',
@@ -50,13 +52,22 @@ export const useEntryLayoutStyles = (isEntrySpacing: boolean) => {
       borderRadius: { xs: '24px 24px 0px 0px', xl: '0px' },
       marginTop: { xs: '-24px', xl: '0px' },
       background: palette.common.white,
+      overflow: 'auto',
+      overflowX: 'hidden',
+      height: '100%',
     },
     rightPartWrapper: {
       display: 'flex',
       flexdirection: 'column',
       justifyContent: isEntrySpacing ? 'normal' : 'center',
       paddingTop: { xs: '56px', md: '120px', xl: '135px' },
-      padding: isEntrySpacing ? '135px 65px 24px' : '125px 16px 24px',
+      padding: isEntrySpacing
+        ? {
+            xs: '56px 16px 16px',
+            md: '120px 40px 16px 64px',
+            lg: '135px 64px 16px',
+          }
+        : '125px 16px 24px',
     },
   };
 };
