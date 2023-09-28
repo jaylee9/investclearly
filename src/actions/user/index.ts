@@ -1,5 +1,10 @@
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
 import api from '@/config/ky';
+import notAuthorizedErrorHandler, {
+  Roles,
+} from '@/helpers/notAuthorizedErrorHandler';
+import { HTTPError } from 'ky';
+import { NextRouter } from 'next/router';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
 
@@ -39,10 +44,10 @@ interface UpdateEmailPayload {
   password: string;
 }
 
-export const updateEmail = async ({
-  password,
-  newEmail,
-}: UpdateEmailPayload): Promise<{ message: string } | { error: string }> => {
+export const updateEmail = async (
+  { password, newEmail }: UpdateEmailPayload,
+  router: NextRouter
+): Promise<{ message: string } | { error: string }> => {
   try {
     const response: { message: string } = await api
       .put('auth/change-email', {
@@ -52,6 +57,13 @@ export const updateEmail = async ({
     toast.success('Email successfully changed!');
     return response;
   } catch (error) {
+    if (error instanceof HTTPError) {
+      notAuthorizedErrorHandler({
+        status: error.response.status,
+        router,
+        role: Roles.USER,
+      });
+    }
     const errorMessage = 'Failed to change email';
     toast.error(errorMessage);
     return { error: errorMessage };
@@ -60,8 +72,10 @@ export const updateEmail = async ({
 
 export const deactivateAccount = async ({
   feedback,
+  router,
 }: {
   feedback: string;
+  router: NextRouter;
 }): Promise<{ message: string } | { error: string }> => {
   try {
     const stringifiedParameters = queryString.stringify({ feedback });
@@ -70,6 +84,13 @@ export const deactivateAccount = async ({
       .json();
     return response;
   } catch (error) {
+    if (error instanceof HTTPError) {
+      notAuthorizedErrorHandler({
+        status: error.response.status,
+        router,
+        role: Roles.USER,
+      });
+    }
     const errorMessage = 'Failed to deactivate account';
     toast.error(errorMessage);
     return { error: errorMessage };

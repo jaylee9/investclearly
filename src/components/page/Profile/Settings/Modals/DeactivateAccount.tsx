@@ -49,7 +49,7 @@ const DeactivateAccountModal = ({ ...props }: Omit<ModalProps, 'children'>) => {
   const onSubmit = handleSubmit(async data => {
     setIsLoading(true);
     const { feedback } = data;
-    const response = await deactivateAccount({ feedback });
+    const response = await deactivateAccount({ feedback, router });
     if (!('error' in response)) {
       setIsDeleted(true);
       setUser(null);
