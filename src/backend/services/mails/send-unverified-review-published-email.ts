@@ -1,7 +1,11 @@
 import * as sgMail from '@sendgrid/mail';
 import { MailDataRequired } from '@sendgrid/mail';
 import moment from 'moment';
-import { MailConfig, TemplatesIds } from '../../config/mail-config';
+import {
+  DefaultImages,
+  MailConfig,
+  TemplatesIds,
+} from '../../config/mail-config';
 import { ReviewInterface } from '../reviews/interfaces/review.interface';
 import { MomentConstants } from '../../../backend/constants/moment-constants';
 
@@ -13,7 +17,7 @@ export const sendUnverifiedReviewPublishedEmail = async (
   if (reviewRecord.reviewer && reviewRecord.sponsor) {
     const mailData: MailDataRequired = {
       to: { email: reviewRecord.reviewer.email },
-      from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },
+      from: { email: MailConfig.sendFromHost, name: MailConfig.sendFromName },
       templateId: TemplatesIds.unverifiedReviewPublishedEmail,
       dynamicTemplateData: {
         frontendUrl: MailConfig.frontendUrl,
@@ -22,7 +26,8 @@ export const sendUnverifiedReviewPublishedEmail = async (
           MomentConstants.dateFormatForModerationReviews
         ),
         sponsorVanityName: reviewRecord.sponsor.vanityName,
-        sponsorBusinessAvatar: reviewRecord.sponsor.businessAvatar,
+        sponsorBusinessAvatar:
+          reviewRecord.sponsor.businessAvatar || DefaultImages.sponsorImage,
         reviewTittle: reviewRecord.title,
         overallComment: reviewRecord.overallComment,
       },

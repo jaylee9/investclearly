@@ -7,7 +7,7 @@ export const MailConfig = {
   host: process.env.MAIL_CONFIG_HOST || '',
   port: process.env.MAIL_CONFIG_PORT || '',
   secure: process.env.MAIL_CONFIG_SECURE || '',
-  sendFrom: process.env.INVEST_CLEARLY_SENDER_EMAIL || '',
+  sendFromHost: `no-reply@${process.env.INVEST_CLEARLY_SENDER_EMAIL}` || '',
   sendFromName: 'Invest Clearly',
   frontendUrl: process.env.FRONTEND_URL || '',
   backendUrl: process.env.BACKEND_URL || '',
@@ -33,5 +33,10 @@ export const TemplatesIds = {
 };
 
 export const DefaultImages = {
-  dealImage: 'https://i.imgur.com/jrK2kh4.jpg',
+  dealImage:
+    'https://okcclpkpkpacuteeaoul.supabase.co/storage/v1/object/public/invest-clearly-prod/default-images/Deal-placeholder.png',
+  sponsorImage:
+    'https://okcclpkpkpacuteeaoul.supabase.co/storage/v1/object/public/invest-clearly-prod/default-images/Sponsor-placeholder.png',
+  userImage:
+    'https://okcclpkpkpacuteeaoul.supabase.co/storage/v1/object/public/invest-clearly-prod/default-images/User-Avatar.png',
 };

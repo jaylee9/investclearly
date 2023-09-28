@@ -25,7 +25,7 @@ export const sendSponsorPostedNewDeals = async (
 
     const mailData: MailDataRequired = {
       to: { email: user.email },
-      from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },
+      from: { email: MailConfig.sendFromHost, name: MailConfig.sendFromName },
       templateId: TemplatesIds.sponsorPostedNewDeals,
       dynamicTemplateData: {
         frontendUrl: MailConfig.frontendUrl,

@@ -11,7 +11,7 @@ export const sendResetPasswordEmail = async (
 
   const mailData: MailDataRequired = {
     to: { email: user.email },
-    from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },
+    from: { email: MailConfig.sendFromHost, name: MailConfig.sendFromName },
     templateId: TemplatesIds.resetPasswordEmail,
     dynamicTemplateData: {
       frontendUrl: MailConfig.frontendUrl,
