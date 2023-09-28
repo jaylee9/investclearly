@@ -19,6 +19,8 @@ import { useState } from 'react';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import parseCookies from 'next-cookies';
+import { useUser } from '@/contexts/User';
+import { useRouter } from 'next/router';
 
 interface DealPageProps {
   deal: DealInterface;
@@ -35,6 +37,8 @@ export type ModalKeyType = 'claimDeal' | 'addDeal' | 'suggestEdit';
 const DealPage = ({ deal }: DealPageProps) => {
   const classes = useDealPageStyles();
   const { isMobile, isDesktop } = useBreakpoints();
+  const { user } = useUser();
+  const router = useRouter();
   const [isInBookmarks, setIsInBookmarks] = useState(deal.isInBookmarks);
   const [openModals, setOpenModals] = useState<OpenModalsProps>({
     claimDeal: false,
@@ -43,9 +47,13 @@ const DealPage = ({ deal }: DealPageProps) => {
   });
 
   const handleOpenModal = (key: ModalKeyType) => {
-    setOpenModals(prevModals => {
-      return { ...prevModals, [key]: true };
-    });
+    if (!!user) {
+      setOpenModals(prevModals => {
+        return { ...prevModals, [key]: true };
+      });
+    } else {
+      router.push('/login');
+    }
   };
 
   const handleCloseModal = (key: ModalKeyType) => {
@@ -64,10 +72,14 @@ const DealPage = ({ deal }: DealPageProps) => {
   });
 
   const handleAddBookmark = async (entityId: number) => {
-    setIsInBookmarks(true);
-    const response = await addDealToBookmark({ entityId });
-    if ('error' in response) {
-      setIsInBookmarks(false);
+    if (!!user) {
+      setIsInBookmarks(true);
+      const response = await addDealToBookmark({ entityId });
+      if ('error' in response) {
+        setIsInBookmarks(false);
+      }
+    } else {
+      router.push('/login');
     }
   };
 
