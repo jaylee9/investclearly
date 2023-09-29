@@ -6,12 +6,12 @@ import {
   TemplatesIds,
 } from '../../config/mail-config';
 import { ClaimedRequests } from '../../entities/claimedRequests.entity';
-import { DealInterface } from '../deals/interfaces/deal.interface';
 import { PublicUserInterface } from '../users/interfaces/public-user.interface';
+import { SponsorInterface } from '../sponsors/interfaces/sponsor.interface';
 
 export const sendClaimSponsorRequestEmail = async (
   user: PublicUserInterface,
-  deal: DealInterface,
+  sponsor: SponsorInterface,
   claimedRequest: ClaimedRequests
 ) => {
   sgMail.setApiKey(MailConfig.sendgridApiKey);
@@ -24,7 +24,7 @@ export const sendClaimSponsorRequestEmail = async (
       userFirstName: user.firstName,
       userLastName: user.lastName,
       profilePicture: user.profilePicture || DefaultImages.userImage,
-      dealLegalName: deal.dealLegalName,
+      sponsorLegalName: sponsor.legalName,
       jobTitle: claimedRequest.jobTitle,
       businessEmail: claimedRequest.businessEmail,
       businessPhone: claimedRequest.businessPhone,

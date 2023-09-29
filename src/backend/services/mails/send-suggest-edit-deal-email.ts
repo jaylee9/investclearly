@@ -4,7 +4,7 @@ import { MailConfig, TemplatesIds } from '../../config/mail-config';
 import { DealInterface } from '../deals/interfaces/deal.interface';
 import { ClaimedRequests } from '../../entities/claimedRequests.entity';
 
-export const sendSuggestEditEmail = async (
+export const sendSuggestEditDealEmail = async (
   deal: DealInterface,
   claimedRequest: ClaimedRequests
 ) => {
