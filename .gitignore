@@ -37,3 +37,6 @@ dist-ssr
 
 # local env files
 /.env
+
+# vercel files
+/vercel
