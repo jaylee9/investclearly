@@ -1,7 +1,7 @@
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
+import customToast, { ToastType } from '@/components/common/Toast/customToast';
 import api from '@/config/ky';
 import queryString from 'query-string';
-import { toast } from 'react-toastify';
 
 interface GetUserPayload {
   id: string;
@@ -29,7 +29,7 @@ export const getUser = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to fetch user';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -49,11 +49,14 @@ export const updateEmail = async ({
         json: { newEmail, password },
       })
       .json();
-    toast.success('Email successfully changed!');
+    customToast({
+      title: 'Email successfully changed!',
+      type: ToastType.SUCCESS,
+    });
     return response;
   } catch (error) {
     const errorMessage = 'Failed to change email';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -71,7 +74,7 @@ export const deactivateAccount = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to deactivate account';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
