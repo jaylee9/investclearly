@@ -84,6 +84,27 @@ export const useChooseSponsorStepStyles = () => {
       flexDirection: 'column',
       alignItems: 'center',
     },
+    contactUsWrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+      width: '100%',
+      paddingTop: { xs: '16px', md: '32px' },
+    },
+    contactUsContent: {
+      maxWidth: '520px',
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+      padding: '24px 16px',
+      background: palette.primary.contrastText,
+      border: `1px solid ${palette.background.paper}`,
+      borderRadius: { xs: '0px', md: '12px' },
+      alignItems: 'center',
+    },
+    buttonContact: {
+      width: '100%',
+    },
     buttonsWrapper: {
       display: 'flex',
       justifyContent: 'end',
