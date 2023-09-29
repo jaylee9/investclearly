@@ -1,10 +1,10 @@
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { UpdateDealInterface } from '@/backend/services/deals/interfaces/update-deal.interface';
+import customToast, { ToastType } from '@/components/common/Toast/customToast';
 import { IFilters } from '@/components/page/List/Deals/DealsFilters';
 import api from '@/config/ky';
 import { serialize } from 'object-to-formdata';
 import queryString from 'query-string';
-import { toast } from 'react-toastify';
 
 interface IDealFilters extends IFilters {
   page: number;
@@ -84,7 +84,7 @@ export const getAllDeals = async (
     return response;
   } catch (error) {
     const errorMessage = 'Failed to fetch deals';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -110,7 +110,7 @@ export const getDeal = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Error fetching deal';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -127,7 +127,7 @@ export const addDealToBookmark = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to save deal';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -148,7 +148,7 @@ export const deleteDealFromBookmarks = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to delete deal from saved';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
