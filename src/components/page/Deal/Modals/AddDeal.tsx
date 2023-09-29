@@ -7,22 +7,26 @@ import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { UpdateInvestment } from '@/actions/investments';
+import { format } from 'date-fns';
 
 const validationSchema = z.object({
-  dealDate: z.date(),
+  dateOfInvestment: z.date(),
   totalInvested: z.string(),
 });
 
 type ValidationSchema = z.infer<typeof validationSchema>;
 
 interface AddDealModalProps extends Omit<ModalProps, 'children' | 'onSubmit'> {
-  onSubmit: (data: ValidationSchema) => void;
+  onSubmit: (data: UpdateInvestment) => void;
   handleClose: () => void;
+  investmentId: number;
 }
 
 const AddDealModal = ({
   onSubmit,
   handleClose,
+  investmentId,
   ...props
 }: AddDealModalProps) => {
   const classes = useAddDealModalStyles();
@@ -34,10 +38,14 @@ const AddDealModal = ({
   } = useForm<ValidationSchema>({ resolver: zodResolver(validationSchema) });
 
   const allFieldsDirty =
-    'dealDate' in dirtyFields && 'totalInvested' in dirtyFields;
+    'dateOfInvestment' in dirtyFields && 'totalInvested' in dirtyFields;
 
-  const onFormSubmit = handleSubmit(data => {
-    onSubmit(data);
+  const onFormSubmit = handleSubmit(async data => {
+    await onSubmit({
+      ...data,
+      id: investmentId,
+      dateOfInvestment: format(data.dateOfInvestment, 'MM/dd/yyyy'),
+    });
     handleClose();
   });
   return (
@@ -52,7 +60,7 @@ const AddDealModal = ({
             <CustomDateRangePicker
               topLabel="Date of Investment"
               control={control}
-              name="dealDate"
+              name="dateOfInvestment"
             />
           </Box>
           <Input

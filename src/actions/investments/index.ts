@@ -52,13 +52,13 @@ export const createInvestment = async ({
       .json();
     return response;
   } catch (error) {
-    const errorMessage = 'Failed to create investment';
+    const errorMessage = 'Failed to add deal';
     customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
 
-interface UpdateInvestment {
+export interface UpdateInvestment {
   dateOfInvestment: string;
   totalInvested: string;
   id: number;
