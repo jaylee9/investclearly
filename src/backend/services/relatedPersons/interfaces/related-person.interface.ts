@@ -5,7 +5,6 @@ export interface RelatedPersonInterface {
   firstName: string;
   middleName: string;
   lastName: string;
-  relationships: string[];
   relationshipClarification: string;
   createdAt: Date;
   updatedAt: Date;

@@ -10,7 +10,6 @@ export const relatedPersonMapper = (
     firstName: relatedPerson.firstName,
     middleName: relatedPerson.middleName,
     lastName: relatedPerson.lastName,
-    relationships: relatedPerson.relationships,
     relationshipClarification: relatedPerson.relationshipClarification,
     locations: relatedPerson.locations
       ? relatedPerson.locations.map(locationMapper)

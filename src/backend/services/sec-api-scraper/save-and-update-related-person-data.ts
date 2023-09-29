@@ -1,7 +1,7 @@
 import { createOrUpdateRelatedPerson } from '../relatedPersons/create-or-update-related-person';
 import { FormD } from './interfaces/form-D.interface';
 
-export const prepareRelatedPersonData = async (offering: FormD) => {
+export const saveAndUpdateRelatedPersonData = async (offering: FormD) => {
   const relatedPersonRecords = [];
 
   for (const relatedPerson of offering?.relatedPersonsList?.relatedPersonInfo ||
@@ -10,8 +10,6 @@ export const prepareRelatedPersonData = async (offering: FormD) => {
       firstName: relatedPerson?.relatedPersonName?.firstName || '',
       middleName: relatedPerson?.relatedPersonName?.middleName || '',
       lastName: relatedPerson?.relatedPersonName?.lastName || '',
-      relationships:
-        relatedPerson?.relatedPersonRelationshipList?.relationship || [],
       relationshipClarification: relatedPerson?.relationshipClarification || '',
       location: relatedPerson?.relatedPersonAddress || '',
     };
@@ -20,7 +18,11 @@ export const prepareRelatedPersonData = async (offering: FormD) => {
     );
 
     if (relatedPersonRecord) {
-      relatedPersonRecords.push(relatedPersonRecord);
+      relatedPersonRecords.push({
+        ...relatedPersonRecord,
+        relatedPersonRoles:
+          relatedPerson?.relatedPersonRelationshipList?.relationship || [],
+      });
     }
   }
 
