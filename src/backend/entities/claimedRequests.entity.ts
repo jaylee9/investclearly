@@ -5,11 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { PolymorphicChildInterface } from 'typeorm-polymorphic/dist/polymorphic.interface';
 import { ClaimTypes } from '../constants/enums/claim-types';
 
 @Entity('claimed_requests')
-export class ClaimedRequests implements PolymorphicChildInterface {
+export class ClaimedRequests {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
