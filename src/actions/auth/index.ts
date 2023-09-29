@@ -58,7 +58,6 @@ export const login = async ({
       })
       .json();
     localStorage.setItem(USER_OBJECT_LOCALSTORAGE_KEY, JSON.stringify(user));
-    toast.success('Login Successful!');
     return user;
   } catch (error) {
     const errorMessage = 'Failed to login';
@@ -194,7 +193,6 @@ export const adminLogin = async ({
       })
       .json();
     localStorage.setItem(ADMIN_OBJECT_LOCALSTORAGE_KEY, JSON.stringify(user));
-    toast.success('Login Successful!');
     return user;
   } catch (error) {
     const errorMessage = 'Failed to login';
