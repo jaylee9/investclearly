@@ -20,6 +20,7 @@ import { Investment } from './investments.entity';
 import { Bookmark } from './bookmark.entity';
 import { Location } from './locations.entity';
 import { Roles } from '../constants/enums/roles';
+import { ClaimedRequests } from './claimedRequests.entity';
 
 @Entity({ name: 'user' })
 export class User {
@@ -140,4 +141,7 @@ export class User {
 
   @PolymorphicParent(() => Location, { eager: false, cascade: true })
   locations: Relation<Location[]>;
+
+  @OneToMany(() => ClaimedRequests, claimedRequests => claimedRequests.user)
+  claimedRequests: Relation<ClaimedRequests>[];
 }

@@ -11,6 +11,8 @@ import { Investment } from '../entities/investments.entity';
 import { Bookmark } from '../entities/bookmark.entity';
 import { Location } from '../entities/locations.entity';
 import { RelatedPerson } from '../entities/relatedPersons.entity';
+import { DealsRelatedPersons } from '../entities/dealsRelatedPersons.entity';
+import { ClaimedRequests } from '../entities/claimedRequests.entity';
 
 loadEnvConfig();
 
@@ -34,6 +36,8 @@ const config = {
     Bookmark,
     Location,
     RelatedPerson,
+    DealsRelatedPersons,
+    ClaimedRequests,
   ],
 };
 
