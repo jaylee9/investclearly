@@ -4,8 +4,8 @@ import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.in
 import { TPaginationInfo } from '@/backend/utils/pagination/paginate-info.type';
 import api from '@/config/ky';
 import queryString from 'query-string';
-import { toast } from 'react-toastify';
 import { serialize } from 'object-to-formdata';
+import customToast, { ToastType } from '@/components/common/Toast/customToast';
 
 export type OptionalCreateReviewInterface = Partial<CreateReviewInterface>;
 
@@ -30,7 +30,7 @@ export const createReview = async (
     return response.json();
   } catch (error) {
     const errorMessage = 'Failed to create review';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -65,7 +65,7 @@ export const getUserReviews = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to fetch reviews';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -79,11 +79,10 @@ export const deleteReview = async ({
     const response: { message: string } = await api
       .delete(`reviews/${id}`)
       .json();
-    toast.success('Review successfuly deleted');
     return response;
   } catch (error) {
     const errorMessage = 'Failed to delete reviews';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -114,12 +113,14 @@ interface UnpublishReviewPayload {
   id: number;
   unpublishReviewMessage?: string;
   reason: string;
+  isReject?: boolean;
 }
 
 export const unpublishReview = async ({
   id,
   unpublishReviewMessage,
   reason,
+  isReject,
 }: UnpublishReviewPayload): Promise<ReviewInterface | { error: string }> => {
   try {
     const response: ReviewInterface = await api
@@ -127,10 +128,18 @@ export const unpublishReview = async ({
         json: { status: 'rejected', reason, unpublishReviewMessage },
       })
       .json();
+    customToast({
+      title: `Review was ${isReject ? 'rejected' : 'unpublished'}`,
+      message: 'Email with explanation was sent to the reviewer ',
+      type: ToastType.SUCCESS,
+    });
+
     return response;
   } catch (error) {
-    const errorMessage = 'Failed to unpublish review';
-    toast.error(errorMessage);
+    const errorMessage = `Failed to ${
+      isReject ? 'reject' : 'unpublish'
+    } review`;
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -149,7 +158,7 @@ export const approveReview = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to approve review';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };

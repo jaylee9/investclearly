@@ -1,10 +1,10 @@
 import { CreateSponsorInterface } from '@/backend/services/sponsors/interfaces/create-sponsor.interface';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
+import customToast, { ToastType } from '@/components/common/Toast/customToast';
 import { ISponsorFilters } from '@/components/page/List/Sponsors/SponsorsFilters';
 import api from '@/config/ky';
 import { serialize } from 'object-to-formdata';
 import queryString from 'query-string';
-import { toast } from 'react-toastify';
 
 interface ISponsorActionFilters extends ISponsorFilters {
   page: number;
@@ -56,7 +56,7 @@ export const getAllSponsors = async (
     return response;
   } catch (error) {
     const errorMessage = 'Failed to fetch sponsors';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -87,7 +87,7 @@ export const getSponsor = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to fetch sponsor';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -104,7 +104,7 @@ export const addSponsorToBookmark = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to save sponsor';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -125,7 +125,7 @@ export const deleteSponsorFromBookmarks = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to delete sponsor from saved';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };

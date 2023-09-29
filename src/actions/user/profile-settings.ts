@@ -1,5 +1,6 @@
 import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
 import { UpdateProfileSettingsInterface } from '@/backend/services/users/interfaces/update-profile-settings.interface';
+import customToast, { ToastType } from '@/components/common/Toast/customToast';
 import api from '@/config/ky';
 import { serialize } from 'object-to-formdata';
 
@@ -29,6 +30,8 @@ export const updateProfileSettings = async (
       .json();
     return response;
   } catch (error) {
-    return { error: 'Failed to update profile settings' };
+    const errorMessage = 'Failed to update profile settings';
+    customToast({ title: errorMessage, type: ToastType.ERROR });
+    return { error: errorMessage };
   }
 };

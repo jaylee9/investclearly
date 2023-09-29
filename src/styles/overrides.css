@@ -135,3 +135,18 @@
 .text-area-error {
   border: 1px solid #d72638 !important;
 }
+
+.Toastify__toast {
+  padding: 0 !important;
+  border-radius: 8px !important;
+}
+
+.Toastify__toast-body {
+  padding: 0 !important;
+  flex: inherit !important;
+  margin: 0 !important;
+}
+
+.Toastify__toast-body > div {
+  height: 100%;
+}

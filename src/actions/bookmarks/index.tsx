@@ -1,9 +1,9 @@
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import { TPaginationInfo } from '@/backend/utils/pagination/paginate-info.type';
+import customToast, { ToastType } from '@/components/common/Toast/customToast';
 import api from '@/config/ky';
 import queryString from 'query-string';
-import { toast } from 'react-toastify';
 
 interface GetBookmarksInterface {
   search?: string;
@@ -37,7 +37,7 @@ export const getDealsBookmarks = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to fetch saved deals';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -68,7 +68,7 @@ export const getSponsorsBookmarks = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to fetch saved sponsors';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -89,7 +89,7 @@ export const deleteDealBookmark = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to remove deal from saved';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -110,7 +110,7 @@ export const deleteSponsorBookmark = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to remove sponsor from saved';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
