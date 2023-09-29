@@ -165,5 +165,9 @@ export const useUnpublishReviewModalStyles = () => {
         width: '50%',
       },
     },
+    unpublishButton: {
+      marginTop: '24px',
+      width: '100%',
+    },
   };
 };
