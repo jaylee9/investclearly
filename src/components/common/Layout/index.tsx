@@ -12,7 +12,7 @@ import {
 import { HeaderProps } from '@/hooks/useHeaderProps';
 import Logo, { LogoVariant } from '@/assets/components/Logo';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, Slide } from 'react-toastify';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
@@ -91,10 +91,11 @@ const Layout = ({
       <CssBaseline />
       <ToastContainer
         position="bottom-center"
-        autoClose={1000000}
+        autoClose={3000}
         hideProgressBar
         icon={false}
         closeButton={<ToastCloseIcon />}
+        transition={Slide}
       />
       {variant === LayoutVariant.Default && (
         <Box sx={defaultStyles.root}>
