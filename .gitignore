@@ -39,4 +39,4 @@ dist-ssr
 /.env
 
 # vercel files
-/vercel
+.vercel
