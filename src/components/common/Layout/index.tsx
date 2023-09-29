@@ -18,6 +18,7 @@ import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { logout } from '@/actions/auth';
 import { ADMIN_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
+import ToastCloseIcon from '../Toast/ToastCloseIcon';
 
 export enum LayoutVariant {
   Default = 'default',
@@ -88,7 +89,13 @@ const Layout = ({
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ToastContainer position="bottom-center" autoClose={3000} />
+      <ToastContainer
+        position="bottom-center"
+        autoClose={1000000}
+        hideProgressBar
+        icon={false}
+        closeButton={<ToastCloseIcon />}
+      />
       {variant === LayoutVariant.Default && (
         <Box sx={defaultStyles.root}>
           <Box>
