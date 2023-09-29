@@ -20,7 +20,7 @@ export const sendAccountDeactivatedEmail = async (
     dynamicTemplateData: {
       userFirstName: user.firstName,
       userLastName: user.lastName,
-      profilePicture: user.profilePicture || DefaultImages.userImage,
+      profilePicture: DefaultImages.userImage,
       message: deactivationReason,
     },
   };

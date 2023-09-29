@@ -4,8 +4,12 @@ import { getDatabaseConnection } from '../../config/data-source-config';
 import { User } from '../../entities/user.entity';
 import { deleteFile } from '../files/delete-file';
 import { DeleteUserConstants } from '../../../backend/constants/delete-user-constants';
+import { sendAccountDeactivatedEmail } from '../mails/send-account-deactivated-email';
 
-export const deactivateUserAccount = async (user: User) => {
+export const deactivateUserAccount = async (
+  user: User,
+  deactivationReason: string
+) => {
   const connection = await getDatabaseConnection();
   const profilePicture = user.profilePicture;
   const randomPassword = crypto.randomBytes(10).toString('hex');
@@ -44,4 +48,6 @@ export const deactivateUserAccount = async (user: User) => {
   if (profilePicture) {
     await deleteFile(profilePicture);
   }
+
+  await sendAccountDeactivatedEmail(user, deactivationReason);
 };

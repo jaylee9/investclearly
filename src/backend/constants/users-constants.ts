@@ -6,4 +6,5 @@ export const UserConstants = {
     defaultReviewsLimit: 4,
     defaultInvestmentsLimit: 3,
   },
+  withoutFeedback: 'Without feedback',
 };
