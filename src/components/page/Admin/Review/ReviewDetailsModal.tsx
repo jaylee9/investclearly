@@ -43,7 +43,6 @@ const ReviewDetailsModal = ({
       onClose(e, 'backdropClick');
     }
   };
-  console.log(review?.attachments);
 
   return (
     <Modal showCloseIcon={false} {...props}>
