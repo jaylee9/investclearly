@@ -1,11 +1,11 @@
 import { UserInterface } from '@/backend/services/users/interfaces/user.interface';
+import customToast, { ToastType } from '@/components/common/Toast/customToast';
 import {
   ADMIN_OBJECT_LOCALSTORAGE_KEY,
   USER_OBJECT_LOCALSTORAGE_KEY,
 } from '@/config/constants';
 import api from '@/config/ky';
 import { LoginFields, SignUpFields } from '@/types/auth';
-import { toast } from 'react-toastify';
 
 export const signUp = async ({
   firstName,
@@ -22,7 +22,7 @@ export const signUp = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Sign up was failed';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -38,11 +38,14 @@ export const confirmEmail = async ({
         json: { confirmationCode },
       })
       .json();
-    toast.success('Account was succesfully created');
+    customToast({
+      title: 'Account was succesfully created',
+      type: ToastType.SUCCESS,
+    });
     return user;
   } catch (error) {
     const errorMessage = 'Failed to confirm email';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -61,7 +64,7 @@ export const login = async ({
     return user;
   } catch (error) {
     const errorMessage = 'Failed to login';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -80,7 +83,7 @@ export const forgotPassword = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to send forgot password request';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -101,7 +104,7 @@ export const resetPassword = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to reset password';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -121,7 +124,7 @@ export const googleLogin = async ({
     return user;
   } catch (error) {
     const errorMessage = 'Failed to authenticate';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -137,7 +140,7 @@ export const logout = async (): Promise<
     return response;
   } catch (error) {
     const errorMessage = 'Failed to log out';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -158,7 +161,7 @@ export const changePassword = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to change password';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -177,7 +180,7 @@ export const addPassword = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to add password';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -196,7 +199,7 @@ export const adminLogin = async ({
     return user;
   } catch (error) {
     const errorMessage = 'Failed to login';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
