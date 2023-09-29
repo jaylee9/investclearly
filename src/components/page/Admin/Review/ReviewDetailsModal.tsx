@@ -7,6 +7,7 @@ import PlaceholderImage from '@/components/common/PlaceholderImage';
 import { DEFAULT_DEAL_IMAGE, DEFAULT_SPONSOR_IMAGE } from '@/config/constants';
 import CustomRating from '@/components/common/CustomRating';
 import Link from 'next/link';
+import EllipsisText from '@/components/common/EllipsisText';
 
 interface ReviewDetailsModal extends Omit<ModalProps, 'children'> {
   title: string;
@@ -157,16 +158,18 @@ const ReviewDetailsModal = ({
                       <Box key={attachment.id} sx={classes.proof}>
                         <Box sx={classes.proofInfo}>
                           <i className="icon-File" />
-                          {/* mock data */}
                           <Box>
-                            <Typography variant="body1" fontWeight={600}>
-                              Proof.pdf
-                            </Typography>
+                            <EllipsisText
+                              width="300px"
+                              variant="body1"
+                              fontWeight={600}
+                              text={attachment.originalFileName}
+                            />
                             <Typography
                               variant="caption"
                               sx={classes.proofSize}
                             >
-                              2.5 MB
+                              {(attachment.fileSize / 1048576).toFixed(2)}MB
                             </Typography>
                           </Box>
                         </Box>
