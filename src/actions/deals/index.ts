@@ -203,3 +203,33 @@ export const claimDeal = async (
     return { error: errorMessage };
   }
 };
+
+export interface SuggestEditDealPayload {
+  businessEmail: string;
+  businessPhone?: string;
+  message: string;
+  entityId: number;
+}
+
+export const suggestEditDeal = async (
+  payload: SuggestEditDealPayload
+): Promise<{ message: string } | { error: string }> => {
+  try {
+    const response: { message: string } = await api
+      .post('claim-requests', {
+        json: {
+          ...payload,
+          phone: payload.businessPhone || '',
+          jobTitle: '',
+          entityType: 'Deal',
+          claimType: ClaimTypes.suggestEditDeal,
+        },
+      })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to claim deal';
+    customToast({ title: errorMessage, type: ToastType.ERROR });
+    return { error: errorMessage };
+  }
+};

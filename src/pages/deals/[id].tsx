@@ -1,7 +1,9 @@
 import {
+  SuggestEditDealPayload,
   addDealToBookmark,
   deleteDealFromBookmarks,
   getDeal,
+  suggestEditDeal,
 } from '@/actions/deals';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import Button from '@/components/common/Button';
@@ -89,6 +91,10 @@ const DealPage = ({ deal }: DealPageProps) => {
     if ('error' in response) {
       setIsInBookmarks(true);
     }
+  };
+
+  const onSubmitSugestEdit = async (data: SuggestEditDealPayload) => {
+    await suggestEditDeal(data);
   };
 
   return (
@@ -317,7 +323,7 @@ const DealPage = ({ deal }: DealPageProps) => {
               </Button>
             </Box>
             <SuggestEditModal
-              onSubmit={data => console.log(data)}
+              onSubmit={onSubmitSugestEdit}
               open={openModals.suggestEdit}
               handleClose={() => handleCloseModal('suggestEdit')}
             />
