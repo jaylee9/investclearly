@@ -4,7 +4,6 @@ import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.in
 import { TPaginationInfo } from '@/backend/utils/pagination/paginate-info.type';
 import api from '@/config/ky';
 import queryString from 'query-string';
-import { toast } from 'react-toastify';
 import { serialize } from 'object-to-formdata';
 import customToast, { ToastType } from '@/components/common/Toast/customToast';
 
@@ -31,7 +30,7 @@ export const createReview = async (
     return response.json();
   } catch (error) {
     const errorMessage = 'Failed to create review';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -66,7 +65,7 @@ export const getUserReviews = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to fetch reviews';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -80,11 +79,10 @@ export const deleteReview = async ({
     const response: { message: string } = await api
       .delete(`reviews/${id}`)
       .json();
-    toast.success('Review successfuly deleted');
     return response;
   } catch (error) {
     const errorMessage = 'Failed to delete reviews';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -160,7 +158,7 @@ export const approveReview = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to approve review';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
