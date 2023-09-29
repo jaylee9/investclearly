@@ -39,6 +39,26 @@ export const getAllInvestments = async ({
   }
 };
 
+export const createInvestment = async ({
+  dealId,
+}: {
+  dealId: number;
+}): Promise<InvestmentInterface | { error: string }> => {
+  try {
+    const response: InvestmentInterface = await api
+      .post('investments', {
+        json: { dealId },
+      })
+      .json();
+    toast.success('Investment successfuly updated');
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to update investment';
+    toast.error(errorMessage);
+    return { error: errorMessage };
+  }
+};
+
 interface UpdateInvestment {
   dateOfInvestment: string;
   totalInvested: string;
