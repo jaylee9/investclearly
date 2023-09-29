@@ -1,11 +1,11 @@
 {
   "crons": [
     {
-      "path": "/api/cron/send-mail-to-users-with-matched-and-new-deals.ts",
+      "path": "/pages/api/cron/send-mail-to-users-with-matched-and-new-deals.ts",
       "schedule": "00 08 * * 5"
     },
     {
-      "path": "/api/cron/add-new-deals-form-D-by-sec-api-scraper.ts",
+      "path": "/pages/api/cron/add-new-deals-form-D-by-sec-api-scraper.ts",
       "schedule": "*/10 * * * *"
     }
   ]
