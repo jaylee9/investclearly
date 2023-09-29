@@ -1,5 +1,6 @@
 import {
   addSponsorToBookmark,
+  claimSponsor,
   deleteSponsorFromBookmarks,
   getSponsor,
 } from '@/actions/sponsors';
@@ -28,6 +29,7 @@ import { useBreakpoints } from '@/hooks/useBreakpoints';
 import EllipsisText from '@/components/common/EllipsisText';
 import { useRouter } from 'next/router';
 import { useUser } from '@/contexts/User';
+import { ClaimPayload } from '@/types/common';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -208,6 +210,10 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
 
   const dealsDataSliceCondition =
     isMobile && dealsData.length === 3 ? 1 : dealsData.length;
+
+  const onSubmitClaimSponsor = async (data: ClaimPayload) => {
+    await claimSponsor(data);
+  };
 
   return (
     <Layout {...headerProps}>
@@ -494,7 +500,7 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
               <Button onClick={handleOpenModal}>Claim this profile</Button>
             </Box>
             <ClaimCompanyModal
-              onSubmit={data => console.log(data)}
+              onSubmit={onSubmitClaimSponsor}
               open={openClaimModal}
               handleClose={handleCloseModal}
             />

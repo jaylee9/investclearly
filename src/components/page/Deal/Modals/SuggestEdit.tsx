@@ -9,20 +9,22 @@ import CustomTextArea from '@/components/common/TextArea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { STEP1, STEP2 } from '@/config/constants';
+import { useRouter } from 'next/router';
+import { SuggestEditDealPayload } from '@/actions/deals';
 
 const validationSchema = z.object({
-  email: z
+  businessEmail: z
     .string()
     .min(1, 'Email is required field')
     .email('Email must be a valid'),
-  phone: z.string(),
+  businessPhone: z.string(),
   message: z.string().min(1, 'Message is required field'),
 });
 
 type ValidationSchema = z.infer<typeof validationSchema>;
 
 interface AddDealModalProps extends Omit<ModalProps, 'children' | 'onSubmit'> {
-  onSubmit: (data: ValidationSchema) => void;
+  onSubmit: (data: SuggestEditDealPayload) => void;
   handleClose: () => void;
 }
 
@@ -38,19 +40,30 @@ const SuggestEditModal = ({
     formState: { errors },
     reset,
   } = useForm<ValidationSchema>({ resolver: zodResolver(validationSchema) });
+  const router = useRouter();
+  const entityId = Number(router.query.id);
 
   const [step, setStep] = useState(1);
 
-  const onFormSubmit = handleSubmit(data => {
-    onSubmit(data);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onFormSubmit = handleSubmit(async data => {
+    setIsLoading(true);
+    await onSubmit({ ...data, entityId });
     reset();
     setStep(2);
+    setIsLoading(false);
   });
 
   const handleGotIt = () => {
+    if (isLoading) {
+      return;
+    }
     handleClose();
+    reset();
     setStep(1);
   };
+
   return (
     <Modal onClose={handleClose} {...props}>
       <Box sx={classes.root}>
@@ -63,14 +76,14 @@ const SuggestEditModal = ({
                 <Input
                   placeholder="Email"
                   showClearOption={false}
-                  register={register('email')}
-                  errorText={errors.email?.message}
+                  register={register('businessEmail')}
+                  errorText={errors.businessEmail?.message}
                 />
                 <Input
                   placeholder="Phone (optional)"
                   showClearOption={false}
-                  register={register('phone')}
-                  errorText={errors.phone?.message}
+                  register={register('businessPhone')}
+                  errorText={errors.businessPhone?.message}
                 />
                 <CustomTextArea
                   height="120px"
@@ -79,7 +92,11 @@ const SuggestEditModal = ({
                   errorText={errors.message?.message}
                 />
               </Box>
-              <Button type="submit" customStyles={classes.submitButton}>
+              <Button
+                type="submit"
+                customStyles={classes.submitButton}
+                disabled={isLoading}
+              >
                 Send message
               </Button>
             </form>

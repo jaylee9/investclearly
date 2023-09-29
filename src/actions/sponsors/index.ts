@@ -1,8 +1,10 @@
+import { ClaimTypes } from '@/backend/constants/enums/claim-types';
 import { CreateSponsorInterface } from '@/backend/services/sponsors/interfaces/create-sponsor.interface';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import customToast, { ToastType } from '@/components/common/Toast/customToast';
 import { ISponsorFilters } from '@/components/page/List/Sponsors/SponsorsFilters';
 import api from '@/config/ky';
+import { ClaimPayload } from '@/types/common';
 import { serialize } from 'object-to-formdata';
 import queryString from 'query-string';
 
@@ -181,5 +183,26 @@ export const editSponsor = async ({
     return response;
   } catch (error) {
     return { error: 'Failed to edit sponsor' };
+  }
+};
+
+export const claimSponsor = async (
+  payload: ClaimPayload
+): Promise<{ message: string } | { error: string }> => {
+  try {
+    const response: { message: string } = await api
+      .post('claim-requests', {
+        json: {
+          ...payload,
+          entityType: 'Sponsor',
+          claimType: ClaimTypes.claimSponsorProfile,
+        },
+      })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to claim sponsor';
+    customToast({ title: errorMessage, type: ToastType.ERROR });
+    return { error: errorMessage };
   }
 };

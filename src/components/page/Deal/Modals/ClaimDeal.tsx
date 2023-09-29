@@ -9,9 +9,11 @@ import CustomTextArea from '@/components/common/TextArea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { STEP1, STEP2 } from '@/config/constants';
+import { ClaimPayload } from '@/types/common';
+import { useRouter } from 'next/router';
 
 const validationSchema = z.object({
-  email: z
+  businessEmail: z
     .string()
     .min(1, 'Email is required field')
     .email('Email must be a valid'),
@@ -23,7 +25,7 @@ const validationSchema = z.object({
 type ValidationSchema = z.infer<typeof validationSchema>;
 
 interface AddDealModalProps extends Omit<ModalProps, 'children' | 'onSubmit'> {
-  onSubmit: (data: ValidationSchema) => void;
+  onSubmit: (data: ClaimPayload) => void;
   handleClose: () => void;
 }
 
@@ -33,6 +35,8 @@ const ClaimDealModal = ({
   ...props
 }: AddDealModalProps) => {
   const classes = useClaimDealModalStyles();
+  const router = useRouter();
+  const entityId = Number(router.query.id);
   const {
     register,
     handleSubmit,
@@ -41,14 +45,20 @@ const ClaimDealModal = ({
   } = useForm<ValidationSchema>({ resolver: zodResolver(validationSchema) });
 
   const [step, setStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onFormSubmit = handleSubmit(data => {
-    onSubmit(data);
+  const onFormSubmit = handleSubmit(async data => {
+    setIsLoading(true);
+    await onSubmit({ ...data, entityId });
     reset();
     setStep(2);
+    setIsLoading(false);
   });
 
   const onClose = () => {
+    if (isLoading) {
+      return;
+    }
     handleClose();
     reset();
     setStep(1);
@@ -65,8 +75,8 @@ const ClaimDealModal = ({
                 <Input
                   placeholder="Your Business Email"
                   showClearOption={false}
-                  register={register('email')}
-                  errorText={errors.email?.message}
+                  register={register('businessEmail')}
+                  errorText={errors.businessEmail?.message}
                 />
                 <Input
                   placeholder="Your Business Phone"
@@ -87,7 +97,11 @@ const ClaimDealModal = ({
                   errorText={errors.message?.message}
                 />
               </Box>
-              <Button type="submit" customStyles={classes.submitButton}>
+              <Button
+                type="submit"
+                customStyles={classes.submitButton}
+                disabled={isLoading}
+              >
                 Send claim request
               </Button>
             </form>
