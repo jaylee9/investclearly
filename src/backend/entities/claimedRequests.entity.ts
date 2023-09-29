@@ -13,6 +13,9 @@ export class ClaimedRequests {
   id: number;
 
   @Column({ type: 'int', nullable: false })
+  userId: number;
+
+  @Column({ type: 'int', nullable: false })
   entityId: number;
 
   @Column({ type: 'varchar', nullable: false })
