@@ -67,15 +67,7 @@ const TopRatedSponsorsBlock: FC<TopRatedSponsorsBlockProps> = ({
             </Box>
             {isDesktop && (
               <Link href="/list?type=sponsors">
-                <Button variant="secondary">
-                  <Typography
-                    variant="body1"
-                    sx={viewAllLink}
-                    padding="0px 24px"
-                  >
-                    View all sponsors
-                  </Typography>
-                </Button>
+                <Button variant="secondary">View all sponsors</Button>
               </Link>
             )}
           </Box>
