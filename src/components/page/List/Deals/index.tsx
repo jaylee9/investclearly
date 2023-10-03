@@ -73,7 +73,7 @@ const DealsComponent = ({
 }: DealsComponentProps) => {
   const classes = useDealsComponentStyles();
   const router = useRouter();
-  const { isMobile, isDesktop } = useBreakpoints();
+  const { isMobile, isDesktop, isBreakpointsLoading } = useBreakpoints();
   const [isDealsFilterMobile, setIsDealsFilterMobile] = useState(false);
   const [dealsData, setDealsData] = useState(dealsResponse);
   const [orderDirection, setOrderDirection] = useState<'DESC' | 'ASC'>('DESC');
@@ -105,14 +105,15 @@ const DealsComponent = ({
       to: dealsResponse.rangeData.maxFee,
     },
     min_investment: {
-      from: dealsResponse.rangeData.minInvestment,
-      to: dealsResponse.rangeData.maxInvestment,
+      from: Number(dealsResponse.rangeData.minInvestment),
+      to: Number(dealsResponse.rangeData.maxInvestment),
     },
     preffered_return: {
       from: dealsResponse.rangeData.minPreferredReturn,
       to: dealsResponse.rangeData.maxPreferredReturn,
     },
   };
+
   const assetClassesArray = Object.values(AssetClasses);
   const regionsArray = Object.values(Regions);
   const asset_classes = assetClassesArray.filter(
@@ -166,6 +167,7 @@ const DealsComponent = ({
         }
       },
       keepPreviousData: true,
+      initialData: dealsResponse,
     }
   );
 
@@ -329,6 +331,10 @@ const DealsComponent = ({
       });
     }
   }, []);
+
+  if (isBreakpointsLoading) {
+    return <Loading sxCustomStyles={{ marginTop: '32px' }} />;
+  }
 
   return (
     <>

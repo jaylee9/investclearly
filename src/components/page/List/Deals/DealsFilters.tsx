@@ -123,6 +123,9 @@ export const DealsFilters: FC<DealsFiltersProps> = ({
       },
     }));
   };
+
+  console.log(filters);
+
   return (
     <Box>
       <CustomAccordion label="Sponsor Rating">
@@ -154,14 +157,14 @@ export const DealsFilters: FC<DealsFiltersProps> = ({
       <CustomAccordion label="Minimum Investment, USD">
         <Box>
           <CustomSlider
-            min={rangeData.minInvestment}
-            max={rangeData.maxInvestment}
+            min={Number(rangeData.minInvestment)}
+            max={Number(rangeData.maxInvestment)}
             onChange={value =>
               handleSliderChange(value as number[], 'min_investment')
             }
             value={[
-              filters.min_investment?.from as number,
-              filters.min_investment?.to as number,
+              Number(filters.min_investment?.from),
+              Number(filters.min_investment?.to),
             ]}
           />
         </Box>
