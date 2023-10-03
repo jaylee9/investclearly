@@ -52,6 +52,8 @@ Share Your Experience With Other Investors"
 
 export const getServerSideProps = async () => {
   const dealsResponse = await getAllDeals({
+    page: 1,
+    pageSize: 4,
     limit: 4,
   });
   const sponsorsResponse = await getAllSponsors({ page: 1, pageSize: 4 });
