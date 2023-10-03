@@ -19,7 +19,6 @@ import { useRouter } from 'next/router';
 import { logout } from '@/actions/auth';
 import { ADMIN_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
 import ToastCloseIcon from '../Toast/ToastCloseIcon';
-import { UserProvider } from '@/contexts/User';
 
 export enum LayoutVariant {
   Default = 'default',
@@ -88,102 +87,100 @@ const Layout = ({
   };
 
   return (
-    <UserProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <ToastContainer
-          position="bottom-center"
-          autoClose={3000}
-          hideProgressBar
-          icon={false}
-          closeButton={<ToastCloseIcon />}
-          transition={Slide}
-        />
-        {variant === LayoutVariant.Default && (
-          <Box sx={defaultStyles.root}>
-            <Box>
-              <Header
-                isSearch={isSearch}
-                isLinks={isLinks}
-                isLogo={isLogo}
-                isShadow={isShadow}
-                isSignIn={isSignIn}
-                logoVariant={logoVariant}
-                title={title}
-                type={type}
-                content={content}
-                onChangeSearch={onChangeSearch}
-                isSticky={isSticky}
-              />
-              {children}
-            </Box>
-            {isFooter && <Footer />}
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar
+        icon={false}
+        closeButton={<ToastCloseIcon />}
+        transition={Slide}
+      />
+      {variant === LayoutVariant.Default && (
+        <Box sx={defaultStyles.root}>
+          <Box>
+            <Header
+              isSearch={isSearch}
+              isLinks={isLinks}
+              isLogo={isLogo}
+              isShadow={isShadow}
+              isSignIn={isSignIn}
+              logoVariant={logoVariant}
+              title={title}
+              type={type}
+              content={content}
+              onChangeSearch={onChangeSearch}
+              isSticky={isSticky}
+            />
+            {children}
           </Box>
-        )}
-        {variant === LayoutVariant.Entry && (
-          <Box sx={entryStyles.root}>
-            <Grid container sx={entryStyles.container}>
-              <Grid item xs={12} xl={4}>
-                <Box sx={entryStyles.leftPartWrapper}>
-                  <Box sx={entryStyles.leftPartContent}>
-                    <Logo variant={LogoVariant.LightText} />
-                    <Box sx={entryStyles.textContent}>
-                      <Typography variant="h1">
-                        Invest Clearly.
-                        <br /> Invest Confidently.
-                      </Typography>
-                      <Typography variant="body1">
-                        Real Estate syndications and funds in one place, paired
-                        with sponsor reviews from investors like you, so that
-                        you can invest with confidence.
-                      </Typography>
-                    </Box>
+          {isFooter && <Footer />}
+        </Box>
+      )}
+      {variant === LayoutVariant.Entry && (
+        <Box sx={entryStyles.root}>
+          <Grid container sx={entryStyles.container}>
+            <Grid item xs={12} xl={4}>
+              <Box sx={entryStyles.leftPartWrapper}>
+                <Box sx={entryStyles.leftPartContent}>
+                  <Logo variant={LogoVariant.LightText} />
+                  <Box sx={entryStyles.textContent}>
+                    <Typography variant="h1">
+                      Invest Clearly.
+                      <br /> Invest Confidently.
+                    </Typography>
+                    <Typography variant="body1">
+                      Real Estate syndications and funds in one place, paired
+                      with sponsor reviews from investors like you, so that you
+                      can invest with confidence.
+                    </Typography>
                   </Box>
                 </Box>
-              </Grid>
-              <Grid item xs={12} xl={8} sx={entryStyles.rightContainer}>
-                <Box sx={entryStyles.rightPartWrapper}>{children}</Box>
-              </Grid>
+              </Box>
             </Grid>
-          </Box>
-        )}
-        {variant === LayoutVariant.Admin && (
-          <Box sx={adminStyles.root}>
-            <Box sx={adminStyles.sideBar}>
-              <Box sx={adminStyles.logoWrapper}>
-                <Logo />
-              </Box>
-              <Box sx={adminStyles.linksWrapper}>
-                {adminLinks.map(link => (
-                  <Link key={link.href} href={`/admin-panel/${link.href}`}>
-                    <Typography
-                      variant="body1"
-                      className={activeAdminLinkClassName(link.href)}
-                    >
-                      <i className={link.icon} />
-                      {link.label}
-                    </Typography>
-                  </Link>
-                ))}
-              </Box>
+            <Grid item xs={12} xl={8} sx={entryStyles.rightContainer}>
+              <Box sx={entryStyles.rightPartWrapper}>{children}</Box>
+            </Grid>
+          </Grid>
+        </Box>
+      )}
+      {variant === LayoutVariant.Admin && (
+        <Box sx={adminStyles.root}>
+          <Box sx={adminStyles.sideBar}>
+            <Box sx={adminStyles.logoWrapper}>
+              <Logo />
             </Box>
-            <Box sx={adminStyles.headerWithContentWrapper}>
-              <Box sx={adminStyles.header}>
-                <Typography
-                  variant="body1"
-                  className="logoutLink"
-                  onClick={handleLogout}
-                >
-                  <i className="icon-Log-out" />
-                  Log out
-                </Typography>
-              </Box>
-              <Box sx={adminStyles.children}>{children}</Box>
+            <Box sx={adminStyles.linksWrapper}>
+              {adminLinks.map(link => (
+                <Link key={link.href} href={`/admin-panel/${link.href}`}>
+                  <Typography
+                    variant="body1"
+                    className={activeAdminLinkClassName(link.href)}
+                  >
+                    <i className={link.icon} />
+                    {link.label}
+                  </Typography>
+                </Link>
+              ))}
             </Box>
           </Box>
-        )}
-      </ThemeProvider>
-    </UserProvider>
+          <Box sx={adminStyles.headerWithContentWrapper}>
+            <Box sx={adminStyles.header}>
+              <Typography
+                variant="body1"
+                className="logoutLink"
+                onClick={handleLogout}
+              >
+                <i className="icon-Log-out" />
+                Log out
+              </Typography>
+            </Box>
+            <Box sx={adminStyles.children}>{children}</Box>
+          </Box>
+        </Box>
+      )}
+    </ThemeProvider>
   );
 };
 

@@ -78,50 +78,53 @@ const DealsBlock: FC = () => {
           </CustomAccordion>
         </>
       ) : (
-        <Grid
-          container
-          spacing={spacingSize}
-          direction={isDesktop ? 'row' : 'column'}
-        >
-          <Grid item xs={6}>
-            <Typography
-              variant="body1"
-              sx={blueTitleStyles}
-              marginBottom="12px"
-            >
-              {assetClassLabel}
-            </Typography>
-            <Box sx={classes.list}>
-              {assetClassesArray.map(asset => (
-                <Link href={asset.href} key={asset.value}>
-                  <Typography variant="body1">
-                    {asset.value}
-                    <i className="icon-Caret-right"></i>
-                  </Typography>
-                </Link>
-              ))}
-            </Box>
+        <Box sx={classes.gridContainerStyles}>
+          <Grid
+            container
+            spacing={spacingSize}
+            direction={isDesktop ? 'row' : 'column'}
+            sx={classes.gridContentStyles}
+          >
+            <Grid item xs={6}>
+              <Typography
+                variant="body1"
+                sx={blueTitleStyles}
+                marginBottom="12px"
+              >
+                {assetClassLabel}
+              </Typography>
+              <Box sx={classes.list}>
+                {assetClassesArray.map(asset => (
+                  <Link href={asset.href} key={asset.value}>
+                    <Typography variant="body1">
+                      {asset.value}
+                      <i className="icon-Caret-right"></i>
+                    </Typography>
+                  </Link>
+                ))}
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography
+                variant="body1"
+                sx={blueTitleStyles}
+                marginBottom="12px"
+              >
+                {regionLabel}
+              </Typography>
+              <Box sx={classes.list}>
+                {regionArray.map(region => (
+                  <Link href={region.href} key={region.value}>
+                    <Typography variant="body1">
+                      {region.value}
+                      <i className="icon-Caret-right"></i>
+                    </Typography>
+                  </Link>
+                ))}
+              </Box>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <Typography
-              variant="body1"
-              sx={blueTitleStyles}
-              marginBottom="12px"
-            >
-              {regionLabel}
-            </Typography>
-            <Box sx={classes.list}>
-              {regionArray.map(region => (
-                <Link href={region.href} key={region.value}>
-                  <Typography variant="body1">
-                    {region.value}
-                    <i className="icon-Caret-right"></i>
-                  </Typography>
-                </Link>
-              ))}
-            </Box>
-          </Grid>
-        </Grid>
+        </Box>
       )}
     </Box>
   );

@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import '../styles/icons.css';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { UserProvider } from '@/contexts/User';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -14,7 +15,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_ID as string}>
       <QueryClientProvider client={queryClient}>
         <div className={inter.className}>
-          <Component {...pageProps} />
+          <UserProvider>
+            <Component {...pageProps} />
+          </UserProvider>
         </div>
       </QueryClientProvider>
     </GoogleOAuthProvider>
