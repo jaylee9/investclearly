@@ -9,11 +9,12 @@ import { serialize } from 'object-to-formdata';
 import queryString from 'query-string';
 
 interface IDealFilters extends IFilters {
-  page: number;
-  pageSize: number;
+  page?: number;
+  pageSize?: number;
   orderDirection?: 'DESC' | 'ASC';
   search?: string;
   sponsorId?: number;
+  limit?: number;
 }
 
 export interface RangeData {
@@ -71,6 +72,7 @@ export const getAllDeals = async (
     sponsorId: filters.sponsorId,
     preferredReturnMin: filters.preffered_return?.from,
     preferredReturnMax: filters.preffered_return?.to,
+    limit: filters.limit,
   };
 
   const stringifiedParameters = queryString.stringify(parameters, {
