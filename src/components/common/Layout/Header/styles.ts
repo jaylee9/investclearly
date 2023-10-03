@@ -30,7 +30,6 @@ const getStyles = ({
         xs: '8px 16px',
         md: '18px 16px',
         lg: '16px 48px',
-        xl: `16px calc(calc(100vw - ${theme.breakpoints.values.xl}px) / 2)`,
       },
       justifyContent: 'space-between',
       alignItems: 'center',
