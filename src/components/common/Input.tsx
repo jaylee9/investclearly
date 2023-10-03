@@ -106,8 +106,7 @@ const Input = ({
             <InputAdornment position="start">
               <i
                 className="icon-Search"
-                style={{ fontSize: 24 }}
-                onClick={handleClear}
+                style={{ fontSize: 24, cursor: 'default' }}
               ></i>
             </InputAdornment>
           ),
