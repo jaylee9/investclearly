@@ -170,6 +170,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
           <Box sx={classes.header}>
             <Input
               isSearch
+              isFilledWhite
               placeholder="Search"
               variant="filled"
               customStyles={classes.searchInput}

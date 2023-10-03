@@ -86,6 +86,9 @@ export const GlobalSearchInput: FC<GlobalSearchInputProps> = ({
                     boxSizing: 'border-box',
                     padding: '12px 40px !important',
                     height: '48px !important',
+                    position: 'relative',
+                    left: '5px',
+                    bottom: '1px',
                   }}
                 >
                   Search

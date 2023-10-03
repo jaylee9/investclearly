@@ -96,7 +96,7 @@ const DealsBlock: FC = () => {
               <Box sx={classes.list}>
                 {assetClassesArray.map(asset => (
                   <Link href={asset.href} key={asset.value}>
-                    <Typography variant="body1">
+                    <Typography variant="body1" sx={classes.link}>
                       {asset.value}
                       <i className="icon-Caret-right"></i>
                     </Typography>
@@ -115,7 +115,7 @@ const DealsBlock: FC = () => {
               <Box sx={classes.list}>
                 {regionArray.map(region => (
                   <Link href={region.href} key={region.value}>
-                    <Typography variant="body1">
+                    <Typography variant="body1" sx={classes.link}>
                       {region.value}
                       <i className="icon-Caret-right"></i>
                     </Typography>

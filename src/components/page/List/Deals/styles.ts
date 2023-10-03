@@ -63,7 +63,6 @@ export const useDealsFiltersStyles = () => {
       display: 'flex',
       width: { xs: 'max-content', lg: '100%' },
       justifyContent: 'space-between',
-      padding: '8px 16px',
       alignItems: 'center',
       backgroundColor: 'white',
     },
@@ -173,7 +172,6 @@ export const useColumnsComponentStyles = () => {
       flexDirection: 'column',
     },
     rightColumnHeader: {
-      rowGap: '8px',
       display: 'flex',
       flexDirection: 'column',
       background: palette.common.white,

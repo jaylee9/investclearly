@@ -33,7 +33,9 @@ export const useInputStyles = ({
           ? palette.common.white
           : palette.background.default,
         borderRadius: '120px',
-        border: `1px solid ${palette.background.default}`,
+        border: `1px solid ${
+          palette.background[isFilledWhite ? 'paper' : 'default']
+        }`,
         transition: 'border 0.3s ease-in-out',
       },
       '& i': {
@@ -493,7 +495,7 @@ export const useAccordionStyles = ({
 }) => {
   const background =
     variant === 'primary' ? palette.common.white : 'transparent';
-  const padding = variant === 'primary' ? '0px 16px' : '0';
+  const padding = variant === 'primary' ? '16px' : '0';
   const borderBottom =
     variant === 'primary' ? `1px solid ${palette.background.paper}` : 'none';
 
@@ -515,6 +517,7 @@ export const useAccordionStyles = ({
         display: 'none',
       },
       '& .MuiAccordionSummary-content': {
+        margin: '0px !important',
         '& .MuiTypography-root': {
           fontWeight: 600,
           color:
@@ -523,8 +526,14 @@ export const useAccordionStyles = ({
               : palette.primary.light,
         },
       },
+      '& .MuiCollapse-root': {
+        paddingTop: '8px',
+      },
+      '& .MuiCollapse-hidden': {
+        display: 'none',
+      },
       '& .MuiAccordionDetails-root': {
-        padding: '0px 0px 16px 0px',
+        padding: '0px',
         display: 'flex',
         flexDirection: 'column',
         gap: '8px',
@@ -537,7 +546,7 @@ export const useAccordionStyles = ({
           variant === 'primary' ? palette.common.black : palette.primary.light,
       },
       '& .MuiAccordionSummary-content.Mui-expanded': {
-        margin: variant === 'primary' ? '20px 0' : '12px 0',
+        margin: variant === 'primary' ? '0' : '12px 0',
       },
     },
   };
@@ -880,6 +889,10 @@ export const useMultiButtonsStyles = () => {
       background: palette.primary.light,
       border: `1px solid ${palette.primary.light}`,
       transition: 'background 0.3s ease, color 0.3s ease, border 0.3s ease',
+      '&:hover': {
+        color: palette.common.white,
+        background: palette.primary.light,
+      },
     },
     label: {
       fontWeight: 600,

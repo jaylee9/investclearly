@@ -327,6 +327,15 @@ export const useDealsBlockStyles = () => {
         },
       },
     },
+    link: {
+      transition: 'color 0.3s ease',
+      '&:hover': {
+        color: theme.palette.primary.light,
+        '& i': {
+          color: `${theme.palette.primary.light} !important`,
+        },
+      },
+    },
     gridContainerStyles: {
       width: '100%',
       display: 'flex',

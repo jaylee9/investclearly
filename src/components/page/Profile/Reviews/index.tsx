@@ -190,8 +190,8 @@ const ProfileReviews = () => {
             <Input
               variant="filled"
               isSearch
+              isFilledWhite
               placeholder="Search"
-              customStyles={classes.searchInput}
               onChange={e => handleSearch(e.target.value)}
               onClear={handleClearSearch}
             />

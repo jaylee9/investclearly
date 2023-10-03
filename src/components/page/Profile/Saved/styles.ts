@@ -8,7 +8,7 @@ export const useSavedDealsStyles = () => {
       padding: { xs: '0px 16px', lg: '0px 24px' },
     },
     root: {
-      padding: { xs: '16px', lg: '24px' },
+      padding: { xs: '16px', lg: '24px 0px' },
       background: palette.common.white,
       minHeight: { xs: '80vh', md: '65vh', lg: 'initial' },
       borderRadius: { xs: '12px', lg: '0px' },
@@ -60,8 +60,11 @@ export const useSavedDealsStyles = () => {
 
 export const useSavedSponsorsStyles = () => {
   return {
+    wrapper: {
+      padding: { xs: '0px 16px', lg: '0px 24px' },
+    },
     root: {
-      padding: { xs: '16px', lg: '24px' },
+      padding: { xs: '16px', lg: '24px 0px' },
       background: palette.common.white,
       minHeight: { xs: '80vh', md: '65vh', lg: 'initial' },
       borderRadius: { xs: '12px', lg: '0px' },

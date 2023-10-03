@@ -12,9 +12,6 @@ export const useProfileReviewsStyles = () => {
       borderRadius: { xs: '12px', lg: '0px' },
       background: palette.common.white,
     },
-    searchInput: {
-      maxWidth: '320px',
-    },
     warning: {
       display: 'flex',
       alignItems: 'center',
