@@ -1,5 +1,6 @@
 import {
   addSponsorToBookmark,
+  claimSponsor,
   deleteSponsorFromBookmarks,
   getSponsor,
 } from '@/actions/sponsors';
@@ -26,6 +27,9 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import EllipsisText from '@/components/common/EllipsisText';
+import { useRouter } from 'next/router';
+import { useUser } from '@/contexts/User';
+import { ClaimPayload } from '@/types/common';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -37,6 +41,8 @@ interface SponsorPageProps {
 
 const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
   const classes = useSponsorPageStyles();
+  const router = useRouter();
+  const { user } = useUser();
   const { isMobile, isDesktop } = useBreakpoints();
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('overview');
@@ -51,10 +57,14 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
   const [isInBookmarks, setIsInBookmarks] = useState(sponsor.isInBookmarks);
 
   const handleAddBookmark = async (entityId: number) => {
-    setIsInBookmarks(true);
-    const response = await addSponsorToBookmark({ entityId });
-    if ('error' in response) {
-      setIsInBookmarks(false);
+    if (!!user) {
+      setIsInBookmarks(true);
+      const response = await addSponsorToBookmark({ entityId });
+      if ('error' in response) {
+        setIsInBookmarks(false);
+      }
+    } else {
+      router.push('/login');
     }
   };
 
@@ -166,7 +176,11 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
     setActiveTab(newValue as ActiveTab);
   };
   const handleOpenModal = () => {
-    setOpenClaimModal(true);
+    if (!!user) {
+      setOpenClaimModal(true);
+    } else {
+      router.push('/login');
+    }
   };
 
   const handleCloseModal = () => {
@@ -174,7 +188,11 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
   };
 
   const handleShowCreateReviewForm = () => {
-    setShowCreateReviewForm(true);
+    if (!!user) {
+      setShowCreateReviewForm(true);
+    } else {
+      router.push('/login');
+    }
   };
 
   const handleHideCreateReviewForm = () => {
@@ -192,6 +210,10 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
 
   const dealsDataSliceCondition =
     isMobile && dealsData.length === 3 ? 1 : dealsData.length;
+
+  const onSubmitClaimSponsor = async (data: ClaimPayload) => {
+    await claimSponsor(data);
+  };
 
   return (
     <Layout {...headerProps}>
@@ -478,7 +500,7 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
               <Button onClick={handleOpenModal}>Claim this profile</Button>
             </Box>
             <ClaimCompanyModal
-              onSubmit={data => console.log(data)}
+              onSubmit={onSubmitClaimSponsor}
               open={openClaimModal}
               handleClose={handleCloseModal}
             />

@@ -6,6 +6,7 @@ import PrivacySettings from './Privacy';
 import Notifications from './Notifications';
 import InvestmentPreferences from './InvestmentPreferences';
 import CredentialsSettings from './Credentials';
+import { useProfileSettingsWrapperStyles } from './styles';
 
 const tabs = [
   { value: 'edit', label: 'Edit Profile', content: <EditProfile /> },
@@ -26,6 +27,8 @@ const tabs = [
 const ProfileSettings = () => {
   const [activeTab, setActiveTab] = useState('edit');
 
+  const classes = useProfileSettingsWrapperStyles();
+
   const handleChangeTab = (
     event: SyntheticEvent<Element, Event>,
     newValue: string | number
@@ -34,8 +37,14 @@ const ProfileSettings = () => {
   };
 
   return (
-    <Box height="90%">
-      <CustomTabs tabs={tabs} onChange={handleChangeTab} value={activeTab} />
+    <Box sx={classes.wrapper}>
+      <CustomTabs
+        tabs={tabs}
+        onChange={handleChangeTab}
+        value={activeTab}
+        isSpacing
+        isDivider
+      />
     </Box>
   );
 };

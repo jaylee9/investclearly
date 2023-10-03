@@ -12,6 +12,43 @@ yarn dev
 pnpm dev
 ```
 
+## Migrations
+
+```bash
+# Run migrations
+$ npm run typeorm:migration-run
+
+# Revert migrations
+$ npm run typeorm:migration-revert
+
+ # Generate migration
+$ npm run typeorm:migration-generate
+ # Create custom migration
+$ npm run typeorm:migration-create
+```
+
+## Vercel
+
+```bash
+# Setup Vercel globally
+$ npm i -g vercel
+
+# Connect repository to vercel
+$ vercel
+
+# Set up and deploy
+choose "y"
+
+# Which scope do you want to deploy to
+choose "Invest Clearly"
+
+# Link to existing project
+choose "y"
+
+# To deploy production
+$ vercel --prod
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.

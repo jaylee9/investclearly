@@ -7,6 +7,7 @@ import {
   Typography,
   SxProps,
   Theme,
+  Divider,
 } from '@mui/material';
 import { useTabsStyles } from './styles';
 
@@ -22,6 +23,8 @@ interface CustomTabsProps extends TabsProps {
   tabs: TabProps[];
   customStyles?: CSSProperties;
   sxCustomRootStyles?: SxProps<Theme>;
+  isDivider?: boolean;
+  isSpacing?: boolean;
 }
 
 const CustomTabs: React.FC<CustomTabsProps> = ({
@@ -29,9 +32,11 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
   tabs,
   customStyles,
   sxCustomRootStyles,
+  isDivider,
+  isSpacing,
   ...props
 }) => {
-  const classes = useTabsStyles();
+  const classes = useTabsStyles(!!isSpacing);
   const activeTab = tabs.find(tab => value === tab.value);
   return (
     <>
@@ -59,6 +64,7 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
           />
         ))}
       </Tabs>
+      {isDivider && <Divider />}
       {activeTab && (
         <React.Fragment key={activeTab.value}>
           {activeTab.content}

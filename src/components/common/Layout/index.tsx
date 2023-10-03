@@ -12,11 +12,13 @@ import {
 import { HeaderProps } from '@/hooks/useHeaderProps';
 import Logo, { LogoVariant } from '@/assets/components/Logo';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, Slide } from 'react-toastify';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { logout } from '@/actions/auth';
+import { ADMIN_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
+import ToastCloseIcon from '../Toast/ToastCloseIcon';
 
 export enum LayoutVariant {
   Default = 'default',
@@ -79,7 +81,7 @@ const Layout = ({
   const handleLogout = async () => {
     const response = await logout();
     if (!('error' in response)) {
-      localStorage.removeItem('admin');
+      localStorage.removeItem(ADMIN_OBJECT_LOCALSTORAGE_KEY);
       push('/admin-panel/login');
     }
   };
@@ -87,7 +89,14 @@ const Layout = ({
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ToastContainer position="bottom-center" autoClose={3000} />
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar
+        icon={false}
+        closeButton={<ToastCloseIcon />}
+        transition={Slide}
+      />
       {variant === LayoutVariant.Default && (
         <Box sx={defaultStyles.root}>
           <Box>

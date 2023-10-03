@@ -13,7 +13,7 @@ interface ReviewCardProps {
   isDelete?: boolean;
   onDelete?: (value: number) => void;
   showVerifyOption?: boolean;
-  onVerify?: (value: number) => void;
+  onVerify?: (value: number, reviewerName: string) => void;
 }
 
 const ReviewCard = ({
@@ -49,9 +49,9 @@ const ReviewCard = ({
     }
   };
 
-  const handleVerify = (value: number) => {
+  const handleVerify = (value: number, reviewerName: string) => {
     if (onVerify) {
-      onVerify(value);
+      onVerify(value, reviewerName);
     }
   };
 
@@ -84,7 +84,7 @@ const ReviewCard = ({
             ],
           }}
         >
-          <i className={review.isVerified ? 'icon-Check' : 'icon-Cross'}></i>
+          {review.isVerified && <i className="icon-Check" />}
           <Typography variant="body1">
             {review.isVerified ? 'Verified' : 'Unverified'} review
           </Typography>
@@ -127,7 +127,15 @@ const ReviewCard = ({
             </Button>
           )}
           {showVerifyOption && !review.isVerified && (
-            <Button variant="secondary" onClick={() => handleVerify(review.id)}>
+            <Button
+              variant="secondary"
+              onClick={() =>
+                handleVerify(
+                  review.id,
+                  `${review.reviewer?.firstName} ${review.reviewer?.lastName}`
+                )
+              }
+            >
               Verify review
             </Button>
           )}

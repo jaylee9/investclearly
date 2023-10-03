@@ -10,6 +10,7 @@ import Button from '@/components/common/Button';
 import { changePassword } from '@/actions/auth';
 import { useState } from 'react';
 import { useUser } from '@/contexts/User';
+import { USER_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
 
 const validationSchema = z
   .object({
@@ -47,7 +48,7 @@ const ChangePasswordModal = ({
 }: Omit<ModalProps, 'children'>) => {
   const classes = useActionPasswordStyles();
 
-  const [isChangedPassword, setIsChangedPassword] = useState(false);
+  const [isChangedPassword, setIsChangedPassword] = useState(true);
   const { setUser } = useUser();
 
   const {
@@ -63,7 +64,7 @@ const ChangePasswordModal = ({
     const { newPassword, password } = data;
     const response = await changePassword({ newPassword, password });
     if (!('error' in response)) {
-      localStorage.removeItem('user');
+      localStorage.removeItem(USER_OBJECT_LOCALSTORAGE_KEY);
       setUser(null);
       setIsChangedPassword(true);
     }
@@ -85,7 +86,7 @@ const ChangePasswordModal = ({
       {...props}
     >
       {isChangedPassword ? (
-        <Box>
+        <Box sx={classes.changedWrapper}>
           <Typography variant="h3" sx={classes.changedTitle}>
             Password changed successfully!
           </Typography>

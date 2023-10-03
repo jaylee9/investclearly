@@ -18,6 +18,7 @@ import { DealsPopover } from './DealsPopover';
 import UserAvatar from '../../UserAvatar';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { useUser } from '@/contexts/User';
+import { useRouter } from 'next/router';
 
 export const links: TModalHandlers = [
   { type: 'review', label: 'Write a Review' },
@@ -49,6 +50,7 @@ const Header = ({
     isSticky,
   });
   const { user } = useUser();
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const openMenu = Boolean(anchorEl);
@@ -85,7 +87,11 @@ const Header = ({
 
   const handleClickLink = (type: string) => {
     if (type === 'review') {
-      handleOpenCreateReviewForm();
+      if (!!user) {
+        handleOpenCreateReviewForm();
+      } else {
+        router.push('/login');
+      }
     }
   };
 

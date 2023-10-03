@@ -9,7 +9,6 @@ import CustomTextArea from '@/components/common/TextArea';
 import Button from '@/components/common/Button';
 import { unpublishReview } from '@/actions/reviews';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 
 const validationSchema = z.object({
   reason: z.string(),
@@ -24,6 +23,7 @@ interface UnpublishReviewModalProps
   extends Omit<ModalProps, 'children' | 'onSubmit'> {
   onSubmitClose: () => void;
   reviewId: number;
+  isReject: boolean;
 }
 
 const reasonOptions = [
@@ -35,11 +35,11 @@ const UnpublishReviewModal = ({
   onSubmitClose,
   onClose,
   reviewId,
+  isReject,
   ...props
 }: UnpublishReviewModalProps) => {
   const classes = useUnpublishReviewModalStyles();
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const handleClose = (e: MouseEvent | object) => {
     if (isLoading) {
@@ -68,7 +68,7 @@ const UnpublishReviewModal = ({
       reason,
       unpublishReviewMessage,
       id: reviewId,
-      router,
+      isReject,
     });
 
     if (!('error' in response)) {
@@ -81,11 +81,11 @@ const UnpublishReviewModal = ({
     <Modal onClose={handleClose} {...props}>
       <Box>
         <Typography variant="h3" sx={classes.title}>
-          Reject Review
+          {isReject ? 'Reject' : 'Unpublish'} Review
         </Typography>
         <Typography variant="body1" sx={classes.subTitle}>
-          Define the reason for rejection. Reviewer will get an email with the
-          explanation.
+          Define the reason {isReject ? 'for rejection' : 'to unpublish review'}
+          . Reviewer will get an email with the explanation.
         </Typography>
         <form onSubmit={onSubmit}>
           <Controller
@@ -109,18 +109,28 @@ const UnpublishReviewModal = ({
             error={!!errors.unpublishReviewMessage?.message}
             errorText={errors.unpublishReviewMessage?.message}
           />
-          <Box sx={classes.buttonsWrapper}>
+          {isReject ? (
+            <Box sx={classes.buttonsWrapper}>
+              <Button
+                variant="secondary"
+                onClick={handleClose}
+                disabled={isLoading}
+              >
+                Cancel
+              </Button>
+              <Button color="error" type="submit" disabled={isLoading}>
+                Reject
+              </Button>
+            </Box>
+          ) : (
             <Button
-              variant="secondary"
-              onClick={handleClose}
+              type="submit"
               disabled={isLoading}
+              sxCustomStyles={classes.unpublishButton}
             >
-              Cancel
+              Unpublish review
             </Button>
-            <Button color="error" type="submit" disabled={isLoading}>
-              Reject
-            </Button>
-          </Box>
+          )}
         </form>
       </Box>
     </Modal>

@@ -1,7 +1,11 @@
 import * as sgMail from '@sendgrid/mail';
 import { MailDataRequired } from '@sendgrid/mail';
 import moment from 'moment';
-import { MailConfig, TemplatesIds } from '../../config/mail-config';
+import {
+  DefaultImages,
+  MailConfig,
+  TemplatesIds,
+} from '../../config/mail-config';
 import { ReviewInterface } from '../reviews/interfaces/review.interface';
 import { MomentConstants } from '../../../backend/constants/moment-constants';
 
@@ -26,7 +30,8 @@ export const sendReviewPublishedEmail = async (
           MomentConstants.dateFormatForModerationReviews
         ),
         sponsorVanityName: reviewRecord.sponsor.vanityName,
-        sponsorBusinessAvatar: reviewRecord.sponsor.businessAvatar,
+        sponsorBusinessAvatar:
+          reviewRecord.sponsor.businessAvatar || DefaultImages.sponsorImage,
         reviewTittle: reviewRecord.title,
         overallComment: reviewRecord.overallComment,
       },

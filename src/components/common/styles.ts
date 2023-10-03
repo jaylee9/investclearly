@@ -281,8 +281,9 @@ export const useDealCardStyles = () => {
       borderRadius: '12px',
       width: '100%',
       background: palette.common.white,
-      gap: '16px',
+      gap: { md: '16px' },
       alignItems: 'stretch',
+      position: { xs: 'relative', md: 'initial' },
       '& img': {
         borderRadius: '12px 0px 0px 12px',
         height: 'auto',
@@ -292,6 +293,9 @@ export const useDealCardStyles = () => {
       padding: { xs: '16px 20px', md: '24px 24px 24px 0px' },
       boxSizing: 'border-box',
       width: '100%',
+      borderRadius: { xs: '0px 0px 12px 12px', md: 'initital' },
+      border: { xs: `1px solid ${palette.background.paper}`, md: 'none' },
+      borderTop: { md: 'none !important' },
     },
     largeHeader: {
       display: 'flex',
@@ -367,6 +371,17 @@ export const useDealCardStyles = () => {
         fontSize: '24px',
         color: palette.primary.light,
       },
+    },
+    bookmarkWrapper: {
+      position: { xs: 'absolute', md: 'inherit' },
+      top: 12,
+      right: 12,
+      display: { xs: 'flex', md: 'block' },
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: { xs: '8px', md: '0px' },
+      background: { xs: 'rgba(26, 31, 40, 0.70)', md: 'transparent' },
+      borderRadius: { xs: '8px', md: 0 },
     },
   };
 };
@@ -586,10 +601,11 @@ export const useLoadingStyles = () => {
   };
 };
 
-export const useTabsStyles = () => {
+export const useTabsStyles = (isSpacing: boolean) => {
   return {
     root: {
       '&.MuiTabs-root': {
+        padding: isSpacing ? { xs: '0px 16px', lg: '0px 24px' } : 'none',
         '& .MuiTabs-indicator': {
           backgroundColor: palette.primary.light,
         },
@@ -668,10 +684,11 @@ export const useSponsorCardStyles = () => {
       borderRadius: '12px',
       width: '100%',
       background: palette.common.white,
-      gap: '16px',
+      gap: { md: '16px' },
       alignItems: 'stretch',
       padding: '24px',
       position: { xs: 'relative', md: 'initial' },
+      border: { xs: `1px solid ${palette.background.paper}`, md: 'none' },
     },
     largeContent: {
       boxSizing: 'border-box',
@@ -759,6 +776,11 @@ export const useSponsorCardStyles = () => {
       cursor: 'pointer',
       width: '24px',
     },
+    bookmarkWrapper: {
+      position: { xs: 'absolute', md: 'initial' },
+      top: 12,
+      right: 12,
+    },
   };
 };
 
@@ -767,13 +789,14 @@ export const useYesNoButtonStyles = () => {
     root: {
       display: 'flex',
       gap: '12px',
+      flexDirection: { xs: 'column', md: 'row' },
     },
     block: {
       padding: '12px 12px 24px 24px',
       border: `1px solid ${palette.background.paper}`,
       cursor: 'pointer',
       borderRadius: '8px',
-      width: '240px',
+      width: { xs: '100%', md: '240px' },
       transition: 'border 0.3s ease-in-out',
     },
     header: {
@@ -918,8 +941,8 @@ export const useReviewCardStyles = ({
       color: palette.success.light,
     },
     unverifiedIndicator: {
-      background: palette.error.contrastText,
-      color: palette.error.main,
+      background: palette.background.default,
+      color: palette.text.secondary,
     },
     ratingWrapper: {
       display: 'flex',
@@ -1136,7 +1159,6 @@ export const useTagSelectorStyles = (isSearch: boolean) => {
 
 export const useFileUploaderStyles = () => {
   return {
-    root: {},
     dropZone: {
       width: '100%',
       borderRadius: '8px',
@@ -1153,6 +1175,11 @@ export const useFileUploaderStyles = () => {
         color: palette.text.secondary,
       },
       marginBottom: '12px',
+    },
+    title: {
+      textAlign: 'center',
+      fontWeight: 600,
+      marginBottom: '4px',
     },
     dropZoneContent: {
       display: 'flex',
@@ -1340,15 +1367,15 @@ export const useEllipsisTextStyles = () => {
   };
 };
 
-export const useBookmarkStyles = () => {
+export const useBookmarkStyles = (isFilledWhite: boolean) => {
   return {
     bookmarkIcon: {
-      color: palette.text.secondary,
+      color: isFilledWhite ? palette.common.white : palette.text.secondary,
       cursor: 'pointer',
       width: '24px',
     },
     filledBookmarkIcon: {
-      color: palette.primary.light,
+      color: isFilledWhite ? palette.common.white : palette.primary.light,
       cursor: 'pointer',
       width: '24px',
     },

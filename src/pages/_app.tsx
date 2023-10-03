@@ -14,11 +14,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_ID as string}>
       <QueryClientProvider client={queryClient}>
-        <UserProvider>
-          <div className={inter.className}>
+        <div className={inter.className}>
+          <UserProvider>
             <Component {...pageProps} />
-          </div>
-        </UserProvider>
+          </UserProvider>
+        </div>
       </QueryClientProvider>
     </GoogleOAuthProvider>
   );

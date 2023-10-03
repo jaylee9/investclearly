@@ -1,7 +1,9 @@
 import {
+  SuggestEditDealPayload,
   addDealToBookmark,
   deleteDealFromBookmarks,
   getDeal,
+  suggestEditDeal,
 } from '@/actions/deals';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import Button from '@/components/common/Button';
@@ -19,6 +21,13 @@ import { useState } from 'react';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import parseCookies from 'next-cookies';
+import { useUser } from '@/contexts/User';
+import { useRouter } from 'next/router';
+import {
+  UpdateInvestment,
+  createInvestment,
+  updateInvestment,
+} from '@/actions/investments';
 
 interface DealPageProps {
   deal: DealInterface;
@@ -26,26 +35,49 @@ interface DealPageProps {
 
 export interface OpenModalsProps {
   claimDeal: boolean;
-  addDeal: boolean;
   suggestEdit: boolean;
 }
 
-export type ModalKeyType = 'claimDeal' | 'addDeal' | 'suggestEdit';
+export type ModalKeyType = 'claimDeal' | 'suggestEdit';
 
 const DealPage = ({ deal }: DealPageProps) => {
   const classes = useDealPageStyles();
   const { isMobile, isDesktop } = useBreakpoints();
+  const { user } = useUser();
+  const router = useRouter();
   const [isInBookmarks, setIsInBookmarks] = useState(deal.isInBookmarks);
+  const [isAddDealLoading, setIsAddDealLoading] = useState(false);
   const [openModals, setOpenModals] = useState<OpenModalsProps>({
     claimDeal: false,
-    addDeal: false,
     suggestEdit: false,
   });
+  const [openAddDealModal, setOpenAddDealModal] = useState<number | null>(null);
+
+  const handleOpenAddDealModal = async () => {
+    if (!!user) {
+      setIsAddDealLoading(true);
+      const response = await createInvestment({
+        dealId: Number(router.query.id),
+      });
+      if (!('error' in response)) {
+        setOpenAddDealModal(response.id);
+      }
+      setIsAddDealLoading(false);
+    } else {
+      router.push('/login');
+    }
+  };
+
+  const handleCloseAddDealModal = () => setOpenAddDealModal(null);
 
   const handleOpenModal = (key: ModalKeyType) => {
-    setOpenModals(prevModals => {
-      return { ...prevModals, [key]: true };
-    });
+    if (!!user) {
+      setOpenModals(prevModals => {
+        return { ...prevModals, [key]: true };
+      });
+    } else {
+      router.push('/login');
+    }
   };
 
   const handleCloseModal = (key: ModalKeyType) => {
@@ -64,10 +96,14 @@ const DealPage = ({ deal }: DealPageProps) => {
   });
 
   const handleAddBookmark = async (entityId: number) => {
-    setIsInBookmarks(true);
-    const response = await addDealToBookmark({ entityId });
-    if ('error' in response) {
-      setIsInBookmarks(false);
+    if (!!user) {
+      setIsInBookmarks(true);
+      const response = await addDealToBookmark({ entityId });
+      if ('error' in response) {
+        setIsInBookmarks(false);
+      }
+    } else {
+      router.push('/login');
     }
   };
 
@@ -77,6 +113,14 @@ const DealPage = ({ deal }: DealPageProps) => {
     if ('error' in response) {
       setIsInBookmarks(true);
     }
+  };
+
+  const onSubmitSugestEdit = async (data: SuggestEditDealPayload) => {
+    await suggestEditDeal(data);
+  };
+
+  const onSubmitAddDeal = async (data: UpdateInvestment) => {
+    await updateInvestment(data);
   };
 
   return (
@@ -285,14 +329,18 @@ const DealPage = ({ deal }: DealPageProps) => {
 
             <Box sx={classes.textWithButton}>
               <Typography variant="body1">Already invested?</Typography>
-              <Button onClick={() => handleOpenModal('addDeal')}>
+              <Button
+                onClick={handleOpenAddDealModal}
+                disabled={isAddDealLoading}
+              >
                 Add to your profile
               </Button>
             </Box>
             <AddDealModal
-              onSubmit={data => console.log(data)}
-              open={openModals.addDeal}
-              handleClose={() => handleCloseModal('addDeal')}
+              onSubmit={onSubmitAddDeal}
+              open={!!openAddDealModal}
+              investmentId={Number(openAddDealModal)}
+              handleClose={handleCloseAddDealModal}
             />
 
             <Box sx={classes.textWithButton}>
@@ -305,7 +353,7 @@ const DealPage = ({ deal }: DealPageProps) => {
               </Button>
             </Box>
             <SuggestEditModal
-              onSubmit={data => console.log(data)}
+              onSubmit={onSubmitSugestEdit}
               open={openModals.suggestEdit}
               handleClose={() => handleCloseModal('suggestEdit')}
             />

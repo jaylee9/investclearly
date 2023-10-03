@@ -20,6 +20,9 @@ const getStyles = () => {
       display: 'flex',
       color: theme.palette.common.white,
       flexDirection: { xs: 'column', lg: 'row' },
+      '& p': {
+        cursor: 'pointer',
+      },
     },
     rights: {
       textAlign: 'center',

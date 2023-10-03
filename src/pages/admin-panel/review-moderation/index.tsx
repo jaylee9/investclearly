@@ -26,7 +26,6 @@ import Button from '@/components/common/Button';
 import ReviewDetailsModal from '@/components/page/Admin/Review/ReviewDetailsModal';
 import UnpublishReviewModal from '@/components/page/Admin/Review/UnpublishReviewModal';
 import withAdminPrivateRoute from '@/HOC/withAdminPrivateRoute';
-import { useRouter } from 'next/router';
 
 const sortOptions = [
   { label: 'Newest Reviews', value: 'DESC' },
@@ -45,10 +44,10 @@ interface OpenActionModals {
   reject: number | null;
 }
 
+type ModalType = 'reject' | 'unpublish';
+
 const ReviewModerationPage = () => {
   const classes = useAdminReviewModerationStyles();
-
-  const router = useRouter();
 
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -275,15 +274,23 @@ const ReviewModerationPage = () => {
       : !!totalPublishedReviews;
 
   //modal logic
-  const handleOpenUnpublishModal = (id: number) =>
+  const handleOpenModal = (key: ModalType, id: number) =>
     setOpenActionModals(prevModals => {
-      return { ...prevModals, unpublish: id };
+      return { ...prevModals, [key]: id };
     });
 
-  const handleCloseActionModal = (key: 'unpublish' | 'reject') =>
+  const handleCloseActionModal = (key: ModalType) =>
     setOpenActionModals(prevModals => {
       return { ...prevModals, [key]: null };
     });
+
+  const openModalKey = () => {
+    if (openActionModals.unpublish) {
+      return 'unpublish';
+    } else if (openActionModals.reject) {
+      return 'reject';
+    }
+  };
 
   const reviewDetailsModalTitle = () => {
     if (!!openModals.manage) {
@@ -305,7 +312,7 @@ const ReviewModerationPage = () => {
   const actionButtons = openModals.publish
     ? (data: ReviewInterface) => (
         <Button
-          onClick={() => handleOpenUnpublishModal(data.id)}
+          onClick={() => handleOpenModal('unpublish', data.id)}
           color="error"
           variant="secondary"
           customStyles={classes.actionButton}
@@ -321,7 +328,7 @@ const ReviewModerationPage = () => {
             variant="secondary"
             customStyles={classes.actionButton}
             disabled={isApproveLoading}
-            onClick={() => handleOpenUnpublishModal(data.id)}
+            onClick={() => handleOpenModal('reject', data.id)}
           >
             <i className="icon-Cross" style={classes.iconCross} />
             Reject
@@ -342,12 +349,12 @@ const ReviewModerationPage = () => {
     await refetchTotalPublishedReviews();
     await refetch();
     handleCloseModal();
-    handleCloseActionModal('unpublish');
+    handleCloseActionModal(openModalKey() as ModalType);
   };
 
   const handleApproveReview = async (id: number) => {
     setIsApproveLoading(true);
-    const response = await approveReview({ id, router });
+    const response = await approveReview({ id });
     if (!('error' in response)) {
       await refetchTotalPublishedReviews();
       await refetchTotalOnModerationReviews();
@@ -419,10 +426,13 @@ const ReviewModerationPage = () => {
                 actionButtons={actionButtons}
               />
               <UnpublishReviewModal
-                open={!!openActionModals.unpublish}
-                onClose={() => handleCloseActionModal('unpublish')}
-                reviewId={Number(openActionModals.unpublish)}
+                open={!!openActionModals.unpublish || !!openActionModals.reject}
+                onClose={() =>
+                  handleCloseActionModal(openModalKey() as ModalType)
+                }
+                reviewId={Number(openActionModals[openModalKey() as ModalType])}
                 onSubmitClose={handleSubmitCloseUnpublishModal}
+                isReject={!!openActionModals.reject}
               />
             </Box>
           ) : (

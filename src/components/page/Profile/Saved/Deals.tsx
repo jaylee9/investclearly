@@ -56,68 +56,72 @@ const SavedDeals = ({ setDealCountChanged }: SavedDealsProps) => {
   const lastItem = data && page * 10 > data?.total ? data?.total : page * 10;
 
   return (
-    <Box sx={classes.root}>
-      {(isLoading || (data?.deals && data?.deals.length > 0) || searchTerm) && (
-        <Input
-          placeholder="Search"
-          isSearch
-          variant="filled"
-          customStyles={classes.searchInput}
-          onChange={e => handleSearch(e.target.value)}
-          onClear={handleClearSearch}
-        />
-      )}
-
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <>
-          {data?.deals && data.deals.length > 0 ? (
-            <Box sx={classes.dealsWrapper}>
-              {data.deals.map(deal => (
-                <DealCard
-                  key={deal.id}
-                  deal={deal}
-                  variant={DealCardVariant.Large}
-                  deleteBookmark={handleDeleteBookmark}
-                  sx={classes.dealCard}
-                />
-              ))}
-            </Box>
-          ) : searchTerm ? (
-            <Box sx={classes.noDealsRoot}>
-              <Typography variant="h4" fontWeight={600}>
-                No deals found
-              </Typography>
-              <Typography variant="body1">
-                Try different search terms
-              </Typography>
-            </Box>
-          ) : (
-            <Box sx={classes.noDealsRoot}>
-              <Typography variant="h4" fontWeight={600}>
-                You don’t have deals saved yet
-              </Typography>
-              <Typography variant="body1">
-                All deals you save will be displayed here
-              </Typography>
-            </Box>
-          )}
-        </>
-      )}
-
-      {data?.deals && data.deals.length > 0 && (
-        <Box sx={classes.pagination}>
-          <Typography variant="caption">
-            Showing {firstItem}-{lastItem} of {data?.total} results
-          </Typography>
-          <CustomPagination
-            page={page}
-            count={data?.lastPage}
-            onChange={(event, value) => handlePaginate(value)}
+    <Box sx={classes.wrapper}>
+      <Box sx={classes.root}>
+        {(isLoading ||
+          (data?.deals && data?.deals.length > 0) ||
+          searchTerm) && (
+          <Input
+            placeholder="Search"
+            isSearch
+            variant="filled"
+            sxCustomStyles={classes.searchInput}
+            onChange={e => handleSearch(e.target.value)}
+            onClear={handleClearSearch}
           />
-        </Box>
-      )}
+        )}
+
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            {data?.deals && data.deals.length > 0 ? (
+              <Box sx={classes.dealsWrapper}>
+                {data.deals.map(deal => (
+                  <DealCard
+                    key={deal.id}
+                    deal={deal}
+                    variant={DealCardVariant.Large}
+                    deleteBookmark={handleDeleteBookmark}
+                    sx={classes.dealCard}
+                  />
+                ))}
+              </Box>
+            ) : searchTerm ? (
+              <Box sx={classes.noDealsRoot}>
+                <Typography variant="h4" fontWeight={600}>
+                  No deals found
+                </Typography>
+                <Typography variant="body1">
+                  Try different search terms
+                </Typography>
+              </Box>
+            ) : (
+              <Box sx={classes.noDealsRoot}>
+                <Typography variant="h4" fontWeight={600}>
+                  You don’t have deals saved yet
+                </Typography>
+                <Typography variant="body1">
+                  All deals you save will be displayed here
+                </Typography>
+              </Box>
+            )}
+          </>
+        )}
+
+        {data?.deals && data.deals.length > 0 && (
+          <Box sx={classes.pagination}>
+            <Typography variant="caption" sx={classes.paginationResults}>
+              Showing {firstItem}-{lastItem} of {data?.total} results
+            </Typography>
+            <CustomPagination
+              page={page}
+              count={data?.lastPage}
+              onChange={(event, value) => handlePaginate(value)}
+            />
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };

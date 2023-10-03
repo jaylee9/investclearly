@@ -1,15 +1,12 @@
+import { ClaimTypes } from '@/backend/constants/enums/claim-types';
 import { CreateSponsorInterface } from '@/backend/services/sponsors/interfaces/create-sponsor.interface';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
+import customToast, { ToastType } from '@/components/common/Toast/customToast';
 import { ISponsorFilters } from '@/components/page/List/Sponsors/SponsorsFilters';
 import api from '@/config/ky';
-import notAuthorizedErrorHandler, {
-  Roles,
-} from '@/helpers/notAuthorizedErrorHandler';
-import { HTTPError } from 'ky';
-import { NextRouter } from 'next/router';
+import { ClaimPayload } from '@/types/common';
 import { serialize } from 'object-to-formdata';
 import queryString from 'query-string';
-import { toast } from 'react-toastify';
 
 interface ISponsorActionFilters extends ISponsorFilters {
   page: number;
@@ -61,7 +58,7 @@ export const getAllSponsors = async (
     return response;
   } catch (error) {
     const errorMessage = 'Failed to fetch sponsors';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -92,7 +89,7 @@ export const getSponsor = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to fetch sponsor';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -109,7 +106,7 @@ export const addSponsorToBookmark = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to save sponsor';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -130,7 +127,7 @@ export const deleteSponsorFromBookmarks = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to delete sponsor from saved';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -147,10 +144,8 @@ export type PartialCreateSponsorInterface =
 
 export const createSponsor = async ({
   payload,
-  router,
 }: {
   payload: PartialCreateSponsorInterface;
-  router: NextRouter;
 }): Promise<SponsorInterface | { error: string }> => {
   const formData = serialize(payload, {
     indices: true,
@@ -165,23 +160,14 @@ export const createSponsor = async ({
       .json();
     return response;
   } catch (error) {
-    if (error instanceof HTTPError) {
-      notAuthorizedErrorHandler({
-        status: error.response.status,
-        router,
-        role: Roles.ADMIN,
-      });
-    }
     return { error: 'Failed to create sponsor' };
   }
 };
 
 export const editSponsor = async ({
   payload,
-  router,
 }: {
   payload: PartialCreateSponsorInterface & { id: number };
-  router: NextRouter;
 }): Promise<SponsorInterface | { error: string }> => {
   const formData = serialize(payload, {
     indices: true,
@@ -196,13 +182,27 @@ export const editSponsor = async ({
       .json();
     return response;
   } catch (error) {
-    if (error instanceof HTTPError) {
-      notAuthorizedErrorHandler({
-        status: error.response.status,
-        router,
-        role: Roles.ADMIN,
-      });
-    }
     return { error: 'Failed to edit sponsor' };
+  }
+};
+
+export const claimSponsor = async (
+  payload: ClaimPayload
+): Promise<{ message: string } | { error: string }> => {
+  try {
+    const response: { message: string } = await api
+      .post('claim-requests', {
+        json: {
+          ...payload,
+          entityType: 'Sponsor',
+          claimType: ClaimTypes.claimSponsorProfile,
+        },
+      })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to claim sponsor';
+    customToast({ title: errorMessage, type: ToastType.ERROR });
+    return { error: errorMessage };
   }
 };

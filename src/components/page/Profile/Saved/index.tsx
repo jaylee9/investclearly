@@ -5,13 +5,15 @@ import {
   getSponsorsBookmarks,
 } from '@/actions/bookmarks';
 import CustomTabs from '@/components/common/CustomTabs';
-import { Box } from '@mui/material';
 import { SyntheticEvent, useState } from 'react';
 import { useQuery } from 'react-query';
 import SavedDeals from './Deals';
 import SavedSponsors from './Sponsors';
+import { Box } from '@mui/material';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 
 const ProfileSaved = () => {
+  const { isDesktop } = useBreakpoints();
   const [activeTab, setActiveTab] = useState('deals');
   const [dealCountChanged, setDealCountChanged] = useState(0);
   const [sponsorCountChanged, setSponsorCountChanged] = useState(0);
@@ -50,7 +52,13 @@ const ProfileSaved = () => {
 
   return (
     <Box>
-      <CustomTabs tabs={tabs} value={activeTab} onChange={handleChangeTab} />
+      <CustomTabs
+        tabs={tabs}
+        value={activeTab}
+        onChange={handleChangeTab}
+        isDivider={isDesktop}
+        isSpacing
+      />
     </Box>
   );
 };

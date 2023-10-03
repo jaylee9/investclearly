@@ -136,7 +136,7 @@ const FileUploader = ({
     );
 
   return (
-    <Box sx={classes.root}>
+    <Box>
       <Fade
         in={
           (files.length < 3 && type === FileType.MULTIPLE_FILE) ||
@@ -152,7 +152,7 @@ const FileUploader = ({
             <Box sx={classes.dropZone}>
               {isLoading ? <Loading /> : <i className="icon-Upload"></i>}
               <Box sx={classes.dropZoneContent}>
-                <Typography variant="body1" fontWeight={600} marginBottom="4px">
+                <Typography variant="body1" sx={classes.title}>
                   Drag and drop or Click to upload files
                 </Typography>
                 {rules}
@@ -175,7 +175,7 @@ const FileUploader = ({
           </Box>
         </Box>
       )}
-      {type === FileType.MULTIPLE_FILE && (
+      {type === FileType.MULTIPLE_FILE && !!files.length && (
         <Box sx={classes.filesWrapper}>
           {files.map(item => (
             <Fade in={true} key={item.id}>

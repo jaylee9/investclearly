@@ -7,6 +7,8 @@ import useDealPageStyles from '@/pages_styles/dealPageStyles';
 import type { ModalKeyType, OpenModalsProps } from '@/pages/deals/[id]';
 import ClaimDealModal from './Modals/ClaimDeal';
 import Link from 'next/link';
+import { ClaimPayload } from '@/types/common';
+import { claimDeal } from '@/actions/deals';
 
 interface DealSponsorProps {
   deal: DealInterface;
@@ -24,6 +26,10 @@ export const DealSponsor: FC<DealSponsorProps> = ({
   const classes = useDealPageStyles();
   const defaultSponsorImage = '/assets/Sponsor-placeholder.png';
 
+  const onSubmit = async (data: ClaimPayload) => {
+    await claimDeal(data);
+  };
+
   return (
     <Box>
       {!deal.sponsor ? (
@@ -37,7 +43,7 @@ export const DealSponsor: FC<DealSponsorProps> = ({
           <ClaimDealModal
             open={openModals.claimDeal}
             handleClose={() => handleCloseModal('claimDeal')}
-            onSubmit={data => console.log(data)}
+            onSubmit={onSubmit}
           />
         </Box>
       ) : (

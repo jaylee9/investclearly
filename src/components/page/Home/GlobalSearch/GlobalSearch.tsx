@@ -176,7 +176,7 @@ const GlobalSearch = ({
                     onClick={handleShowAllLinkClick}
                   >
                     <Button variant="tertiary" customStyles={{ padding: 0 }}>
-                      Show all results for {globalSearchValue}
+                      Show all results
                     </Button>
                   </Link>
                 </Box>
@@ -252,7 +252,7 @@ const GlobalSearch = ({
                     onClick={handleShowAllLinkClick}
                   >
                     <Button variant="tertiary" customStyles={{ padding: 0 }}>
-                      Show all results for {globalSearchValue}
+                      Show all results
                     </Button>
                   </Link>
                 </Box>

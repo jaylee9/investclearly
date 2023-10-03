@@ -1,22 +1,20 @@
+import { ClaimTypes } from '@/backend/constants/enums/claim-types';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { UpdateDealInterface } from '@/backend/services/deals/interfaces/update-deal.interface';
+import customToast, { ToastType } from '@/components/common/Toast/customToast';
 import { IFilters } from '@/components/page/List/Deals/DealsFilters';
 import api from '@/config/ky';
-import notAuthorizedErrorHandler, {
-  Roles,
-} from '@/helpers/notAuthorizedErrorHandler';
-import { HTTPError } from 'ky';
-import { NextRouter } from 'next/router';
+import { ClaimPayload } from '@/types/common';
 import { serialize } from 'object-to-formdata';
 import queryString from 'query-string';
-import { toast } from 'react-toastify';
 
 interface IDealFilters extends IFilters {
-  page: number;
-  pageSize: number;
+  page?: number;
+  pageSize?: number;
   orderDirection?: 'DESC' | 'ASC';
   search?: string;
   sponsorId?: number;
+  limit?: number;
 }
 
 export interface RangeData {
@@ -74,6 +72,7 @@ export const getAllDeals = async (
     sponsorId: filters.sponsorId,
     preferredReturnMin: filters.preffered_return?.from,
     preferredReturnMax: filters.preffered_return?.to,
+    limit: filters.limit,
   };
 
   const stringifiedParameters = queryString.stringify(parameters, {
@@ -89,7 +88,7 @@ export const getAllDeals = async (
     return response;
   } catch (error) {
     const errorMessage = 'Failed to fetch deals';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -115,7 +114,7 @@ export const getDeal = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Error fetching deal';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -132,7 +131,7 @@ export const addDealToBookmark = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to save deal';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -153,7 +152,7 @@ export const deleteDealFromBookmarks = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to delete deal from saved';
-    toast.error(errorMessage);
+    customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
 };
@@ -166,10 +165,8 @@ export type PartialEditDealInterface = Partial<ModifiedUpdateDealInterface>;
 
 export const editDeal = async ({
   payload,
-  router,
 }: {
   payload: PartialEditDealInterface & { id: number };
-  router: NextRouter;
 }): Promise<DealInterface | { error: string }> => {
   const formData = serialize(payload, {
     indices: true,
@@ -184,13 +181,57 @@ export const editDeal = async ({
       .json();
     return response;
   } catch (error) {
-    if (error instanceof HTTPError) {
-      notAuthorizedErrorHandler({
-        status: error.response.status,
-        router,
-        role: Roles.ADMIN,
-      });
-    }
     return { error: 'Failed to edit deal' };
+  }
+};
+
+export const claimDeal = async (
+  payload: ClaimPayload
+): Promise<{ message: string } | { error: string }> => {
+  try {
+    const response: { message: string } = await api
+      .post('claim-requests', {
+        json: {
+          ...payload,
+          entityType: 'Deal',
+          claimType: ClaimTypes.claimDeal,
+        },
+      })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to claim deal';
+    customToast({ title: errorMessage, type: ToastType.ERROR });
+    return { error: errorMessage };
+  }
+};
+
+export interface SuggestEditDealPayload {
+  businessEmail: string;
+  businessPhone?: string;
+  message: string;
+  entityId: number;
+}
+
+export const suggestEditDeal = async (
+  payload: SuggestEditDealPayload
+): Promise<{ message: string } | { error: string }> => {
+  try {
+    const response: { message: string } = await api
+      .post('claim-requests', {
+        json: {
+          ...payload,
+          phone: payload.businessPhone || '',
+          jobTitle: '',
+          entityType: 'Deal',
+          claimType: ClaimTypes.suggestEditDeal,
+        },
+      })
+      .json();
+    return response;
+  } catch (error) {
+    const errorMessage = 'Failed to claim deal';
+    customToast({ title: errorMessage, type: ToastType.ERROR });
+    return { error: errorMessage };
   }
 };
