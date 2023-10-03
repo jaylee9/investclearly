@@ -3,7 +3,7 @@ import { Box, Grid, Typography } from '@mui/material';
 import type { FC } from 'react';
 import DealCard from '@/components/common/DealCard';
 import Button from '@/components/common/Button';
-import { blueTitleStyles, useNewDealsBlockStyles, viewAllLink } from './styles';
+import { blueTitleStyles, useNewDealsBlockStyles } from './styles';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 
@@ -35,11 +35,7 @@ const NewDealsBlock: FC<NewDealsBlockProps> = ({ deals }) => {
         </Grid>
       </Box>
       <Link href="/list?type=deals">
-        <Button variant="secondary">
-          <Typography variant="body1" sx={viewAllLink}>
-            View all deals
-          </Typography>
-        </Button>
+        <Button variant="secondary">View all deals</Button>
       </Link>
     </Box>
   );

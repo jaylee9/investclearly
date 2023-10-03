@@ -35,13 +35,17 @@ export const DealsPopover: FC<DealsPopoverProps> = ({
         open={isArrowRotated}
         handleClose={() => setIsArrowRotated(false)}
         trigger={
-          <p style={classes.link} onClick={handleArrowClick}>
-            <span>Deals</span>
+          <Typography
+            variant="body1"
+            sx={classes.link}
+            onClick={handleArrowClick}
+          >
+            Deals
             <i
               className={`icon-Caret-down ${isArrowRotated ? 'rotate' : ''}`}
               style={classes.arrow}
             ></i>
-          </p>
+          </Typography>
         }
       >
         <Box sx={classes.popoverWrapper}>
