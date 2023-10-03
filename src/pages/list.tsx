@@ -78,7 +78,7 @@ const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
         value={router.query.type as string}
         customStyles={{
           background: theme.palette.common.white,
-          padding: isDesktop ? '0px 48px' : '',
+          padding: isDesktop ? '0px 48px' : '0px 16px',
         }}
       />
     </Layout>

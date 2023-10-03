@@ -172,7 +172,6 @@ export const useColumnsComponentStyles = () => {
       flexDirection: 'column',
     },
     rightColumnHeader: {
-      rowGap: '8px',
       display: 'flex',
       flexDirection: 'column',
       background: palette.common.white,
