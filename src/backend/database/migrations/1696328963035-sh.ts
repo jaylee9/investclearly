@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import { SponsorsSeed } from '../../seeds/sponsors.seed';
-import { LocationTargetTypesConstants } from '@/backend/constants/location-target-types-constants';
+import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 
 export class Sh1696328963035 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
