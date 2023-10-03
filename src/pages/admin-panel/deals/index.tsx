@@ -94,7 +94,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
       accessor: data => (
         <EllipsisText
           variant="body1"
-          text={data.dealSponsor as string}
+          text={data?.sponsor?.legalName as string}
           sx={classes.ellipsisText}
         />
       ),
