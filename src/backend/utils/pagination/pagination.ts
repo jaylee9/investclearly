@@ -8,8 +8,8 @@ export const pagination = <T extends EntityObjectLiteral>(
   searchQuery: SelectQueryBuilder<T>
 ): SelectQueryBuilder<T> => {
   if (pageSize && page) {
-    const skippedItems = (page - 1) * pageSize;
-    return searchQuery.skip(skippedItems).take(pageSize);
+    const skippedItems = (+page - 1) * +pageSize;
+    return searchQuery.skip(+skippedItems).take(+pageSize);
   }
   return searchQuery;
 };
