@@ -124,8 +124,6 @@ export const DealsFilters: FC<DealsFiltersProps> = ({
     }));
   };
 
-  console.log(filters);
-
   return (
     <Box>
       <CustomAccordion label="Sponsor Rating">

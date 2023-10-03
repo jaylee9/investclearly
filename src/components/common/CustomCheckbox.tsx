@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel, SxProps, Theme } from '@mui/material';
 import { CheckboxProps } from '@mui/material';
-import { ChangeEvent, ReactNode, useState } from 'react';
+import { ChangeEvent, ReactNode, useEffect, useState } from 'react';
 import { useCheckboxStyles } from './styles';
 
 interface CustomCheckboxProps extends CheckboxProps {
@@ -27,6 +27,10 @@ const CustomCheckbox = ({
       onChange(e, value);
     }
   };
+
+  useEffect(() => {
+    setIsChecked(!!checked);
+  }, [checked]);
 
   return (
     <FormControlLabel
