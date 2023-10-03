@@ -150,6 +150,10 @@ const getStyles = ({
     popoverItem: {
       padding: '7px 24px',
       color: theme.palette.common.black,
+      transition: 'color 0.3s ease',
+      '&:hover': {
+        color: theme.palette.primary.light,
+      },
     },
     dealsLink: {
       color: theme.palette.primary.light,

@@ -54,10 +54,11 @@ export const DealsPopover: FC<DealsPopoverProps> = ({
               <Link
                 href={item.href}
                 key={item.value}
-                style={classes.popoverItem}
                 onClick={() => setIsArrowRotated(false)}
               >
-                {item.value}
+                <Typography variant="body1" sx={classes.popoverItem}>
+                  {item.value}
+                </Typography>
               </Link>
             ))}
           </Box>
@@ -67,14 +68,20 @@ export const DealsPopover: FC<DealsPopoverProps> = ({
                 href={item.href}
                 key={item.value}
                 onClick={() => setIsArrowRotated(false)}
-                style={classes.popoverItem}
               >
                 {item.value === 'All Deals' ? (
-                  <Button variant="tertiary" customStyles={{ padding: 0 }}>
-                    {item.value}
-                  </Button>
+                  <Box sx={classes.popoverItem}>
+                    <Button
+                      variant="tertiary"
+                      customStyles={{ padding: 0, blockSize: 'fit-content' }}
+                    >
+                      {item.value}
+                    </Button>
+                  </Box>
                 ) : (
-                  item.value
+                  <Typography variant="body1" sx={classes.popoverItem}>
+                    {item.value}
+                  </Typography>
                 )}
               </Link>
             ))}

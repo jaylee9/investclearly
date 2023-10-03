@@ -493,7 +493,7 @@ export const useAccordionStyles = ({
 }) => {
   const background =
     variant === 'primary' ? palette.common.white : 'transparent';
-  const padding = variant === 'primary' ? '0px 16px' : '0';
+  const padding = variant === 'primary' ? '16px' : '0';
   const borderBottom =
     variant === 'primary' ? `1px solid ${palette.background.paper}` : 'none';
 
@@ -515,6 +515,7 @@ export const useAccordionStyles = ({
         display: 'none',
       },
       '& .MuiAccordionSummary-content': {
+        margin: '0px !important',
         '& .MuiTypography-root': {
           fontWeight: 600,
           color:
@@ -523,8 +524,14 @@ export const useAccordionStyles = ({
               : palette.primary.light,
         },
       },
+      '& .MuiCollapse-root': {
+        paddingTop: '8px',
+      },
+      '& .MuiCollapse-hidden': {
+        display: 'none',
+      },
       '& .MuiAccordionDetails-root': {
-        padding: '0px 0px 16px 0px',
+        padding: '0px',
         display: 'flex',
         flexDirection: 'column',
         gap: '8px',
@@ -537,7 +544,7 @@ export const useAccordionStyles = ({
           variant === 'primary' ? palette.common.black : palette.primary.light,
       },
       '& .MuiAccordionSummary-content.Mui-expanded': {
-        margin: variant === 'primary' ? '20px 0' : '12px 0',
+        margin: variant === 'primary' ? '0' : '12px 0',
       },
     },
   };
