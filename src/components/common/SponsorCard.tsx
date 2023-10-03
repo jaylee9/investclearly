@@ -88,6 +88,7 @@ const SponsorCard = ({
         style={{
           borderRadius: '1230px',
           maxHeight: '96px',
+          objectFit: 'cover',
           width: isMobile ? '56px' : '96px',
           height: isMobile ? '56px' : '96px',
         }}

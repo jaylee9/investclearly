@@ -52,7 +52,7 @@ const SponsorsComponent = ({
   setSponsorsCount,
 }: SponsorsComponentProps) => {
   const classes = useSponsorComponentStyles();
-  const { isMobile, isDesktop } = useBreakpoints();
+  const { isMobile, isDesktop, isBreakpointsLoading } = useBreakpoints();
   const defaultFilters = {
     ratings: [],
     primaryAssetClasses: [],
@@ -186,6 +186,7 @@ const SponsorsComponent = ({
         setSponsorsData(data);
       },
       keepPreviousData: true,
+      initialData: sponsorsResponse,
     }
   );
   const handleApplyFilters = () => {
@@ -264,6 +265,10 @@ const SponsorsComponent = ({
       });
     }
   }, []);
+
+  if (isBreakpointsLoading) {
+    return <Loading sxCustomStyles={{ marginTop: '32px' }} />;
+  }
 
   return (
     <ColumnsComponent
