@@ -193,8 +193,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     });
   }
 
-  searchQuery = searchQuery.orderBy('deals.fileDate', orderDirection);
-  const amountDeals = await searchQuery.getCount();
+  searchQuery = searchQuery.orderBy('deals.createdAt', orderDirection);
 
   searchQuery = pagination(pageSize, page, searchQuery);
 
@@ -202,6 +201,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     searchQuery = searchQuery.limit(limit);
   }
 
+  const amountDeals = await searchQuery.getCount();
   const deals = await searchQuery.getMany();
   const dealIds = deals.map(el => el.id);
 
