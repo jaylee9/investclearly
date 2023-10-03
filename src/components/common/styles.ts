@@ -33,7 +33,9 @@ export const useInputStyles = ({
           ? palette.common.white
           : palette.background.default,
         borderRadius: '120px',
-        border: `1px solid ${palette.background.default}`,
+        border: `1px solid ${
+          palette.background[isFilledWhite ? 'paper' : 'default']
+        }`,
         transition: 'border 0.3s ease-in-out',
       },
       '& i': {

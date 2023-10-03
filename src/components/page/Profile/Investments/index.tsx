@@ -216,6 +216,7 @@ const ProfileInvestments = () => {
                       onChange={e => handleSearch(e.target.value)}
                       onClear={handleClearSearch}
                       sxCustomStyles={classes.input}
+                      isFilledWhite
                     />
                     <Link href="/list?type=deals">
                       <Button sxCustomStyles={classes.buttonSearchDeals}>

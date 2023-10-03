@@ -64,6 +64,7 @@ const SavedSponsors = ({ setSponsorCountChanged }: SavedSponsorsProps) => {
           <Input
             placeholder="Search"
             isSearch
+            isFilledWhite
             variant="filled"
             sxCustomStyles={classes.searchInput}
             onChange={e => handleSearch(e.target.value)}
