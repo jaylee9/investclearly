@@ -47,60 +47,6 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   } = params;
 
   const connection = await getDatabaseConnection();
-  let averageRatingQuery = connection.manager
-    .createQueryBuilder()
-    .select([
-      'deals.id AS deal_id',
-      'AVG(COALESCE(reviews.overallRating, 0)) AS avg_overall_rating',
-    ])
-    .addSelect('COUNT(DISTINCT reviews.id) AS reviews_count')
-    .from(Deal, 'deals')
-    .leftJoin('deals.reviews', 'reviews', 'reviews.status = :reviewStatus', {
-      reviewStatus: ReviewStatuses.published,
-    })
-    .andHaving(
-      'AVG(COALESCE(reviews.overallRating, 0)) BETWEEN :minRating AND :maxRating',
-      {
-        minRating,
-        maxRating,
-      }
-    );
-
-  if (sponsorId) {
-    averageRatingQuery = averageRatingQuery.andWhere(
-      'deals.sponsorId = :sponsorId',
-      {
-        sponsorId,
-      }
-    );
-  }
-
-  if (entityIds?.length) {
-    averageRatingQuery = averageRatingQuery.andWhere(
-      'deals.id IN (:...entityIds)',
-      {
-        entityIds,
-      }
-    );
-  }
-
-  if (currentUserId) {
-    averageRatingQuery = averageRatingQuery
-      .leftJoinAndMapMany(
-        'deals.bookmarks',
-        Bookmark,
-        'bookmarks',
-        'bookmarks.entityId = deals.id AND bookmarks.entityType = :entityType AND bookmarks.userId = :userId',
-        {
-          entityType: BookmarkConstants.entityTypes.deal,
-          userId: currentUserId,
-        }
-      )
-      .groupBy('deals.id, bookmarks.id');
-  } else {
-    averageRatingQuery = averageRatingQuery.groupBy('deals.id');
-  }
-
   let searchQuery = connection.manager
     .createQueryBuilder()
     .select('deals')
@@ -247,17 +193,73 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     });
   }
 
+  searchQuery = searchQuery.orderBy('deals.fileDate', orderDirection);
+  const amountDeals = await searchQuery.getCount();
+
+  searchQuery = pagination(pageSize, page, searchQuery);
+
   if (limit) {
     searchQuery = searchQuery.limit(limit);
   }
 
-  searchQuery = searchQuery.orderBy('deals.createdAt', orderDirection);
-  const amountDeals = (await searchQuery.getMany()).length;
+  const deals = await searchQuery.getMany();
+  const dealIds = deals.map(el => el.id);
 
-  searchQuery = pagination(pageSize, page, searchQuery);
+  let averageRatingQuery = connection.manager
+    .createQueryBuilder()
+    .select([
+      'deals.id AS deal_id',
+      'AVG(COALESCE(reviews.overallRating, 0)) AS avg_overall_rating',
+    ])
+    .addSelect('COUNT(DISTINCT reviews.id) AS reviews_count')
+    .from(Deal, 'deals')
+    .leftJoin('deals.reviews', 'reviews', 'reviews.status = :reviewStatus', {
+      reviewStatus: ReviewStatuses.published,
+    })
+    .andHaving(
+      'AVG(COALESCE(reviews.overallRating, 0)) BETWEEN :minRating AND :maxRating',
+      {
+        minRating,
+        maxRating,
+      }
+    );
+
+  if (sponsorId) {
+    averageRatingQuery = averageRatingQuery.andWhere(
+      'deals.sponsorId = :sponsorId',
+      {
+        sponsorId,
+      }
+    );
+  }
+
+  if (entityIds?.length || dealIds?.length) {
+    averageRatingQuery = averageRatingQuery.andWhere(
+      'deals.id IN (:...entityIds)',
+      {
+        entityIds: [...entityIds, ...dealIds],
+      }
+    );
+  }
+
+  if (currentUserId) {
+    averageRatingQuery = averageRatingQuery
+      .leftJoinAndMapMany(
+        'deals.bookmarks',
+        Bookmark,
+        'bookmarks',
+        'bookmarks.entityId = deals.id AND bookmarks.entityType = :entityType AND bookmarks.userId = :userId',
+        {
+          entityType: BookmarkConstants.entityTypes.deal,
+          userId: currentUserId,
+        }
+      )
+      .groupBy('deals.id, bookmarks.id');
+  } else {
+    averageRatingQuery = averageRatingQuery.groupBy('deals.id');
+  }
 
   const averageRatingData = await averageRatingQuery.getRawMany();
-  const deals = await searchQuery.getMany();
 
   const averageRatingMap = averageRatingData.reduce((map, item) => {
     map[item.deal_id] = {
