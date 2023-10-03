@@ -889,6 +889,10 @@ export const useMultiButtonsStyles = () => {
       background: palette.primary.light,
       border: `1px solid ${palette.primary.light}`,
       transition: 'background 0.3s ease, color 0.3s ease, border 0.3s ease',
+      '&:hover': {
+        color: palette.common.white,
+        background: palette.primary.light,
+      },
     },
     label: {
       fontWeight: 600,
