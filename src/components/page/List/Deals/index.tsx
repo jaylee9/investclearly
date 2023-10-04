@@ -141,25 +141,19 @@ const DealsComponent = ({
     defaultFilters
   );
 
-  const payload = Object.entries(changedFiltersAfterApply).length
-    ? {
+  const { isFetching, refetch } = useQuery(
+    ['deals', page, orderDirection, searchValue, appliedFilters],
+    ({ queryKey }) => {
+      const [, , , , filters] = queryKey;
+      const payload = {
         page,
         pageSize: 10,
         orderDirection,
         search: searchValue,
-        ...changedFiltersAfterApply,
-      }
-    : {
-        page,
-        pageSize: 10,
-        orderDirection,
-        search: searchValue,
-        ...dirtyFilters,
+        ...(filters as IFilters),
       };
-
-  const { isLoading, isFetching, refetch } = useQuery(
-    ['deals', page, orderDirection, searchValue],
-    () => getAllDeals(payload),
+      return getAllDeals(payload);
+    },
     {
       onSuccess: data => {
         if (!('error' in data)) {
@@ -173,7 +167,15 @@ const DealsComponent = ({
   const handleApplyFilters = () => {
     setPage(1);
     setAppliedFilters(filters);
-    refetch();
+    refetch({
+      queryKey: [
+        'deals',
+        page,
+        orderDirection,
+        searchValue,
+        filters as IFilters,
+      ],
+    });
     closeDealsFilterMobileHandler();
   };
 
@@ -181,10 +183,6 @@ const DealsComponent = ({
     setFilters(defaultFilters);
     setAppliedFilters(defaultFilters);
   };
-
-  useEffect(() => {
-    refetch();
-  }, [appliedFilters, refetch]);
 
   const firstItem = (page - 1) * 10 + 1;
   const lastItem = page * 10 > dealsData.total ? dealsData.total : page * 10;
@@ -413,8 +411,9 @@ const DealsComponent = ({
           </Box>
         }
         rightColumnHeaderContent={
-          isDesktop && (
-            <>
+          isDesktop &&
+          !!formattedAppliedFilters.length && (
+            <Box sx={classes.appliedFiltersWrapper}>
               {formattedAppliedFilters.map((filter, index) => (
                 <Box sx={classes.appliedFilter} key={index}>
                   <Typography variant="caption">{filter.label}</Typography>
@@ -426,11 +425,11 @@ const DealsComponent = ({
                   />
                 </Box>
               ))}
-            </>
+            </Box>
           )
         }
         rightColumnContent={
-          isLoading || isFetching ? (
+          isFetching ? (
             <Loading sxCustomStyles={{ marginBottom: '16px' }} />
           ) : (
             <Box sx={classes.dealsWrapper}>
