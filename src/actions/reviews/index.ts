@@ -79,9 +79,13 @@ export const deleteReview = async ({
     const response: { message: string } = await api
       .delete(`reviews/${id}`)
       .json();
+    customToast({
+      title: 'Review successfully deleted.',
+      type: ToastType.SUCCESS,
+    });
     return response;
   } catch (error) {
-    const errorMessage = 'Failed to delete reviews';
+    const errorMessage = 'Failed to delete review';
     customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
