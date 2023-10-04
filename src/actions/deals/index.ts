@@ -179,9 +179,15 @@ export const editDeal = async ({
         body: formData,
       })
       .json();
+    customToast({
+      title: 'Deal successfully updated!',
+      type: ToastType.SUCCESS,
+    });
     return response;
   } catch (error) {
-    return { error: 'Failed to edit deal' };
+    const errorMessage = 'Failed to edit deal';
+    customToast({ title: errorMessage, type: ToastType.ERROR });
+    return { error: errorMessage };
   }
 };
 
