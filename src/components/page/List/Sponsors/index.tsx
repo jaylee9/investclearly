@@ -178,7 +178,7 @@ const SponsorsComponent = ({
         search: searchValue,
         ...dirtyFilters,
       };
-  const { isLoading, refetch } = useQuery<GetAllSponsorsResponse>(
+  const { isLoading, isFetching, refetch } = useQuery<GetAllSponsorsResponse>(
     ['sponsors', page, orderDirection, searchValue],
     () => getAllSponsors(payload) as Promise<GetAllSponsorsResponse>,
     {
@@ -374,7 +374,7 @@ const SponsorsComponent = ({
         )
       }
       rightColumnContent={
-        isLoading ? (
+        isLoading || isFetching ? (
           <Loading sxCustomStyles={{ marginBottom: '16px' }} />
         ) : (
           <Box sx={classes.sponsorsWrapper}>
