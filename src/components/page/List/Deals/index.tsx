@@ -141,25 +141,19 @@ const DealsComponent = ({
     defaultFilters
   );
 
-  const payload = Object.entries(changedFiltersAfterApply).length
-    ? {
-        page,
-        pageSize: 10,
-        orderDirection,
-        search: searchValue,
-        ...changedFiltersAfterApply,
-      }
-    : {
-        page,
-        pageSize: 10,
-        orderDirection,
-        search: searchValue,
-        ...dirtyFilters,
-      };
-
   const { isLoading, isFetching, refetch } = useQuery(
-    ['deals', page, orderDirection, searchValue],
-    () => getAllDeals(payload),
+    ['deals', page, orderDirection, searchValue, appliedFilters],
+    ({ queryKey }) => {
+      const [, , , , filters] = queryKey;
+      const payload = {
+        page,
+        pageSize: 10,
+        orderDirection,
+        search: searchValue,
+        ...(filters as IFilters),
+      };
+      return getAllDeals(payload);
+    },
     {
       onSuccess: data => {
         if (!('error' in data)) {
@@ -173,7 +167,15 @@ const DealsComponent = ({
   const handleApplyFilters = () => {
     setPage(1);
     setAppliedFilters(filters);
-    refetch();
+    refetch({
+      queryKey: [
+        'deals',
+        page,
+        orderDirection,
+        searchValue,
+        filters as IFilters,
+      ],
+    });
     closeDealsFilterMobileHandler();
   };
 
