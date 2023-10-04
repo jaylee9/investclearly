@@ -163,24 +163,19 @@ const SponsorsComponent = ({
   };
   const formattedAppliedFilters = formatFilters(changedFiltersAfterApply);
 
-  const payload = Object.entries(changedFiltersAfterApply).length
-    ? {
+  const { isLoading, isFetching, refetch } = useQuery<GetAllSponsorsResponse>(
+    ['sponsors', page, orderDirection, searchValue, appliedFilters],
+    ({ queryKey }) => {
+      const [, , , , filters] = queryKey;
+      const payload = {
         page,
         pageSize: 10,
         orderDirection,
         search: searchValue,
-        ...changedFiltersAfterApply,
-      }
-    : {
-        page,
-        pageSize: 10,
-        orderDirection,
-        search: searchValue,
-        ...dirtyFilters,
+        ...(filters as ISponsorFilters),
       };
-  const { isLoading, refetch } = useQuery<GetAllSponsorsResponse>(
-    ['sponsors', page, orderDirection, searchValue],
-    () => getAllSponsors(payload) as Promise<GetAllSponsorsResponse>,
+      return getAllSponsors(payload) as Promise<GetAllSponsorsResponse>;
+    },
     {
       onSuccess: data => {
         setSponsorsData(data);
@@ -192,7 +187,15 @@ const SponsorsComponent = ({
   const handleApplyFilters = () => {
     setPage(1);
     setAppliedFilters(filters);
-    refetch();
+    refetch({
+      queryKey: [
+        'sponsors',
+        page,
+        orderDirection,
+        searchValue,
+        filters as ISponsorFilters,
+      ],
+    });
     closeSponsorsFilterMobileHandler();
   };
 
@@ -357,8 +360,9 @@ const SponsorsComponent = ({
         </Box>
       }
       rightColumnHeaderContent={
-        isDesktop && (
-          <>
+        isDesktop &&
+        !!formattedAppliedFilters.length && (
+          <Box sx={classes.appliedFiltersWrapper}>
             {formattedAppliedFilters.map((filter, index) => (
               <Box sx={classes.appliedFilter} key={index}>
                 <Typography variant="caption">{filter.label}</Typography>
@@ -370,11 +374,11 @@ const SponsorsComponent = ({
                 />
               </Box>
             ))}
-          </>
+          </Box>
         )
       }
       rightColumnContent={
-        isLoading ? (
+        isLoading || isFetching ? (
           <Loading sxCustomStyles={{ marginBottom: '16px' }} />
         ) : (
           <Box sx={classes.sponsorsWrapper}>

@@ -48,6 +48,13 @@ export const useSponsorComponentStyles = () => {
       gap: '16px',
       marginBottom: '16px',
     },
+    appliedFiltersWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '4px',
+      flexWrap: 'wrap',
+      paddingTop: '8px',
+    },
     appliedFilter: {
       display: 'flex',
       gap: '4px',

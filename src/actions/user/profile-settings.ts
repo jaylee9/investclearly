@@ -28,6 +28,10 @@ export const updateProfileSettings = async (
         body: formData,
       })
       .json();
+    customToast({
+      title: 'Profile settings successfully updated.',
+      type: ToastType.SUCCESS,
+    });
     return response;
   } catch (error) {
     const errorMessage = 'Failed to update profile settings';

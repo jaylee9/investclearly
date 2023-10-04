@@ -36,7 +36,12 @@ const EditDealModal = ({ onClose, deal, refetch, ...props }: EditDealModal) => {
         <Box sx={classes.header}>
           <Box sx={classes.leftPart}>
             <Logo />
-            <Typography variant="body1">Write a Review</Typography>
+            <Box>
+              <Typography variant="body1">Edit Deal</Typography>
+              {deal?.dealLegalName && (
+                <Typography variant="caption">{deal.dealLegalName}</Typography>
+              )}
+            </Box>
           </Box>
           <i className="icon-Cross" onClick={e => handleClose(e)} />
         </Box>

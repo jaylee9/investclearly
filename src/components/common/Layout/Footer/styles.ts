@@ -13,7 +13,7 @@ const getStyles = () => {
       flexDirection: { xs: 'column', lg: 'row' },
       justifyContent: 'space-between',
       alignItems: { xs: 'flex-start', lg: 'center' },
-      marginBottom: { xs: '56px', lg: '96px' },
+      marginBottom: { xs: '56px', lg: '64px' },
     },
     linksWrapper: {
       gap: { xs: '16px', lg: '32px' },

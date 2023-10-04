@@ -35,9 +35,7 @@ const ColumnsComponent = ({
           <Box sx={classes.rightColumnHeaderTitle}>
             {rightColumnHeaderTitle}
           </Box>
-          <Box sx={classes.rightColumnHeaderContent}>
-            {rightColumnHeaderContent}
-          </Box>
+          {rightColumnHeaderContent}
         </Box>
         {rightColumnContent}
         {!!count && <Box sx={classes.paggination}> {paginationComponent}</Box>}

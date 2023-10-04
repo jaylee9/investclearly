@@ -57,7 +57,7 @@ const SponsorCard = ({
         width={72}
         height={72}
         alt="sponsor image"
-        style={classes.baseImage}
+        style={{ ...classes.baseImage, objectFit: 'cover' }}
         defaultImage={DEFAULT_SPONSOR_IMAGE}
       />
       <Link href={`/sponsors/${sponsor.id}`}>

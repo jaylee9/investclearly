@@ -180,9 +180,15 @@ export const editSponsor = async ({
         body: formData,
       })
       .json();
+    customToast({
+      title: 'Sponsors successfully updated!',
+      type: ToastType.SUCCESS,
+    });
     return response;
   } catch (error) {
-    return { error: 'Failed to edit sponsor' };
+    const errorMessage = 'Failed to edit sponsor';
+    customToast({ title: errorMessage, type: ToastType.ERROR });
+    return { error: errorMessage };
   }
 };
 
