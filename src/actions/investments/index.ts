@@ -75,6 +75,10 @@ export const updateInvestment = async ({
         json: { dateOfInvestment, totalInvested },
       })
       .json();
+    customToast({
+      title: 'Investment successfully updated!',
+      type: ToastType.SUCCESS,
+    });
     return response;
   } catch (error) {
     const errorMessage = 'Failed to update investment';
@@ -92,6 +96,10 @@ export const deleteInvestment = async ({
     const response: { message: string } = await api
       .delete(`investments/${id}`)
       .json();
+    customToast({
+      title: 'Investment successfully deleted.',
+      type: ToastType.SUCCESS,
+    });
     return response;
   } catch (error) {
     const errorMessage = 'Failed to delete investment';

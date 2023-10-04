@@ -36,7 +36,7 @@ const validationSchema = z.object({
   website: z.string().min(1, 'Required field').url(),
   specialties: z.array(z.string()),
   description: z.string().min(1, 'Required field'),
-  yearOfFoundation: z.string().min(1, 'Required field'),
+  yearOfFoundation: z.number(),
 });
 
 type ValidationSchema = z.infer<typeof validationSchema>;
@@ -83,7 +83,7 @@ const SponsorDetailsForm = ({
     resolver: zodResolver(validationSchema),
     defaultValues: {
       ...payload,
-      yearOfFoundation: String(payload.yearOfFoundation),
+      yearOfFoundation: Number(payload?.yearOfFoundation),
     } as ValidationSchema,
     mode: 'onBlur',
     reValidateMode: 'onChange',
