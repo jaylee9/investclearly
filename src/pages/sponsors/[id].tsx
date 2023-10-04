@@ -30,6 +30,7 @@ import EllipsisText from '@/components/common/EllipsisText';
 import { useRouter } from 'next/router';
 import { useUser } from '@/contexts/User';
 import { ClaimPayload } from '@/types/common';
+import Link from 'next/link';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -262,11 +263,19 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
                   onClick={() => handleAddBookmark(sponsor.id)}
                 />
               )}
-              <Button variant="secondary">
-                <Box sx={classes.websiteButton}>
-                  <i className="icon-Link"></i>Website
-                </Box>
-              </Button>
+              {sponsor.website && (
+                <Button variant="secondary">
+                  <Link
+                    href={sponsor.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Box sx={classes.websiteButton}>
+                      <i className="icon-Link"></i>Website
+                    </Box>
+                  </Link>
+                </Button>
+              )}
             </Box>
           )}
         </Box>
@@ -308,20 +317,32 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
                   onClick={() => handleAddBookmark(sponsor.id)}
                 />
               )}
-              {!isMobile && (
+              {!isMobile && sponsor.website && (
                 <Button variant="secondary">
-                  <Box sx={classes.websiteButton}>
-                    <i className="icon-Link"></i>Website
-                  </Box>
+                  <Link
+                    href={sponsor.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Box sx={classes.websiteButton}>
+                      <i className="icon-Link"></i>Website
+                    </Box>
+                  </Link>
                 </Button>
               )}
             </Box>
           </Box>
-          {isMobile && (
+          {isMobile && sponsor.website && (
             <Button variant="secondary">
-              <Box sx={classes.websiteButton}>
-                <i className="icon-Link"></i>Website
-              </Box>
+              <Link
+                href={sponsor.website}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Box sx={classes.websiteButton}>
+                  <i className="icon-Link"></i>Website
+                </Box>
+              </Link>
             </Button>
           )}
           <Box sx={classes.infoContent}>
@@ -494,9 +515,7 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
             </Box>
 
             <Box sx={classes.textWithButton}>
-              <Typography variant="body1">
-                Is Cloud Investment Ltd your company?
-              </Typography>
+              <Typography variant="body1">Is this your company?</Typography>
               <Button onClick={handleOpenModal}>Claim this profile</Button>
             </Box>
             <ClaimCompanyModal

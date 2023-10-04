@@ -81,18 +81,20 @@ const EditProfile = () => {
 
   useEffect(() => {
     if (user) {
-      const locationFields: (keyof LocationInterface)[] = [
-        'street1',
-        'street2',
-        'city',
-        'zipCode',
-        'stateOrCountry',
-        'stateOrCountryDescription',
-      ];
-      const location = user.locations[0];
-      locationFields.forEach(field => {
-        setValue(field as keyof ValidationSchema, location[field]);
-      });
+      if (!!user.locations.length) {
+        const locationFields: (keyof LocationInterface)[] = [
+          'street1',
+          'street2',
+          'city',
+          'zipCode',
+          'stateOrCountry',
+          'stateOrCountryDescription',
+        ];
+        const location = user.locations[0];
+        locationFields.forEach(field => {
+          setValue(field as keyof ValidationSchema, location[field]);
+        });
+      }
       setValue('firstName', user.firstName);
       setValue('lastName', user.lastName);
       setValue('regions', user.regions);
