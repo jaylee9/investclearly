@@ -141,7 +141,7 @@ const DealsComponent = ({
     defaultFilters
   );
 
-  const { isLoading, isFetching, refetch } = useQuery(
+  const { isFetching, refetch } = useQuery(
     ['deals', page, orderDirection, searchValue, appliedFilters],
     ({ queryKey }) => {
       const [, , , , filters] = queryKey;
@@ -183,10 +183,6 @@ const DealsComponent = ({
     setFilters(defaultFilters);
     setAppliedFilters(defaultFilters);
   };
-
-  useEffect(() => {
-    refetch();
-  }, [appliedFilters, refetch]);
 
   const firstItem = (page - 1) * 10 + 1;
   const lastItem = page * 10 > dealsData.total ? dealsData.total : page * 10;
@@ -415,8 +411,9 @@ const DealsComponent = ({
           </Box>
         }
         rightColumnHeaderContent={
-          isDesktop && (
-            <>
+          isDesktop &&
+          !!formattedAppliedFilters.length && (
+            <Box sx={classes.appliedFiltersWrapper}>
               {formattedAppliedFilters.map((filter, index) => (
                 <Box sx={classes.appliedFilter} key={index}>
                   <Typography variant="caption">{filter.label}</Typography>
@@ -428,11 +425,11 @@ const DealsComponent = ({
                   />
                 </Box>
               ))}
-            </>
+            </Box>
           )
         }
         rightColumnContent={
-          isLoading || isFetching ? (
+          isFetching ? (
             <Loading sxCustomStyles={{ marginBottom: '16px' }} />
           ) : (
             <Box sx={classes.dealsWrapper}>
