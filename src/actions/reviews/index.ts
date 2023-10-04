@@ -155,6 +155,11 @@ export const approveReview = async ({
         json: { status: 'published' },
       })
       .json();
+    customToast({
+      title: 'Review has been successfully approved.',
+      message: 'Email was sent to the reviewer ',
+      type: ToastType.SUCCESS,
+    });
     return response;
   } catch (error) {
     const errorMessage = 'Failed to approve review';
