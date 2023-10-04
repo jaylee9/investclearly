@@ -81,7 +81,7 @@ const EditProfile = () => {
 
   useEffect(() => {
     if (user) {
-      if (user.locations) {
+      if (!!user.locations.length) {
         const locationFields: (keyof LocationInterface)[] = [
           'street1',
           'street2',
