@@ -157,7 +157,7 @@ const DealsComponent = ({
         ...dirtyFilters,
       };
 
-  const { isLoading, refetch } = useQuery(
+  const { isLoading, isFetching, refetch } = useQuery(
     ['deals', page, orderDirection, searchValue],
     () => getAllDeals(payload),
     {
@@ -166,7 +166,6 @@ const DealsComponent = ({
           setDealsData(data);
         }
       },
-      keepPreviousData: true,
       initialData: dealsResponse,
     }
   );
@@ -431,7 +430,7 @@ const DealsComponent = ({
           )
         }
         rightColumnContent={
-          isLoading ? (
+          isLoading || isFetching ? (
             <Loading sxCustomStyles={{ marginBottom: '16px' }} />
           ) : (
             <Box sx={classes.dealsWrapper}>
