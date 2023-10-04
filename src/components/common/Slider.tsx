@@ -28,7 +28,7 @@ const CustomSlider = ({
 
   const handleInputChange = (index: number, inputValue: string) => {
     const newValue = [...value];
-    newValue[index] = Number(inputValue);
+    newValue[index] = Number(inputValue.replace(/,/g, ''));
     setValue(newValue);
     if (
       newValue[0] >= min &&
@@ -44,19 +44,23 @@ const CustomSlider = ({
     setValue(props.value as number[]);
   }, [props.value]);
 
+  const formatNumber = (num: number): string => {
+    return num.toLocaleString();
+  };
+
   return (
     <Box>
       <Box sx={classes.inputsWrapper}>
         <Input
           sxCustomStyles={{ width: inputWidth }}
-          value={Array.isArray(value) ? String(value[0]) : ''}
+          value={Array.isArray(value) ? formatNumber(value[0]) : ''}
           onChange={e => handleInputChange(0, e.target.value)}
           showClearOption={false}
         />
         <Typography variant="body1">-</Typography>
         <Input
           sxCustomStyles={{ width: inputWidth }}
-          value={Array.isArray(value) ? String(value[1]) : ''}
+          value={Array.isArray(value) ? formatNumber(value[1]) : ''}
           onChange={e => handleInputChange(1, e.target.value)}
           showClearOption={false}
         />
