@@ -58,9 +58,10 @@ const ProfileReviews = () => {
     {
       enabled: !!user,
       onSuccess: (data: GetUserReviewsResponse) =>
-        setCounters(prevCounters => {
-          return { ...prevCounters, published: data.total };
-        }),
+        setCounters(prevCounters => ({
+          ...prevCounters,
+          published: data.total,
+        })),
     }
   );
 
@@ -74,9 +75,10 @@ const ProfileReviews = () => {
     {
       enabled: !!user,
       onSuccess: (data: GetUserReviewsResponse) =>
-        setCounters(prevCounters => {
-          return { ...prevCounters, 'on moderation': data.total };
-        }),
+        setCounters(prevCounters => ({
+          ...prevCounters,
+          'on moderation': data.total,
+        })),
     }
   );
 
@@ -86,9 +88,10 @@ const ProfileReviews = () => {
     {
       enabled: !!user,
       onSuccess: (data: GetUserReviewsResponse) =>
-        setCounters(prevCounters => {
-          return { ...prevCounters, rejected: data.total };
-        }),
+        setCounters(prevCounters => ({
+          ...prevCounters,
+          rejected: data.total,
+        })),
     }
   );
 
