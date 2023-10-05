@@ -26,6 +26,7 @@ const ProfileReviews = () => {
   const [counters, setCounters] = useState({
     published: 0,
     'on moderation': 0,
+    rejected: 0,
   });
   const [user, setUser] = useState<UserInterface | null>(null);
   const [page, setPage] = useState(1);
@@ -57,9 +58,10 @@ const ProfileReviews = () => {
     {
       enabled: !!user,
       onSuccess: (data: GetUserReviewsResponse) =>
-        setCounters(prevCounters => {
-          return { ...prevCounters, published: data.total };
-        }),
+        setCounters(prevCounters => ({
+          ...prevCounters,
+          published: data.total,
+        })),
     }
   );
 
@@ -73,9 +75,23 @@ const ProfileReviews = () => {
     {
       enabled: !!user,
       onSuccess: (data: GetUserReviewsResponse) =>
-        setCounters(prevCounters => {
-          return { ...prevCounters, 'on moderation': data.total };
-        }),
+        setCounters(prevCounters => ({
+          ...prevCounters,
+          'on moderation': data.total,
+        })),
+    }
+  );
+
+  const { isLoading: isLoadingRejectedCountData } = useQuery(
+    ['rejectedReviewsCount'],
+    () => getUserReviews({ userId: user?.id, status: ReviewStatuses.rejected }),
+    {
+      enabled: !!user,
+      onSuccess: (data: GetUserReviewsResponse) =>
+        setCounters(prevCounters => ({
+          ...prevCounters,
+          rejected: data.total,
+        })),
     }
   );
 
@@ -136,15 +152,26 @@ const ProfileReviews = () => {
       label: 'On moderation',
       count: counters['on moderation'],
     },
+    {
+      value: 'rejected',
+      label: 'Rejected',
+      count: counters.rejected,
+    },
   ];
 
   const handlePaginate = (value: number) => setPage(value);
   const firstItem = (page - 1) * 10 + 1;
   const lastItem = data && page * 10 > data?.total ? data?.total : page * 10;
 
-  if (isLoadingPublishedCountData || isLoadingOnModerationCountData || !user) {
+  if (
+    isLoadingPublishedCountData ||
+    isLoadingOnModerationCountData ||
+    !user ||
+    isLoadingRejectedCountData
+  ) {
     return <Loading />;
   }
+
   return (
     <Box>
       <CustomTabs

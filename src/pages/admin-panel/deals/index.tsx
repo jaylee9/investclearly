@@ -17,6 +17,7 @@ import { debounce } from 'lodash';
 import withAdminPrivateRoute from '@/HOC/withAdminPrivateRoute';
 import EditDealModal from '@/components/page/Admin/Deal/EditDealModal';
 import Loading from '@/components/common/Loading';
+import { format } from 'date-fns';
 
 interface AdminDealsPageProps {
   dealsResponse: GetAllDealsResponse;
@@ -94,7 +95,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
       accessor: data => (
         <EllipsisText
           variant="body1"
-          text={data?.sponsor?.legalName as string}
+          text={(data?.sponsor?.legalName || 'N/A') as string}
           sx={classes.ellipsisText}
         />
       ),
@@ -132,7 +133,16 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
           </Typography>
         </Box>
       ),
-      width: '25%',
+      width: '15%',
+    },
+    {
+      label: 'Filled At',
+      accessor: data => (
+        <Typography variant="body1">
+          {format(new Date(data.fileDate), 'MMMM d, yyyy')}
+        </Typography>
+      ),
+      width: '35%',
     },
   ];
 
