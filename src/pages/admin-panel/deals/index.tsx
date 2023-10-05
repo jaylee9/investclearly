@@ -88,7 +88,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
           </Box>
         </Box>
       ),
-      width: '25%',
+      width: '23%',
     },
     {
       label: 'Sponsor',
@@ -99,7 +99,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
           sx={classes.ellipsisText}
         />
       ),
-      width: '20%',
+      width: '17%',
     },
     {
       label: 'Asset Class',
@@ -110,7 +110,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
           sx={classes.ellipsisText}
         />
       ),
-      width: '20%',
+      width: '15%',
     },
     {
       label: 'Target IRR',
@@ -136,13 +136,22 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
       width: '15%',
     },
     {
+      label: 'Published',
+      accessor: data => (
+        <Typography variant="body1">
+          {data.isDealPublished ? 'Yes' : 'No'}
+        </Typography>
+      ),
+      width: '12%',
+    },
+    {
       label: 'Filled At',
       accessor: data => (
         <Typography variant="body1">
           {format(new Date(data.fileDate), 'MMMM d, yyyy')}
         </Typography>
       ),
-      width: '35%',
+      width: '10%',
     },
   ];
 
