@@ -21,9 +21,11 @@ export const sendClaimSponsorRequestEmail = async (
     from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },
     templateId: TemplatesIds.claimSponsor,
     dynamicTemplateData: {
+      frontendUrl: MailConfig.frontendUrl,
       userFirstName: user.firstName,
       userLastName: user.lastName,
       profilePicture: user.profilePicture || DefaultImages.userImage,
+      sponsorId: sponsor.id,
       sponsorLegalName: sponsor.legalName,
       jobTitle: claimedRequest.jobTitle,
       businessEmail: claimedRequest.businessEmail,
