@@ -136,6 +136,15 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
       width: '15%',
     },
     {
+      label: 'Is Published',
+      accessor: data => (
+        <Typography variant="body1">
+          {data.isDealPublished ? 'Yes' : 'No'}
+        </Typography>
+      ),
+      width: '15%',
+    },
+    {
       label: 'Filled At',
       accessor: data => (
         <Typography variant="body1">
