@@ -95,6 +95,18 @@ const ProfileReviews = () => {
     }
   );
 
+  const { isLoading: isLoadingRejectedCountData } = useQuery(
+    ['rejectedReviewsCount'],
+    () => getUserReviews({ userId: user?.id, status: ReviewStatuses.rejected }),
+    {
+      enabled: !!user,
+      onSuccess: (data: GetUserReviewsResponse) =>
+        setCounters(prevCounters => {
+          return { ...prevCounters, rejected: data.total };
+        }),
+    }
+  );
+
   const { data, isLoading, refetch } = useQuery<GetUserReviewsResponse>(
     ['reviews', activeTab, page, searchTerm],
     () => {
