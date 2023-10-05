@@ -15,6 +15,8 @@ export const sendSuggestEditDealEmail = async (
     from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },
     templateId: TemplatesIds.suggestEdit,
     dynamicTemplateData: {
+      frontendUrl: MailConfig.frontendUrl,
+      dealId: deal.id,
       dealLegalName: deal.dealLegalName,
       businessEmail: claimedRequest.businessEmail,
       businessPhone: claimedRequest.businessPhone,
