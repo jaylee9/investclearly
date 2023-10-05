@@ -39,7 +39,7 @@ const useAdminDealsStyles = () => {
       borderRadius: '1320px',
     },
     ellipsisText: {
-      maxWidth: '180px',
+      maxWidth: '150px',
     },
     subTitle: {
       color: palette.text.secondary,
