@@ -463,7 +463,7 @@ const DealsComponent = ({
       <BannerBlock
         title="Can’t find a deal? Let us know!"
         buttonLabel="Contact Us"
-        buttonHref="/contact"
+        buttonHref="mailto:support@investclearly.io?subject=Can’t find a deal"
       />
     </>
   );
