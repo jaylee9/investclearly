@@ -44,6 +44,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     regulations = [],
     entityIds = [],
     currentUserId,
+    showOnlyPublishedDeals = true,
   } = params;
 
   const connection = await getDatabaseConnection();
@@ -78,10 +79,19 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     .leftJoinAndSelect('deals.sponsor', 'sponsor')
     .groupBy('deals.id, attachments.id, locations.id, sponsor.id');
 
-  if (assetClasses?.length) {
-    searchQuery = searchQuery.where('deals.assetClass IN (:...assetClasses)', {
-      assetClasses,
+  if (showOnlyPublishedDeals === true) {
+    searchQuery = searchQuery.andWhere('deals.isDealPublished = :isPublished', {
+      isPublished: true,
     });
+  }
+
+  if (assetClasses?.length) {
+    searchQuery = searchQuery.andWhere(
+      'deals.assetClass IN (:...assetClasses)',
+      {
+        assetClasses,
+      }
+    );
   }
 
   if (statuses?.length) {
