@@ -163,7 +163,7 @@ const ReviewModerationPage = () => {
               <EllipsisText
                 variant="body1"
                 fontWeight={500}
-                text={data.sponsor?.sponsorName as string}
+                text={data.sponsor?.legalName as string}
                 sx={classes.ellipsisText}
               />
             </Link>
