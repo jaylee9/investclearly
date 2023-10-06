@@ -48,23 +48,6 @@ const InvestmentPreferencesForm: React.FC<Props> = ({
         <Typography variant="h5" sx={classes.sectionTitle}>
           {accreditedLabel}
         </Typography>
-        <Controller
-          control={control}
-          name={'investorStatus'}
-          render={({ field: { onChange, value } }) => (
-            <YesNoButtons
-              onChange={onChange}
-              activeValue={String(value)}
-              yesTitle={accreditedYesAnswer}
-              noTitle={accreditedNoAnswer}
-            />
-          )}
-        />
-      </Box>
-      <Box sx={classes.section}>
-        <Typography variant="h5" sx={classes.sectionTitle}>
-          Income and net worth
-        </Typography>
         <Typography variant="body1">Do you have either:</Typography>
         <ul style={classes.list}>
           <li>
@@ -84,13 +67,13 @@ const InvestmentPreferencesForm: React.FC<Props> = ({
         </ul>
         <Controller
           control={control}
-          name={'incomeAndNetWorth'}
+          name={'investorStatus'}
           render={({ field: { onChange, value } }) => (
             <YesNoButtons
               onChange={onChange}
               activeValue={String(value)}
-              yesTitle="Yes, I have"
-              noTitle="No, I do not have "
+              yesTitle={accreditedYesAnswer}
+              noTitle={accreditedNoAnswer}
             />
           )}
         />

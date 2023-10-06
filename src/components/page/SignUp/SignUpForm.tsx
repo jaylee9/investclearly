@@ -61,7 +61,7 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
       token: credenitals.credential as string,
     });
     if (!('error' in response)) {
-      router.push('/');
+      router.push('/onboarding');
     }
   };
   return (

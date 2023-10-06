@@ -116,8 +116,8 @@ const Onboarding = () => {
             control={control}
             handleMultiButtonSelection={handleMultiButtonSelection}
             accreditedLabel="Are you an accredited investor?"
-            accreditedYesAnswer="Yes, I am accredited"
-            accreditedNoAnswer="Not Accredited Investor"
+            accreditedYesAnswer="Yes"
+            accreditedNoAnswer="No"
           />
         </Box>
         <Box sx={classes.buttonsWrapper}>
