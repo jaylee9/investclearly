@@ -48,23 +48,6 @@ const InvestmentPreferencesForm: React.FC<Props> = ({
         <Typography variant="h5" sx={classes.sectionTitle}>
           {accreditedLabel}
         </Typography>
-        <Controller
-          control={control}
-          name={'investorStatus'}
-          render={({ field: { onChange, value } }) => (
-            <YesNoButtons
-              onChange={onChange}
-              activeValue={String(value)}
-              yesTitle={accreditedYesAnswer}
-              noTitle={accreditedNoAnswer}
-            />
-          )}
-        />
-      </Box>
-      <Box sx={classes.section}>
-        <Typography variant="h5" sx={classes.sectionTitle}>
-          Income and net worth
-        </Typography>
         <Typography variant="body1">Do you have either:</Typography>
         <ul style={classes.list}>
           <li>
@@ -77,20 +60,20 @@ const InvestmentPreferencesForm: React.FC<Props> = ({
           </li>
           <li>
             <Typography variant="body1">
-              Household net worth exceeds <span style={classes.bold}>$1M</span>{' '}
-              excluding your primary residence
+              Net worth exceeds <span style={classes.bold}>$1M</span> excluding
+              your primary residence
             </Typography>
           </li>
         </ul>
         <Controller
           control={control}
-          name={'incomeAndNetWorth'}
+          name={'investorStatus'}
           render={({ field: { onChange, value } }) => (
             <YesNoButtons
               onChange={onChange}
               activeValue={String(value)}
-              yesTitle="Yes, I have"
-              noTitle="No, I do not have "
+              yesTitle={accreditedYesAnswer}
+              noTitle={accreditedNoAnswer}
             />
           )}
         />
@@ -145,7 +128,7 @@ const InvestmentPreferencesForm: React.FC<Props> = ({
                 onChange={onChange}
                 min={0}
                 max={10}
-                value={value || [0, 10]}
+                value={[value[0] || 0, value[1] || 10]}
               />
             )}
           />
@@ -162,7 +145,7 @@ const InvestmentPreferencesForm: React.FC<Props> = ({
                 onChange={onChange}
                 min={1000}
                 max={25000}
-                value={value || [1000, 25000]}
+                value={[value[0] || 1000, value[1] || 25000]}
               />
             )}
           />

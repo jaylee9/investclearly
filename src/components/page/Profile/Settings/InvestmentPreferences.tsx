@@ -18,7 +18,6 @@ import { USER_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
 
 const validationSchema = z.object({
   investorStatus: z.string().optional(),
-  incomeAndNetWorth: z.string().optional(),
   assetClasses: z.array(z.string()).optional(),
   regions: z.array(z.string()).optional(),
   holdPeriod: z.array(z.number()).optional(),
@@ -44,8 +43,6 @@ const InvestmentPreferences = () => {
     defaultValues: {
       investorStatus:
         user?.investorStatus === 'Accredited Investor' ? 'yes' : 'no',
-      incomeAndNetWorth:
-        user?.incomeAndNetWorth === 'Yes, I have' ? 'yes' : 'no',
       assetClasses: user?.assetClasses,
       regions: user?.regions,
       holdPeriod: [user?.holdPeriodMin, user?.holdPeriodMax],
@@ -55,13 +52,7 @@ const InvestmentPreferences = () => {
 
   const onSubmit = handleSubmit(async data => {
     setIsLoading(true);
-    const {
-      minInvestment,
-      holdPeriod,
-      incomeAndNetWorth,
-      investorStatus,
-      ...rest
-    } = data;
+    const { minInvestment, holdPeriod, investorStatus, ...rest } = data;
     const formattedUser = sanitizeUserUpdatePayload(
       user as PublicUserInterface
     );
@@ -75,8 +66,6 @@ const InvestmentPreferences = () => {
         investorStatus === 'yes'
           ? 'Accredited Investor'
           : 'Not Accredited Investor',
-      incomeAndNetWorth:
-        incomeAndNetWorth === 'yes' ? 'Yes, I have' : 'No, I do not have',
       ...rest,
     } as UpdateProfileSettingPayload);
     if (!('error' in response)) {

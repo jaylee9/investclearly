@@ -42,6 +42,7 @@ export const confirmEmail = async ({
       title: 'Account was succesfully created',
       type: ToastType.SUCCESS,
     });
+    localStorage.setItem(USER_OBJECT_LOCALSTORAGE_KEY, JSON.stringify(user));
     return user;
   } catch (error) {
     const errorMessage = 'Failed to confirm email';
