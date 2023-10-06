@@ -2,7 +2,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 import { SponsorsSeed } from '../../seeds/sponsors.seed';
 import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 
-export class Sh1696328963035 implements MigrationInterface {
+export class Sh1696582067181 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const sponsors = await SponsorsSeed();
     for await (const sponsor of sponsors) {
