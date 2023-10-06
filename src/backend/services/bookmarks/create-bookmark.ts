@@ -10,7 +10,8 @@ import { getBookmarkById } from './get-bookmark-by-id';
 
 export const createBookmark = async (
   data: DeepPartial<CreateBookmarkInterface>,
-  userId: number
+  userId: number,
+  showOnlyPublishedDeals: boolean
 ) => {
   const connection = await getDatabaseConnection();
   const { entityId, entityType } = data;
@@ -30,7 +31,7 @@ export const createBookmark = async (
   }
 
   if (entityType === BookmarkConstants.entityTypes.deal) {
-    await getDealById(entityId!);
+    await getDealById(entityId!, showOnlyPublishedDeals);
   }
 
   if (entityType === BookmarkConstants.entityTypes.sponsor) {

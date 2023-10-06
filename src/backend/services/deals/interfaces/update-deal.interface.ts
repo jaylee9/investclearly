@@ -32,4 +32,5 @@ export interface UpdateDealInterface {
   stateOrCountryDescription?: string | '';
   zipCode?: string | '';
   sponsorId?: number;
+  isDealPublished: boolean;
 }

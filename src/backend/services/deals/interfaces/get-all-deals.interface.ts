@@ -33,4 +33,5 @@ export interface FindAllDealsInterface {
   limit?: number;
   entityIds?: number[];
   currentUserId?: number;
+  showOnlyPublishedDeals?: boolean;
 }
