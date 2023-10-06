@@ -5,6 +5,7 @@ import { CreateInvestmentInterface } from '../../../backend/services/investments
 import { FindAllInvestmentsInterface } from '../../../backend/services/investments/interfaces/get-all-investments.interface';
 import { createinvestment } from '../../../backend/services/investments/create-investment';
 import { getAllInvestments } from '../../../backend/services/investments/get-all-investments';
+import { dealsVisibilityMiddleware } from '../../../backend/middleware/deals-visibility';
 
 const addInvestment = async (
   request: NextApiRequest,
@@ -18,8 +19,12 @@ const addInvestment = async (
 
   if (user) {
     const userId = user.id;
-
-    const newInvestment = await createinvestment(body, userId);
+    const showOnlyPublishedDeals = dealsVisibilityMiddleware(user);
+    const newInvestment = await createinvestment(
+      body,
+      userId,
+      showOnlyPublishedDeals
+    );
     response.status(201).json(newInvestment);
   }
 };
