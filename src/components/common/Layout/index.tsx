@@ -129,9 +129,8 @@ const Layout = ({
                       <br /> Invest Confidently.
                     </Typography>
                     <Typography variant="body1">
-                      Real Estate syndications and funds in one place, paired
-                      with sponsor reviews from investors like you, so that you
-                      can invest with confidence.
+                      The #1 Platform for Vetting Real Estate Syndications &
+                      Funds. Verified Reviews from Investors Like You
                     </Typography>
                   </Box>
                 </Box>
