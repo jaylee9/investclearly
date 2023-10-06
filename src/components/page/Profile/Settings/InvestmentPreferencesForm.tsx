@@ -60,8 +60,8 @@ const InvestmentPreferencesForm: React.FC<Props> = ({
           </li>
           <li>
             <Typography variant="body1">
-              Household net worth exceeds <span style={classes.bold}>$1M</span>{' '}
-              excluding your primary residence
+              Net worth exceeds <span style={classes.bold}>$1M</span> excluding
+              your primary residence
             </Typography>
           </li>
         </ul>
