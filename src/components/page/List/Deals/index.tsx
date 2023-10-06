@@ -56,7 +56,7 @@ const filtersLabels: Record<FilterLabelKeys, string> = {
   actualIRR: 'Actual IRR, %',
   targetIRR: 'Target IRR, %',
   fees: 'Fees, %',
-  preffered_return: 'Preffered return, %',
+  preffered_return: 'Preferred return, %',
   min_investment: 'Min investment, USD',
 };
 
