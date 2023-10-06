@@ -38,7 +38,7 @@ interface SponsorsComponentProps {
 type FilterArrayKeys = 'ratings' | 'primaryAssetClasses' | 'regionalFocus';
 type FilterCheckedKeys = 'activelyRising';
 const filtersLabels = {
-  activelyRising: 'Actively rising sponsors',
+  activelyRising: 'Actively raising sponsors',
 };
 interface AppliedFilter {
   label: string;

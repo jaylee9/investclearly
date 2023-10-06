@@ -216,7 +216,7 @@ export const SponsorsFiltersHeader: FC<SponsorsFiltersHeaderProps> = ({
             setFilters({ ...filters, activelyRising: e.target.checked })
           }
           checked={filters.activelyRising}
-          label="Actively rising"
+          label="Actively raising"
         />
       </Box>
     </Box>
