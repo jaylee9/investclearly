@@ -128,7 +128,7 @@ const InvestmentPreferencesForm: React.FC<Props> = ({
                 onChange={onChange}
                 min={0}
                 max={10}
-                value={value || [0, 10]}
+                value={[value[0] || 0, value[1] || 10]}
               />
             )}
           />
@@ -145,7 +145,7 @@ const InvestmentPreferencesForm: React.FC<Props> = ({
                 onChange={onChange}
                 min={1000}
                 max={25000}
-                value={value || [1000, 25000]}
+                value={[value[0] || 1000, value[1] || 25000]}
               />
             )}
           />

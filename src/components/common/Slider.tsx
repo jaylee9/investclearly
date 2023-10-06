@@ -53,7 +53,7 @@ const CustomSlider = ({
       <Box sx={classes.inputsWrapper}>
         <Input
           sxCustomStyles={{ width: inputWidth }}
-          value={Array.isArray(value) ? formatNumber(value[0]) : ''}
+          value={Array.isArray(value) ? formatNumber(value[0] || 0) : ''}
           onChange={e => handleInputChange(0, e.target.value)}
           showClearOption={false}
         />
