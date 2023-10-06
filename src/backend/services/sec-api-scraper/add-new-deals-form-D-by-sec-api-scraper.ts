@@ -50,7 +50,8 @@ export const addNewDealsFormDBySecApiScraper = async () => {
               `(offeringData.typesOfSecuritiesOffered.isEquityType:true OR offeringData.typesOfSecuritiesOffered.isDebtType:true) AND ` +
               `(offeringData.industryGroup.industryGroupType:(${industryGroupTypes.join(
                 ' OR '
-              )}))`,
+              )})) AND ` +
+              `(offeringData.federalExemptionsExclusions.item:06c OR offeringData.federalExemptionsExclusions.item:06b)`,
           },
         },
         from: from.toString(),
@@ -73,7 +74,10 @@ export const addNewDealsFormDBySecApiScraper = async () => {
 
       from += pageSize;
 
-      await prepareDealsDataAndInsertOrUpdateRecords(responseData.offerings);
+      await prepareDealsDataAndInsertOrUpdateRecords(
+        responseData.offerings,
+        connection
+      );
       await new Promise(resolve =>
         setTimeout(resolve, ScraperConstants.pauseBetweenRequestsMs)
       );

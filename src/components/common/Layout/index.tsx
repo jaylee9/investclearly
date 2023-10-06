@@ -79,11 +79,9 @@ const Layout = ({
     });
 
   const handleLogout = async () => {
-    const response = await logout();
-    if (!('error' in response)) {
-      localStorage.removeItem(ADMIN_OBJECT_LOCALSTORAGE_KEY);
-      push('/admin-panel/login');
-    }
+    await logout();
+    localStorage.removeItem(ADMIN_OBJECT_LOCALSTORAGE_KEY);
+    push('/admin-panel/login');
   };
 
   return (
@@ -131,9 +129,8 @@ const Layout = ({
                       <br /> Invest Confidently.
                     </Typography>
                     <Typography variant="body1">
-                      Real Estate syndications and funds in one place, paired
-                      with sponsor reviews from investors like you, so that you
-                      can invest with confidence.
+                      The #1 Platform for Vetting Real Estate Syndications &
+                      Funds. Verified Reviews from Investors Like You
                     </Typography>
                   </Box>
                 </Box>

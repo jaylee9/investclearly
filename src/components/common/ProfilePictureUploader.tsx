@@ -86,7 +86,7 @@ const ProfilePictureUploader = ({
         <Typography variant="caption" sx={classes.title}>
           {variant === ProfilePictureUploaderVariant.USER
             ? 'Profile Picture'
-            : 'Business Avatar'}
+            : 'Business Logo'}
         </Typography>
         <Box sx={classes.rules}>
           <Typography variant="caption">

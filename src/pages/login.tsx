@@ -28,7 +28,7 @@ const Login = () => {
     });
     if (!('error' in response)) {
       setUser(response as PublicUserInterface);
-      router.push('/');
+      router.push('/onboarding');
     }
   };
 

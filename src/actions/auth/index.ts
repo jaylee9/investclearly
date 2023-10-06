@@ -140,7 +140,7 @@ export const logout = async (): Promise<
     return response;
   } catch (error) {
     const errorMessage = 'Failed to log out';
-    customToast({ title: errorMessage, type: ToastType.ERROR });
+    localStorage.removeItem(USER_OBJECT_LOCALSTORAGE_KEY);
     return { error: errorMessage };
   }
 };

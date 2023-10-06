@@ -21,9 +21,11 @@ export const sendClaimDealRequestEmail = async (
     from: { email: MailConfig.sendFrom, name: MailConfig.sendFromName },
     templateId: TemplatesIds.claimDeal,
     dynamicTemplateData: {
+      frontendUrl: MailConfig.frontendUrl,
       userFirstName: user.firstName,
       userLastName: user.lastName,
       profilePicture: user.profilePicture || DefaultImages.userImage,
+      dealId: deal.id,
       dealLegalName: deal.dealLegalName,
       jobTitle: claimedRequest.jobTitle,
       businessEmail: claimedRequest.businessEmail,

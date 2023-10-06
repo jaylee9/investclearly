@@ -17,6 +17,7 @@ import { debounce } from 'lodash';
 import withAdminPrivateRoute from '@/HOC/withAdminPrivateRoute';
 import EditDealModal from '@/components/page/Admin/Deal/EditDealModal';
 import Loading from '@/components/common/Loading';
+import { format } from 'date-fns';
 
 interface AdminDealsPageProps {
   dealsResponse: GetAllDealsResponse;
@@ -87,18 +88,18 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
           </Box>
         </Box>
       ),
-      width: '25%',
+      width: '23%',
     },
     {
       label: 'Sponsor',
       accessor: data => (
         <EllipsisText
           variant="body1"
-          text={data?.sponsor?.legalName as string}
+          text={(data?.sponsor?.legalName || 'N/A') as string}
           sx={classes.ellipsisText}
         />
       ),
-      width: '20%',
+      width: '17%',
     },
     {
       label: 'Asset Class',
@@ -109,7 +110,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
           sx={classes.ellipsisText}
         />
       ),
-      width: '20%',
+      width: '15%',
     },
     {
       label: 'Target IRR',
@@ -132,7 +133,25 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
           </Typography>
         </Box>
       ),
-      width: '25%',
+      width: '15%',
+    },
+    {
+      label: 'Published',
+      accessor: data => (
+        <Typography variant="body1">
+          {data.isDealPublished ? 'Yes' : 'No'}
+        </Typography>
+      ),
+      width: '12%',
+    },
+    {
+      label: 'Filled At',
+      accessor: data => (
+        <Typography variant="body1">
+          {format(new Date(data.fileDate), 'MMMM d, yyyy')}
+        </Typography>
+      ),
+      width: '10%',
     },
   ];
 

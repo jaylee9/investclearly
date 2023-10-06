@@ -27,6 +27,8 @@ export const sendUnverifiedReviewPublishedEmailToBmRecipients = async (
           publishedAt: moment(reviewRecord.updatedAt).format(
             MomentConstants.dateFormatForModerationReviews
           ),
+          sponsorId: reviewRecord.sponsor!.id,
+          sponsorVanityName: reviewRecord.sponsor!.vanityName,
           reviewAuthorFirstName: reviewRecord.reviewer?.firstName,
           reviewAuthorLastName: reviewRecord.reviewer?.lastName,
           reviewAuthorAvatar:

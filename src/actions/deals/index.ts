@@ -56,7 +56,7 @@ export const getAllDeals = async (
     statuses: filters.statuses,
     regions: filters.regions,
     investmentStructures: filters.investment_structure,
-    exemption: filters.exemptions,
+    exemptions: filters.exemptions,
     targetIRRMin: filters.targetIRR?.from,
     targetIRRMax: filters.targetIRR?.to,
     actualIRRMin: filters.actualIRR?.from,
