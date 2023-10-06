@@ -99,7 +99,7 @@ const SponsorCard = ({
           <Box sx={classes.largeHeaderLeftColumn}>
             {sponsor.activelyRising && (
               <Typography variant="caption" sx={classes.activelyRising}>
-                Actively Rising
+                Actively Raising
               </Typography>
             )}
             <Link href={`/sponsors/${sponsor.id}`}>

@@ -56,7 +56,7 @@ const filtersLabels: Record<FilterLabelKeys, string> = {
   actualIRR: 'Actual IRR, %',
   targetIRR: 'Target IRR, %',
   fees: 'Fees, %',
-  preffered_return: 'Preffered return, %',
+  preffered_return: 'Preferred return, %',
   min_investment: 'Min investment, USD',
 };
 
@@ -463,7 +463,7 @@ const DealsComponent = ({
       <BannerBlock
         title="Can’t find a deal? Let us know!"
         buttonLabel="Contact Us"
-        buttonHref="/contact"
+        buttonHref="mailto:support@investclearly.io?subject=Can’t find a deal"
       />
     </>
   );

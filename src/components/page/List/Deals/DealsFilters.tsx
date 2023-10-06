@@ -236,7 +236,7 @@ export const DealsFilters: FC<DealsFiltersProps> = ({
           />
         </Box>
       </CustomAccordion>
-      <CustomAccordion label="Preffered Return, %">
+      <CustomAccordion label="Preferred Return, %">
         <Box>
           <CustomSlider
             min={rangeData.minPreferredReturn}
