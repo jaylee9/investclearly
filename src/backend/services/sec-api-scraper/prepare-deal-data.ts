@@ -47,18 +47,21 @@ export const prepareDealData = async (offering: FormD) => {
   }
 
   if (is06c) {
+    isDealPublished =
+      moment(offering?.filedAt) <= moment(fourteenDaysOlderDate);
     if (moment(offering?.filedAt) < moment(expirationDateFor500C)) {
       status = DealStatuses.closedActive;
-    } else if (
+    }
+
+    if (
       moment(offering?.filedAt) >= moment(expirationDateFor500C) &&
       moment(offering?.filedAt) <= moment(fifteenDaysOlderDate)
     ) {
       status = DealStatuses.open;
-    } else {
-      isDealPublished =
-        moment(offering?.filedAt) >= moment(fourteenDaysOlderDate);
     }
-  } else if (is06b) {
+  }
+
+  if (is06b) {
     exemption = Exemptions.Rule506B;
 
     if (moment(offering?.filedAt) < moment(expirationDateFor500B)) {
@@ -68,72 +71,71 @@ export const prepareDealData = async (offering: FormD) => {
   }
 
   if (
-    exemption === Exemptions.Rule506C ||
-    (exemption === Exemptions.Rule506B && status === DealStatuses.closedActive)
+    exemption === Exemptions.Rule506B &&
+    status !== DealStatuses.closedActive
   ) {
-    let allPreviousNames: string[] = [];
-    if (offering?.primaryIssuer?.issuerPreviousNameList?.length) {
-      allPreviousNames =
-        offering?.primaryIssuer?.issuerPreviousNameList?.reduce(
-          (acc: string[], item: IssuerData) => {
-            if (item.previousName && Array.isArray(item.previousName)) {
-              acc = acc.concat(item.previousName);
-            }
-            return acc;
-          },
-          []
-        );
-    }
-
-    return {
-      secApiId: offering?.id,
-      assetClass: AssetClasses.offeringDataOrIndustryGroup,
-      dealTitle: offering?.primaryIssuer?.entityName,
-      minimumInvestment: offering?.offeringData?.minimumInvestmentAccepted,
-      investmentStructures,
-      targetRaise:
-        offering?.offeringData?.offeringSalesAmounts?.totalOfferingAmount,
-      dealLegalName: offering?.primaryIssuer?.entityName,
-      exemption,
-      secIndustry: offering?.offeringData?.industryGroup?.industryGroupType,
-      regulation: Regulations.d,
-      status,
-      street1: offering?.primaryIssuer?.issuerAddress?.street1,
-      street2: offering?.primaryIssuer?.issuerAddress?.street2,
-      city: offering?.primaryIssuer?.issuerAddress?.city,
-      stateOrCountry: offering?.primaryIssuer?.issuerAddress?.stateOrCountry,
-      stateOrCountryDescription:
-        offering?.primaryIssuer?.issuerAddress?.stateOrCountryDescription,
-      zipCode: offering?.primaryIssuer?.issuerAddress?.zipCode,
-      accessionNumber: offering?.accessionNo,
-      fileDate: offering?.filedAt,
-      cik: offering?.primaryIssuer?.cik,
-      previousNames: allPreviousNames,
-      entityType: offering?.primaryIssuer?.entityType,
-      yearsOfIncorporation: offering?.primaryIssuer?.yearOfInc?.value,
-      issuerPhoneNumber: offering?.primaryIssuer?.issuerPhoneNumber,
-      jurisdictionOfInc: offering?.primaryIssuer?.jurisdictionOfInc,
-      dateOfFirstSale:
-        offering?.offeringData?.typeOfFiling?.dateOfFirstSale?.value,
-      isMoreThanOneYear:
-        offering?.offeringData?.durationOfOffering?.moreThanOneYear,
-      submissionType: offering.submissionType,
-      regions: Regions.myState,
-      dealAddress: '',
-      description: '',
-      cashOnCash: 0,
-      fees: 0,
-      equityMultiple: 0,
-      holdPeriod: 0,
-      targetIRR: 0,
-      actualIRR: 0,
-      preferredReturn: 0,
-      dealSponsor: '',
-      closeDate: offering?.filedAt,
-      attachmentsIdsToDelete: [],
-      isDealPublished: isDealPublished,
-    };
+    return;
   }
 
-  return null;
+  let allPreviousNames: string[] = [];
+  if (offering?.primaryIssuer?.issuerPreviousNameList?.length) {
+    allPreviousNames = offering?.primaryIssuer?.issuerPreviousNameList?.reduce(
+      (acc: string[], item: IssuerData) => {
+        if (item.previousName && Array.isArray(item.previousName)) {
+          acc = acc.concat(item.previousName);
+        }
+        return acc;
+      },
+      []
+    );
+  }
+
+  return {
+    secApiId: offering?.id,
+    assetClass: AssetClasses.offeringDataOrIndustryGroup,
+    dealTitle: offering?.primaryIssuer?.entityName,
+    minimumInvestment: offering?.offeringData?.minimumInvestmentAccepted,
+    investmentStructures,
+    targetRaise:
+      offering?.offeringData?.offeringSalesAmounts?.totalOfferingAmount,
+    dealLegalName: offering?.primaryIssuer?.entityName,
+    exemption,
+    secIndustry: offering?.offeringData?.industryGroup?.industryGroupType,
+    regulation: Regulations.d,
+    status,
+    street1: offering?.primaryIssuer?.issuerAddress?.street1,
+    street2: offering?.primaryIssuer?.issuerAddress?.street2,
+    city: offering?.primaryIssuer?.issuerAddress?.city,
+    stateOrCountry: offering?.primaryIssuer?.issuerAddress?.stateOrCountry,
+    stateOrCountryDescription:
+      offering?.primaryIssuer?.issuerAddress?.stateOrCountryDescription,
+    zipCode: offering?.primaryIssuer?.issuerAddress?.zipCode,
+    accessionNumber: offering?.accessionNo,
+    fileDate: offering?.filedAt,
+    cik: offering?.primaryIssuer?.cik,
+    previousNames: allPreviousNames,
+    entityType: offering?.primaryIssuer?.entityType,
+    yearsOfIncorporation: offering?.primaryIssuer?.yearOfInc?.value,
+    issuerPhoneNumber: offering?.primaryIssuer?.issuerPhoneNumber,
+    jurisdictionOfInc: offering?.primaryIssuer?.jurisdictionOfInc,
+    dateOfFirstSale:
+      offering?.offeringData?.typeOfFiling?.dateOfFirstSale?.value,
+    isMoreThanOneYear:
+      offering?.offeringData?.durationOfOffering?.moreThanOneYear,
+    submissionType: offering.submissionType,
+    regions: Regions.myState,
+    dealAddress: '',
+    description: '',
+    cashOnCash: 0,
+    fees: 0,
+    equityMultiple: 0,
+    holdPeriod: 0,
+    targetIRR: 0,
+    actualIRR: 0,
+    preferredReturn: 0,
+    dealSponsor: '',
+    closeDate: offering?.filedAt,
+    attachmentsIdsToDelete: [],
+    isDealPublished: isDealPublished,
+  };
 };
