@@ -166,13 +166,6 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     );
   }
 
-  if (investmentMinValue && investmentMaxValue) {
-    searchQuery = searchQuery.andWhere(
-      'deals.minimumInvestment BETWEEN :investmentMinValue AND :investmentMaxValue',
-      { investmentMinValue, investmentMaxValue }
-    );
-  }
-
   if (sponsorFeesMin && sponsorFeesMax) {
     searchQuery = searchQuery.andWhere(
       'deals.fees BETWEEN :sponsorFeesMin AND :sponsorFeesMax',
