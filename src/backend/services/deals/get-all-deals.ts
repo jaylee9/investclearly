@@ -45,6 +45,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     entityIds = [],
     currentUserId,
     showOnlyPublishedDeals = true,
+    stateOrCountryDescriptions = [],
   } = params;
 
   const connection = await getDatabaseConnection();
@@ -90,6 +91,15 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
       'deals.assetClass IN (:...assetClasses)',
       {
         assetClasses,
+      }
+    );
+  }
+
+  if (stateOrCountryDescriptions.length) {
+    searchQuery = searchQuery.andWhere(
+      'locations.stateOrCountryDescription IN (:...stateOrCountryDescriptions)',
+      {
+        stateOrCountryDescriptions,
       }
     );
   }
