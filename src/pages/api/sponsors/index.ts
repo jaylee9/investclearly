@@ -16,9 +16,15 @@ const getSponsors = async (
   );
   const currentUserId = user?.id;
   const params: FindAllSponsorsInterface = authRequest.query;
-  const { primaryAssetClasses, regionalFocus, ...getSponsorsData } = params;
+  const {
+    primaryAssetClasses,
+    regionalFocus,
+    stateOrCountryDescriptions,
+    ...getSponsorsData
+  } = params;
 
   const transformedData = transformObjectKeysToArrays({
+    stateOrCountryDescriptions,
     primaryAssetClasses,
     regionalFocus,
   });
