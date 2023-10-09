@@ -188,7 +188,6 @@ const DealsComponent = ({
           setDealsData(data);
         }
       },
-      initialData: dealsResponse,
     }
   );
 
