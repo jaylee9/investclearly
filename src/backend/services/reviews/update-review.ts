@@ -47,7 +47,7 @@ export const update = async (
   await connection.manager.update(
     Review,
     { id },
-    { ...reviewData, status: ReviewStatuses.onModeration }
+    { ...reviewData, status: ReviewStatuses.onModeration, isVerified: false }
   );
 
   if (transformedData.attachmentsIdsToDelete?.length !== 0) {
