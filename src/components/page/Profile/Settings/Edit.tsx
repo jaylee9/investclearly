@@ -5,8 +5,6 @@ import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '@/components/common/Input';
-import CustomSelect, { SelectVariant } from '@/components/common/Select';
-import { Regions } from '@/backend/constants/enums/regions';
 import Button from '@/components/common/Button';
 import {
   UpdateProfileSettingPayload,
@@ -73,10 +71,6 @@ const EditProfile = () => {
       reset();
     }
     setIsLoading(false);
-  });
-
-  const regionsOptions = Object.values(Regions).map(item => {
-    return { label: item, value: item };
   });
 
   useEffect(() => {
@@ -167,30 +161,8 @@ const EditProfile = () => {
             <Input
               topLabel="State or Country"
               showClearOption={false}
-              register={register('stateOrCountry')}
-              value={watch('stateOrCountry')}
-            />
-            <Input
-              topLabel="State or Country Description"
-              showClearOption={false}
               register={register('stateOrCountryDescription')}
               value={watch('stateOrCountryDescription')}
-            />
-          </Box>
-          <Box sx={classes.singleInputsWrapper}>
-            <Controller
-              control={control}
-              name="regions"
-              render={({ field: { onChange, value } }) => (
-                <CustomSelect
-                  options={regionsOptions}
-                  variant={SelectVariant.Dark}
-                  multiple
-                  onChange={onChange}
-                  value={value || []}
-                  topLabel="State"
-                />
-              )}
             />
           </Box>
         </Box>
