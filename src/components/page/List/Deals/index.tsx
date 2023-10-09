@@ -22,7 +22,6 @@ import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import { useDealsComponentStyles } from './styles';
 import ColumnsComponent from '../ColumnsComponent';
 import filterDifferences from '@/helpers/filterDifferences';
-import { Regions } from '@/backend/constants/enums/regions';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import Button from '@/components/common/Button';
 import { getLocations } from '@/actions/common';
@@ -117,20 +116,33 @@ const DealsComponent = ({
   };
 
   const assetClassesArray = Object.values(AssetClasses);
-  const regionsArray = Object.values(Regions);
   const asset_classes = assetClassesArray.filter(
     item =>
       item.replace(/[\s']/g, '_').toLowerCase() === router.query.asset_class
   );
-  const stateOrCountryDescriptions = regionsArray.filter(
-    item => item.replace(/[\s']/g, '_').toLowerCase() === router.query.regions
+
+  const { data, isLoading } = useQuery<string[]>(
+    ['locations', ClaimEntityTypes.deal],
+    () => {
+      return getLocations({
+        entityType: ClaimEntityTypes.deal,
+      }) as Promise<string[]>;
+    },
+    {
+      keepPreviousData: true,
+    }
   );
+
+  const stateOrCountryDescriptions = data
+    ?.filter(
+      item => item.replace(/[\s']/g, '_').toLowerCase() === router.query.regions
+    )
+    .map(item => item.toUpperCase());
   const formattedFilters = {
     ...defaultFilters,
     asset_classes,
     stateOrCountryDescriptions,
   };
-  defaultFilters;
   const [filters, setFilters] = useState<IFilters>(formattedFilters);
   const [appliedFilters, setAppliedFilters] =
     useState<IFilters>(formattedFilters);
@@ -167,26 +179,6 @@ const DealsComponent = ({
         }
       },
       initialData: dealsResponse,
-    }
-  );
-
-  const { isLoading, data } = useQuery<string[]>(
-    ['allInvestments'],
-    async () => {
-      const response = await getLocations({
-        entityType: ClaimEntityTypes.deal,
-      });
-
-      if ('error' in response) {
-        throw new Error(response.error);
-      } else if (Array.isArray(response)) {
-        return response.map(item => item.stateOrCountryDescription);
-      } else {
-        throw new Error('Unexpected response format');
-      }
-    },
-    {
-      keepPreviousData: true,
     }
   );
 
