@@ -6,7 +6,7 @@ import { authMiddleware } from '../../../backend/middleware/auth';
 import { parseForm } from '../../../backend/utils/parse-form';
 import { ReviewConstants } from '../../../backend/constants/review-constants';
 import { update } from '../../../backend/services/reviews/update-review';
-import { UploadReviewProofsInterface } from '../../../backend/services/reviews/interfaces/upload-review-proofs.interface';
+import { UpdateReviewInterface } from '../../../backend/services/reviews/interfaces/update-review.interface';
 import { getReviewById } from '../../../backend/services/reviews/get-review-by-id';
 import { deleteReviewRecord } from '../../../backend/services/reviews/delete-review';
 
@@ -16,17 +16,18 @@ export const config = {
   },
 };
 
-const uploadReviewProofs = async (
+const updateReview = async (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
-  await authMiddleware(request, response);
+  const { user } = await authMiddleware(request, response);
   const { fields, files } = await parseForm(request, response);
   const id: number = Number(request.query.id);
   const updatedReview = await update(
     id,
-    fields as unknown as UploadReviewProofsInterface,
-    files
+    fields as unknown as UpdateReviewInterface,
+    files,
+    user!.id
   );
 
   if (updatedReview) {
@@ -53,6 +54,6 @@ const deleteReview = async (
 };
 
 export default apiHandler({
-  PUT: uploadReviewProofs,
+  PUT: updateReview,
   DELETE: deleteReview,
 });
