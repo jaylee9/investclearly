@@ -40,7 +40,7 @@ export const useSignUpFormStyles = () => {
         width: '100% !important',
         margin: '0 !important',
       },
-      display: 'flex',
+      display: { xs: 'flex', md: 'block' },
       justifyContent: 'center',
     },
     additionalText: {

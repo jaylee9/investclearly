@@ -1434,6 +1434,8 @@ export const useLoginFormStyles = () => {
         width: '100% !important',
         margin: '0 !important',
       },
+      display: { xs: 'flex', md: 'block' },
+      justifyContent: 'center',
     },
   };
 };

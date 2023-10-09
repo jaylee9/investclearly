@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link, { LinkProps } from 'next/link';
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 
 const validationSchema = z.object({
   email: z.string().email({ message: 'Email must be a valid email' }),
@@ -41,7 +42,7 @@ const LoginForm = ({
   handleGoogleLogin,
 }: LoginFormProps): JSX.Element => {
   const styles = useLoginFormStyles();
-
+  const { isMobile } = useBreakpoints();
   const {
     register,
     handleSubmit,
@@ -59,7 +60,7 @@ const LoginForm = ({
         <>
           <Box sx={styles.googleLoginWrapper}>
             <GoogleLogin
-              width={500}
+              width={isMobile ? 280 : 500}
               text="signup_with"
               onSuccess={handleGoogleLogin}
             />
