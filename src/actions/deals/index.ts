@@ -54,7 +54,7 @@ export const getAllDeals = async (
     orderDirection: filters.orderDirection || 'DESC',
     assetClasses: filters.asset_classes,
     statuses: filters.statuses,
-    regions: filters.regions,
+    stateOrCountryDescriptions: filters.stateOrCountryDescriptions,
     investmentStructures: filters.investment_structure,
     exemptions: filters.exemptions,
     targetIRRMin: filters.targetIRR?.from,

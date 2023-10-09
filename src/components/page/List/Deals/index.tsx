@@ -25,6 +25,8 @@ import filterDifferences from '@/helpers/filterDifferences';
 import { Regions } from '@/backend/constants/enums/regions';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import Button from '@/components/common/Button';
+import { getLocations } from '@/actions/common';
+import { ClaimEntityTypes } from '@/backend/constants/enums/claim-entity-types';
 
 const sortOptions = [
   { label: 'Newest Deals', value: 'DESC' },
@@ -41,7 +43,7 @@ type FilterArrayKeys =
   | 'ratings'
   | 'asset_classes'
   | 'statuses'
-  | 'regions'
+  | 'stateOrCountryDescriptions'
   | 'investment_structure'
   | 'exemptions';
 
@@ -88,7 +90,7 @@ const DealsComponent = ({
     ratings: [],
     asset_classes: [],
     statuses: [],
-    regions: [],
+    stateOrCountryDescriptions: [],
     regulations: [],
     investment_structure: [],
     exemptions: [],
@@ -120,10 +122,14 @@ const DealsComponent = ({
     item =>
       item.replace(/[\s']/g, '_').toLowerCase() === router.query.asset_class
   );
-  const regions = regionsArray.filter(
+  const stateOrCountryDescriptions = regionsArray.filter(
     item => item.replace(/[\s']/g, '_').toLowerCase() === router.query.regions
   );
-  const formattedFilters = { ...defaultFilters, asset_classes, regions };
+  const formattedFilters = {
+    ...defaultFilters,
+    asset_classes,
+    stateOrCountryDescriptions,
+  };
   defaultFilters;
   const [filters, setFilters] = useState<IFilters>(formattedFilters);
   const [appliedFilters, setAppliedFilters] =
@@ -161,6 +167,26 @@ const DealsComponent = ({
         }
       },
       initialData: dealsResponse,
+    }
+  );
+
+  const { isLoading, data } = useQuery<string[]>(
+    ['allInvestments'],
+    async () => {
+      const response = await getLocations({
+        entityType: ClaimEntityTypes.deal,
+      });
+
+      if ('error' in response) {
+        throw new Error(response.error);
+      } else if (Array.isArray(response)) {
+        return response.map(item => item.stateOrCountryDescription);
+      } else {
+        throw new Error('Unexpected response format');
+      }
+    },
+    {
+      keepPreviousData: true,
     }
   );
 
@@ -329,7 +355,7 @@ const DealsComponent = ({
     }
   }, []);
 
-  if (isBreakpointsLoading) {
+  if (isBreakpointsLoading || isLoading) {
     return <Loading sxCustomStyles={{ marginTop: '32px' }} />;
   }
 
@@ -353,6 +379,7 @@ const DealsComponent = ({
               handleApplyFilters={handleApplyFilters}
               disabledApplyFilters={!isDirtyFilters}
               rangeData={dealsResponse.rangeData}
+              stateOrCountries={data as string[]}
             />
           )
         }
@@ -392,6 +419,7 @@ const DealsComponent = ({
                   isChangedFilters={isChangedFilters}
                   handleClearFilters={handleClearFilters}
                   rangeData={dealsResponse.rangeData}
+                  stateOrCountries={data as string[]}
                 />
               </Box>
             </Modal>
