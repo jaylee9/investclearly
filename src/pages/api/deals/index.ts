@@ -23,6 +23,7 @@ const getDeals = async (request: NextApiRequest, response: NextApiResponse) => {
     investmentStructures,
     exemptions,
     regulations,
+    stateOrCountryDescriptions,
     ...getDealsData
   } = params;
 
@@ -33,6 +34,7 @@ const getDeals = async (request: NextApiRequest, response: NextApiResponse) => {
     investmentStructures,
     exemptions,
     regulations,
+    stateOrCountryDescriptions,
   });
 
   const deals = await getAllDeals({

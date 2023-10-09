@@ -15,4 +15,5 @@ export interface FindAllSponsorsInterface {
   limit?: number;
   entityIds?: number[];
   currentUserId?: number;
+  stateOrCountryDescriptions?: string[];
 }

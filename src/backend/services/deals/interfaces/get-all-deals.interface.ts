@@ -34,4 +34,5 @@ export interface FindAllDealsInterface {
   entityIds?: number[];
   currentUserId?: number;
   showOnlyPublishedDeals?: boolean;
+  stateOrCountryDescriptions?: string[];
 }

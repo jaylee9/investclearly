@@ -29,6 +29,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     maxRating = ReviewConstants.minAndMaxRatings.maxRating,
     entityIds = [],
     currentUserId,
+    stateOrCountryDescriptions = [],
   } = params;
 
   const connection = await getDatabaseConnection();
@@ -109,6 +110,15 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
       'sponsors.specialties && :primaryAssetClasses',
       {
         primaryAssetClasses,
+      }
+    );
+  }
+
+  if (stateOrCountryDescriptions.length) {
+    searchQuery = searchQuery.andWhere(
+      'locations.stateOrCountryDescription IN (:...stateOrCountryDescriptions)',
+      {
+        stateOrCountryDescriptions,
       }
     );
   }
