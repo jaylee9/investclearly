@@ -9,7 +9,7 @@ import { transformObjectKeysToArrays } from '../../utils/transform-object-keys-t
 import { getReviewById } from './get-review-by-id';
 import { getDatabaseConnection } from '../../../backend/config/data-source-config';
 import { Review } from '../../../backend/entities/reviews.entity';
-import { UpdateReviewInterface } from './interfaces/update-review-.interface';
+import { UpdateReviewInterface } from './interfaces/update-review.interface';
 import { ReviewConstants } from '../../../backend/constants/review-constants';
 import { ReviewStatuses } from '../../../backend/constants/enums/review-statuses';
 

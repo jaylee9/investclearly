@@ -6,7 +6,7 @@ import { authMiddleware } from '../../../backend/middleware/auth';
 import { parseForm } from '../../../backend/utils/parse-form';
 import { ReviewConstants } from '../../../backend/constants/review-constants';
 import { update } from '../../../backend/services/reviews/update-review';
-import { UpdateReviewInterface } from '../../../backend/services/reviews/interfaces/update-review-.interface';
+import { UpdateReviewInterface } from '../../../backend/services/reviews/interfaces/update-review.interface';
 import { getReviewById } from '../../../backend/services/reviews/get-review-by-id';
 import { deleteReviewRecord } from '../../../backend/services/reviews/delete-review';
 
