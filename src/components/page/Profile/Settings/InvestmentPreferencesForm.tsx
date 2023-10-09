@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, FormControl, Typography } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
-import { Regions } from '@/backend/constants/enums/regions';
 import MultiButtons from '@/components/common/MultiButtons';
 import CustomSlider from '@/components/common/Slider';
 import YesNoButtons from '@/components/common/YesNoButtons';
@@ -31,13 +30,6 @@ const InvestmentPreferencesForm: React.FC<Props> = ({
   const assetClassesArray = [
     ...Object.keys(AssetClasses).map(key => {
       const value = AssetClasses[key as keyof typeof AssetClasses];
-      return { value, label: value };
-    }),
-  ];
-
-  const regionsArray = [
-    ...Object.keys(Regions).map(key => {
-      const value = Regions[key as keyof typeof Regions];
       return { value, label: value };
     }),
   ];
@@ -90,23 +82,6 @@ const InvestmentPreferencesForm: React.FC<Props> = ({
               <MultiButtons
                 buttons={assetClassesArray}
                 label="Asset class"
-                onButtonClick={handleMultiButtonSelection(
-                  onChange,
-                  value || []
-                )}
-                activeValues={value || []}
-              />
-            )}
-          />
-        </Box>
-        <Box sx={classes.multiButtonWrapper}>
-          <Controller
-            control={control}
-            name={'regions'}
-            render={({ field: { onChange, value } }) => (
-              <MultiButtons
-                buttons={regionsArray}
-                label="Region"
                 onButtonClick={handleMultiButtonSelection(
                   onChange,
                   value || []

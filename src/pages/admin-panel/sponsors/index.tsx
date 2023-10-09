@@ -95,12 +95,15 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
     },
     {
       label: 'Year Founded',
-      //will be replaced by real data
-      accessor: () => <Typography variant="body1">2009</Typography>,
+      accessor: data => (
+        <Typography variant="body1">
+          {data?.yearOfFoundation || 'N/A'}
+        </Typography>
+      ),
       width: '10%',
     },
     {
-      label: 'State',
+      label: 'State or Country',
       accessor: data => (
         <EllipsisText
           variant="body1"
@@ -117,7 +120,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
     {
       label: 'Average IRR',
       accessor: data => (
-        <Typography variant="body1">{data.actualIRR}%</Typography>
+        <Typography variant="body1">{data.actualIRR || 0}%</Typography>
       ),
       width: '9%',
       align: 'right',
