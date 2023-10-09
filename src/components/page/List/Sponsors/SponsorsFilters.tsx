@@ -141,7 +141,7 @@ export const SponsorsFilters: FC<SponsorsFiltersProps> = ({
       </CustomAccordion>
       <CustomAccordion label="State or Country">
         <Box sx={classes.accordionContent}>
-          {stateOrCountries.map(region => (
+          {stateOrCountries?.map(region => (
             <CustomCheckbox
               customStyles={classes.ratingCheckbox}
               key={region}
