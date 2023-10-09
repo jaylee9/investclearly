@@ -121,7 +121,7 @@ const DealsComponent = ({
       item.replace(/[\s']/g, '_').toLowerCase() === router.query.asset_class
   );
 
-  const { data, isLoading } = useQuery<string[]>(
+  const { data: locationsData, isLoading } = useQuery<string[]>(
     ['locations', ClaimEntityTypes.deal],
     () =>
       getLocations({
@@ -380,7 +380,7 @@ const DealsComponent = ({
               handleApplyFilters={handleApplyFilters}
               disabledApplyFilters={!isDirtyFilters}
               rangeData={dealsResponse.rangeData}
-              stateOrCountries={data as string[]}
+              stateOrCountries={locationsData as string[]}
             />
           )
         }
@@ -420,7 +420,7 @@ const DealsComponent = ({
                   isChangedFilters={isChangedFilters}
                   handleClearFilters={handleClearFilters}
                   rangeData={dealsResponse.rangeData}
-                  stateOrCountries={data as string[]}
+                  stateOrCountries={locationsData as string[]}
                 />
               </Box>
             </Modal>
