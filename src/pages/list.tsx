@@ -34,6 +34,7 @@ const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
     isSearch: true,
     isShadow: false,
     onChangeSearch: handleChangeSearch,
+    isDealAssetClasses: false,
   });
   const tabs = [
     {

@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { googleLogin, signUp } from '@/actions/auth';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { useRouter } from 'next/router';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 
 const validationSchema = z
   .object({
@@ -40,6 +41,7 @@ interface SignUpFormProps {
 const SignUpForm = ({ setEmail }: SignUpFormProps) => {
   const classes = useSignUpFormStyles();
   const router = useRouter();
+  const { isMobile } = useBreakpoints();
   const {
     register,
     handleSubmit,
@@ -72,7 +74,7 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
       <Box sx={classes.googleLoginWrapper}>
         <GoogleLogin
           text="signup_with"
-          width={500}
+          width={isMobile ? 280 : 500}
           onSuccess={handleGoogleSignUp}
         />
       </Box>
@@ -134,13 +136,17 @@ const SignUpForm = ({ setEmail }: SignUpFormProps) => {
                   <Link href="/terms-conditions">Terms of Service</Link>
                 </Typography>
               }
-              customStyles={{ marginBottom: '32px' }}
+              customStyles={{ marginBottom: '12px' }}
               checked={field.value}
               onChange={e => field.onChange(e.target.checked)}
               error={!!errors.terms?.message}
             />
           )}
         />
+        <Typography variant="caption" sx={classes.additionalText}>
+          Upon creating an account, Invest Clearly will never send your
+          information to any sponsor without your consent
+        </Typography>
 
         <Button type="submit" customStyles={{ marginBottom: '16px' }}>
           Create an account
