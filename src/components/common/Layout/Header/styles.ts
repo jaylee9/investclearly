@@ -139,7 +139,7 @@ const getStyles = ({
       },
     },
     dealsCustomAccordion: {
-      padding: '0 12px',
+      padding: '12px 12px 0px',
       borderBottom: 'none',
     },
     dealsCustomAccordionPopoverItem: {

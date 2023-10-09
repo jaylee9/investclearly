@@ -13,6 +13,7 @@ interface DealsPopoverProps {
   firstColumn: { href: string; value: string }[];
   secondColumn: { href: string; value: string }[];
   handleClickLink: (v: string) => void;
+  isDealAssetClasses: boolean;
 }
 
 export const DealsPopover: FC<DealsPopoverProps> = ({
@@ -21,6 +22,7 @@ export const DealsPopover: FC<DealsPopoverProps> = ({
   firstColumn,
   secondColumn,
   handleClickLink,
+  isDealAssetClasses,
 }) => {
   const [isArrowRotated, setIsArrowRotated] = useState(false);
   const classes = getStyles({ type, isShadow });
@@ -31,63 +33,65 @@ export const DealsPopover: FC<DealsPopoverProps> = ({
 
   return (
     <>
-      <CustomPopover
-        open={isArrowRotated}
-        handleClose={() => setIsArrowRotated(false)}
-        trigger={
-          <Typography
-            variant="body1"
-            sx={classes.link}
-            onClick={handleArrowClick}
-          >
-            Deals
-            <i
-              className={`icon-Caret-down ${isArrowRotated ? 'rotate' : ''}`}
-              style={classes.arrow}
-            ></i>
-          </Typography>
-        }
-      >
-        <Box sx={classes.popoverWrapper}>
-          <Box sx={classes.column}>
-            {firstColumn.map(item => (
-              <Link
-                href={item.href}
-                key={item.value}
-                onClick={() => setIsArrowRotated(false)}
-              >
-                <Typography variant="body1" sx={classes.popoverItem}>
-                  {item.value}
-                </Typography>
-              </Link>
-            ))}
-          </Box>
-          <Box sx={classes.column}>
-            {secondColumn.map(item => (
-              <Link
-                href={item.href}
-                key={item.value}
-                onClick={() => setIsArrowRotated(false)}
-              >
-                {item.value === 'All Deals' ? (
-                  <Box sx={classes.popoverItem}>
-                    <Button
-                      variant="tertiary"
-                      customStyles={{ padding: 0, blockSize: 'fit-content' }}
-                    >
-                      {item.value}
-                    </Button>
-                  </Box>
-                ) : (
+      {isDealAssetClasses && (
+        <CustomPopover
+          open={isArrowRotated}
+          handleClose={() => setIsArrowRotated(false)}
+          trigger={
+            <Typography
+              variant="body1"
+              sx={classes.link}
+              onClick={handleArrowClick}
+            >
+              Deals
+              <i
+                className={`icon-Caret-down ${isArrowRotated ? 'rotate' : ''}`}
+                style={classes.arrow}
+              ></i>
+            </Typography>
+          }
+        >
+          <Box sx={classes.popoverWrapper}>
+            <Box sx={classes.column}>
+              {firstColumn.map(item => (
+                <Link
+                  href={item.href}
+                  key={item.value}
+                  onClick={() => setIsArrowRotated(false)}
+                >
                   <Typography variant="body1" sx={classes.popoverItem}>
                     {item.value}
                   </Typography>
-                )}
-              </Link>
-            ))}
+                </Link>
+              ))}
+            </Box>
+            <Box sx={classes.column}>
+              {secondColumn.map(item => (
+                <Link
+                  href={item.href}
+                  key={item.value}
+                  onClick={() => setIsArrowRotated(false)}
+                >
+                  {item.value === 'All Deals' ? (
+                    <Box sx={classes.popoverItem}>
+                      <Button
+                        variant="tertiary"
+                        customStyles={{ padding: 0, blockSize: 'fit-content' }}
+                      >
+                        {item.value}
+                      </Button>
+                    </Box>
+                  ) : (
+                    <Typography variant="body1" sx={classes.popoverItem}>
+                      {item.value}
+                    </Typography>
+                  )}
+                </Link>
+              ))}
+            </Box>
           </Box>
-        </Box>
-      </CustomPopover>
+        </CustomPopover>
+      )}
       {links.map(({ type, label }) => (
         <Typography
           variant="body1"

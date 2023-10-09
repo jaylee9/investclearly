@@ -6,6 +6,7 @@ a {
 body {
   margin: 0px;
   background: #f6f7fa !important;
+  overflow-x: hidden;
 }
 
 .round-divider {
