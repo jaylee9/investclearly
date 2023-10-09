@@ -59,7 +59,6 @@ export const DealsFilters: FC<DealsFiltersProps> = ({
 }) => {
   const { isDesktop } = useBreakpoints();
   const classes = useDealsFiltersStyles();
-  console.log(filters);
   const [showAll, setShowAll] = useState({
     asset_classes: false,
     sec_industry: false,

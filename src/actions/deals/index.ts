@@ -40,11 +40,9 @@ export interface GetAllDealsResponse {
 export const getAllDeals = async (
   filters: IDealFilters
 ): Promise<GetAllDealsResponse | { error: string }> => {
-  console.log(filters);
   const ratings = filters.ratings || [];
   let minRating: number | undefined;
   let maxRating: number | undefined;
-  console.log(filters.stateOrCountryDescriptions);
   if (ratings.length > 0) {
     minRating = Math.min(...ratings);
     maxRating = Math.max(...ratings);
