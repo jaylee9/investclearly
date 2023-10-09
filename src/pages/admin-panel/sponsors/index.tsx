@@ -100,14 +100,14 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
       width: '10%',
     },
     {
-      label: 'Region',
+      label: 'State',
       accessor: data => (
         <EllipsisText
           variant="body1"
           text={
-            Array.isArray(data.regions)
-              ? data.regions.join(',')
-              : (data.regions as string)
+            !!data?.locations?.length
+              ? data?.locations?.[0]?.stateOrCountryDescription
+              : 'N/A'
           }
           sx={classes.ellipsisText}
         />

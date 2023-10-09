@@ -19,7 +19,6 @@ import {
 } from '@/actions/common';
 import { useState, type FC } from 'react';
 import CreateReviewForm from '@/components/common/CreateReview';
-import { ClaimEntityTypes } from '@/backend/constants/enums/claim-entity-types';
 
 interface HomeProps {
   deals: DealInterface[];
@@ -80,7 +79,7 @@ export const getServerSideProps = async () => {
   const sponsorsResponse = await getAllSponsors({ page: 1, pageSize: 4 });
   const searchResponse = await globalSearch({ search: '' });
   const locationsResponse = await getLocations({
-    entityType: ClaimEntityTypes.deal,
+    entityType: 'deal',
   });
   if (
     'error' in dealsResponse ||
