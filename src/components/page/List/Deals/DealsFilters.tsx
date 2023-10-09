@@ -5,7 +5,6 @@ import { Box, Fade, Typography } from '@mui/material';
 import { FC, useState } from 'react';
 import { useDealsFiltersStyles } from './styles';
 import CustomSlider from '@/components/common/Slider';
-import { Regions } from '@/backend/constants/enums/regions';
 import { InvestmentStructures } from '@/backend/constants/enums/investment-structures';
 import { DealStatuses } from '@/backend/constants/enums/deal-statuses';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
@@ -74,7 +73,7 @@ export const DealsFilters: FC<DealsFiltersProps> = ({
       | 'investment_structure'
       | 'exemptions'
       | 'regulations',
-    value: Regions | string
+    value: string
   ) => {
     const updatedArray = filters[key]?.includes(value)
       ? filters[key]?.filter(item => item !== value)
