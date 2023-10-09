@@ -69,7 +69,7 @@ const SuggestEditModal = ({
       <Box sx={classes.root}>
         {step === STEP1 && (
           <>
-            <Typography variant="h3">Claim deal</Typography>
+            <Typography variant="h3">Suggest Edit</Typography>
             <Typography variant="body1" sx={classes.subTitle}></Typography>
             <form onSubmit={onFormSubmit}>
               <Box sx={classes.formWrapper}>
