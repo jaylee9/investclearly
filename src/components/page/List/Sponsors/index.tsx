@@ -23,6 +23,7 @@ import SponsorCard, {
 import CustomPagination from '@/components/common/Pagination';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import Button from '@/components/common/Button';
+import { getLocations } from '@/actions/common';
 
 const sortOptions = [
   { label: 'Newest Sponsors', value: 'DESC' },
@@ -35,7 +36,10 @@ interface SponsorsComponentProps {
   setSponsorsCount: (value: number) => void;
 }
 
-type FilterArrayKeys = 'ratings' | 'primaryAssetClasses' | 'regionalFocus';
+type FilterArrayKeys =
+  | 'ratings'
+  | 'primaryAssetClasses'
+  | 'stateOrCountryDescriptions';
 type FilterCheckedKeys = 'activelyRising';
 const filtersLabels = {
   activelyRising: 'Actively raising sponsors',
@@ -56,7 +60,7 @@ const SponsorsComponent = ({
   const defaultFilters = {
     ratings: [],
     primaryAssetClasses: [],
-    regionalFocus: [],
+    stateOrCountryDescriptions: [],
     activelyRising: false,
   };
   const [sponsorsData, setSponsorsData] = useState(sponsorsResponse);
@@ -163,7 +167,7 @@ const SponsorsComponent = ({
   };
   const formattedAppliedFilters = formatFilters(changedFiltersAfterApply);
 
-  const { isLoading, isFetching, refetch } = useQuery<GetAllSponsorsResponse>(
+  const { isFetching, refetch } = useQuery<GetAllSponsorsResponse>(
     ['sponsors', page, orderDirection, searchValue, appliedFilters],
     ({ queryKey }) => {
       const [, , , , filters] = queryKey;
@@ -184,6 +188,18 @@ const SponsorsComponent = ({
       initialData: sponsorsResponse,
     }
   );
+
+  const { data: locationsData, isLoading } = useQuery<string[]>(
+    ['locations'],
+    () =>
+      getLocations({
+        entityType: 'sponsor',
+      }) as Promise<string[]>,
+    {
+      keepPreviousData: true,
+    }
+  );
+
   const handleApplyFilters = () => {
     setPage(1);
     setAppliedFilters(filters);
@@ -269,7 +285,7 @@ const SponsorsComponent = ({
     }
   }, []);
 
-  if (isBreakpointsLoading) {
+  if (isBreakpointsLoading || isLoading) {
     return <Loading sxCustomStyles={{ marginTop: '32px' }} />;
   }
 
@@ -293,6 +309,7 @@ const SponsorsComponent = ({
             setFilters={setFilters}
             handleApplyFilters={handleApplyFilters}
             disabledApplyFilters={!isDirtyFilters}
+            stateOrCountries={locationsData as string[]}
           />
         )
       }
@@ -339,6 +356,7 @@ const SponsorsComponent = ({
                 disabledApplyFilters={!isDirtyFilters}
                 isChangedFilters={isChangedFilters}
                 handleClearFilters={handleClearFilters}
+                stateOrCountries={locationsData as string[]}
               />
             </Box>
           </Modal>
@@ -378,7 +396,7 @@ const SponsorsComponent = ({
         )
       }
       rightColumnContent={
-        isLoading || isFetching ? (
+        isFetching ? (
           <Loading sxCustomStyles={{ marginBottom: '16px' }} />
         ) : (
           <Box sx={classes.sponsorsWrapper}>

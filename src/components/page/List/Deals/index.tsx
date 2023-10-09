@@ -25,7 +25,6 @@ import filterDifferences from '@/helpers/filterDifferences';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import Button from '@/components/common/Button';
 import { getLocations } from '@/actions/common';
-import { ClaimEntityTypes } from '@/backend/constants/enums/claim-entity-types';
 
 const sortOptions = [
   { label: 'Newest Deals', value: 'DESC' },
@@ -122,10 +121,10 @@ const DealsComponent = ({
   );
 
   const { data: locationsData, isLoading } = useQuery<string[]>(
-    ['locations', ClaimEntityTypes.deal],
+    ['locations'],
     () =>
       getLocations({
-        entityType: ClaimEntityTypes.deal,
+        entityType: 'deal',
       }) as Promise<string[]>,
     {
       keepPreviousData: true,

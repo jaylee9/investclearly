@@ -4,7 +4,6 @@ import { RATINGS } from '@/config/constants';
 import { Box, Fade, Typography } from '@mui/material';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { useSponsorComponentStyles, useSponsorsFiltersStyles } from './styles';
-import { Regions } from '@/backend/constants/enums/regions';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import Button from '@/components/common/Button';
 import theme from '@/config/theme';
@@ -14,7 +13,7 @@ import { useBreakpoints } from '@/hooks/useBreakpoints';
 export interface ISponsorFilters {
   ratings?: number[];
   primaryAssetClasses?: string[];
-  regionalFocus?: string[];
+  stateOrCountryDescriptions?: string[];
   activelyRising?: boolean;
 }
 
@@ -25,6 +24,7 @@ interface SponsorsFiltersProps {
   disabledApplyFilters: boolean;
   isChangedFilters?: boolean;
   handleClearFilters?: () => void;
+  stateOrCountries: string[];
 }
 
 export const SponsorsFilters: FC<SponsorsFiltersProps> = ({
@@ -34,6 +34,7 @@ export const SponsorsFilters: FC<SponsorsFiltersProps> = ({
   disabledApplyFilters,
   isChangedFilters,
   handleClearFilters,
+  stateOrCountries,
 }) => {
   const classes = useSponsorsFiltersStyles();
   const { isDesktop } = useBreakpoints();
@@ -44,8 +45,8 @@ export const SponsorsFilters: FC<SponsorsFiltersProps> = ({
   });
 
   const handleStringArrayChange = (
-    key: 'primaryAssetClasses' | 'regionalFocus',
-    value: Regions | string
+    key: 'primaryAssetClasses' | 'stateOrCountryDescriptions',
+    value: string
   ) => {
     const updatedArray = filters[key]?.includes(value)
       ? filters[key]?.filter(item => item !== value)
@@ -138,14 +139,16 @@ export const SponsorsFilters: FC<SponsorsFiltersProps> = ({
           </Typography>
         </Box>
       </CustomAccordion>
-      <CustomAccordion label="Region">
+      <CustomAccordion label="State">
         <Box sx={classes.accordionContent}>
-          {Object.values(Regions).map(region => (
+          {stateOrCountries.map(region => (
             <CustomCheckbox
               customStyles={classes.ratingCheckbox}
               key={region}
-              onChange={() => handleStringArrayChange('regionalFocus', region)}
-              checked={filters.regionalFocus?.includes(region)}
+              onChange={() =>
+                handleStringArrayChange('stateOrCountryDescriptions', region)
+              }
+              checked={filters.stateOrCountryDescriptions?.includes(region)}
               label={region}
             />
           ))}

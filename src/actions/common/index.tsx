@@ -1,4 +1,3 @@
-import { ClaimEntityTypes } from '@/backend/constants/enums/claim-entity-types';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import api from '@/config/ky';
@@ -31,7 +30,7 @@ type GetLocationsResponse = { stateOrCountryDescription: string }[];
 export const getLocations = async ({
   entityType,
 }: {
-  entityType: ClaimEntityTypes;
+  entityType: 'sponsor' | 'deal';
 }): Promise<string[] | { error: string }> => {
   try {
     const response: GetLocationsResponse = await api
