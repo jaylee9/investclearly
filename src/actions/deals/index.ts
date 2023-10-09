@@ -40,6 +40,7 @@ export interface GetAllDealsResponse {
 export const getAllDeals = async (
   filters: IDealFilters
 ): Promise<GetAllDealsResponse | { error: string }> => {
+  console.log(filters);
   const ratings = filters.ratings || [];
   let minRating: number | undefined;
   let maxRating: number | undefined;

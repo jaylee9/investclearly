@@ -123,25 +123,35 @@ const DealsComponent = ({
 
   const { data, isLoading } = useQuery<string[]>(
     ['locations', ClaimEntityTypes.deal],
-    () => {
-      return getLocations({
+    () =>
+      getLocations({
         entityType: ClaimEntityTypes.deal,
-      }) as Promise<string[]>;
-    },
+      }) as Promise<string[]>,
     {
       keepPreviousData: true,
+      onSuccess: result => {
+        const stateOrCountryDescriptions = result
+          .filter(
+            item =>
+              item.replace(/[\s']/g, '_').toLowerCase() === router.query.regions
+          )
+          .map(item => item.toUpperCase());
+
+        setFilters(prevFilters => ({
+          ...prevFilters,
+          stateOrCountryDescriptions: stateOrCountryDescriptions,
+        }));
+        setAppliedFilters(prevFilters => ({
+          ...prevFilters,
+          stateOrCountryDescriptions: stateOrCountryDescriptions,
+        }));
+      },
     }
   );
 
-  const stateOrCountryDescriptions = data
-    ?.filter(
-      item => item.replace(/[\s']/g, '_').toLowerCase() === router.query.regions
-    )
-    .map(item => item.toUpperCase());
   const formattedFilters = {
     ...defaultFilters,
     asset_classes,
-    stateOrCountryDescriptions,
   };
   const [filters, setFilters] = useState<IFilters>(formattedFilters);
   const [appliedFilters, setAppliedFilters] =
