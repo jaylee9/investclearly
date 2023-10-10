@@ -2,7 +2,7 @@ import Layout, { LayoutVariant } from '@/components/common/Layout';
 import { Box, SelectChangeEvent, Typography } from '@mui/material';
 import useAdminReviewModerationStyles from '@/pages_styles/adminReviewModerationStyles';
 import Input from '@/components/common/Input';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import CustomTable, { Column } from '@/components/common/Table';
 import PlaceholderImage from '@/components/common/PlaceholderImage';
@@ -106,6 +106,17 @@ const ReviewModerationPage = () => {
       }) as Promise<GetUserReviewsResponse>
   );
 
+  const {
+    data: { total: totalRejectedReviews } = {},
+    isLoading: isLoadingRejectedCountData,
+  } = useQuery(
+    ['rejectedReviewsCount'],
+    () =>
+      getUserReviews({
+        status: ReviewStatuses.rejected,
+      }) as Promise<GetUserReviewsResponse>
+  );
+
   const { data, isLoading, refetch } = useQuery<GetUserReviewsResponse>(
     ['reviews', page, searchTerm, orderDirection, activeTab],
     () =>
@@ -138,6 +149,11 @@ const ReviewModerationPage = () => {
       value: ReviewStatuses.published,
       label: 'Published',
       count: totalPublishedReviews,
+    },
+    {
+      value: ReviewStatuses.rejected,
+      label: 'Rejected',
+      count: totalRejectedReviews,
     },
   ];
 
@@ -232,36 +248,40 @@ const ReviewModerationPage = () => {
     },
   ];
 
-  const actions =
-    activeTab === 'on moderation'
-      ? [
-          {
-            content: (data: ReviewInterface) => (
-              <Button
-                variant="secondary"
-                key={data.id}
-                onClick={() =>
-                  setOpenModals(prevState => {
-                    return { ...prevState, manage: data };
-                  })
-                }
-              >
-                Manage Review
-              </Button>
-            ),
-          },
-        ]
-      : [
-          {
-            icon: 'icon-Eye-opened',
-            //will be replaced by logic of open unpublish review modal
-            onClick: (data: ReviewInterface) =>
+  const getActions = useCallback(() => {
+    const baseActions = [];
+
+    if (activeTab === ReviewStatuses.onModeration) {
+      baseActions.push({
+        content: (data: ReviewInterface) => (
+          <Button
+            variant="secondary"
+            key={data.id}
+            onClick={() =>
               setOpenModals(prevState => {
-                return { ...prevState, publish: data };
-              }),
-            styles: classes.editIcon,
-          },
-        ];
+                return { ...prevState, manage: data };
+              })
+            }
+          >
+            Manage Review
+          </Button>
+        ),
+      });
+    } else if (activeTab === ReviewStatuses.published) {
+      baseActions.push({
+        icon: 'icon-Eye-opened',
+        onClick: (data: ReviewInterface) =>
+          setOpenModals(prevState => {
+            return { ...prevState, publish: data };
+          }),
+        styles: classes.editIcon,
+      });
+    } else {
+      return undefined;
+    }
+
+    return baseActions;
+  }, [activeTab, setOpenModals, classes]);
 
   useEffect(() => {
     setPage(1);
@@ -365,7 +385,10 @@ const ReviewModerationPage = () => {
   };
 
   const isComprehensiveLoading =
-    isLoading || isLoadingOnModerationCountData || isLoadingPublishedCountData;
+    isLoading ||
+    isLoadingOnModerationCountData ||
+    isLoadingPublishedCountData ||
+    isLoadingRejectedCountData;
 
   return (
     <Layout variant={LayoutVariant.Admin}>
@@ -414,7 +437,7 @@ const ReviewModerationPage = () => {
                 total={Number(data?.total)}
                 lastPage={Number(data?.lastPage)}
                 columns={columns}
-                actions={actions}
+                actions={getActions()}
                 pageSize={10}
               />
               <ReviewDetailsModal
