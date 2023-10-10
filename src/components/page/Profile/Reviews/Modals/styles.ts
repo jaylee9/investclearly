@@ -129,7 +129,8 @@ export const useVerifyReviewModalStyles = () => {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      height: { xs: '100%', md: 'initial' },
+      height: { xs: '100%', md: '260px' },
+      width: { md: '710px', lg: '790px' },
     },
   };
 };
