@@ -1,7 +1,7 @@
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import api from '@/config/ky';
-import formatLocations from '@/helpers/formatLocations';
+import getLocationsName from '@/helpers/getLocationsName';
 
 export interface GlobalSearchResponse {
   deals: DealInterface[];
@@ -38,7 +38,7 @@ export const getLocations = async ({
         searchParams: { entityType },
       })
       .json();
-    const formattedResponse: string[] = formatLocations(
+    const formattedResponse: string[] = getLocationsName(
       response.map(item => item.stateOrCountryDescription)
     );
     return formattedResponse;

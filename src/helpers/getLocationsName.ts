@@ -1,4 +1,4 @@
-const formatLocations = (locations: string[]): string[] =>
+const getLocationsName = (locations: string[]): string[] =>
   locations.map(str =>
     str.length <= 3
       ? str
@@ -10,4 +10,4 @@ const formatLocations = (locations: string[]): string[] =>
           .join(' ')
   );
 
-export default formatLocations;
+export default getLocationsName;
