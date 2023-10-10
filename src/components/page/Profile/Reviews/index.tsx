@@ -239,10 +239,8 @@ const ProfileReviews = () => {
                   <ReviewCard
                     review={review}
                     key={review.id}
-                    showVerifyOption={activeTab === ReviewStatuses.published}
                     isDelete={activeTab === ReviewStatuses.onModeration}
                     onDelete={handleOpenDeleteModal}
-                    onVerify={handleOpenVerifyReviewModal}
                   />
                 ))}
                 <Box sx={classes.pagination}>
