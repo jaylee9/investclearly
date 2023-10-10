@@ -134,7 +134,6 @@ const ProfileReviews = () => {
     setOpenEditModal(review);
 
   const handleCloseEditModal = async () => {
-    await handleRefetchReject();
     setOpenEditModal(null);
   };
 
@@ -266,6 +265,7 @@ const ProfileReviews = () => {
                   open={!!openEditModal}
                   review={openEditModal as ReviewInterface}
                   onClose={handleCloseEditModal}
+                  refetch={handleRefetchReject}
                 />
               </Box>
             )}
