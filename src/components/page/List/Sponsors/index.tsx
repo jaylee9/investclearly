@@ -23,7 +23,7 @@ import SponsorCard, {
 import CustomPagination from '@/components/common/Pagination';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import Button from '@/components/common/Button';
-import { getLocations } from '@/actions/common';
+import { getLocationsName } from '@/actions/common';
 
 const sortOptions = [
   { label: 'Newest Sponsors', value: 'DESC' },
@@ -192,7 +192,7 @@ const SponsorsComponent = ({
   const { data: locationsData, isLoading } = useQuery<string[]>(
     ['locations'],
     () =>
-      getLocations({
+      getLocationsName({
         entityType: 'sponsor',
       }) as Promise<string[]>,
     {

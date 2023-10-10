@@ -14,7 +14,7 @@ import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor
 import { getAllSponsors } from '@/actions/sponsors';
 import {
   GlobalSearchResponse,
-  getLocations,
+  getLocationsName,
   globalSearch,
 } from '@/actions/common';
 import { useState, type FC } from 'react';
@@ -78,7 +78,7 @@ export const getServerSideProps = async () => {
   });
   const sponsorsResponse = await getAllSponsors({ page: 1, pageSize: 4 });
   const searchResponse = await globalSearch({ search: '' });
-  const locationsResponse = await getLocations({
+  const locationsResponse = await getLocationsName({
     entityType: 'deal',
   });
   if (

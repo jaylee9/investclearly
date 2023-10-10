@@ -16,7 +16,7 @@ import ProfilePictureUploader, {
 } from '@/components/common/ProfilePictureUploader';
 import { useSponsorDetailsFormStyles } from './styles';
 import { useQuery } from 'react-query';
-import { getLocations } from '@/actions/common';
+import { getLocationsName } from '@/actions/common';
 import Loading from '@/components/common/Loading';
 
 const isBrowser =
@@ -150,7 +150,7 @@ const SponsorDetailsForm = ({
   >(
     ['locations'],
     () =>
-      getLocations({
+      getLocationsName({
         entityType: 'sponsor',
       }) as Promise<string[]>,
     {

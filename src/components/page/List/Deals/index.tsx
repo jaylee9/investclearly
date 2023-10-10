@@ -24,7 +24,7 @@ import ColumnsComponent from '../ColumnsComponent';
 import filterDifferences from '@/helpers/filterDifferences';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import Button from '@/components/common/Button';
-import { getLocations } from '@/actions/common';
+import { getLocationsName } from '@/actions/common';
 
 const sortOptions = [
   { label: 'Newest Deals', value: 'DESC' },
@@ -123,7 +123,7 @@ const DealsComponent = ({
   const { data: locationsData, isLoading } = useQuery<string[]>(
     ['locations'],
     () =>
-      getLocations({
+      getLocationsName({
         entityType: 'deal',
       }) as Promise<string[]>,
     {
