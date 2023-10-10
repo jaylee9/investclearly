@@ -191,7 +191,7 @@ const EditReviewModal = ({
                         isLoading
                       }
                     >
-                      Edit review
+                      Resubmit Review
                     </Button>
                   </Box>
                 </>
@@ -199,17 +199,17 @@ const EditReviewModal = ({
               {step === steps['Review Submitted'] && (
                 <Box sx={classes.submittedReviewContent}>
                   <Typography variant="h3" sx={classes.submittedReviewTitle}>
-                    Your review has been submitted!
+                    Review Resubmitted!
                   </Typography>
                   <Typography
                     variant="body1"
                     sx={classes.submittedReviewSubTitle}
                   >
-                    It will be published after moderation.
+                    Your changes are now awaiting moderation.
                   </Typography>
                   <Button
                     onClick={handleClose}
-                    customStyles={{ width: '100%' }}
+                    customStyles={{ width: '100%', maxWidth: '480px' }}
                   >
                     To the reviews
                   </Button>

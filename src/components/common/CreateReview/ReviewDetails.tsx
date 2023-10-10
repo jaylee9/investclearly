@@ -76,7 +76,7 @@ const ReviewDetailsStep = ({
     register,
     handleSubmit,
     control,
-    formState: { isValid, errors },
+    formState: { isValid },
     watch,
     setValue,
   } = useForm<ValidationSchema>({
