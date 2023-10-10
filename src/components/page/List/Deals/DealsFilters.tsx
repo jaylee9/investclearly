@@ -5,7 +5,6 @@ import { Box, Fade, Typography } from '@mui/material';
 import { FC, useState } from 'react';
 import { useDealsFiltersStyles } from './styles';
 import CustomSlider from '@/components/common/Slider';
-import { Regions } from '@/backend/constants/enums/regions';
 import { InvestmentStructures } from '@/backend/constants/enums/investment-structures';
 import { DealStatuses } from '@/backend/constants/enums/deal-statuses';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
@@ -26,7 +25,7 @@ export interface IFilters {
   ratings?: number[];
   asset_classes?: string[];
   statuses?: string[];
-  regions?: string[];
+  stateOrCountryDescriptions?: string[];
   investment_structure?: string[];
   exemptions?: string[];
   regulations?: string[];
@@ -45,6 +44,7 @@ interface DealsFiltersProps {
   rangeData: RangeData;
   isChangedFilters?: boolean;
   handleClearFilters?: () => void;
+  stateOrCountries: string[];
 }
 
 export const DealsFilters: FC<DealsFiltersProps> = ({
@@ -55,10 +55,10 @@ export const DealsFilters: FC<DealsFiltersProps> = ({
   rangeData,
   isChangedFilters,
   handleClearFilters,
+  stateOrCountries,
 }) => {
   const { isDesktop } = useBreakpoints();
   const classes = useDealsFiltersStyles();
-
   const [showAll, setShowAll] = useState({
     asset_classes: false,
     sec_industry: false,
@@ -68,11 +68,11 @@ export const DealsFilters: FC<DealsFiltersProps> = ({
     key:
       | 'asset_classes'
       | 'statuses'
-      | 'regions'
+      | 'stateOrCountryDescriptions'
       | 'investment_structure'
       | 'exemptions'
       | 'regulations',
-    value: Regions | string
+    value: string
   ) => {
     const updatedArray = filters[key]?.includes(value)
       ? filters[key]?.filter(item => item !== value)
@@ -264,14 +264,16 @@ export const DealsFilters: FC<DealsFiltersProps> = ({
           ))}
         </Box>
       </CustomAccordion>
-      <CustomAccordion label="Region">
+      <CustomAccordion label="State or Country">
         <Box sx={classes.accordionContent}>
-          {Object.values(Regions).map(region => (
+          {stateOrCountries?.map(region => (
             <CustomCheckbox
               customStyles={classes.ratingCheckbox}
               key={region}
-              onChange={() => handleStringArrayChange('regions', region)}
-              checked={filters.regions?.includes(region)}
+              onChange={() =>
+                handleStringArrayChange('stateOrCountryDescriptions', region)
+              }
+              checked={filters.stateOrCountryDescriptions?.includes(region)}
               label={region}
             />
           ))}

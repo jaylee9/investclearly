@@ -68,7 +68,7 @@ const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
   ) => {
     router.push({
       pathname: router.pathname,
-      query: { ...router.query, type: newValue },
+      query: { type: newValue },
     });
   };
   return (

@@ -231,11 +231,11 @@ const DealPage = ({ deal }: DealPageProps) => {
                       <Typography variant="body1">{deal.regulation}</Typography>
                     </Box>
                     <Box>
-                      <Typography variant="caption">Region</Typography>
+                      <Typography variant="caption">State</Typography>
                       <Typography variant="body1">
-                        {Array.isArray(deal.regions)
-                          ? deal.regions.join(', ')
-                          : deal.regions}
+                        {!!deal?.locations?.length
+                          ? deal?.locations?.[0]?.stateOrCountryDescription
+                          : 'N/A'}
                       </Typography>
                     </Box>
                   </Box>

@@ -85,7 +85,9 @@ const DealCard = ({
           />
         </Link>
         <Typography variant="body1" sx={classes.baseDealLocation}>
-          {Array.isArray(deal.regions) ? deal.regions.join(', ') : deal.regions}
+          {!!deal?.locations?.length
+            ? deal?.locations?.[0]?.stateOrCountryDescription
+            : 'N/A'}
         </Typography>
         <Typography
           variant="body1"
@@ -153,9 +155,9 @@ const DealCard = ({
           <Box sx={classes.sponsorPropertiesColumn}>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Location"></i>
-              {Array.isArray(deal.regions)
-                ? deal.regions.join(', ')
-                : deal.regions}
+              {!!deal?.locations?.length
+                ? deal?.locations?.[0]?.stateOrCountryDescription
+                : 'N/A'}
             </Typography>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Status"></i>

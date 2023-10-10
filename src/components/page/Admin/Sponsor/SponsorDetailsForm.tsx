@@ -5,7 +5,6 @@ import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
-import { Regions } from '@/backend/constants/enums/regions';
 import { LocationInterface } from '@/backend/services/locations/interfaces/location.interface';
 import { PartialCreateSponsorInterface } from '@/actions/sponsors';
 import Button from '@/components/common/Button';
@@ -16,6 +15,9 @@ import ProfilePictureUploader, {
   ProfilePictureUploaderVariant,
 } from '@/components/common/ProfilePictureUploader';
 import { useSponsorDetailsFormStyles } from './styles';
+import { useQuery } from 'react-query';
+import { getLocationsName } from '@/actions/common';
+import Loading from '@/components/common/Loading';
 
 const isBrowser =
   typeof window !== 'undefined' && typeof window.File !== 'undefined';
@@ -32,7 +34,6 @@ const validationSchema = z.object({
   zipCode: z.string().min(1, 'Required field'),
   stateOrCountry: z.string().min(1, 'Required field'),
   stateOrCountryDescription: z.string().min(1, 'Required field'),
-  regions: z.array(z.string()),
   website: z.string().min(1, 'Required field').url(),
   specialties: z.array(z.string()),
   description: z.string().min(1, 'Required field'),
@@ -103,11 +104,6 @@ const SponsorDetailsForm = ({
     }
   });
 
-  const regionsOptions = Object.values(Regions).map(item => ({
-    label: item,
-    value: item,
-  }));
-
   const specialitiesOptions = Object.values(AssetClasses).map(item => ({
     label: item,
     value: item,
@@ -148,6 +144,23 @@ const SponsorDetailsForm = ({
       }
     }
   }, [payload, setValue, isEdit]);
+
+  const { data: locationsData, isLoading: isLocationsLoading } = useQuery<
+    string[]
+  >(
+    ['locations'],
+    () =>
+      getLocationsName({
+        entityType: 'sponsor',
+      }) as Promise<string[]>,
+    {
+      keepPreviousData: true,
+    }
+  );
+
+  if (isLocationsLoading) {
+    return <Loading />;
+  }
 
   return (
     <form onSubmit={onSubmit}>
@@ -227,25 +240,25 @@ const SponsorDetailsForm = ({
             value={watch('stateOrCountry')}
             showClearOption={false}
           />
-          <Input
-            topLabel="State or Country Description"
-            register={register('stateOrCountryDescription')}
-            value={watch('stateOrCountryDescription')}
-            showClearOption={false}
-          />
         </Box>
         <Controller
           control={control}
-          name="regions"
+          name="stateOrCountryDescription"
           render={({ field: { onChange, value } }) => (
             <CustomSelect
-              options={regionsOptions}
+              options={
+                !!locationsData?.length
+                  ? locationsData.map(item => ({
+                      label: item,
+                      value: item,
+                    }))
+                  : []
+              }
               variant={SelectVariant.Dark}
-              multiple
               onChange={onChange}
               value={value || []}
-              topLabel="Region"
-              placeholder="Region"
+              topLabel="State"
+              placeholder="State"
             />
           )}
         />

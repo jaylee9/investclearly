@@ -2,23 +2,26 @@ import { Box, Typography, Grid } from '@mui/material';
 import Link from 'next/link';
 import { blueTitleStyles, useDealsBlockStyles } from './styles';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import { FC, useState } from 'react';
-import { Regions } from '@/backend/constants/enums/regions';
+import { useState } from 'react';
 import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import escapeStringForHttpParams from '@/helpers/escapeStringForHttpParams';
 import CustomAccordion from '@/components/common/Accordion';
 import { Add, Remove } from '@mui/icons-material';
 
-const DealsBlock: FC = () => {
+interface DealsBlockProps {
+  locations: string[];
+}
+
+const DealsBlock = ({ locations }: DealsBlockProps) => {
   const [regionExpanded, setRegionExpanded] = useState(false);
   const [assetClassExpanded, setAssetClassExpanded] = useState(false);
   const classes = useDealsBlockStyles();
   const { isMobile, isDesktop } = useBreakpoints();
   const spacingSize = isDesktop ? 24 : 3;
-  const regionLabel = 'Region';
+  const regionLabel = 'State';
   const assetClassLabel = 'Asset Class';
 
-  const regionArray = Object.values(Regions).map(value => {
+  const regionArray = locations?.map(value => {
     const linkValue = escapeStringForHttpParams(value);
     const href = `/list?type=deals&regions=${linkValue}`;
     return {
