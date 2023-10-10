@@ -29,6 +29,7 @@ export const update = async (
     stateOrCountry,
     stateOrCountryDescription,
     zipCode,
+    sponsorId,
     ...updateDealData
   } = fields;
 
@@ -41,12 +42,19 @@ export const update = async (
     regions,
   });
 
+  let updatedSponsorId: number | null | undefined = sponsorId;
+
+  if (updatedSponsorId?.toString() === 'none') {
+    updatedSponsorId = null;
+  }
+
   await getDealById(id, showOnlyPublishedDeals);
 
   await connection.manager.update(
     Deal,
     { id },
     {
+      sponsorId: updatedSponsorId,
       ...updateDealData,
       ...transformedData,
     }
