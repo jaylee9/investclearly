@@ -102,8 +102,6 @@ const ReviewDetailsStep = ({
     },
   });
 
-  console.log(errors);
-
   const onSubmit = handleSubmit(data => {
     setPayload({ ...payload, ...data });
     setStep(step + 1);
