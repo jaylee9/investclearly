@@ -86,12 +86,9 @@ const UploadProofStep = ({
           </Button>
           <Box sx={classes.mainButtonsWrapper}>
             <Button
-              variant="secondary"
-              onClick={() => handleSubmit('withoutProof')}
+              onClick={() => handleSubmit('withProof')}
+              disabled={!files.length}
             >
-              Submit without proof
-            </Button>
-            <Button onClick={() => handleSubmit('withProof')}>
               Submit review
             </Button>
           </Box>
