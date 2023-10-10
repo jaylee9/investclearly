@@ -182,7 +182,7 @@ const ProfileReviews = () => {
   }
 
   return (
-    <Box>
+    <Box sx={classes.root}>
       <CustomTabs
         value={activeTab}
         onChange={handleChangeTab}
@@ -196,11 +196,11 @@ const ProfileReviews = () => {
           !isLoading && (
             <Box sx={classes.noContentWrapper}>
               <Typography variant="h4" sx={classes.noReviewTitle}>
-                There are no{' '}
+                There are no&nbsp;
                 {activeTab === ReviewStatuses.published && 'published '}
-                Reviews
-                {activeTab === ReviewStatuses.onModeration &&
-                  ' on moderation'}{' '}
+                {activeTab === ReviewStatuses.rejected && 'rejected '}
+                Reviews&nbsp;
+                {activeTab === ReviewStatuses.onModeration && 'on moderation '}
                 yet
               </Typography>
               <Typography variant="body1" sx={classes.subTitle}>

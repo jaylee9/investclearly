@@ -77,7 +77,7 @@ export const useVerifyReviewModalStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: { md: '32px 16px', lg: '32px 0px' },
+      padding: { xs: '24px 16px 0px', md: '32px 16px', lg: '32px 0px' },
       gap: '32px',
       flex: 1,
       '& .content': {
