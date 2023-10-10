@@ -119,7 +119,7 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
         holdPeriod: +data.holdPeriod,
         attachmentsIdsToDelete: fileToDelete,
         photoOfTheObjects: choosedFile,
-        sponsorId: tag.id,
+        sponsorId: tag.id || 'none',
       },
     });
     if (!('error' in response)) {

@@ -156,8 +156,9 @@ export const deleteDealFromBookmarks = async ({
   }
 };
 
-type ModifiedUpdateDealInterface = UpdateDealInterface & {
+type ModifiedUpdateDealInterface = Omit<UpdateDealInterface, 'sponsorId'> & {
   photoOfTheObjects?: Blob;
+  sponsorId?: number | string;
 };
 
 export type PartialEditDealInterface = Partial<ModifiedUpdateDealInterface>;
