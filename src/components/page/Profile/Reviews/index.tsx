@@ -82,18 +82,20 @@ const ProfileReviews = () => {
     }
   );
 
-  const { isLoading: isLoadingRejectedCountData } = useQuery(
-    ['rejectedReviewsCount'],
-    () => getUserReviews({ userId: user?.id, status: ReviewStatuses.rejected }),
-    {
-      enabled: !!user,
-      onSuccess: (data: GetUserReviewsResponse) =>
-        setCounters(prevCounters => ({
-          ...prevCounters,
-          rejected: data.total,
-        })),
-    }
-  );
+  const { isLoading: isLoadingRejectedCountData, refetch: refetchRejectCount } =
+    useQuery(
+      ['rejectedReviewsCount'],
+      () =>
+        getUserReviews({ userId: user?.id, status: ReviewStatuses.rejected }),
+      {
+        enabled: !!user,
+        onSuccess: (data: GetUserReviewsResponse) =>
+          setCounters(prevCounters => ({
+            ...prevCounters,
+            rejected: data.total,
+          })),
+      }
+    );
 
   const { data, isLoading, refetch } = useQuery<GetUserReviewsResponse>(
     ['reviews', activeTab, page, searchTerm],
@@ -116,6 +118,12 @@ const ProfileReviews = () => {
   const handleRefetchFunction = () =>
     refetch().then(() => refetchOnModerationCount());
 
+  const handleRefetchReject = async () => {
+    await refetch();
+    await refetchOnModerationCount();
+    await refetchRejectCount();
+  };
+
   const handleOpenDeleteModal = (value: number) => setOpenDeleteModal(value);
   const handleCloseDeleteModal = () => setOpenDeleteModal(0);
   const onDeleteSubmit = () => {
@@ -125,7 +133,10 @@ const ProfileReviews = () => {
   const handleOpenEditModal = (review: ReviewInterface) =>
     setOpenEditModal(review);
 
-  const handleCloseEditModal = () => setOpenEditModal(null);
+  const handleCloseEditModal = async () => {
+    await handleRefetchReject();
+    setOpenEditModal(null);
+  };
 
   const handleOpenWriteReviewForm = () => setOpenWriteReviewForm(true);
   const handleCloseWriteReviewForm = () => setOpenWriteReviewForm(false);
@@ -254,7 +265,6 @@ const ProfileReviews = () => {
                 <EditReviewModal
                   open={!!openEditModal}
                   review={openEditModal as ReviewInterface}
-                  refetchFunction={refetch}
                   onClose={handleCloseEditModal}
                 />
               </Box>

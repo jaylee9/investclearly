@@ -23,15 +23,10 @@ const steps = {
 };
 
 interface VerifyReviewModalProps extends Omit<ModalProps, 'children'> {
-  refetchFunction: () => Promise<unknown>;
   review: ReviewInterface;
 }
 
-const EditReviewModal = ({
-  refetchFunction,
-  review,
-  ...props
-}: VerifyReviewModalProps) => {
+const EditReviewModal = ({ review, ...props }: VerifyReviewModalProps) => {
   const { onClose, ...other } = props;
   const classes = useVerifyReviewModalStyles();
   const [step, setStep] = useState(steps['Review Details']);
@@ -103,10 +98,8 @@ const EditReviewModal = ({
     const formattedPayload = formatPayload(payload);
     const result = await editReview(formattedPayload);
     if (result) {
-      refetchFunction().then(() => {
-        setIsLoading(false);
-        setStep(steps['Review Submitted']);
-      });
+      setIsLoading(false);
+      setStep(steps['Review Submitted']);
     }
   };
 
