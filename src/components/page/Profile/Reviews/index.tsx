@@ -15,7 +15,6 @@ import { debounce } from 'lodash';
 import Button from '@/components/common/Button';
 import CreateReviewForm from '@/components/common/CreateReview';
 import CustomPagination from '@/components/common/Pagination';
-import VerifyReviewModal from './Modals/VerifyReview';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { USER_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
 
@@ -33,10 +32,6 @@ const ProfileReviews = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [openWriteReviewForm, setOpenWriteReviewForm] = useState(false);
-  const [openVerifyReviewModal, setOpenVerifyReviewModal] = useState<
-    null | number
-  >(null);
-  const [choosedReviewer, setChoosedReviewer] = useState('');
 
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
@@ -127,12 +122,6 @@ const ProfileReviews = () => {
   const onCloseWriteReviewForm = () => {
     handleRefetchFunction().then(handleCloseWriteReviewForm);
   };
-
-  const handleOpenVerifyReviewModal = (value: number, reviewerName: string) => {
-    setOpenVerifyReviewModal(value);
-    setChoosedReviewer(reviewerName);
-  };
-  const handleCloseVerifyReviewModal = () => setOpenVerifyReviewModal(null);
 
   const handleChangeTab = (
     event: SyntheticEvent<Element, Event>,
@@ -258,13 +247,6 @@ const ProfileReviews = () => {
                   id={openDeleteModal}
                   onSubmitClose={onDeleteSubmit}
                   onClose={handleCloseDeleteModal}
-                />
-                <VerifyReviewModal
-                  open={!!openVerifyReviewModal}
-                  onClose={handleCloseVerifyReviewModal}
-                  refetchFunction={handleRefetchFunction}
-                  reviewId={openVerifyReviewModal as number}
-                  reviewerName={choosedReviewer}
                 />
               </Box>
             )}
