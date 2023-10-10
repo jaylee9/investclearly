@@ -18,15 +18,20 @@ import StepsComponent from '@/components/common/StepsComponent';
 
 const steps = {
   'Review Details': 0,
-  'Upload Proof': 1,
+  'Reupload Proofs': 1,
   'Review Submitted': 2,
 };
 
 interface VerifyReviewModalProps extends Omit<ModalProps, 'children'> {
   review: ReviewInterface;
+  refetch: () => void;
 }
 
-const EditReviewModal = ({ review, ...props }: VerifyReviewModalProps) => {
+const EditReviewModal = ({
+  review,
+  refetch,
+  ...props
+}: VerifyReviewModalProps) => {
   const { onClose, ...other } = props;
   const classes = useVerifyReviewModalStyles();
   const [step, setStep] = useState(steps['Review Details']);
@@ -60,7 +65,11 @@ const EditReviewModal = ({ review, ...props }: VerifyReviewModalProps) => {
     }
   };
 
-  const handleClose = (e: MouseEvent | object) => {
+  const handleClose = async (e: MouseEvent | object) => {
+    if (isLoading) {
+      return;
+    }
+    await refetch();
     if (onClose) {
       onClose(e, 'backdropClick');
     }
@@ -114,7 +123,7 @@ const EditReviewModal = ({ review, ...props }: VerifyReviewModalProps) => {
   }, [review?.attachments]);
 
   const contentClassName = clsx('content', {
-    'stretched-content': step === steps['Upload Proof'],
+    'stretched-content': step === steps['Reupload Proofs'],
   });
 
   const stepsArray = Object.keys(steps).filter(
@@ -154,7 +163,7 @@ const EditReviewModal = ({ review, ...props }: VerifyReviewModalProps) => {
           )}
           {step !== steps['Review Details'] && (
             <Box className={contentClassName}>
-              {step === steps['Upload Proof'] && !isUrlToFileLoading && (
+              {step === steps['Reupload Proofs'] && !isUrlToFileLoading && (
                 <>
                   <Box>
                     <Typography variant="h4" sx={classes.title}>
@@ -175,7 +184,12 @@ const EditReviewModal = ({ review, ...props }: VerifyReviewModalProps) => {
                   <Box sx={classes.buttonWrapper}>
                     <Button
                       onClick={handleEdit}
-                      disabled={!files.length || isLoading}
+                      disabled={
+                        (attachmentIdsToDelete.length ===
+                          review?.attachments?.length &&
+                          !files.length) ||
+                        isLoading
+                      }
                     >
                       Edit review
                     </Button>
