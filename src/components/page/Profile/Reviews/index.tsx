@@ -17,6 +17,8 @@ import CreateReviewForm from '@/components/common/CreateReview';
 import CustomPagination from '@/components/common/Pagination';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { USER_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
+import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.interface';
+import EditReviewModal from './Modals/EditReview';
 
 const ProfileReviews = () => {
   const classes = useProfileReviewsStyles();
@@ -30,6 +32,9 @@ const ProfileReviews = () => {
   const [user, setUser] = useState<UserInterface | null>(null);
   const [page, setPage] = useState(1);
   const [openDeleteModal, setOpenDeleteModal] = useState(0);
+  const [openEditModal, setOpenEditModal] = useState<ReviewInterface | null>(
+    null
+  );
   const [searchTerm, setSearchTerm] = useState('');
   const [openWriteReviewForm, setOpenWriteReviewForm] = useState(false);
 
@@ -116,6 +121,11 @@ const ProfileReviews = () => {
   const onDeleteSubmit = () => {
     handleRefetchFunction().then(handleCloseDeleteModal);
   };
+
+  const handleOpenEditModal = (review: ReviewInterface) =>
+    setOpenEditModal(review);
+
+  const handleCloseEditModal = () => setOpenEditModal(null);
 
   const handleOpenWriteReviewForm = () => setOpenWriteReviewForm(true);
   const handleCloseWriteReviewForm = () => setOpenWriteReviewForm(false);
@@ -212,24 +222,17 @@ const ProfileReviews = () => {
               onClear={handleClearSearch}
             />
             {isLoading ? (
-              <Loading />
+              <Loading sxCustomStyles={{ marginTop: '16px' }} />
             ) : (
               <Box sx={classes.reviewsWrapper}>
-                {activeTab === ReviewStatuses.published &&
-                  !!data.totalUnverifiedReviews && (
-                    <Typography variant="caption" sx={classes.warning}>
-                      <i className="icon-Warning"></i>
-                      You have {data.totalUnverifiedReviews} unverified review
-                      {data.totalUnverifiedReviews > 1 && 's'}. Please, upload
-                      proofs to help us maintain accurate information.
-                    </Typography>
-                  )}
                 {data?.reviews.map(review => (
                   <ReviewCard
                     review={review}
                     key={review.id}
                     isDelete={activeTab === ReviewStatuses.onModeration}
                     onDelete={handleOpenDeleteModal}
+                    showEditOption={activeTab === ReviewStatuses.rejected}
+                    onEdit={handleOpenEditModal}
                   />
                 ))}
                 <Box sx={classes.pagination}>
@@ -247,6 +250,12 @@ const ProfileReviews = () => {
                   id={openDeleteModal}
                   onSubmitClose={onDeleteSubmit}
                   onClose={handleCloseDeleteModal}
+                />
+                <EditReviewModal
+                  open={!!openEditModal}
+                  review={openEditModal as ReviewInterface}
+                  refetchFunction={refetch}
+                  onClose={handleCloseEditModal}
                 />
               </Box>
             )}

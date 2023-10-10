@@ -1,7 +1,7 @@
 import { Box, Fade, Typography } from '@mui/material';
 import { useFileUploaderStyles } from './styles';
 import { Accept, useDropzone } from 'react-dropzone';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Loading from './Loading';
 import Image from 'next/image';
@@ -11,7 +11,7 @@ export enum FileType {
   SINGLE_IMAGE = 'SingleImage',
 }
 
-interface FileItem {
+export interface FileItem {
   id: string;
   file: File;
   status: 'error' | 'loaded';
@@ -21,10 +21,12 @@ interface FileItem {
 
 interface FileUploaderProps {
   onUpload: (file: File) => void;
-  onDelete: (file?: File) => void;
+  onDelete: (file?: File, id?: number) => void;
   isLoading?: boolean;
   type?: FileType;
   defaultImage?: string;
+  defaultFiles?: FileItem[];
+  onDeleteDefaultFile?: (fileId: string) => void;
 }
 
 const FileUploader = ({
@@ -33,6 +35,8 @@ const FileUploader = ({
   isLoading,
   type = FileType.MULTIPLE_FILE,
   defaultImage,
+  defaultFiles,
+  onDeleteDefaultFile,
 }: FileUploaderProps) => {
   const classes = useFileUploaderStyles();
   const [files, setFiles] = useState<FileItem[]>([]);
@@ -80,6 +84,9 @@ const FileUploader = ({
     const fileToDelete = files.find(f => f.id === fileId);
     if (fileToDelete && fileToDelete.status !== 'error') {
       onDelete(fileToDelete.file);
+      if (defaultFiles?.includes(fileToDelete) && onDeleteDefaultFile) {
+        onDeleteDefaultFile(fileId);
+      }
     }
     setFiles(prevFiles => prevFiles.filter(f => f.id !== fileId));
   };
@@ -134,6 +141,12 @@ const FileUploader = ({
         Accepted formats: *.jpg, *.jpeg, *.png
       </Typography>
     );
+
+  useEffect(() => {
+    if (!!defaultFiles?.length) {
+      setFiles(defaultFiles);
+    }
+  }, [defaultFiles]);
 
   return (
     <Box>

@@ -12,12 +12,16 @@ interface ReviewCardProps {
   review: ReviewInterface;
   isDelete?: boolean;
   onDelete?: (value: number) => void;
+  showEditOption?: boolean;
+  onEdit?: (review: ReviewInterface) => void;
 }
 
 const ReviewCard = ({
   review,
   isDelete = false,
   onDelete,
+  showEditOption,
+  onEdit,
 }: ReviewCardProps) => {
   const [isExtended, setIsExtended] = useState(false);
   const [isTruncated, setIsTruncated] = useState(false);
@@ -42,6 +46,12 @@ const ReviewCard = ({
   const handleDelete = (value: number) => {
     if (onDelete) {
       onDelete(value);
+    }
+  };
+
+  const handleEdit = (review: ReviewInterface) => {
+    if (onEdit) {
+      onEdit(review);
     }
   };
 
@@ -104,7 +114,7 @@ const ReviewCard = ({
           {isExtended ? 'Hide' : 'Read'} full review
         </Typography>
       )}
-      {isDelete && (
+      {(isDelete || showEditOption) && (
         <Box sx={classes.optionalButtonWrapper}>
           {isDelete && (
             <Button
@@ -114,6 +124,11 @@ const ReviewCard = ({
             >
               <i className="icon-Delete" style={classes.deleteIcon}></i>
               Delete
+            </Button>
+          )}
+          {showEditOption && !review.isVerified && (
+            <Button variant="secondary" onClick={() => handleEdit(review)}>
+              Edit review
             </Button>
           )}
         </Box>
