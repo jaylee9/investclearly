@@ -15,6 +15,7 @@ import { Bookmark } from '../../../backend/entities/bookmark.entity';
 import { BookmarkConstants } from '../../../backend/constants/bookmark-constants';
 import { Location } from '../../entities/locations.entity';
 import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
+import { SearchConstants } from '../../../backend/constants/search-constants';
 
 export const getAllDeals = async (params: FindAllDealsInterface) => {
   const {
@@ -294,7 +295,6 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
 
   const {
     minInvestment,
-    maxInvestment,
     minTargetIRR,
     maxTargetIRR,
     minActualIRR,
@@ -306,7 +306,6 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   } = await connection
     .createQueryBuilder()
     .select('MIN(deals.minimumInvestment)', 'minInvestment')
-    .addSelect('MAX(deals.minimumInvestment)', 'maxInvestment')
     .addSelect('MIN(deals.targetIRR)', 'minTargetIRR')
     .addSelect('MAX(deals.targetIRR)', 'maxTargetIRR')
     .addSelect('MIN(deals.actualIRR)', 'minActualIRR')
@@ -322,7 +321,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     deals: await Promise.all(dealsWithCounters.map(dealMapper)),
     rangeData: {
       minInvestment,
-      maxInvestment,
+      maxInvestment: SearchConstants.maxInvestmentValue,
       minTargetIRR,
       maxTargetIRR,
       minActualIRR,
