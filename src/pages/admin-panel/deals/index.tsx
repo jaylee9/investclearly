@@ -3,7 +3,7 @@ import { Box, SelectChangeEvent, Typography } from '@mui/material';
 import useAdminDealsStyles from '@/pages_styles/adminDealsStyles';
 import Input from '@/components/common/Input';
 import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
-import { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { useQuery } from 'react-query';
 import CustomTable, { Column } from '@/components/common/Table';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
@@ -19,6 +19,7 @@ import EditDealModal from '@/components/page/Admin/Deal/EditDealModal';
 import Loading from '@/components/common/Loading';
 import { format } from 'date-fns';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
+import CustomTabs from '@/components/common/CustomTabs';
 
 interface AdminDealsPageProps {
   dealsResponse: GetAllDealsResponse;
@@ -39,6 +40,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [orderDirection, setOrderDirection] = useState<'DESC' | 'ASC'>('DESC');
+  const [activeTab, setActiveTab] = useState('published');
 
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
@@ -47,6 +49,13 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
     setPage(1);
     setSearchTerm('');
   };
+  const handleChangeTab = (
+    event: SyntheticEvent<Element, Event>,
+    newValue: string
+  ) => {
+    setActiveTab(newValue);
+    setPage(1);
+  };
 
   const handleChangeSelect = (e: SelectChangeEvent<unknown>) => {
     setOrderDirection(e.target.value as 'DESC' | 'ASC');
@@ -54,13 +63,14 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
   };
 
   const { data, isLoading, refetch } = useQuery<GetAllDealsResponse>(
-    ['deals', page, searchTerm, orderDirection],
+    ['deals', page, searchTerm, activeTab, orderDirection],
     () =>
       getAllDeals({
         page,
         pageSize: 10,
         search: searchTerm,
         orderDirection,
+        isDealPublished: activeTab === 'published',
       }) as Promise<GetAllDealsResponse>,
     {
       initialData: dealsResponse,
@@ -150,15 +160,6 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
       width: '15%',
     },
     {
-      label: 'Published',
-      accessor: data => (
-        <Typography variant="body1">
-          {data.isDealPublished ? 'Yes' : 'No'}
-        </Typography>
-      ),
-      width: '12%',
-    },
-    {
       label: 'Filled At',
       accessor: data => (
         <Typography variant="body1">
@@ -187,6 +188,17 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
     },
   ];
 
+  const tabs = [
+    {
+      value: 'published',
+      label: 'Published',
+    },
+    {
+      value: 'notPublished',
+      label: 'Not Published',
+    },
+  ];
+
   if (isLoading) {
     return <Loading />;
   }
@@ -196,6 +208,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
       <Typography variant="h3" sx={classes.title}>
         Deals
       </Typography>
+      <CustomTabs value={activeTab} onChange={handleChangeTab} tabs={tabs} />
       {dealsResponse?.deals?.length ? (
         <Box>
           <Box sx={classes.header}>
