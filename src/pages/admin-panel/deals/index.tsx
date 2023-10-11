@@ -194,8 +194,8 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
       label: 'Published',
     },
     {
-      value: 'notPublished',
-      label: 'Not Published',
+      value: 'unpublished',
+      label: 'Unpublished',
     },
   ];
 
