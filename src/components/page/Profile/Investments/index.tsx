@@ -87,7 +87,7 @@ const ProfileInvestments = () => {
       accessor: data => (
         <EllipsisText
           sx={classes.dealName}
-          text={data.deal.dealLegalName as string}
+          text={data?.deal?.vanityName as string}
         />
       ),
       width: '20%',
