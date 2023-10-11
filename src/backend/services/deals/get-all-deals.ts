@@ -47,6 +47,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     currentUserId,
     showOnlyPublishedDeals = true,
     stateOrCountryDescriptions = [],
+    isDealPublished,
   } = params;
 
   const connection = await getDatabaseConnection();
@@ -80,6 +81,12 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     )
     .leftJoinAndSelect('deals.sponsor', 'sponsor')
     .groupBy('deals.id, attachments.id, locations.id, sponsor.id');
+
+  if (isDealPublished) {
+    searchQuery = searchQuery.andWhere('deals.isDealPublished = :isPublished', {
+      isPublished: isDealPublished,
+    });
+  }
 
   if (showOnlyPublishedDeals === true) {
     searchQuery = searchQuery.andWhere('deals.isDealPublished = :isPublished', {
