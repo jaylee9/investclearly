@@ -15,6 +15,7 @@ interface IDealFilters extends IFilters {
   search?: string;
   sponsorId?: number;
   limit?: number;
+  isDealPublished?: boolean;
 }
 
 export interface RangeData {
@@ -72,6 +73,7 @@ export const getAllDeals = async (
     preferredReturnMin: filters.preffered_return?.from,
     preferredReturnMax: filters.preffered_return?.to,
     limit: filters.limit,
+    isDealPublished: filters.isDealPublished,
   };
 
   const stringifiedParameters = queryString.stringify(parameters, {
