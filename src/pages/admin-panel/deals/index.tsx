@@ -1,5 +1,5 @@
 import Layout, { LayoutVariant } from '@/components/common/Layout';
-import { Box, Typography } from '@mui/material';
+import { Box, SelectChangeEvent, Typography } from '@mui/material';
 import useAdminDealsStyles from '@/pages_styles/adminDealsStyles';
 import Input from '@/components/common/Input';
 import { GetAllDealsResponse, getAllDeals } from '@/actions/deals';
@@ -18,10 +18,16 @@ import withAdminPrivateRoute from '@/HOC/withAdminPrivateRoute';
 import EditDealModal from '@/components/page/Admin/Deal/EditDealModal';
 import Loading from '@/components/common/Loading';
 import { format } from 'date-fns';
+import CustomSelect, { SelectVariant } from '@/components/common/Select';
 
 interface AdminDealsPageProps {
   dealsResponse: GetAllDealsResponse;
 }
+
+const sortOptions = [
+  { label: 'Newest Deals', value: 'DESC' },
+  { label: 'Oldest Deals', value: 'ASC' },
+];
 
 const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
   const classes = useAdminDealsStyles();
@@ -32,6 +38,8 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
   );
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [orderDirection, setOrderDirection] = useState<'DESC' | 'ASC'>('DESC');
+
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
   }, 300);
@@ -40,13 +48,19 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
     setSearchTerm('');
   };
 
+  const handleChangeSelect = (e: SelectChangeEvent<unknown>) => {
+    setOrderDirection(e.target.value as 'DESC' | 'ASC');
+    setPage(1);
+  };
+
   const { data, isLoading, refetch } = useQuery<GetAllDealsResponse>(
-    ['deals', page, searchTerm],
+    ['deals', page, searchTerm, orderDirection],
     () =>
       getAllDeals({
         page,
         pageSize: 10,
         search: searchTerm,
+        orderDirection,
       }) as Promise<GetAllDealsResponse>,
     {
       initialData: dealsResponse,
@@ -194,6 +208,19 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
               onChange={e => handleSearch(e.target.value)}
               onClear={handleClearSearch}
             />
+            <Box sx={classes.selectWrapper}>
+              <Typography variant="body1" noWrap>
+                Sort by:
+              </Typography>
+              <Box sx={classes.selectContent}>
+                <CustomSelect
+                  options={sortOptions}
+                  variant={SelectVariant.Dark}
+                  onChange={handleChangeSelect}
+                  value={orderDirection}
+                />
+              </Box>
+            </Box>
           </Box>
           <CustomTable<DealInterface>
             data={data?.deals as DealInterface[]}
