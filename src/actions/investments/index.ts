@@ -3,6 +3,7 @@ import { InvestmentInterface } from '@/backend/services/investments/interfaces/i
 import { TPaginationInfo } from '@/backend/utils/pagination/paginate-info.type';
 import customToast, { ToastType } from '@/components/common/Toast/customToast';
 import api from '@/config/ky';
+import { HTTPError } from 'ky';
 import queryString from 'query-string';
 
 export interface GetAllInvestmentsResponse extends TPaginationInfo {
@@ -52,7 +53,19 @@ export const createInvestment = async ({
       .json();
     return response;
   } catch (error) {
-    const errorMessage = 'Failed to add deal';
+    let errorMessage = 'Failed to add deal';
+
+    if (error instanceof HTTPError) {
+      await error.response.text().then(data => {
+        if (
+          JSON.parse(data).error.message ===
+          'Investment for this deal already created'
+        ) {
+          errorMessage = 'Deal was already added';
+        }
+      });
+    }
+
     customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }
