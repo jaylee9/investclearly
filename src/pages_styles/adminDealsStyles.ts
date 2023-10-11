@@ -17,6 +17,17 @@ const useAdminDealsStyles = () => {
     searchInput: {
       width: '320px',
     },
+    selectWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      '& p': {
+        color: palette.text.secondary,
+      },
+    },
+    selectContent: {
+      width: '200px',
+    },
     noDealsContent: {
       borderRadius: '12px',
       background: palette.common.white,
