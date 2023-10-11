@@ -25,7 +25,7 @@ import CustomCheckbox from '@/components/common/CustomCheckbox';
 const validationSchema = z.object({
   vanityName: z.string().min(1),
   assetClass: z.string().min(1),
-  description: z.string().min(1),
+  description: z.string(),
   // closeDate: z.string().min(1),
   holdPeriod: z.string().min(1),
   isDealPublished: z.boolean(),
