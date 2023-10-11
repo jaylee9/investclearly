@@ -78,7 +78,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
               <EllipsisText
                 variant="body1"
                 fontWeight={500}
-                text={data.dealLegalName as string}
+                text={data?.vanityName as string}
                 sx={classes.ellipsisText}
               />
             </Link>

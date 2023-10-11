@@ -223,7 +223,7 @@ const DealPage = ({ deal }: DealPageProps) => {
                     <Box>
                       <Typography variant="caption">Legal Name</Typography>
                       <Typography variant="body1">
-                        {deal.dealLegalName}
+                        {deal?.dealLegalName}
                       </Typography>
                     </Box>
                     <Box>

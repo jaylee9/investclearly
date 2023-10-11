@@ -38,8 +38,8 @@ const EditDealModal = ({ onClose, deal, refetch, ...props }: EditDealModal) => {
             <Logo />
             <Box>
               <Typography variant="body1">Edit Deal</Typography>
-              {deal?.dealLegalName && (
-                <Typography variant="caption">{deal.dealLegalName}</Typography>
+              {deal?.vanityName && (
+                <Typography variant="caption">{deal.vanityName}</Typography>
               )}
             </Box>
           </Box>
