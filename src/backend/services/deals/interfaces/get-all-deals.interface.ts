@@ -35,4 +35,5 @@ export interface FindAllDealsInterface {
   currentUserId?: number;
   showOnlyPublishedDeals?: boolean;
   stateOrCountryDescriptions?: string[];
+  isDealPublished?: boolean;
 }
