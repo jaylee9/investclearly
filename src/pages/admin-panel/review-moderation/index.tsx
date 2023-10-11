@@ -232,7 +232,7 @@ const ReviewModerationPage = () => {
           text={
             `${data.reviewer?.firstName} ${data.reviewer?.lastName}` as string
           }
-          sx={classes.ellipsisText}
+          sx={{ maxWidth: '150px' }}
         />
       ),
       width: '15%',
