@@ -23,7 +23,7 @@ import { editDeal } from '@/actions/deals';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
 
 const validationSchema = z.object({
-  dealTitle: z.string().min(1),
+  vanityName: z.string().min(1),
   assetClass: z.string().min(1),
   description: z.string().min(1),
   // closeDate: z.string().min(1),
@@ -160,8 +160,8 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
     <form onSubmit={onSubmit}>
       <Box sx={classes.formWrapper}>
         <Input
-          register={register('dealTitle')}
-          value={watch('dealTitle')}
+          register={register('vanityName')}
+          value={watch('vanityName')}
           topLabel="Deal Vanity Name"
           placeholder="Vanity Name"
         />

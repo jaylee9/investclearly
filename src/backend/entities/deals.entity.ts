@@ -33,7 +33,7 @@ export class Deal {
   sponsorId: number | null;
 
   @Column({ type: 'varchar', nullable: true })
-  dealTitle: string;
+  vanityName: string;
 
   @Column({ type: 'varchar', nullable: true })
   dealAddress: string;

@@ -45,7 +45,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     .addSelect('COUNT(DISTINCT reviews.id) AS reviews_count')
     .from(Sponsor, 'sponsors')
     .leftJoin('sponsors.deals', 'openDeals', 'openDeals.status = :status', {
-      status: DealStatuses.open,
+      status: DealStatuses.active,
     })
     .leftJoin('sponsors.deals', 'deals')
     .leftJoin('sponsors.reviews', 'reviews', 'reviews.status = :reviewStatus', {
@@ -131,7 +131,7 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
 
   if (activelyRising === 'true') {
     searchQuery = searchQuery.andWhere('deals.status= :status', {
-      status: DealStatuses.open,
+      status: DealStatuses.active,
     });
   }
 

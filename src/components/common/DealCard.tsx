@@ -81,7 +81,7 @@ const DealCard = ({
           <EllipsisText
             variant="h5"
             sx={classes.baseDealName}
-            text={deal.dealTitle as string}
+            text={deal.vanityName as string}
           />
         </Link>
         <Typography variant="body1" sx={classes.baseDealLocation}>
@@ -127,7 +127,7 @@ const DealCard = ({
             <Link href={`/deals/${deal.id}`}>
               <EllipsisText
                 variant="h5"
-                text={deal.dealTitle as string}
+                text={deal.vanityName as string}
                 sx={classes.largeDealTitle}
               />
             </Link>
