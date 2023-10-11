@@ -45,7 +45,7 @@ export const getAllInvestments = async (
     searchQuery = searchQuery.andWhere(
       new Brackets(qb => {
         return qb
-          .where('deal.dealTitle ILIKE :search', { search: `%${search}%` })
+          .where('deal.vanityName ILIKE :search', { search: `%${search}%` })
           .orWhere('deal.dealAddress ILIKE :search', {
             search: `%${search}%`,
           })

@@ -118,7 +118,7 @@ const ReviewDetailsModal = ({
                       />
                       <Box>
                         <Typography variant="body1">
-                          {review?.deal?.dealTitle}
+                          {review?.deal?.vanityName}
                         </Typography>
                         <Typography variant="caption">
                           {review?.deal?.dealAddress}

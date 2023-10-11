@@ -56,8 +56,8 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
 
   const statusStyles = (status: DealStatuses) =>
     clsx({
-      open: status === DealStatuses.open || status === DealStatuses.fullCycle,
-      closed: status === DealStatuses.closedActive,
+      open: status === DealStatuses.active,
+      closed: status === DealStatuses.closed,
     });
 
   const columns: Column<DealInterface>[] = [

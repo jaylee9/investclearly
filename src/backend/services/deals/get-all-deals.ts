@@ -184,7 +184,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     searchQuery = searchQuery.andWhere(
       new Brackets(qb => {
         return qb
-          .where('deals.dealTitle ILIKE :search', { search: `%${search}%` })
+          .where('deals.vanityName ILIKE :search', { search: `%${search}%` })
           .orWhere('deals.dealAddress ILIKE :search', {
             search: `%${search}%`,
           })

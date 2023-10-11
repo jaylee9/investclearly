@@ -193,7 +193,7 @@ const ReviewModerationPage = () => {
                 <EllipsisText
                   variant="body1"
                   fontWeight={500}
-                  text={data.deal?.dealTitle as string}
+                  text={data.deal?.vanityName as string}
                   sx={classes.ellipsisText}
                 />
               </Link>

@@ -11,7 +11,7 @@ export interface CreateDealInterface {
   dateOfFirstSale: Date;
   isMoreThanOneYear: boolean;
   isDealPublished: boolean;
-  dealTitle: string;
+  vanityName: string;
   dealAddress: string;
   regions: string | string[];
   status: string;

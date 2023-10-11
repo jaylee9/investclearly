@@ -143,7 +143,7 @@ const DealPage = ({ deal }: DealPageProps) => {
             <Box sx={classes.info}>
               <Box sx={classes.infoHeader}>
                 <Box>
-                  <Typography variant="h3">{deal.dealTitle}</Typography>
+                  <Typography variant="h3">{deal.vanityName}</Typography>
                   <Typography variant="body1">{deal.dealAddress}</Typography>
                 </Box>
                 <div>

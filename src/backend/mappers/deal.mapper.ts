@@ -8,7 +8,7 @@ import { sponsorMapper } from './sponsor.mapper';
 export const dealMapper = (deal: Deal): DealInterface => {
   return {
     id: deal.id,
-    dealTitle: deal.dealTitle,
+    vanityName: deal.vanityName,
     dealAddress: deal.dealAddress,
     regions: deal.regions || [],
     status: deal.status,

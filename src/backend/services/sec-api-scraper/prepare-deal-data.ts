@@ -2,7 +2,6 @@ import moment from 'moment';
 import { InvestmentStructures } from '../../constants/enums/investment-structures';
 import { Exemptions } from '../../constants/enums/exemptions';
 import { DealStatuses } from '../../constants/enums/deal-statuses';
-import { AssetClasses } from '../../constants/enums/asset-classes';
 import { Regulations } from '../../constants/enums/regulations';
 import { FormD } from './interfaces/form-D.interface';
 import { MomentConstants } from '../../constants/moment-constants';
@@ -39,7 +38,7 @@ export const prepareDealData = async (offering: FormD) => {
 
   let investmentStructures = InvestmentStructures.equity;
   let exemption = Exemptions.Rule506C;
-  let status = DealStatuses.open;
+  let status = DealStatuses.active;
   let isDealPublished = false;
 
   if (offering?.offeringData?.typesOfSecuritiesOffered?.isDebtType) {
@@ -50,14 +49,14 @@ export const prepareDealData = async (offering: FormD) => {
     isDealPublished =
       moment(offering?.filedAt) <= moment(fourteenDaysOlderDate);
     if (moment(offering?.filedAt) < moment(expirationDateFor500C)) {
-      status = DealStatuses.closedActive;
+      status = DealStatuses.closed;
     }
 
     if (
       moment(offering?.filedAt) >= moment(expirationDateFor500C) &&
       moment(offering?.filedAt) <= moment(fifteenDaysOlderDate)
     ) {
-      status = DealStatuses.open;
+      status = DealStatuses.active;
     }
   }
 
@@ -65,15 +64,12 @@ export const prepareDealData = async (offering: FormD) => {
     exemption = Exemptions.Rule506B;
 
     if (moment(offering?.filedAt) < moment(expirationDateFor500B)) {
-      status = DealStatuses.closedActive;
+      status = DealStatuses.closed;
       isDealPublished = true;
     }
   }
 
-  if (
-    exemption === Exemptions.Rule506B &&
-    status !== DealStatuses.closedActive
-  ) {
+  if (exemption === Exemptions.Rule506B && status !== DealStatuses.closed) {
     return;
   }
 
@@ -92,8 +88,8 @@ export const prepareDealData = async (offering: FormD) => {
 
   return {
     secApiId: offering?.id,
-    assetClass: AssetClasses.offeringDataOrIndustryGroup,
-    dealTitle: offering?.primaryIssuer?.entityName,
+    assetClass: offering?.offeringData?.industryGroup?.industryGroupType,
+    vanityName: offering?.primaryIssuer?.entityName,
     minimumInvestment: offering?.offeringData?.minimumInvestmentAccepted,
     investmentStructures,
     targetRaise:

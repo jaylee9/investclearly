@@ -57,7 +57,7 @@ export const getAllReviews = async (params: FindAllReviewsInterface) => {
 
   if (search) {
     const fieldsToSearch = [
-      'deal.dealTitle',
+      'deal.vanityName',
       'deal.dealAddress',
       'deal.dealLegalName',
       'deal.dealSponsor',
