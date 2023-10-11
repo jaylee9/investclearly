@@ -12,7 +12,11 @@ import { getAllDeals } from '@/actions/deals';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { SponsorInterface } from '@/backend/services/sponsors/interfaces/sponsor.interface';
 import { getAllSponsors } from '@/actions/sponsors';
-import { GlobalSearchResponse, globalSearch } from '@/actions/common';
+import {
+  GlobalSearchResponse,
+  getLocationsName,
+  globalSearch,
+} from '@/actions/common';
 import { useState, type FC } from 'react';
 import CreateReviewForm from '@/components/common/CreateReview';
 
@@ -20,9 +24,15 @@ interface HomeProps {
   deals: DealInterface[];
   sponsors: SponsorInterface[];
   searchResponse: GlobalSearchResponse;
+  locations: string[];
 }
 
-const Home: FC<HomeProps> = ({ deals, sponsors, searchResponse }) => {
+const Home: FC<HomeProps> = ({
+  deals,
+  sponsors,
+  searchResponse,
+  locations,
+}) => {
   const classes = useHomeStyles();
 
   const [openCreateReviewForm, setOpenCreateReviewForm] = useState(false);
@@ -43,7 +53,7 @@ const Home: FC<HomeProps> = ({ deals, sponsors, searchResponse }) => {
         <Box sx={classes.content}>
           <TopRatedSponsorsBlock sponsors={sponsors} />
           <NewDealsBlock deals={deals} />
-          <DealsBlock />
+          <DealsBlock locations={locations} />
         </Box>
         <BannerBlock
           title="Investing In a Real Estate Syndication or Fund?
@@ -68,16 +78,25 @@ export const getServerSideProps = async () => {
   });
   const sponsorsResponse = await getAllSponsors({ page: 1, pageSize: 4 });
   const searchResponse = await globalSearch({ search: '' });
-  if ('error' in dealsResponse || 'error' in sponsorsResponse) {
+  const locationsResponse = await getLocationsName({
+    entityType: 'deal',
+  });
+  if (
+    'error' in dealsResponse ||
+    'error' in sponsorsResponse ||
+    'error' in locationsResponse
+  ) {
     return {
       notFound: true,
     };
   }
+  const formattedLocations = locationsResponse.slice(0, 11);
   return {
     props: {
       deals: dealsResponse.deals,
       sponsors: sponsorsResponse.sponsors,
       searchResponse,
+      locations: formattedLocations,
     },
   };
 };

@@ -2,7 +2,7 @@ import { Exemptions } from '../../../../backend/constants/enums/exemptions';
 import { InvestmentStructures } from '../../../../backend/constants/enums/investment-structures';
 
 export interface UpdateDealInterface {
-  dealTitle: string;
+  vanityName: string;
   dealAddress: string;
   regions: string;
   status: string;
@@ -32,4 +32,5 @@ export interface UpdateDealInterface {
   stateOrCountryDescription?: string | '';
   zipCode?: string | '';
   sponsorId?: number;
+  isDealPublished: boolean;
 }

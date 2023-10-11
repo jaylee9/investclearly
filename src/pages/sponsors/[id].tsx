@@ -350,11 +350,11 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
               <Box sx={classes.infoContentDetail}>
                 <i className="icon-Location"></i>
                 <Box>
-                  <Typography variant="caption">Region</Typography>
+                  <Typography variant="caption">State</Typography>
                   <Typography variant="body1">
-                    {Array.isArray(sponsor.regions)
-                      ? sponsor.regions.join(', ')
-                      : sponsor.regions}
+                    {!!sponsor?.locations?.length
+                      ? sponsor?.locations?.[0]?.stateOrCountryDescription
+                      : 'N/A'}
                   </Typography>
                 </Box>
               </Box>

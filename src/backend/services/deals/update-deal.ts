@@ -15,7 +15,8 @@ import { LocationTargetTypesConstants } from '../../constants/location-target-ty
 export const update = async (
   id: number,
   fields: UpdateDealInterface,
-  files: Express.Multer.File[]
+  files: Express.Multer.File[],
+  showOnlyPublishedDeals: boolean
 ) => {
   const connection = await getDatabaseConnection();
   const {
@@ -28,6 +29,7 @@ export const update = async (
     stateOrCountry,
     stateOrCountryDescription,
     zipCode,
+    sponsorId,
     ...updateDealData
   } = fields;
 
@@ -40,12 +42,19 @@ export const update = async (
     regions,
   });
 
-  await getDealById(id);
+  let updatedSponsorId: number | null | undefined = sponsorId;
+
+  if (updatedSponsorId?.toString() === 'none') {
+    updatedSponsorId = null;
+  }
+
+  await getDealById(id, showOnlyPublishedDeals);
 
   await connection.manager.update(
     Deal,
     { id },
     {
+      sponsorId: updatedSponsorId,
       ...updateDealData,
       ...transformedData,
     }
@@ -83,5 +92,5 @@ export const update = async (
     id
   );
 
-  return getDealById(id);
+  return getDealById(id, showOnlyPublishedDeals);
 };

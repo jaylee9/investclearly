@@ -38,7 +38,7 @@ export const getAllSponsors = async (
     pageSize: filters.pageSize,
     orderDirection: filters.orderDirection || 'DESC',
     primaryAssetClasses: filters.primaryAssetClasses,
-    regionalFocus: filters.regionalFocus,
+    stateOrCountryDescriptions: filters.stateOrCountryDescriptions,
     activelyRising: filters.activelyRising,
     search: filters.search,
     minRating,

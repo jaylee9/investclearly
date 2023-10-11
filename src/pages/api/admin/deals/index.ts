@@ -6,6 +6,7 @@ import { adminMiddleware } from '../../../../../src/backend/middleware/admin';
 import { createDeal } from '../../../../backend/services/deals/create-deal';
 import { parseForm } from '../../../../backend/utils/parse-form';
 import { CreateDealInterface } from '../../../../backend/services/deals/interfaces/create-deal.interface';
+import { dealsVisibilityMiddleware } from '@/backend/middleware/deals-visibility';
 
 export const config = {
   api: {
@@ -14,11 +15,13 @@ export const config = {
 };
 
 const create = async (request: NextApiRequest, response: NextApiResponse) => {
-  await adminMiddleware(request, response);
+  const { user } = await adminMiddleware(request, response);
+  const showOnlyPublishedDeals = dealsVisibilityMiddleware(user);
   const { fields, files } = await parseForm(request, response);
   const newDeal = await createDeal(
     fields as unknown as CreateDealInterface,
-    files
+    files,
+    showOnlyPublishedDeals
   );
 
   if (newDeal) {

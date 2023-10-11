@@ -10,12 +10,13 @@ import { getDealById } from '../deals/get-deal-by-id';
 
 export const createinvestment = async (
   data: DeepPartial<CreateInvestmentInterface>,
-  userId: number
+  userId: number,
+  showOnlyPublishedDeals: boolean
 ) => {
   const connection = await getDatabaseConnection();
 
   if (data.dealId) {
-    const dealRecord = await getDealById(data.dealId);
+    const dealRecord = await getDealById(data.dealId, showOnlyPublishedDeals);
     const investmentRecord = await connection.manager.findOne(Investment, {
       where: {
         dealId: dealRecord.id,

@@ -7,7 +7,7 @@ export interface DealInterface {
   id: number;
   fileDate: Date;
   isDealPublished: boolean;
-  dealTitle: string;
+  vanityName: string;
   dealAddress: string;
   regions: string | string[];
   status: string;

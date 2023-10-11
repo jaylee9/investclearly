@@ -16,6 +16,7 @@ export interface HeaderProps {
   logoVariant?: LogoVariant;
   onChangeSearch?: (searchTerm: string) => void;
   isSticky?: boolean;
+  isDealAssetClasses?: boolean;
 }
 
 const useHeaderProps = (headerProps: HeaderProps = {}) => {
@@ -29,6 +30,7 @@ const useHeaderProps = (headerProps: HeaderProps = {}) => {
     isSignIn: true,
     isShadow: true,
     isShadowInFront: false,
+    isDealAssetClasses: true,
     logoVariant: LogoVariant.Default,
     onChangeSearch: undefined,
     isSticky: false,

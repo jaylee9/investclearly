@@ -20,13 +20,15 @@ import CustomTextArea from '@/components/common/TextArea';
 import Button from '@/components/common/Button';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { editDeal } from '@/actions/deals';
+import CustomCheckbox from '@/components/common/CustomCheckbox';
 
 const validationSchema = z.object({
-  dealTitle: z.string().min(1),
+  vanityName: z.string().min(1),
   assetClass: z.string().min(1),
-  description: z.string().min(1),
+  description: z.string(),
   // closeDate: z.string().min(1),
   holdPeriod: z.string().min(1),
+  isDealPublished: z.boolean(),
 });
 
 type ValidationSchema = z.infer<typeof validationSchema>;
@@ -117,7 +119,7 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
         holdPeriod: +data.holdPeriod,
         attachmentsIdsToDelete: fileToDelete,
         photoOfTheObjects: choosedFile,
-        sponsorId: tag.id,
+        sponsorId: tag.id || 'none',
       },
     });
     if (!('error' in response)) {
@@ -140,6 +142,9 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
           if (typeof value === 'string' || typeof value === 'number') {
             setValue(key as keyof ValidationSchema, String(value));
           }
+          if (typeof value === 'boolean') {
+            setValue(key as keyof ValidationSchema, value);
+          }
         }
       });
 
@@ -155,8 +160,8 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
     <form onSubmit={onSubmit}>
       <Box sx={classes.formWrapper}>
         <Input
-          register={register('dealTitle')}
-          value={watch('dealTitle')}
+          register={register('vanityName')}
+          value={watch('vanityName')}
           topLabel="Deal Vanity Name"
           placeholder="Vanity Name"
         />
@@ -269,6 +274,18 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
             value={watch('holdPeriod')}
           />
         </Box>
+        <Controller
+          control={control}
+          name="isDealPublished"
+          render={({ field: { onChange, value } }) => (
+            <CustomCheckbox
+              onChange={onChange}
+              checked={value}
+              label="Published"
+              customStyles={{ width: 'fit-content' }}
+            />
+          )}
+        />
       </Box>
       <Box sx={classes.buttonsWrapper}>
         <Button variant="secondary" onClick={onClose}>

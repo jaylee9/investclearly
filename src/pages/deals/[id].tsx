@@ -143,7 +143,7 @@ const DealPage = ({ deal }: DealPageProps) => {
             <Box sx={classes.info}>
               <Box sx={classes.infoHeader}>
                 <Box>
-                  <Typography variant="h3">{deal.dealTitle}</Typography>
+                  <Typography variant="h3">{deal.vanityName}</Typography>
                   <Typography variant="body1">{deal.dealAddress}</Typography>
                 </Box>
                 <div>
@@ -223,7 +223,7 @@ const DealPage = ({ deal }: DealPageProps) => {
                     <Box>
                       <Typography variant="caption">Legal Name</Typography>
                       <Typography variant="body1">
-                        {deal.dealLegalName}
+                        {deal?.dealLegalName}
                       </Typography>
                     </Box>
                     <Box>
@@ -231,11 +231,11 @@ const DealPage = ({ deal }: DealPageProps) => {
                       <Typography variant="body1">{deal.regulation}</Typography>
                     </Box>
                     <Box>
-                      <Typography variant="caption">Region</Typography>
+                      <Typography variant="caption">State</Typography>
                       <Typography variant="body1">
-                        {Array.isArray(deal.regions)
-                          ? deal.regions.join(', ')
-                          : deal.regions}
+                        {!!deal?.locations?.length
+                          ? deal?.locations?.[0]?.stateOrCountryDescription
+                          : 'N/A'}
                       </Typography>
                     </Box>
                   </Box>

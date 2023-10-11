@@ -22,9 +22,9 @@ import { AssetClasses } from '@/backend/constants/enums/asset-classes';
 import { useDealsComponentStyles } from './styles';
 import ColumnsComponent from '../ColumnsComponent';
 import filterDifferences from '@/helpers/filterDifferences';
-import { Regions } from '@/backend/constants/enums/regions';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import Button from '@/components/common/Button';
+import { getLocationsName } from '@/actions/common';
 
 const sortOptions = [
   { label: 'Newest Deals', value: 'DESC' },
@@ -41,7 +41,7 @@ type FilterArrayKeys =
   | 'ratings'
   | 'asset_classes'
   | 'statuses'
-  | 'regions'
+  | 'stateOrCountryDescriptions'
   | 'investment_structure'
   | 'exemptions';
 
@@ -88,7 +88,7 @@ const DealsComponent = ({
     ratings: [],
     asset_classes: [],
     statuses: [],
-    regions: [],
+    stateOrCountryDescriptions: [],
     regulations: [],
     investment_structure: [],
     exemptions: [],
@@ -115,16 +115,43 @@ const DealsComponent = ({
   };
 
   const assetClassesArray = Object.values(AssetClasses);
-  const regionsArray = Object.values(Regions);
   const asset_classes = assetClassesArray.filter(
     item =>
       item.replace(/[\s']/g, '_').toLowerCase() === router.query.asset_class
   );
-  const regions = regionsArray.filter(
-    item => item.replace(/[\s']/g, '_').toLowerCase() === router.query.regions
+
+  const { data: locationsData, isLoading } = useQuery<string[]>(
+    ['locations'],
+    () =>
+      getLocationsName({
+        entityType: 'deal',
+      }) as Promise<string[]>,
+    {
+      keepPreviousData: true,
+      onSuccess: result => {
+        const stateOrCountryDescriptions = result
+          .filter(
+            item =>
+              item.replace(/[\s']/g, '_').toLowerCase() === router.query.regions
+          )
+          .map(item => item.toUpperCase());
+
+        setFilters(prevFilters => ({
+          ...prevFilters,
+          stateOrCountryDescriptions: stateOrCountryDescriptions,
+        }));
+        setAppliedFilters(prevFilters => ({
+          ...prevFilters,
+          stateOrCountryDescriptions: stateOrCountryDescriptions,
+        }));
+      },
+    }
   );
-  const formattedFilters = { ...defaultFilters, asset_classes, regions };
-  defaultFilters;
+
+  const formattedFilters = {
+    ...defaultFilters,
+    asset_classes,
+  };
   const [filters, setFilters] = useState<IFilters>(formattedFilters);
   const [appliedFilters, setAppliedFilters] =
     useState<IFilters>(formattedFilters);
@@ -160,7 +187,6 @@ const DealsComponent = ({
           setDealsData(data);
         }
       },
-      initialData: dealsResponse,
     }
   );
 
@@ -329,7 +355,7 @@ const DealsComponent = ({
     }
   }, []);
 
-  if (isBreakpointsLoading) {
+  if (isBreakpointsLoading || isLoading) {
     return <Loading sxCustomStyles={{ marginTop: '32px' }} />;
   }
 
@@ -353,6 +379,7 @@ const DealsComponent = ({
               handleApplyFilters={handleApplyFilters}
               disabledApplyFilters={!isDirtyFilters}
               rangeData={dealsResponse.rangeData}
+              stateOrCountries={locationsData as string[]}
             />
           )
         }
@@ -392,6 +419,7 @@ const DealsComponent = ({
                   isChangedFilters={isChangedFilters}
                   handleClearFilters={handleClearFilters}
                   rangeData={dealsResponse.rangeData}
+                  stateOrCountries={locationsData as string[]}
                 />
               </Box>
             </Modal>

@@ -30,10 +30,10 @@ export class Deal {
   id: number;
 
   @Column({ type: 'int', nullable: true })
-  sponsorId: number;
+  sponsorId: number | null;
 
   @Column({ type: 'varchar', nullable: true })
-  dealTitle: string;
+  vanityName: string;
 
   @Column({ type: 'varchar', nullable: true })
   dealAddress: string;

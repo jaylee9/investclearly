@@ -77,7 +77,8 @@ export const useVerifyReviewModalStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: { md: '32px 16px', lg: '32px 0px' },
+      padding: { xs: '24px 16px 0px', md: '32px 16px', lg: '32px 0px' },
+      gap: '32px',
       flex: 1,
       '& .content': {
         borderRadius: '12px',
@@ -128,7 +129,8 @@ export const useVerifyReviewModalStyles = () => {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      height: { xs: '100%', md: 'initial' },
+      height: { xs: '100%', md: '260px' },
+      width: { md: '710px', lg: '790px' },
     },
   };
 };

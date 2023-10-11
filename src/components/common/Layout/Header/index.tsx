@@ -35,6 +35,7 @@ const Header = ({
   isShadow,
   onChangeSearch,
   isSticky,
+  isDealAssetClasses,
 }: HeaderProps) => {
   const { isDesktop, isMobile } = useBreakpoints();
   const globalSearchVariant = isMobile
@@ -94,7 +95,6 @@ const Header = ({
       }
     }
   };
-
   return (
     <Box
       component="header"
@@ -125,6 +125,7 @@ const Header = ({
               firstColumn={firstColumn}
               secondColumn={secondColumn}
               handleClickLink={handleClickLink}
+              isDealAssetClasses={!!isDealAssetClasses}
             />
           )}
           {isDesktop ? (
@@ -164,6 +165,7 @@ const Header = ({
             anchorEl={anchorEl}
             handleClose={handleCloseMenu}
             open={openMenu}
+            isDealAssetClasses={!!isDealAssetClasses}
           />
           <CreateReviewForm
             open={openCreateReviewForm}

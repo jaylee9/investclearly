@@ -14,6 +14,7 @@ export const prepareDealsDataAndInsertOrUpdateRecords = async (
   offerings: FormD[],
   connection: DataSource
 ) => {
+  const showOnlyPublishedDeals = false;
   const filteredOfferings = offerings.filter(offering => {
     const industryGroupType =
       offering?.offeringData?.industryGroup?.industryGroupType;
@@ -29,8 +30,8 @@ export const prepareDealsDataAndInsertOrUpdateRecords = async (
 
     if (dealData) {
       const command = deal?.id
-        ? update(deal!.id, dealData, [])
-        : createDeal(dealData, []);
+        ? update(deal!.id, dealData, [], showOnlyPublishedDeals)
+        : createDeal(dealData, [], showOnlyPublishedDeals);
       const dealRecord = (await command) as unknown as Deal;
 
       if (dealRecord) {

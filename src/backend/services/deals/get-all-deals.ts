@@ -15,6 +15,7 @@ import { Bookmark } from '../../../backend/entities/bookmark.entity';
 import { BookmarkConstants } from '../../../backend/constants/bookmark-constants';
 import { Location } from '../../entities/locations.entity';
 import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
+import { SearchConstants } from '../../../backend/constants/search-constants';
 
 export const getAllDeals = async (params: FindAllDealsInterface) => {
   const {
@@ -44,6 +45,9 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     regulations = [],
     entityIds = [],
     currentUserId,
+    showOnlyPublishedDeals = true,
+    stateOrCountryDescriptions = [],
+    isDealPublished,
   } = params;
 
   const connection = await getDatabaseConnection();
@@ -78,10 +82,34 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     .leftJoinAndSelect('deals.sponsor', 'sponsor')
     .groupBy('deals.id, attachments.id, locations.id, sponsor.id');
 
-  if (assetClasses?.length) {
-    searchQuery = searchQuery.where('deals.assetClass IN (:...assetClasses)', {
-      assetClasses,
+  if (isDealPublished) {
+    searchQuery = searchQuery.andWhere('deals.isDealPublished = :isPublished', {
+      isPublished: isDealPublished,
     });
+  }
+
+  if (showOnlyPublishedDeals === true) {
+    searchQuery = searchQuery.andWhere('deals.isDealPublished = :isPublished', {
+      isPublished: true,
+    });
+  }
+
+  if (assetClasses?.length) {
+    searchQuery = searchQuery.andWhere(
+      'deals.assetClass IN (:...assetClasses)',
+      {
+        assetClasses,
+      }
+    );
+  }
+
+  if (stateOrCountryDescriptions.length) {
+    searchQuery = searchQuery.andWhere(
+      'locations.stateOrCountryDescription IN (:...stateOrCountryDescriptions)',
+      {
+        stateOrCountryDescriptions,
+      }
+    );
   }
 
   if (statuses?.length) {
@@ -146,13 +174,6 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     );
   }
 
-  if (investmentMinValue && investmentMaxValue) {
-    searchQuery = searchQuery.andWhere(
-      'deals.minimumInvestment BETWEEN :investmentMinValue AND :investmentMaxValue',
-      { investmentMinValue, investmentMaxValue }
-    );
-  }
-
   if (sponsorFeesMin && sponsorFeesMax) {
     searchQuery = searchQuery.andWhere(
       'deals.fees BETWEEN :sponsorFeesMin AND :sponsorFeesMax',
@@ -170,7 +191,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     searchQuery = searchQuery.andWhere(
       new Brackets(qb => {
         return qb
-          .where('deals.dealTitle ILIKE :search', { search: `%${search}%` })
+          .where('deals.vanityName ILIKE :search', { search: `%${search}%` })
           .orWhere('deals.dealAddress ILIKE :search', {
             search: `%${search}%`,
           })
@@ -281,7 +302,6 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
 
   const {
     minInvestment,
-    maxInvestment,
     minTargetIRR,
     maxTargetIRR,
     minActualIRR,
@@ -293,7 +313,6 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
   } = await connection
     .createQueryBuilder()
     .select('MIN(deals.minimumInvestment)', 'minInvestment')
-    .addSelect('MAX(deals.minimumInvestment)', 'maxInvestment')
     .addSelect('MIN(deals.targetIRR)', 'minTargetIRR')
     .addSelect('MAX(deals.targetIRR)', 'maxTargetIRR')
     .addSelect('MIN(deals.actualIRR)', 'minActualIRR')
@@ -309,7 +328,7 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
     deals: await Promise.all(dealsWithCounters.map(dealMapper)),
     rangeData: {
       minInvestment,
-      maxInvestment,
+      maxInvestment: SearchConstants.maxInvestmentValue,
       minTargetIRR,
       maxTargetIRR,
       minActualIRR,

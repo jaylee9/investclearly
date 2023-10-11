@@ -24,13 +24,14 @@ export const uploadFile = async (
 ): Promise<result> => {
   const { originalname, buffer, size } = file;
   const randValue = crypto.randomBytes(10).toString('hex');
-  const originalFilename = originalname.replace(/\s+/g, '-') || '';
 
   try {
-    if (path.extname(originalFilename)) {
-      const fileName = `${targetType}/${randValue}-${originalFilename}`;
+    if (path.extname(originalname)) {
+      const fileName = `${targetType}/${randValue}${path.extname(
+        originalname
+      )}`;
       let contentType = '';
-      const fileExtension = path.extname(originalFilename).toLowerCase();
+      const fileExtension = path.extname(originalname).toLowerCase();
 
       if (fileExtension === FileConstants.pdfExtension) {
         contentType = FileConstants.contentTypes.applicationPdf;

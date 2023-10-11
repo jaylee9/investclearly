@@ -36,19 +36,19 @@ export const sendDealsMatchedYourInvestmentPreferences = async (
       dynamicTemplateData: {
         frontendUrl: MailConfig.frontendUrl,
         sponsorVanityName: deals[0]?.sponsor!.vanityName || '',
-        firstDealTitle: deals[0].dealTitle,
+        firstDealTitle: deals[0].vanityName,
         firstDealRegion: firstDealRegions,
         firstDealStatus: deals[0].status,
         firstDealTargetIRR: deals[0].targetIRR,
         firstDealImage:
           deals[0]?.attachments[0].path || DefaultImages.dealImage,
-        secondDealTitle: deals[1].dealTitle,
+        secondDealTitle: deals[1].vanityName,
         secondDealRegion: secondDealRegions,
         secondDealStatus: deals[1].status,
         secondDealTargetIRR: deals[1].targetIRR,
         secondDealImage:
           deals[1]?.attachments[0].path || DefaultImages.dealImage,
-        thirdDealTitle: deals[2].dealTitle,
+        thirdDealTitle: deals[2].vanityName,
         thirdDealRegion: thirdDealRegions,
         thirdDealStatus: deals[2].status,
         thirdDealTargetIRR: deals[2].targetIRR,

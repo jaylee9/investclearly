@@ -10,6 +10,7 @@ import { GetAllEntriesFromBookmarksInterface } from '../../../backend/services/b
 import { getAllEntriesFromBookmarks } from '../../../backend/services/bookmarks/get-entries-from-bookmarks';
 import { deleteBookmarkRecord } from '../../../backend/services/bookmarks/delete-bookmark';
 import { DeleteBookmarkInterface } from '../../../backend/services/bookmarks/interfaces/delete-bookmark.interface';
+import { dealsVisibilityMiddleware } from '../../../backend/middleware/deals-visibility';
 
 const create = async (request: NextApiRequest, response: NextApiResponse) => {
   const { request: authRequest, user } = await authMiddleware(
@@ -18,7 +19,8 @@ const create = async (request: NextApiRequest, response: NextApiResponse) => {
   );
   const body: CreateBookmarkInterface = authRequest.body;
   const userId = user?.id;
-  const bookmark = await createBookmark(body, userId!);
+  const showOnlyPublishedDeals = dealsVisibilityMiddleware(user);
+  const bookmark = await createBookmark(body, userId!, showOnlyPublishedDeals);
 
   if (bookmark) {
     response

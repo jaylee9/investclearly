@@ -126,7 +126,7 @@ const ChooseDealStep = ({
                     key={deal.id}
                     onClick={event =>
                       handleChooseDeal(event, {
-                        name: deal.dealLegalName as string,
+                        name: deal.vanityName as string,
                         id: deal.id,
                       })
                     }
@@ -146,7 +146,7 @@ const ChooseDealStep = ({
                     />
                     <Box>
                       <Typography variant="body1" fontWeight={600}>
-                        {deal.dealLegalName}
+                        {deal.vanityName}
                       </Typography>
                       <Typography variant="caption" sx={classes.address}>
                         {deal.dealAddress}

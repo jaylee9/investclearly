@@ -11,7 +11,8 @@ import { CreateDealInterface } from './interfaces/create-deal.interface';
 
 export const createDeal = async (
   data: CreateDealInterface,
-  files: Express.Multer.File[]
+  files: Express.Multer.File[],
+  showOnlyPublishedDeals: boolean
 ) => {
   const connection = await getDatabaseConnection();
   const {
@@ -37,7 +38,7 @@ export const createDeal = async (
   });
   await connection.manager.save(deal);
 
-  const dealRecord = await getDealById(deal.id);
+  const dealRecord = await getDealById(deal.id, showOnlyPublishedDeals);
 
   if (files?.length) {
     for (const file of files) {
@@ -63,5 +64,5 @@ export const createDeal = async (
     deal.id
   );
 
-  return getDealById(deal.id);
+  return getDealById(deal.id, showOnlyPublishedDeals);
 };

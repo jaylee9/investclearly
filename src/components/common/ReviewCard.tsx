@@ -12,16 +12,16 @@ interface ReviewCardProps {
   review: ReviewInterface;
   isDelete?: boolean;
   onDelete?: (value: number) => void;
-  showVerifyOption?: boolean;
-  onVerify?: (value: number, reviewerName: string) => void;
+  showEditOption?: boolean;
+  onEdit?: (review: ReviewInterface) => void;
 }
 
 const ReviewCard = ({
   review,
   isDelete = false,
   onDelete,
-  showVerifyOption = false,
-  onVerify,
+  showEditOption,
+  onEdit,
 }: ReviewCardProps) => {
   const [isExtended, setIsExtended] = useState(false);
   const [isTruncated, setIsTruncated] = useState(false);
@@ -49,9 +49,9 @@ const ReviewCard = ({
     }
   };
 
-  const handleVerify = (value: number, reviewerName: string) => {
-    if (onVerify) {
-      onVerify(value, reviewerName);
+  const handleEdit = (review: ReviewInterface) => {
+    if (onEdit) {
+      onEdit(review);
     }
   };
 
@@ -114,7 +114,7 @@ const ReviewCard = ({
           {isExtended ? 'Hide' : 'Read'} full review
         </Typography>
       )}
-      {(isDelete || showVerifyOption) && (
+      {(isDelete || showEditOption) && (
         <Box sx={classes.optionalButtonWrapper}>
           {isDelete && (
             <Button
@@ -126,17 +126,9 @@ const ReviewCard = ({
               Delete
             </Button>
           )}
-          {showVerifyOption && !review.isVerified && (
-            <Button
-              variant="secondary"
-              onClick={() =>
-                handleVerify(
-                  review.id,
-                  `${review.reviewer?.firstName} ${review.reviewer?.lastName}`
-                )
-              }
-            >
-              Verify review
+          {showEditOption && !review.isVerified && (
+            <Button variant="secondary" onClick={() => handleEdit(review)}>
+              Edit review
             </Button>
           )}
         </Box>

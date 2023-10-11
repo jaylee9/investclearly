@@ -200,7 +200,7 @@ const GlobalSearch = ({
                             variant="body1"
                             sx={classes.blockListItemContentTitle}
                           >
-                            {deal.dealLegalName}
+                            {deal.vanityName}
                           </Typography>
                         </Link>
                         <Typography

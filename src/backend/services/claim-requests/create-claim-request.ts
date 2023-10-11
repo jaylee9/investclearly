@@ -15,7 +15,8 @@ import { ClaimRequestConstants } from '../../constants/claim-request-constants';
 
 export const createClaimRequest = async (
   data: DeepPartial<CreateClaimRequestInterface>,
-  userId: number
+  userId: number,
+  showOnlyPublishedDeals: boolean
 ) => {
   const { entityId, entityType, claimType } = data;
   const connection = await getDatabaseConnection();
@@ -33,7 +34,7 @@ export const createClaimRequest = async (
   }
 
   if (entityType === ClaimEntityTypes.deal && entityId) {
-    const dealRecord = await getDealById(entityId);
+    const dealRecord = await getDealById(entityId, showOnlyPublishedDeals);
     claimRequest = connection.manager.create(ClaimedRequests, {
       ...data,
       userId,

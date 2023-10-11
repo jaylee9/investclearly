@@ -81,11 +81,13 @@ const DealCard = ({
           <EllipsisText
             variant="h5"
             sx={classes.baseDealName}
-            text={deal.dealTitle as string}
+            text={deal.vanityName as string}
           />
         </Link>
         <Typography variant="body1" sx={classes.baseDealLocation}>
-          {Array.isArray(deal.regions) ? deal.regions.join(', ') : deal.regions}
+          {!!deal?.locations?.length
+            ? deal?.locations?.[0]?.stateOrCountryDescription
+            : 'N/A'}
         </Typography>
         <Typography
           variant="body1"
@@ -125,7 +127,7 @@ const DealCard = ({
             <Link href={`/deals/${deal.id}`}>
               <EllipsisText
                 variant="h5"
-                text={deal.dealTitle as string}
+                text={deal.vanityName as string}
                 sx={classes.largeDealTitle}
               />
             </Link>
@@ -153,9 +155,9 @@ const DealCard = ({
           <Box sx={classes.sponsorPropertiesColumn}>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Location"></i>
-              {Array.isArray(deal.regions)
-                ? deal.regions.join(', ')
-                : deal.regions}
+              {!!deal?.locations?.length
+                ? deal?.locations?.[0]?.stateOrCountryDescription
+                : 'N/A'}
             </Typography>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Status"></i>

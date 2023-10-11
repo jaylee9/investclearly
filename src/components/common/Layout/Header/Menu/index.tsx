@@ -37,6 +37,7 @@ interface MenuProps extends MUIMenuProps {
   user: UserInterface | null;
   isDesktop: boolean;
   handleClose: () => void;
+  isDealAssetClasses: boolean;
 }
 
 const linkStyle = { textDecoration: 'none', outline: 'none' };
@@ -72,6 +73,7 @@ export const Menu: FC<MenuProps> = ({
   user,
   isDesktop,
   handleClose,
+  isDealAssetClasses,
   ...props
 }) => {
   const classes = getStyles({ type: 'dark', isShadow });
@@ -155,31 +157,33 @@ export const Menu: FC<MenuProps> = ({
         {!isDesktop && (
           <Box>
             <Divider />
-            <CustomAccordion
-              label={'Deals'}
-              expandIcon={
-                <i className={'icon-Caret-down'} style={classes.arrow}></i>
-              }
-              customStyles={classes.dealsCustomAccordion}
-            >
-              {[...firstColumn, ...secondColumn].map(({ href, value }) => (
-                <Link
-                  href={href}
-                  key={value}
-                  style={
-                    value === 'All Deals'
-                      ? ({
-                          ...classes.dealsCustomAccordionPopoverItem,
-                          ...classes.dealsLink,
-                        } as CSSProperties)
-                      : (classes.dealsCustomAccordionPopoverItem as CSSProperties)
-                  }
-                  onClick={handleClose}
-                >
-                  {value}
-                </Link>
-              ))}
-            </CustomAccordion>
+            {isDealAssetClasses && (
+              <CustomAccordion
+                label={'Deals'}
+                expandIcon={
+                  <i className={'icon-Caret-down'} style={classes.arrow}></i>
+                }
+                customStyles={classes.dealsCustomAccordion}
+              >
+                {[...firstColumn, ...secondColumn].map(({ href, value }) => (
+                  <Link
+                    href={href}
+                    key={value}
+                    style={
+                      value === 'All Deals'
+                        ? ({
+                            ...classes.dealsCustomAccordionPopoverItem,
+                            ...classes.dealsLink,
+                          } as CSSProperties)
+                        : (classes.dealsCustomAccordionPopoverItem as CSSProperties)
+                    }
+                    onClick={handleClose}
+                  >
+                    {value}
+                  </Link>
+                ))}
+              </CustomAccordion>
+            )}
 
             {links.map(({ type, label }) => (
               <MenuItem

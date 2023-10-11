@@ -4,6 +4,8 @@ import VerificationInput from 'react-verification-input';
 import { confirmEmail } from '@/actions/auth';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useUser } from '@/contexts/User';
+import { PublicUserInterface } from '@/backend/services/users/interfaces/public-user.interface';
 
 interface ConfirmEmailProps {
   email: string;
@@ -13,6 +15,7 @@ const ConfirmEmail = ({ email }: ConfirmEmailProps) => {
   const [error, setError] = useState(false);
   const classes = useConfirmEmailStyles();
   const router = useRouter();
+  const { setUser } = useUser();
   const onComplete = async (confirmationCode: string) => {
     const response = await confirmEmail({ confirmationCode });
     if ('error' in response) {
@@ -21,7 +24,8 @@ const ConfirmEmail = ({ email }: ConfirmEmailProps) => {
         setError(false);
       }, 1000);
     } else {
-      router.push('/onboarding?step=1');
+      setUser(response as PublicUserInterface);
+      router.push('/onboarding');
     }
   };
   return (

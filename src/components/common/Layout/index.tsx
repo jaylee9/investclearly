@@ -66,6 +66,7 @@ const Layout = ({
   isEntrySpacing = false,
   isSticky,
   isFooter = true,
+  isDealAssetClasses,
 }: LayoutProps) => {
   const defaultStyles = useDefaultLayoutStyles();
   const entryStyles = useEntryLayoutStyles(isEntrySpacing);
@@ -110,6 +111,7 @@ const Layout = ({
               content={content}
               onChangeSearch={onChangeSearch}
               isSticky={isSticky}
+              isDealAssetClasses={isDealAssetClasses}
             />
             {children}
           </Box>

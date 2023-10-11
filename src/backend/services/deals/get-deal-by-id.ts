@@ -12,7 +12,11 @@ import { Bookmark } from '../../../backend/entities/bookmark.entity';
 import { Location } from '../../entities/locations.entity';
 import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 
-export const getDealById = async (id: number, userId?: number) => {
+export const getDealById = async (
+  id: number,
+  showOnlyPublishedDeals: boolean,
+  userId?: number
+) => {
   const connection = await getDatabaseConnection();
   let dealQuery = connection.manager
     .createQueryBuilder()
@@ -28,6 +32,12 @@ export const getDealById = async (id: number, userId?: number) => {
       }
     )
     .where('deals.id = :id', { id });
+
+  if (showOnlyPublishedDeals === true) {
+    dealQuery = dealQuery.andWhere('deals.isDealPublished = :isPublished', {
+      isPublished: true,
+    });
+  }
 
   if (userId) {
     dealQuery = dealQuery

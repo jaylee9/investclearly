@@ -15,6 +15,7 @@ interface IDealFilters extends IFilters {
   search?: string;
   sponsorId?: number;
   limit?: number;
+  isDealPublished?: boolean;
 }
 
 export interface RangeData {
@@ -43,7 +44,6 @@ export const getAllDeals = async (
   const ratings = filters.ratings || [];
   let minRating: number | undefined;
   let maxRating: number | undefined;
-
   if (ratings.length > 0) {
     minRating = Math.min(...ratings);
     maxRating = Math.max(...ratings);
@@ -54,7 +54,7 @@ export const getAllDeals = async (
     orderDirection: filters.orderDirection || 'DESC',
     assetClasses: filters.asset_classes,
     statuses: filters.statuses,
-    regions: filters.regions,
+    stateOrCountryDescriptions: filters.stateOrCountryDescriptions,
     investmentStructures: filters.investment_structure,
     exemptions: filters.exemptions,
     targetIRRMin: filters.targetIRR?.from,
@@ -73,6 +73,7 @@ export const getAllDeals = async (
     preferredReturnMin: filters.preffered_return?.from,
     preferredReturnMax: filters.preffered_return?.to,
     limit: filters.limit,
+    isDealPublished: filters.isDealPublished,
   };
 
   const stringifiedParameters = queryString.stringify(parameters, {
@@ -157,8 +158,9 @@ export const deleteDealFromBookmarks = async ({
   }
 };
 
-type ModifiedUpdateDealInterface = UpdateDealInterface & {
+type ModifiedUpdateDealInterface = Omit<UpdateDealInterface, 'sponsorId'> & {
   photoOfTheObjects?: Blob;
+  sponsorId?: number | string;
 };
 
 export type PartialEditDealInterface = Partial<ModifiedUpdateDealInterface>;
