@@ -297,7 +297,6 @@ export const useReviewDetailsStepStyles = () => {
     },
     buttonWrapper: {
       display: 'flex',
-      justifyContent: 'space-between',
       paddingBottom: '16px',
     },
     buttonBack: {

@@ -15,9 +15,10 @@ import { debounce } from 'lodash';
 import Button from '@/components/common/Button';
 import CreateReviewForm from '@/components/common/CreateReview';
 import CustomPagination from '@/components/common/Pagination';
-import VerifyReviewModal from './Modals/VerifyReview';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { USER_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
+import { ReviewInterface } from '@/backend/services/reviews/interfaces/review.interface';
+import EditReviewModal from './Modals/EditReview';
 
 const ProfileReviews = () => {
   const classes = useProfileReviewsStyles();
@@ -31,12 +32,11 @@ const ProfileReviews = () => {
   const [user, setUser] = useState<UserInterface | null>(null);
   const [page, setPage] = useState(1);
   const [openDeleteModal, setOpenDeleteModal] = useState(0);
+  const [openEditModal, setOpenEditModal] = useState<ReviewInterface | null>(
+    null
+  );
   const [searchTerm, setSearchTerm] = useState('');
   const [openWriteReviewForm, setOpenWriteReviewForm] = useState(false);
-  const [openVerifyReviewModal, setOpenVerifyReviewModal] = useState<
-    null | number
-  >(null);
-  const [choosedReviewer, setChoosedReviewer] = useState('');
 
   const handleSearch = debounce((value: string) => {
     setSearchTerm(value);
@@ -82,18 +82,20 @@ const ProfileReviews = () => {
     }
   );
 
-  const { isLoading: isLoadingRejectedCountData } = useQuery(
-    ['rejectedReviewsCount'],
-    () => getUserReviews({ userId: user?.id, status: ReviewStatuses.rejected }),
-    {
-      enabled: !!user,
-      onSuccess: (data: GetUserReviewsResponse) =>
-        setCounters(prevCounters => ({
-          ...prevCounters,
-          rejected: data.total,
-        })),
-    }
-  );
+  const { isLoading: isLoadingRejectedCountData, refetch: refetchRejectCount } =
+    useQuery(
+      ['rejectedReviewsCount'],
+      () =>
+        getUserReviews({ userId: user?.id, status: ReviewStatuses.rejected }),
+      {
+        enabled: !!user,
+        onSuccess: (data: GetUserReviewsResponse) =>
+          setCounters(prevCounters => ({
+            ...prevCounters,
+            rejected: data.total,
+          })),
+      }
+    );
 
   const { data, isLoading, refetch } = useQuery<GetUserReviewsResponse>(
     ['reviews', activeTab, page, searchTerm],
@@ -116,10 +118,23 @@ const ProfileReviews = () => {
   const handleRefetchFunction = () =>
     refetch().then(() => refetchOnModerationCount());
 
+  const handleRefetchReject = async () => {
+    await refetch();
+    await refetchOnModerationCount();
+    await refetchRejectCount();
+  };
+
   const handleOpenDeleteModal = (value: number) => setOpenDeleteModal(value);
   const handleCloseDeleteModal = () => setOpenDeleteModal(0);
   const onDeleteSubmit = () => {
     handleRefetchFunction().then(handleCloseDeleteModal);
+  };
+
+  const handleOpenEditModal = (review: ReviewInterface) =>
+    setOpenEditModal(review);
+
+  const handleCloseEditModal = async () => {
+    setOpenEditModal(null);
   };
 
   const handleOpenWriteReviewForm = () => setOpenWriteReviewForm(true);
@@ -127,12 +142,6 @@ const ProfileReviews = () => {
   const onCloseWriteReviewForm = () => {
     handleRefetchFunction().then(handleCloseWriteReviewForm);
   };
-
-  const handleOpenVerifyReviewModal = (value: number, reviewerName: string) => {
-    setOpenVerifyReviewModal(value);
-    setChoosedReviewer(reviewerName);
-  };
-  const handleCloseVerifyReviewModal = () => setOpenVerifyReviewModal(null);
 
   const handleChangeTab = (
     event: SyntheticEvent<Element, Event>,
@@ -173,7 +182,7 @@ const ProfileReviews = () => {
   }
 
   return (
-    <Box>
+    <Box sx={classes.root}>
       <CustomTabs
         value={activeTab}
         onChange={handleChangeTab}
@@ -187,11 +196,11 @@ const ProfileReviews = () => {
           !isLoading && (
             <Box sx={classes.noContentWrapper}>
               <Typography variant="h4" sx={classes.noReviewTitle}>
-                There are no{' '}
+                There are no&nbsp;
                 {activeTab === ReviewStatuses.published && 'published '}
-                Reviews
-                {activeTab === ReviewStatuses.onModeration &&
-                  ' on moderation'}{' '}
+                {activeTab === ReviewStatuses.rejected && 'rejected '}
+                Reviews&nbsp;
+                {activeTab === ReviewStatuses.onModeration && 'on moderation '}
                 yet
               </Typography>
               <Typography variant="body1" sx={classes.subTitle}>
@@ -223,26 +232,17 @@ const ProfileReviews = () => {
               onClear={handleClearSearch}
             />
             {isLoading ? (
-              <Loading />
+              <Loading sxCustomStyles={{ marginTop: '16px' }} />
             ) : (
               <Box sx={classes.reviewsWrapper}>
-                {activeTab === ReviewStatuses.published &&
-                  !!data.totalUnverifiedReviews && (
-                    <Typography variant="caption" sx={classes.warning}>
-                      <i className="icon-Warning"></i>
-                      You have {data.totalUnverifiedReviews} unverified review
-                      {data.totalUnverifiedReviews > 1 && 's'}. Please, upload
-                      proofs to help us maintain accurate information.
-                    </Typography>
-                  )}
                 {data?.reviews.map(review => (
                   <ReviewCard
                     review={review}
                     key={review.id}
-                    showVerifyOption={activeTab === ReviewStatuses.published}
                     isDelete={activeTab === ReviewStatuses.onModeration}
                     onDelete={handleOpenDeleteModal}
-                    onVerify={handleOpenVerifyReviewModal}
+                    showEditOption={activeTab === ReviewStatuses.rejected}
+                    onEdit={handleOpenEditModal}
                   />
                 ))}
                 <Box sx={classes.pagination}>
@@ -261,12 +261,11 @@ const ProfileReviews = () => {
                   onSubmitClose={onDeleteSubmit}
                   onClose={handleCloseDeleteModal}
                 />
-                <VerifyReviewModal
-                  open={!!openVerifyReviewModal}
-                  onClose={handleCloseVerifyReviewModal}
-                  refetchFunction={handleRefetchFunction}
-                  reviewId={openVerifyReviewModal as number}
-                  reviewerName={choosedReviewer}
+                <EditReviewModal
+                  open={!!openEditModal}
+                  review={openEditModal as ReviewInterface}
+                  onClose={handleCloseEditModal}
+                  refetch={handleRefetchReject}
                 />
               </Box>
             )}

@@ -6,6 +6,7 @@ import api from '@/config/ky';
 import queryString from 'query-string';
 import { serialize } from 'object-to-formdata';
 import customToast, { ToastType } from '@/components/common/Toast/customToast';
+import { UpdateReviewInterface } from '@/backend/services/reviews/interfaces/update-review.interface';
 
 export type OptionalCreateReviewInterface = Partial<CreateReviewInterface>;
 
@@ -167,6 +168,35 @@ export const approveReview = async ({
     return response;
   } catch (error) {
     const errorMessage = 'Failed to approve review';
+    customToast({ title: errorMessage, type: ToastType.ERROR });
+    return { error: errorMessage };
+  }
+};
+
+export type OptionalEditReviewInterface = Partial<UpdateReviewInterface>;
+
+export interface EditReviewPayloadInterface
+  extends OptionalEditReviewInterface {
+  file?: File | File[];
+  id: number;
+}
+
+export const editReview = async (
+  payload: EditReviewPayloadInterface
+): Promise<ReviewInterface | { error: string }> => {
+  const { id, ...rest } = payload;
+  const formData = serialize(rest, {
+    indices: true,
+    allowEmptyArrays: false,
+  });
+
+  try {
+    const response = await api.put(`reviews/${id}`, {
+      body: formData,
+    });
+    return response.json();
+  } catch (error) {
+    const errorMessage = 'Failed to edit review';
     customToast({ title: errorMessage, type: ToastType.ERROR });
     return { error: errorMessage };
   }

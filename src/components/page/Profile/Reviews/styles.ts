@@ -4,6 +4,11 @@ const { palette } = theme;
 
 export const useProfileReviewsStyles = () => {
   return {
+    root: {
+      '& .MuiTabs-scroller': {
+        overflow: { xs: 'scroll !important', md: 'hidden' },
+      },
+    },
     wrapper: {
       padding: { xs: '0px 16px', lg: '0px 24px' },
     },

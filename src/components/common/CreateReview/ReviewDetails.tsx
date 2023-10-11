@@ -39,6 +39,7 @@ interface ReviewDetailsStepProps {
   step: number;
   payload: CreateReviewPayloadInterface;
   setPayload: (value: CreateReviewPayloadInterface) => void;
+  isEdit?: boolean;
 }
 
 const ReviewDetailsStep = ({
@@ -46,16 +47,17 @@ const ReviewDetailsStep = ({
   step,
   payload,
   setPayload,
+  isEdit,
 }: ReviewDetailsStepProps) => {
   const classes = useReviewDetailsStepStyles();
 
   const [activeComments, setActiveComments] = useState<ActiveComments>({
     preInvestmentCommunicationComment:
-      !!payload.preInvestmentCommunicationComment,
+      !!payload?.preInvestmentCommunicationComment,
     postInvestmentCommunicationComment:
-      !!payload.postInvestmentCommunicationComment,
-    strengthOfLeadershipTeamComment: !!payload.strengthOfLeadershipTeamComment,
-    alignmentOfExpectationsComment: !!payload.alignmentOfExpectationsComment,
+      !!payload?.postInvestmentCommunicationComment,
+    strengthOfLeadershipTeamComment: !!payload?.strengthOfLeadershipTeamComment,
+    alignmentOfExpectationsComment: !!payload?.alignmentOfExpectationsComment,
   });
 
   const handleOpenComment = (
@@ -80,25 +82,26 @@ const ReviewDetailsStep = ({
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
     defaultValues: {
-      title: payload.title,
+      title: payload?.title,
       preInvestmentCommunicationComment:
-        payload.preInvestmentCommunicationComment as string,
+        payload?.preInvestmentCommunicationComment || '',
       postInvestmentCommunicationComment:
-        payload.postInvestmentCommunicationComment as string,
+        payload?.postInvestmentCommunicationComment || '',
       strengthOfLeadershipTeamComment:
-        payload.strengthOfLeadershipTeamComment as string,
+        payload?.strengthOfLeadershipTeamComment || '',
       alignmentOfExpectationsComment:
-        payload.alignmentOfExpectationsComment as string,
+        payload?.alignmentOfExpectationsComment || '',
       preInvestmentCommunicationRating:
-        payload.preInvestmentCommunicationRating,
+        payload?.preInvestmentCommunicationRating,
       postInvestmentCommunicationRating:
-        payload.postInvestmentCommunicationRating,
-      strengthOfLeadershipTeamRating: payload.strengthOfLeadershipTeamRating,
-      alignmentOfExpectationsRating: payload.alignmentOfExpectationsRating,
-      overallComment: payload.overallComment,
-      overallRating: payload.overallRating,
+        payload?.postInvestmentCommunicationRating,
+      strengthOfLeadershipTeamRating: payload?.strengthOfLeadershipTeamRating,
+      alignmentOfExpectationsRating: payload?.alignmentOfExpectationsRating,
+      overallComment: payload?.overallComment,
+      overallRating: payload?.overallRating,
     },
   });
+
   const onSubmit = handleSubmit(data => {
     setPayload({ ...payload, ...data });
     setStep(step + 1);
@@ -140,6 +143,8 @@ const ReviewDetailsStep = ({
   const handleBackButton = () => {
     setStep(step - 1);
   };
+
+  const isDisabledNextButton = isEdit ? false : !isValid;
 
   return (
     <Box sx={classes.root}>
@@ -233,17 +238,24 @@ const ReviewDetailsStep = ({
                 />
               </Box>
             </Box>
-            <Box sx={classes.buttonWrapper}>
-              <Button
-                variant="tertiary"
-                onClick={handleBackButton}
-                sxCustomStyles={classes.buttonBack}
-              >
-                Back
-              </Button>
+            <Box
+              sx={{
+                ...classes.buttonWrapper,
+                justifyContent: !!isEdit ? 'end' : 'space-between',
+              }}
+            >
+              {!isEdit && (
+                <Button
+                  variant="tertiary"
+                  onClick={handleBackButton}
+                  sxCustomStyles={classes.buttonBack}
+                >
+                  Back
+                </Button>
+              )}
               <Button
                 type="submit"
-                disabled={!isValid}
+                disabled={isDisabledNextButton}
                 sxCustomStyles={classes.buttonNext}
               >
                 Next
