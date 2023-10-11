@@ -42,7 +42,7 @@ type FilterArrayKeys =
   | 'stateOrCountryDescriptions';
 type FilterCheckedKeys = 'activelyRising';
 const filtersLabels = {
-  activelyRising: 'Actively raising sponsors',
+  activelyRising: 'Actively Raising sponsors',
 };
 interface AppliedFilter {
   label: string;
