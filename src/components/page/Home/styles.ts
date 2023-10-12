@@ -111,7 +111,7 @@ export const useGlobalSearchStyles = ({
       },
       marginBottom: '8px',
       position: { xs: 'absolute' },
-      top: { xs: 0, lg: '12px' },
+      top: { xs: 0, lg: '16px' },
       left: 0,
       right: 0,
       margin: '0 auto',
