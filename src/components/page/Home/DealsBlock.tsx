@@ -16,7 +16,7 @@ const DealsBlock = ({ locations }: DealsBlockProps) => {
   const [regionExpanded, setRegionExpanded] = useState(false);
   const [assetClassExpanded, setAssetClassExpanded] = useState(false);
   const classes = useDealsBlockStyles();
-  const { isMobile, isDesktop } = useBreakpoints();
+  const { isMobile, isDesktop, isTablet } = useBreakpoints();
   const spacingSize = isDesktop ? 24 : 3;
   const regionLabel = 'State';
   const assetClassLabel = 'Asset Class';
@@ -88,7 +88,7 @@ const DealsBlock = ({ locations }: DealsBlockProps) => {
             direction={isDesktop ? 'row' : 'column'}
             sx={classes.gridContentStyles}
           >
-            <Grid item xs={6}>
+            <Grid item xs={isTablet ? 6 : 8}>
               <Typography
                 variant="body1"
                 sx={blueTitleStyles}
@@ -107,7 +107,7 @@ const DealsBlock = ({ locations }: DealsBlockProps) => {
                 ))}
               </Box>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={isTablet ? 6 : 4}>
               <Typography
                 variant="body1"
                 sx={blueTitleStyles}
