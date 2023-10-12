@@ -1,6 +1,7 @@
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { Location } from '../../entities/locations.entity';
 import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
+import { OrderDirectionConstants } from '../../../backend/constants/order-direction-constants';
 
 export const getAllStateOrCountryDescriptions = async (entityType: string) => {
   const connection = await getDatabaseConnection();
@@ -22,9 +23,12 @@ export const getAllStateOrCountryDescriptions = async (entityType: string) => {
     });
   }
 
-  searchQuery = searchQuery.andWhere(
-    'locations.stateOrCountryDescription IS NOT NULL'
-  );
+  searchQuery = searchQuery
+    .andWhere('locations.stateOrCountryDescription IS NOT NULL')
+    .orderBy(
+      'locations.stateOrCountryDescription',
+      OrderDirectionConstants.ASC
+    );
 
   const uniqueStateOrCountryDescriptions = await searchQuery.getRawMany();
 
