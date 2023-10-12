@@ -28,6 +28,7 @@ import {
   createInvestment,
   updateInvestment,
 } from '@/actions/investments';
+import { capitalize } from '@/helpers/formatLocations';
 
 interface DealPageProps {
   deal: DealInterface;
@@ -122,6 +123,7 @@ const DealPage = ({ deal }: DealPageProps) => {
   const onSubmitAddDeal = async (data: UpdateInvestment) => {
     await updateInvestment(data);
   };
+  console.log(deal.locations);
 
   return (
     <Layout {...headerProps}>
@@ -144,7 +146,13 @@ const DealPage = ({ deal }: DealPageProps) => {
               <Box sx={classes.infoHeader}>
                 <Box>
                   <Typography variant="h3">{deal.vanityName}</Typography>
-                  <Typography variant="body1">{deal.dealAddress}</Typography>
+                  <Typography variant="body1">
+                    {!!deal?.locations?.length
+                      ? capitalize(
+                          deal?.locations?.[0]?.stateOrCountryDescription
+                        )
+                      : 'N/A'}
+                  </Typography>
                 </Box>
                 <div>
                   {isInBookmarks ? (
@@ -167,7 +175,9 @@ const DealPage = ({ deal }: DealPageProps) => {
                     <Box>
                       <Typography variant="caption">Address</Typography>
                       <Typography variant="body1">
-                        {deal.dealAddress}
+                        {!!deal?.locations?.length
+                          ? deal?.locations?.[0]?.street1
+                          : 'N/A'}
                       </Typography>
                     </Box>
                   </Box>
@@ -234,7 +244,9 @@ const DealPage = ({ deal }: DealPageProps) => {
                       <Typography variant="caption">State</Typography>
                       <Typography variant="body1">
                         {!!deal?.locations?.length
-                          ? deal?.locations?.[0]?.stateOrCountryDescription
+                          ? capitalize(
+                              deal?.locations?.[0]?.stateOrCountryDescription
+                            )
                           : 'N/A'}
                       </Typography>
                     </Box>
