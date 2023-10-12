@@ -15,9 +15,6 @@ import ProfilePictureUploader, {
   ProfilePictureUploaderVariant,
 } from '@/components/common/ProfilePictureUploader';
 import { useSponsorDetailsFormStyles } from './styles';
-import { useQuery } from 'react-query';
-import { getLocationsName } from '@/actions/common';
-import Loading from '@/components/common/Loading';
 
 const isBrowser =
   typeof window !== 'undefined' && typeof window.File !== 'undefined';
@@ -32,12 +29,11 @@ const validationSchema = z.object({
   street2: z.string(),
   city: z.string().min(1, 'Required field'),
   zipCode: z.string().min(1, 'Required field'),
-  stateOrCountry: z.string().min(1, 'Required field'),
   stateOrCountryDescription: z.string().min(1, 'Required field'),
   website: z.string().min(1, 'Required field').url(),
   specialties: z.array(z.string()),
   description: z.string().min(1, 'Required field'),
-  yearOfFoundation: z.number(),
+  yearOfFoundation: z.union([z.string(), z.number()]),
 });
 
 type ValidationSchema = z.infer<typeof validationSchema>;
@@ -115,7 +111,6 @@ const SponsorDetailsForm = ({
       'street2',
       'city',
       'zipCode',
-      'stateOrCountry',
       'stateOrCountryDescription',
     ];
     if (payload.locations && payload.locations.length > 0) {
@@ -144,23 +139,6 @@ const SponsorDetailsForm = ({
       }
     }
   }, [payload, setValue, isEdit]);
-
-  const { data: locationsData, isLoading: isLocationsLoading } = useQuery<
-    string[]
-  >(
-    ['locations'],
-    () =>
-      getLocationsName({
-        entityType: 'sponsor',
-      }) as Promise<string[]>,
-    {
-      keepPreviousData: true,
-    }
-  );
-
-  if (isLocationsLoading) {
-    return <Loading />;
-  }
 
   return (
     <form onSubmit={onSubmit}>
@@ -236,32 +214,11 @@ const SponsorDetailsForm = ({
           <Input
             placeholder="USA"
             topLabel="State or Country"
-            register={register('stateOrCountry')}
-            value={watch('stateOrCountry')}
+            register={register('stateOrCountryDescription')}
+            value={watch('stateOrCountryDescription')}
             showClearOption={false}
           />
         </Box>
-        <Controller
-          control={control}
-          name="stateOrCountryDescription"
-          render={({ field: { onChange, value } }) => (
-            <CustomSelect
-              options={
-                !!locationsData?.length
-                  ? locationsData.map(item => ({
-                      label: item,
-                      value: item,
-                    }))
-                  : []
-              }
-              variant={SelectVariant.Dark}
-              onChange={onChange}
-              value={value || []}
-              topLabel="State"
-              placeholder="State"
-            />
-          )}
-        />
         <Input
           placeholder="https://example.com"
           topLabel="Website"

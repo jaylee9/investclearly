@@ -123,7 +123,6 @@ const DealPage = ({ deal }: DealPageProps) => {
   const onSubmitAddDeal = async (data: UpdateInvestment) => {
     await updateInvestment(data);
   };
-  console.log(deal.locations);
 
   return (
     <Layout {...headerProps}>
