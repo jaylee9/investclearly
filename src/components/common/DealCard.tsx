@@ -11,6 +11,7 @@ import { useBreakpoints } from '@/hooks/useBreakpoints';
 import Bookmark from './Bookmark';
 import { useUser } from '@/contexts/User';
 import { useRouter } from 'next/router';
+import { capitalize } from '@/helpers/formatLocations';
 
 export enum DealCardVariant {
   Base = 'base',
@@ -86,7 +87,7 @@ const DealCard = ({
         </Link>
         <Typography variant="body1" sx={classes.baseDealLocation}>
           {!!deal?.locations?.length
-            ? deal?.locations?.[0]?.stateOrCountryDescription
+            ? capitalize(deal?.locations?.[0]?.stateOrCountryDescription)
             : 'N/A'}
         </Typography>
         <Typography
@@ -156,7 +157,7 @@ const DealCard = ({
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Location"></i>
               {!!deal?.locations?.length
-                ? deal?.locations?.[0]?.stateOrCountryDescription
+                ? capitalize(deal?.locations?.[0]?.stateOrCountryDescription)
                 : 'N/A'}
             </Typography>
             <Typography variant="body1" sx={classes.sponsorProperty}>

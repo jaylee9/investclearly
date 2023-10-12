@@ -1,13 +1,11 @@
+export const capitalize = (str: string): string =>
+  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
 const formatLocations = (locations: string[]): string[] =>
-  locations.map(str =>
-    str.length <= 3
-      ? str
-      : str
-          .split(' ')
-          .map(
-            word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-          )
-          .join(' ')
+  locations.map(location =>
+    location.length <= 3
+      ? location
+      : location.split(' ').map(capitalize).join(' ')
   );
 
 export default formatLocations;

@@ -12,6 +12,7 @@ import PlaceholderImage from '@/components/common/PlaceholderImage';
 import { GlobalSearchInput } from './GlobalSearchInput';
 import { HeaderType } from '../../../../hooks/useHeaderProps';
 import Button from '@/components/common/Button';
+import { capitalize } from '@/helpers/formatLocations';
 
 export enum GlobalSearchVariant {
   BASE = 'base',
@@ -209,7 +210,9 @@ const GlobalSearch = ({
                           marginBottom={6}
                         >
                           {!!deal?.locations?.length
-                            ? deal?.locations?.[0]?.stateOrCountryDescription
+                            ? capitalize(
+                                deal?.locations?.[0]?.stateOrCountryDescription
+                              )
                             : 'N/A'}
                         </Typography>
                         <Box sx={classes.dealTypes}>
