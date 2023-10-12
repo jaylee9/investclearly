@@ -306,7 +306,7 @@ export const useDealsBlockStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: { xs: '64px 16px', md: '80px 25px', lg: '100px 25px' },
+      padding: { xs: '64px 16px', md: '80px 25px', lg: '100px 0px' },
     },
     list: {
       display: 'flex',

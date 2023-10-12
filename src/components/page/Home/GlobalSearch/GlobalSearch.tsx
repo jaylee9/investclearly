@@ -208,9 +208,9 @@ const GlobalSearch = ({
                           sx={classes.blockListItemDefaultText}
                           marginBottom={6}
                         >
-                          {Array.isArray(deal.regions)
-                            ? deal.regions.join(', ')
-                            : deal.regions}
+                          {!!deal?.locations?.length
+                            ? deal?.locations?.[0]?.stateOrCountryDescription
+                            : 'N/A'}
                         </Typography>
                         <Box sx={classes.dealTypes}>
                           <Typography
@@ -292,9 +292,9 @@ const GlobalSearch = ({
                           sx={classes.blockListItemDefaultText}
                           marginBottom={6}
                         >
-                          {Array.isArray(sponsor.regions)
-                            ? sponsor.regions.join(', ')
-                            : sponsor.regions}
+                          {!!sponsor?.locations?.length
+                            ? sponsor?.locations?.[0]?.stateOrCountryDescription
+                            : 'N/A'}
                         </Typography>
                       </Box>
                     </Box>
