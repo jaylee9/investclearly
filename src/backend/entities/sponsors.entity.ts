@@ -56,7 +56,7 @@ export class Sponsor {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'bigint', nullable: true })
   aum: number;
 
   @Column({ type: 'enum', array: true, enum: AssetClasses, nullable: true })

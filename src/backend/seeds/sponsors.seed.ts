@@ -7,7 +7,7 @@ export const SponsorsSeed = async () => {
     from_line: 2,
     delimiter: ',',
     columns: [
-      'sponsor',
+      'legalName',
       'website',
       'city',
       'state',
