@@ -19,7 +19,6 @@ import { USER_OBJECT_LOCALSTORAGE_KEY } from '@/config/constants';
 const validationSchema = z.object({
   investorStatus: z.string().optional(),
   assetClasses: z.array(z.string()).optional(),
-  regions: z.array(z.string()).optional(),
   holdPeriod: z.array(z.number()).optional(),
   minInvestment: z.array(z.number()).optional(),
 });
@@ -44,9 +43,11 @@ const InvestmentPreferences = () => {
       investorStatus:
         user?.investorStatus === 'Accredited Investor' ? 'yes' : 'no',
       assetClasses: user?.assetClasses,
-      regions: user?.regions,
-      holdPeriod: [user?.holdPeriodMin, user?.holdPeriodMax],
-      minInvestment: [user?.minimumInvestmentMin, user?.minimumInvestmentMax],
+      holdPeriod: [user?.holdPeriodMin || 0, user?.holdPeriodMax || 10],
+      minInvestment: [
+        user?.minimumInvestmentMin || 1000,
+        user?.minimumInvestmentMax || 25000,
+      ],
     },
   });
 
