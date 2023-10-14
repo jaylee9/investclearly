@@ -37,7 +37,7 @@ const DealsBlock = ({ locations }: DealsBlockProps) => {
       const href = `/list?type=deals&asset_class=${linkValue}`;
       return { value, href };
     }),
-  ];
+  ].slice(0, 33);
 
   return (
     <Box sx={classes.root}>
