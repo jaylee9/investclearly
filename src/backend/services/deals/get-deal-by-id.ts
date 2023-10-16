@@ -44,8 +44,8 @@ export const getDealById = async (
       'deals.attachments',
       Attachment,
       'attachments',
-      'attachments.entityId = deals.id AND attachments.entityType = :entityType',
-      { entityType: TargetTypesConstants.deals }
+      'attachments.entityId = deals.id AND attachments.entityType = :attachmentEntityType',
+      { attachmentEntityType: TargetTypesConstants.deals }
     )
     .leftJoinAndMapMany(
       'deals.locations',
@@ -69,8 +69,8 @@ export const getDealById = async (
         'deals.bookmarks',
         Bookmark,
         'bookmarks',
-        'bookmarks.entityId = deals.id AND bookmarks.entityType = :entityType AND bookmarks.userId = :userId',
-        { entityType: BookmarkConstants.entityTypes.deal, userId }
+        'bookmarks.entityId = deals.id AND bookmarks.entityType = :bookmarkEntityType AND bookmarks.userId = :userId',
+        { bookmarkEntityType: BookmarkConstants.entityTypes.deal, userId }
       );
   }
 
