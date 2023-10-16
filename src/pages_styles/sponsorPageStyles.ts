@@ -4,7 +4,13 @@ const useSponsorPageStyles = () => {
   const { palette, customShadows } = theme;
   return {
     wrapper: {
-      padding: { xs: 0, md: '16px', lg: '32px 48px' },
+      padding: { xs: 0, md: '16px', lg: '32px 48px', xl: '32px 0px' },
+      display: 'flex',
+      justifyContent: 'center',
+    },
+    content: {
+      width: '100%',
+      maxWidth: '1216px',
     },
     fixedHeader: {
       background: palette.common.white,
