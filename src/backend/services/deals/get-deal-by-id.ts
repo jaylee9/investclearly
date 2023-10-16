@@ -39,6 +39,22 @@ export const getDealById = async (
     });
   }
 
+  dealQuery = dealQuery
+    .leftJoinAndMapMany(
+      'deals.attachments',
+      Attachment,
+      'attachments',
+      'attachments.entityId = deals.id AND attachments.entityType = :entityType',
+      { entityType: TargetTypesConstants.deals }
+    )
+    .leftJoinAndMapMany(
+      'deals.locations',
+      Location,
+      'locations',
+      'locations.entityId = deals.id AND locations.entityType = :dealEntityType',
+      { dealEntityType: LocationTargetTypesConstants.deal }
+    );
+
   if (userId) {
     dealQuery = dealQuery
       .leftJoinAndSelect(
@@ -58,23 +74,8 @@ export const getDealById = async (
       );
   }
 
-  dealQuery = dealQuery
-    .leftJoinAndMapMany(
-      'deals.attachments',
-      Attachment,
-      'attachments',
-      'attachments.entityId = deals.id AND attachments.entityType = :entityType',
-      { entityType: TargetTypesConstants.deals }
-    )
-    .leftJoinAndMapMany(
-      'deals.locations',
-      Location,
-      'locations',
-      'locations.entityId = deals.id AND locations.entityType = :dealEntityType',
-      { dealEntityType: LocationTargetTypesConstants.deal }
-    );
-
   const deal = await dealQuery.getOne();
+
   if (!deal) {
     throw new createHttpError.NotFound(DealConstants.dealNotFound);
   }
