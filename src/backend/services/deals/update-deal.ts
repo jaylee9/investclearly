@@ -11,6 +11,7 @@ import { transformObjectKeysToArrays } from '../../../backend/utils/transform-ob
 import { UpdateDealInterface } from './interfaces/update-deal.interface';
 import { createOrUpdateLocation } from '../locations/create-or-update-location';
 import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
+import { sendMailToUsersWithNewDealsFromBookmarkedSponsors } from './send-mail-to-users-with-new-deal-from-bookmarked-sponsors';
 
 export const update = async (
   id: number,
@@ -48,7 +49,7 @@ export const update = async (
     updatedSponsorId = null;
   }
 
-  await getDealById(id, showOnlyPublishedDeals);
+  const dealRecord = await getDealById(id, showOnlyPublishedDeals);
 
   await connection.manager.update(
     Deal,
@@ -91,6 +92,15 @@ export const update = async (
     LocationTargetTypesConstants.deal,
     id
   );
+  const updatedDeal = await getDealById(id, showOnlyPublishedDeals);
 
-  return getDealById(id, showOnlyPublishedDeals);
+  if (
+    (!dealRecord?.sponsor || dealRecord.isDealPublished === false) &&
+    updatedDeal.sponsor &&
+    updatedDeal.isDealPublished === true
+  ) {
+    sendMailToUsersWithNewDealsFromBookmarkedSponsors(updatedDeal.id);
+  }
+
+  return updatedDeal;
 };

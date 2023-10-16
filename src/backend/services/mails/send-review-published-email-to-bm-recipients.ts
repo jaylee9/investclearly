@@ -27,7 +27,7 @@ export const sendReviewPublishedEmailToBmRecipients = async (
           publishedAt: moment(reviewRecord.updatedAt).format(
             MomentConstants.dateFormatForModerationReviews
           ),
-          sponsorId: reviewRecord.sponsor!.id,
+          sponsorId: reviewRecord.sponsor?.id,
           sponsorVanityName: reviewRecord.sponsor!.vanityName,
           reviewAuthorFirstName: reviewRecord.reviewer?.firstName,
           reviewAuthorLastName: reviewRecord.reviewer?.lastName,
