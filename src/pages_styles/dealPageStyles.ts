@@ -4,17 +4,31 @@ const useDealPageStyles = () => {
   const { palette } = theme;
   return {
     root: {
-      padding: { xs: 0, md: '0 16px', lg: '0 48px 32px' },
+      padding: { xs: 0, md: '0 16px', lg: '0 48px 32px', xl: '0 0 32px' },
+      display: 'flex',
+      justifyContent: 'center',
+    },
+    content: {
       display: 'flex',
       gap: '16px',
       flexDirection: { xs: 'column', lg: 'row' },
+      width: '100%',
+      maxWidth: '1218px',
     },
     imageWrapper: {
       marginBottom: { xs: '16px', lg: '40px' },
       padding: { xs: 0, md: '0 16px', lg: '0 48px' },
+      '& div': {
+        '& div': {
+          display: 'flex',
+          justifyContent: 'center',
+          width: '100%',
+        },
+      },
       '& img': {
         width: '100%',
         objectFit: 'cover',
+        maxWidth: '1216px',
       },
       '& span': {
         width: '100% !important',

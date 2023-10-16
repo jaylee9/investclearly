@@ -51,8 +51,8 @@ export const getSponsorById = async (
       'deals.attachments',
       Attachment,
       'attachments',
-      'attachments.entityId = deals.id AND attachments.entityType = :entityType',
-      { entityType: TargetTypesConstants.deals }
+      'attachments.entityId = deals.id AND attachments.entityType = :attachmentEntityType',
+      { attachmentEntityType: TargetTypesConstants.deals }
     );
 
   const dealsCount = await dealsQuery.clone().getCount();
@@ -63,9 +63,9 @@ export const getSponsorById = async (
       'sponsor.bookmarks',
       Bookmark,
       'bookmarks',
-      'bookmarks.entityId = sponsor.id AND bookmarks.entityType = :entityType AND bookmarks.userId = :userId',
+      'bookmarks.entityId = sponsor.id AND bookmarks.entityType = :bookmarkEntityType AND bookmarks.userId = :userId',
       {
-        entityType: BookmarkConstants.entityTypes.sponsor,
+        bookmarkEntityType: BookmarkConstants.entityTypes.sponsor,
         userId: currentUserId,
       }
     );

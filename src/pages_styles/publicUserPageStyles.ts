@@ -5,9 +5,15 @@ const usePublicUserPageStyles = () => {
   return {
     root: {
       display: 'flex',
+      justifyContent: 'center',
+      padding: { xs: '0', md: '16px', lg: '32px 48px', xl: '32px 0px' },
+    },
+    content: {
+      display: 'flex',
       flexDirection: { xs: 'column', lg: 'row' },
       gap: '16px',
-      padding: { xs: '0', md: '16px', lg: '32px 48px' },
+      width: '100%',
+      maxWidth: '1216px',
     },
     userInfo: {
       width: { xs: '100%', lg: '25%' },

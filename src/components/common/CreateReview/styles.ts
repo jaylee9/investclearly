@@ -15,15 +15,19 @@ export const useCreateReviewFormStyles = () => {
     header: {
       padding: '16px 24px',
       display: 'flex',
+      justifyContent: 'center',
+    },
+    headerContent: {
+      display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      borderBottom: `1px solid ${palette.background.default}`,
-      boxShadow: customShadows.header,
       '& .icon-Cross': {
         cursor: 'pointer',
         fontSize: '24px',
         color: palette.text.secondary,
       },
+      maxWidth: '1216px',
+      width: '100%',
     },
     subTitle: {
       color: palette.text.secondary,

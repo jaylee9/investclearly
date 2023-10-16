@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/send-mail-to-users-with-matched-and-new-deals",
-      "schedule": "00 08 * * 5"
+      "schedule": "00 08 * * *"
     },
     {
       "path": "/api/cron/add-new-deals-form-D-by-sec-api-scraper",

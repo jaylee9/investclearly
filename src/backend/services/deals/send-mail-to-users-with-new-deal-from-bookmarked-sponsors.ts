@@ -1,16 +1,15 @@
-import moment from 'moment';
 import { User } from '../../entities/user.entity';
 import { getDatabaseConnection } from '../../config/data-source-config';
 import { Deal } from '../../entities/deals.entity';
-import { MomentConstants } from '../../constants/moment-constants';
 import { Attachment } from '../../entities/attachments.entity';
 import { TargetTypesConstants } from '../../constants/target-types-constants';
 import { dealMapper } from '../../mappers/deal.mapper';
 import { BookmarkConstants } from '../../constants/bookmark-constants';
-import { sendSponsorPostedNewDeals } from '../mails/send-sponsor-posted-new-deals';
-import { DealConstants } from '../../constants/deal-constants';
+import { sendSponsorPostedNewDeal } from '../mails/send-sponsor-posted-new-deal';
 
-export const sendMailToUsersWithNewDealsFromBookmarkedSponsors = async () => {
+export const sendMailToUsersWithNewDealsFromBookmarkedSponsors = async (
+  dealId: number
+) => {
   const connection = await getDatabaseConnection();
 
   const users = await connection.manager
@@ -31,16 +30,8 @@ export const sendMailToUsersWithNewDealsFromBookmarkedSponsors = async () => {
   for (const user of users) {
     if (user.bookmarks?.length) {
       const sponsorIds = user.bookmarks.map(item => item.entityId);
-      const fromDate =
-        moment().subtract(6, 'days').format(MomentConstants.dateStart) + 'Z';
-      const toDate = moment(fromDate, MomentConstants.yearMonthDay).add(
-        6,
-        'days'
-      );
-      const toDateEndOfTheDay =
-        moment(toDate).format(MomentConstants.dateEnd) + 'Z';
 
-      const deals = await connection.manager
+      const deal = await connection.manager
         .createQueryBuilder()
         .select('deals')
         .from(Deal, 'deals')
@@ -52,22 +43,12 @@ export const sendMailToUsersWithNewDealsFromBookmarkedSponsors = async () => {
           { entityType: TargetTypesConstants.deals }
         )
         .leftJoinAndSelect('deals.sponsor', 'sponsor')
+        .where('deals.id = :dealId', { dealId })
         .andWhere('sponsor.id IN (:...sponsorIds)', { sponsorIds })
-        .andWhere(
-          'deals.createdAt <= :toDateEndOfTheDay AND deals.createdAt >= :fromDate',
-          { fromDate, toDateEndOfTheDay }
-        )
-        .limit(DealConstants.maxAmountNewDealsAtBookmarkedSponsor)
-        .getMany();
+        .getOne();
 
-      if (
-        user &&
-        deals?.length === DealConstants.maxAmountNewDealsAtBookmarkedSponsor
-      ) {
-        sendSponsorPostedNewDeals(
-          user,
-          await Promise.all(deals.map(dealMapper))
-        );
+      if (user && deal) {
+        sendSponsorPostedNewDeal(user, dealMapper(deal));
       }
     }
   }

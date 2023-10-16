@@ -54,34 +54,36 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
     >
       <Box sx={classes.root}>
         <Box sx={classes.header}>
-          <Box sx={classes.logoBox}>
-            <Logo />
-          </Box>
+          <Box sx={classes.headerContent}>
+            <Box sx={classes.logoBox}>
+              <Logo />
+            </Box>
 
-          <Box sx={classes.buttonBack}>
-            {isMobileButtonBackShown && (
-              <i
-                className="icon-Arrow-left"
-                onClick={() => {
-                  setStep(step - 1);
-                }}
-                style={classes.iconBack}
-              />
-            )}
-          </Box>
+            <Box sx={classes.buttonBack}>
+              {isMobileButtonBackShown && (
+                <i
+                  className="icon-Arrow-left"
+                  onClick={() => {
+                    setStep(step - 1);
+                  }}
+                  style={classes.iconBack}
+                />
+              )}
+            </Box>
 
-          <Box sx={classes.titleBox}>
-            <Typography variant="body1" fontWeight={600}>
-              Write a Review
-            </Typography>
-            {isSubtitleShown && (
-              <Typography variant="body1" sx={classes.subTitle}>
-                {payload.sponsorName}
+            <Box sx={classes.titleBox}>
+              <Typography variant="body1" fontWeight={600}>
+                Write a Review
               </Typography>
-            )}
-          </Box>
+              {isSubtitleShown && (
+                <Typography variant="body1" sx={classes.subTitle}>
+                  {payload.sponsorName}
+                </Typography>
+              )}
+            </Box>
 
-          <i className="icon-Cross" onClick={e => handleClose(e)} />
+            <i className="icon-Cross" onClick={e => handleClose(e)} />
+          </Box>
         </Box>
 
         <Box sx={classes.content}>

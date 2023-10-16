@@ -19,25 +19,6 @@ import { useSponsorDetailsFormStyles } from './styles';
 const isBrowser =
   typeof window !== 'undefined' && typeof window.File !== 'undefined';
 
-const validationSchema = z.object({
-  businessAvatar: isBrowser
-    ? z.union([z.instanceof(File), z.string()])
-    : z.any(),
-  vanityName: z.string().optional(),
-  legalName: z.string().min(1, 'Required field'),
-  street1: z.string().min(1, 'Required field'),
-  street2: z.string(),
-  city: z.string().min(1, 'Required field'),
-  zipCode: z.string().min(1, 'Required field'),
-  stateOrCountryDescription: z.string().min(1, 'Required field'),
-  website: z.string().min(1, 'Required field').url(),
-  specialties: z.array(z.string()),
-  description: z.string().min(1, 'Required field'),
-  yearOfFoundation: z.union([z.string(), z.number()]),
-});
-
-type ValidationSchema = z.infer<typeof validationSchema>;
-
 interface ModifiedCreateSponsorInterface extends PartialCreateSponsorInterface {
   locations?: LocationInterface[];
 }
@@ -57,6 +38,31 @@ const SponsorDetailsForm = ({
   onClose,
   isLoading,
 }: SponsorDetailsFormProps) => {
+  const validationSchema = z.object({
+    businessAvatar: isBrowser
+      ? z.union([z.instanceof(File), z.string()])
+      : z.any(),
+    vanityName: z.string().optional(),
+    legalName: isEdit ? z.string() : z.string().min(1, 'Required field'),
+    street1: isEdit ? z.string() : z.string().min(1, 'Required field'),
+    street2: isEdit ? z.string() : z.string(),
+    city: isEdit ? z.string() : z.string().min(1, 'Required field'),
+    zipCode: isEdit ? z.string() : z.string().min(1, 'Required field'),
+    stateOrCountryDescription: isEdit
+      ? z.string()
+      : z.string().min(1, 'Required field'),
+    website: isEdit
+      ? z.string().url()
+      : z.string().min(1, 'Required field').url(),
+    specialties: isEdit
+      ? z.array(z.string())
+      : z.array(z.string()).min(1, 'Required field'),
+    description: isEdit ? z.string() : z.string().min(1, 'Required field'),
+    yearOfFoundation: z.union([z.string(), z.number()]),
+  });
+
+  type ValidationSchema = z.infer<typeof validationSchema>;
+
   const classes = useSponsorDetailsFormStyles();
 
   let businessAvatarUrl;
@@ -117,7 +123,7 @@ const SponsorDetailsForm = ({
       const location = payload.locations[0];
 
       locationFields.forEach(field => {
-        setValue(field as keyof ValidationSchema, location[field]);
+        setValue(field as keyof ValidationSchema, location[field] || '');
       });
     }
     if (payload) {
@@ -128,9 +134,9 @@ const SponsorDetailsForm = ({
         ) {
           setValue(
             key as keyof ValidationSchema,
-            payload[
+            (payload[
               key as keyof ModifiedCreateSponsorInterface
-            ] as unknown as ValidationSchema[keyof ValidationSchema]
+            ] as unknown as ValidationSchema[keyof ValidationSchema]) || ''
           );
         }
       }
@@ -242,7 +248,7 @@ const SponsorDetailsForm = ({
           )}
         />
         <CustomTextArea
-          placeholder="Tell us more about your deal"
+          placeholder="Tell us more about your company"
           topLabel="Description"
           register={register('description')}
           value={watch('description')}

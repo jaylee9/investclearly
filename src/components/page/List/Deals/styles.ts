@@ -141,10 +141,17 @@ export const useDealsComponentStyles = () => {
 export const useColumnsComponentStyles = () => {
   return {
     root: {
+      display: 'flex',
+      padding: { xs: '16px', lg: '32px 48px', xl: '32px 0px' },
+      width: '100%',
+      justifyContent: 'center',
+    },
+    content: {
       display: 'grid',
       gridTemplateColumns: { xs: '100%', lg: '25% 75%' },
       gap: '16px',
-      padding: { xs: '16px', lg: '32px 48px' },
+      maxWidth: '1216px',
+      width: '100%',
     },
     leftColumn: {
       flex: '25%',

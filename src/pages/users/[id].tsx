@@ -89,82 +89,86 @@ const PublicUserPage: FC<PublicUserPageProps> = ({
   return (
     <Layout {...headerProps}>
       <Box sx={classes.root}>
-        <Box sx={classes.userInfo}>
-          <UserAvatar
-            src={user.profilePicture}
-            name={`${user.firstName} ${user.lastName}`}
-            width={80}
-            height={80}
-          />
-          <Typography variant="h3" fontWeight={600}>
-            {user.firstName} {user.lastName}
-          </Typography>
-        </Box>
-        <Box sx={classes.rightColumn}>
-          {!!investments.length && (
+        <Box sx={classes.content}>
+          <Box sx={classes.userInfo}>
+            <UserAvatar
+              src={user.profilePicture}
+              name={`${user.firstName} ${user.lastName}`}
+              width={80}
+              height={80}
+            />
+            <Typography variant="h3" fontWeight={600}>
+              {user.firstName} {user.lastName}
+            </Typography>
+          </Box>
+          <Box sx={classes.rightColumn}>
+            {!!investments.length && (
+              <Box sx={classes.rightColumnBlock}>
+                <Box sx={classes.rightColumnBlockHeader} marginBottom="32px">
+                  <Typography variant="h3">Deals</Typography>
+                  <Typography variant="body1">
+                    {user.investmentsCount}
+                  </Typography>
+                </Box>
+                <Box sx={classes.dealsBlockContent}>
+                  {investmentsData
+                    .slice(0, investmentsDataSliceCondition)
+                    ?.map(investment => (
+                      <DealCard
+                        key={investment.id}
+                        deal={investment.deal}
+                        sx={classes.dealCard}
+                      />
+                    ))}
+                </Box>
+                {!!user.investmentsCount &&
+                  user.investmentsCount > investmentsLimit &&
+                  !isLoadingInvestments && (
+                    <Typography
+                      variant="body1"
+                      sx={classes.showMoreLink}
+                      onClick={handleShowMoreInvestments}
+                    >
+                      Show more deals <i className="icon-Caret-down"></i>
+                    </Typography>
+                  )}
+                {isLoadingInvestments && (
+                  <Box>
+                    <Loading />
+                  </Box>
+                )}
+              </Box>
+            )}
             <Box sx={classes.rightColumnBlock}>
-              <Box sx={classes.rightColumnBlockHeader} marginBottom="32px">
-                <Typography variant="h3">Deals</Typography>
-                <Typography variant="body1">{user.investmentsCount}</Typography>
+              <Box sx={classes.rightColumnBlockHeader} marginBottom="16px">
+                <Typography variant="h3">Reviews</Typography>
+                <Typography variant="body1">{user.reviewsCount}</Typography>
               </Box>
-              <Box sx={classes.dealsBlockContent}>
-                {investmentsData
-                  .slice(0, investmentsDataSliceCondition)
-                  ?.map(investment => (
-                    <DealCard
-                      key={investment.id}
-                      deal={investment.deal}
-                      sx={classes.dealCard}
-                    />
-                  ))}
+              <Box sx={classes.reviewsBlockContent}>
+                {reviewsData?.map(review => (
+                  <ReviewCard
+                    key={review.id}
+                    review={{ ...review, reviewer: user }}
+                  />
+                ))}
               </Box>
-              {!!user.investmentsCount &&
-                user.investmentsCount > investmentsLimit &&
-                !isLoadingInvestments && (
+              {!!user.reviewsCount &&
+                user.reviewsCount > reviewsLimit &&
+                !isLoadingReviews && (
                   <Typography
                     variant="body1"
                     sx={classes.showMoreLink}
-                    onClick={handleShowMoreInvestments}
+                    onClick={handleShowMoreReviews}
                   >
-                    Show more deals <i className="icon-Caret-down"></i>
+                    Show more reviews <i className="icon-Caret-down"></i>
                   </Typography>
                 )}
-              {isLoadingInvestments && (
+              {isLoadingReviews && (
                 <Box>
                   <Loading />
                 </Box>
               )}
             </Box>
-          )}
-          <Box sx={classes.rightColumnBlock}>
-            <Box sx={classes.rightColumnBlockHeader} marginBottom="16px">
-              <Typography variant="h3">Reviews</Typography>
-              <Typography variant="body1">{user.reviewsCount}</Typography>
-            </Box>
-            <Box sx={classes.reviewsBlockContent}>
-              {reviewsData?.map(review => (
-                <ReviewCard
-                  key={review.id}
-                  review={{ ...review, reviewer: user }}
-                />
-              ))}
-            </Box>
-            {!!user.reviewsCount &&
-              user.reviewsCount > reviewsLimit &&
-              !isLoadingReviews && (
-                <Typography
-                  variant="body1"
-                  sx={classes.showMoreLink}
-                  onClick={handleShowMoreReviews}
-                >
-                  Show more reviews <i className="icon-Caret-down"></i>
-                </Typography>
-              )}
-            {isLoadingReviews && (
-              <Box>
-                <Loading />
-              </Box>
-            )}
           </Box>
         </Box>
       </Box>

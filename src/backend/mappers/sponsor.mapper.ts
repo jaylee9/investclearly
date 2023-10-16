@@ -1,6 +1,7 @@
 import { Sponsor } from '../entities/sponsors.entity';
 import { SponsorInterface } from '../services/sponsors/interfaces/sponsor.interface';
 import { buildFullImagePath } from '../utils/build-full-image-path';
+import { buildFullSponsorWebsitePath } from '../utils/build-full-sponsor-website-path';
 import { dealMapper } from './deal.mapper';
 import { locationMapper } from './locations.mapper';
 import { reviewMapper } from './review.mapper';
@@ -19,7 +20,9 @@ export const sponsorMapper = (sponsor: Sponsor): SponsorInterface => {
     businessPhone: sponsor.businessPhone,
     sponsorName: sponsor.sponsorName,
     address: sponsor.address,
-    website: sponsor.website,
+    website: sponsor.website
+      ? buildFullSponsorWebsitePath(sponsor.website)
+      : '',
     description: sponsor.description,
     aum: sponsor.aum,
     specialties: sponsor.specialties || [],

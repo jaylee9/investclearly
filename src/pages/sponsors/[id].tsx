@@ -31,6 +31,7 @@ import { useRouter } from 'next/router';
 import { useUser } from '@/contexts/User';
 import { ClaimPayload } from '@/types/common';
 import Link from 'next/link';
+import parseCookies from 'next-cookies';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -281,248 +282,256 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
         </Box>
       </Fade>
       <Box sx={classes.wrapper}>
-        <Box sx={classes.info}>
-          <Box sx={classes.infoHeader}>
-            <Box sx={classes.infoHeaderMain}>
-              <PlaceholderImage
-                alt="sponsor image"
-                src={sponsor.businessAvatar as string}
-                width={80}
-                height={80}
-                defaultImage={DEFAULT_SPONSOR_IMAGE}
-                style={{
-                  borderRadius: '1230px',
-                  minHeight: '80px',
-                  maxWidth: '80px',
-                }}
-              />
-              <Box>
-                <Typography variant="h3">{sponsor.legalName}</Typography>
-                <Typography variant="body1" sx={classes.sponsorRating}>
-                  <i className="icon-Star"></i>
-                  {sponsor.avgTotalRating}
-                  <span>({sponsor.reviewsCount} reviews)</span>
-                </Typography>
-              </Box>
-            </Box>
-            <Box sx={classes.infoHeaderActions}>
-              {isInBookmarks ? (
-                <BookmarkIcon
-                  sx={classes.filledBookmarkIcon}
-                  onClick={() => handleDeleteBookmark(sponsor.id)}
+        <Box sx={classes.content}>
+          <Box sx={classes.info}>
+            <Box sx={classes.infoHeader}>
+              <Box sx={classes.infoHeaderMain}>
+                <PlaceholderImage
+                  alt="sponsor image"
+                  src={sponsor.businessAvatar as string}
+                  width={80}
+                  height={80}
+                  defaultImage={DEFAULT_SPONSOR_IMAGE}
+                  style={{
+                    borderRadius: '1230px',
+                    minHeight: '80px',
+                    maxWidth: '80px',
+                  }}
                 />
-              ) : (
-                <BookmarkBorderIcon
-                  sx={classes.bookmarkIcon}
-                  onClick={() => handleAddBookmark(sponsor.id)}
-                />
-              )}
-              {!isMobile && sponsor.website && (
-                <Button variant="secondary">
-                  <Link
-                    href={sponsor.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Box sx={classes.websiteButton}>
-                      <i className="icon-Link"></i>Website
-                    </Box>
-                  </Link>
-                </Button>
-              )}
-            </Box>
-          </Box>
-          {isMobile && sponsor.website && (
-            <Button variant="secondary">
-              <Link
-                href={sponsor.website}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Box sx={classes.websiteButton}>
-                  <i className="icon-Link"></i>Website
-                </Box>
-              </Link>
-            </Button>
-          )}
-          <Box sx={classes.infoContent}>
-            <Box sx={classes.infoContentColumn}>
-              <Box sx={classes.infoContentDetail}>
-                <i className="icon-Location"></i>
                 <Box>
-                  <Typography variant="caption">State</Typography>
-                  <Typography variant="body1">
-                    {!!sponsor?.locations?.length
-                      ? sponsor?.locations?.[0]?.stateOrCountryDescription
-                      : 'N/A'}
+                  <Typography variant="h3">{sponsor.legalName}</Typography>
+                  <Typography variant="body1" sx={classes.sponsorRating}>
+                    <i className="icon-Star"></i>
+                    {sponsor.avgTotalRating}
+                    <span>({sponsor.reviewsCount} reviews)</span>
                   </Typography>
                 </Box>
               </Box>
-              <Box sx={classes.infoContentDetail}>
-                <i className="icon-Asset-class"></i>
-                <Box>
-                  <Typography variant="caption">Asset Class</Typography>
-                  <Typography variant="body1">
-                    {Array.isArray(sponsor.specialties)
-                      ? sponsor.specialties.join(', ')
-                      : sponsor.specialties}
-                  </Typography>
-                </Box>
+              <Box sx={classes.infoHeaderActions}>
+                {isInBookmarks ? (
+                  <BookmarkIcon
+                    sx={classes.filledBookmarkIcon}
+                    onClick={() => handleDeleteBookmark(sponsor.id)}
+                  />
+                ) : (
+                  <BookmarkBorderIcon
+                    sx={classes.bookmarkIcon}
+                    onClick={() => handleAddBookmark(sponsor.id)}
+                  />
+                )}
+                {!isMobile && sponsor.website && (
+                  <Button variant="secondary">
+                    <Link
+                      href={sponsor.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Box sx={classes.websiteButton}>
+                        <i className="icon-Link"></i>Website
+                      </Box>
+                    </Link>
+                  </Button>
+                )}
               </Box>
             </Box>
-            <Box sx={classes.infoContentColumn}>
-              <Box sx={classes.infoContentDetail}>
-                <i className="icon-Calendar"></i>
-                <Box>
-                  <Typography variant="caption">Year Founded</Typography>
-                  <Typography variant="body1">
-                    {sponsor.yearOfFoundation}
-                  </Typography>
+            {isMobile && sponsor.website && (
+              <Button variant="secondary">
+                <Link
+                  href={sponsor.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Box sx={classes.websiteButton}>
+                    <i className="icon-Link"></i>Website
+                  </Box>
+                </Link>
+              </Button>
+            )}
+            <Box sx={classes.infoContent}>
+              <Box sx={classes.infoContentColumn}>
+                <Box sx={classes.infoContentDetail}>
+                  <i className="icon-Location"></i>
+                  <Box>
+                    <Typography variant="caption">State</Typography>
+                    <Typography variant="body1">
+                      {!!sponsor?.locations?.length
+                        ? sponsor?.locations?.[0]?.stateOrCountryDescription
+                        : 'N/A'}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box sx={classes.infoContentDetail}>
+                  <i className="icon-Asset-class"></i>
+                  <Box>
+                    <Typography variant="caption">Asset Class</Typography>
+                    <Typography variant="body1">
+                      {Array.isArray(sponsor.specialties)
+                        ? sponsor.specialties.join(', ')
+                        : sponsor.specialties}
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-          </Box>
-          <CustomTabs
-            tabs={tabs}
-            onChange={handleTabChange}
-            value={activeTab}
-          />
-        </Box>
-        <Box sx={classes.root}>
-          <Box sx={classes.leftColumn}>
-            <Box ref={overviewRef} sx={classes.overview}>
-              <Box sx={classes.overviewHeader}>
-                <Typography variant="h3">Sponsor Overview</Typography>
-                <Typography variant="body1">{sponsor.description}</Typography>
-              </Box>
-              <Box sx={classes.overviewContent}>
-                <Typography variant="h5">Details</Typography>
-                <Box sx={classes.overviewDetails}>
-                  <Box sx={classes.overviewDetailswrapper}>
-                    <Box>
-                      <Typography variant="caption">Legal Name</Typography>
-                      <Typography variant="body1">
-                        {sponsor.legalName}
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Typography variant="caption">Interested in</Typography>
-                      <Typography variant="body1">
-                        {Array.isArray(sponsor.interests)
-                          ? sponsor.interests.join(', ')
-                          : sponsor.interests}
-                      </Typography>
-                    </Box>
+              <Box sx={classes.infoContentColumn}>
+                <Box sx={classes.infoContentDetail}>
+                  <i className="icon-Calendar"></i>
+                  <Box>
+                    <Typography variant="caption">Year Founded</Typography>
+                    <Typography variant="body1">
+                      {sponsor.yearOfFoundation}
+                    </Typography>
                   </Box>
                 </Box>
               </Box>
             </Box>
-
-            <Box ref={dealsRef} sx={classes.dealsOverview}>
-              <Box sx={classes.dealsBlockHeader}>
-                <Typography variant="h3">Deals</Typography>
-                <Typography variant="body1">{sponsor?.dealsCount}</Typography>
-              </Box>
-              <Box sx={classes.dealsBlockContent}>
-                {dealsData
-                  .slice(0, dealsDataSliceCondition)
-                  ?.map(deal => (
-                    <DealCard key={deal.id} deal={deal} sx={classes.dealCard} />
-                  ))}
-              </Box>
-              {!!sponsor.dealsCount &&
-                sponsor.dealsCount > dealsLimit &&
-                !isLoadingDeals && (
-                  <Typography
-                    variant="body1"
-                    sx={classes.showMoreLink}
-                    onClick={handleShowMoreDeals}
-                  >
-                    Show more deals <i className="icon-Caret-down"></i>
-                  </Typography>
-                )}
-              {isLoadingDeals && (
-                <Box>
-                  <Loading />
-                </Box>
-              )}
-            </Box>
-
-            <Box ref={reviewsRef} sx={classes.reviewsWrapper}>
-              <Box sx={classes.reviewsWrapperHeader}>
-                <Box sx={classes.reviewsWrapperTitle}>
-                  <Typography variant="h3">Reviews</Typography>
-                  <Typography variant="body1">
-                    {sponsor?.reviewsCount}
-                  </Typography>
-                </Box>
-                <Button onClick={handleShowCreateReviewForm}>
-                  <Typography variant="body1">Write a review</Typography>
-                </Button>
-                <CreateReviewForm
-                  open={showCreateReviewForm}
-                  onClose={handleHideCreateReviewForm}
-                />
-              </Box>
-              <Box sx={classes.reviewsContent}>
-                {reviewsData.map(review => (
-                  <ReviewCard review={review} key={review.id} />
-                ))}
-              </Box>
-              {!!sponsor.reviewsCount &&
-                sponsor.reviewsCount > reviewsLimit &&
-                !isLoadingReviews && (
-                  <Typography
-                    variant="body1"
-                    sx={classes.showMoreLink}
-                    onClick={handleShowMoreReviews}
-                  >
-                    Show more reviews <i className="icon-Caret-down"></i>
-                  </Typography>
-                )}
-              {isLoadingReviews && <Loading />}
-            </Box>
-          </Box>
-
-          <Box sx={classes.rightColumn}>
-            <Box sx={classes.sponsorInfo}>
-              <Box sx={classes.sponsorInfoColumn}>
-                <Box>
-                  <Typography variant="caption">Raising</Typography>
-                  <Typography variant="body1">
-                    {sponsor.activelyRising ? 'Yes' : 'No'}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="caption">
-                    Average Equity Multiple
-                  </Typography>
-                  <Typography variant="body1">
-                    {sponsor.equityMultiple}
-                  </Typography>
-                </Box>
-              </Box>
-              <Box sx={classes.sponsorInfoColumn}>
-                <Box>
-                  <Typography variant="caption">Average IRR</Typography>
-                  <Typography variant="body1">{sponsor.actualIRR}%</Typography>
-                </Box>
-                <Box>
-                  <Typography variant="caption">AUM</Typography>
-                  <Typography variant="body1">$ {sponsor.aum}</Typography>
-                </Box>
-              </Box>
-            </Box>
-
-            <Box sx={classes.textWithButton}>
-              <Typography variant="body1">Is this your company?</Typography>
-              <Button onClick={handleOpenModal}>Claim this profile</Button>
-            </Box>
-            <ClaimCompanyModal
-              onSubmit={onSubmitClaimSponsor}
-              open={openClaimModal}
-              handleClose={handleCloseModal}
+            <CustomTabs
+              tabs={tabs}
+              onChange={handleTabChange}
+              value={activeTab}
             />
+          </Box>
+          <Box sx={classes.root}>
+            <Box sx={classes.leftColumn}>
+              <Box ref={overviewRef} sx={classes.overview}>
+                <Box sx={classes.overviewHeader}>
+                  <Typography variant="h3">Sponsor Overview</Typography>
+                  <Typography variant="body1">{sponsor.description}</Typography>
+                </Box>
+                <Box sx={classes.overviewContent}>
+                  <Typography variant="h5">Details</Typography>
+                  <Box sx={classes.overviewDetails}>
+                    <Box sx={classes.overviewDetailswrapper}>
+                      <Box>
+                        <Typography variant="caption">Legal Name</Typography>
+                        <Typography variant="body1">
+                          {sponsor.legalName}
+                        </Typography>
+                      </Box>
+                      <Box>
+                        <Typography variant="caption">Interested in</Typography>
+                        <Typography variant="body1">
+                          {Array.isArray(sponsor.interests)
+                            ? sponsor.interests.join(', ')
+                            : sponsor.interests}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+
+              <Box ref={dealsRef} sx={classes.dealsOverview}>
+                <Box sx={classes.dealsBlockHeader}>
+                  <Typography variant="h3">Deals</Typography>
+                  <Typography variant="body1">{sponsor?.dealsCount}</Typography>
+                </Box>
+                <Box sx={classes.dealsBlockContent}>
+                  {dealsData
+                    .slice(0, dealsDataSliceCondition)
+                    ?.map(deal => (
+                      <DealCard
+                        key={deal.id}
+                        deal={deal}
+                        sx={classes.dealCard}
+                      />
+                    ))}
+                </Box>
+                {!!sponsor.dealsCount &&
+                  sponsor.dealsCount > dealsLimit &&
+                  !isLoadingDeals && (
+                    <Typography
+                      variant="body1"
+                      sx={classes.showMoreLink}
+                      onClick={handleShowMoreDeals}
+                    >
+                      Show more deals <i className="icon-Caret-down"></i>
+                    </Typography>
+                  )}
+                {isLoadingDeals && (
+                  <Box>
+                    <Loading />
+                  </Box>
+                )}
+              </Box>
+
+              <Box ref={reviewsRef} sx={classes.reviewsWrapper}>
+                <Box sx={classes.reviewsWrapperHeader}>
+                  <Box sx={classes.reviewsWrapperTitle}>
+                    <Typography variant="h3">Reviews</Typography>
+                    <Typography variant="body1">
+                      {sponsor?.reviewsCount}
+                    </Typography>
+                  </Box>
+                  <Button onClick={handleShowCreateReviewForm}>
+                    <Typography variant="body1">Write a review</Typography>
+                  </Button>
+                  <CreateReviewForm
+                    open={showCreateReviewForm}
+                    onClose={handleHideCreateReviewForm}
+                  />
+                </Box>
+                <Box sx={classes.reviewsContent}>
+                  {reviewsData.map(review => (
+                    <ReviewCard review={review} key={review.id} />
+                  ))}
+                </Box>
+                {!!sponsor.reviewsCount &&
+                  sponsor.reviewsCount > reviewsLimit &&
+                  !isLoadingReviews && (
+                    <Typography
+                      variant="body1"
+                      sx={classes.showMoreLink}
+                      onClick={handleShowMoreReviews}
+                    >
+                      Show more reviews <i className="icon-Caret-down"></i>
+                    </Typography>
+                  )}
+                {isLoadingReviews && <Loading />}
+              </Box>
+            </Box>
+
+            <Box sx={classes.rightColumn}>
+              <Box sx={classes.sponsorInfo}>
+                <Box sx={classes.sponsorInfoColumn}>
+                  <Box>
+                    <Typography variant="caption">Raising</Typography>
+                    <Typography variant="body1">
+                      {sponsor.activelyRising ? 'Yes' : 'No'}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="caption">
+                      Average Equity Multiple
+                    </Typography>
+                    <Typography variant="body1">
+                      {sponsor.equityMultiple}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box sx={classes.sponsorInfoColumn}>
+                  <Box>
+                    <Typography variant="caption">Average IRR</Typography>
+                    <Typography variant="body1">
+                      {sponsor.actualIRR}%
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="caption">AUM</Typography>
+                    <Typography variant="body1">$ {sponsor.aum}</Typography>
+                  </Box>
+                </Box>
+              </Box>
+
+              <Box sx={classes.textWithButton}>
+                <Typography variant="body1">Is this your company?</Typography>
+                <Button onClick={handleOpenModal}>Claim this profile</Button>
+              </Box>
+              <ClaimCompanyModal
+                onSubmit={onSubmitClaimSponsor}
+                open={openClaimModal}
+                handleClose={handleCloseModal}
+              />
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -532,10 +541,13 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const id = context.params?.id as string;
+  const cookies = parseCookies(context);
+  const token = cookies.accessToken;
   const sponsorResponse = await getSponsor({
     id,
     reviewsLimit: 3,
     dealsLimit: 3,
+    token,
   });
   if ('error' in sponsorResponse) {
     return {
