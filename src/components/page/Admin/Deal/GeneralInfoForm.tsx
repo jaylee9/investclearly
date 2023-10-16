@@ -21,6 +21,7 @@ import Button from '@/components/common/Button';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
 import { editDeal } from '@/actions/deals';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
+import { LocationInterface } from '@/backend/services/locations/interfaces/location.interface';
 
 const validationSchema = z.object({
   vanityName: z.string().min(1),
@@ -29,6 +30,12 @@ const validationSchema = z.object({
   // closeDate: z.string().min(1),
   holdPeriod: z.string().min(1),
   isDealPublished: z.boolean(),
+  street1: z.string().optional(),
+  street2: z.string().optional(),
+  city: z.string().optional(),
+  zipCode: z.string().optional(),
+  stateOrCountry: z.string().optional(),
+  stateOrCountryDescription: z.string().optional(),
 });
 
 type ValidationSchema = z.infer<typeof validationSchema>;
@@ -134,6 +141,20 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
   }));
 
   useEffect(() => {
+    const locationFields: (keyof LocationInterface)[] = [
+      'street1',
+      'street2',
+      'city',
+      'zipCode',
+      'stateOrCountryDescription',
+    ];
+    if (deal.locations && deal.locations.length > 0) {
+      const location = deal.locations[0];
+
+      locationFields.forEach(field => {
+        setValue(field as keyof ValidationSchema, location[field] as string);
+      });
+    }
     if (deal) {
       Object.keys(validationSchema.shape).forEach(key => {
         const keyOfDeal = key as keyof DealInterface;
@@ -239,6 +260,45 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
             />
           )}
         />
+        <Input
+          placeholder="123 First street"
+          topLabel="Address line 1"
+          register={register('street1')}
+          value={watch('street1')}
+          showClearOption={false}
+        />
+        <Input
+          topLabel="Address line 2"
+          register={register('street2')}
+          value={watch('street2')}
+          showClearOption={false}
+        />
+        <Box sx={classes.doubleInputsWrapper}>
+          <Input
+            placeholder="New York"
+            topLabel="City"
+            register={register('city')}
+            value={watch('city')}
+            showClearOption={false}
+          />
+          <Input
+            placeholder="Type"
+            topLabel="ZIP Code"
+            register={register('zipCode')}
+            value={watch('zipCode')}
+            showClearOption={false}
+            type="number"
+          />
+        </Box>
+        <Box sx={classes.doubleInputsWrapper}>
+          <Input
+            placeholder="USA"
+            topLabel="State or Country"
+            register={register('stateOrCountryDescription')}
+            value={watch('stateOrCountryDescription')}
+            showClearOption={false}
+          />
+        </Box>
         <Box>
           <Typography variant="caption" fontWeight={600}>
             Primary Deal Image
