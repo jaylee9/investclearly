@@ -13,7 +13,7 @@ export const useProfileSettingsWrapperStyles = () => {
     wrapper: {
       height: '90%',
       '& .MuiTabs-scroller': {
-        overflow: { xs: 'scroll !important', md: 'hidden' },
+        overflowX: { xs: 'scroll !important', md: 'hidden !important' },
       },
     },
   };
