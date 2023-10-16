@@ -25,6 +25,7 @@ const useUserProfilePageStyles = ({ href }: { href: string }) => {
       },
       minHeight: '80vh',
       width: '100%',
+      maxWidth: '1216px',
     },
     sideBar: {
       display: { xs: 'none', lg: 'flex' },
