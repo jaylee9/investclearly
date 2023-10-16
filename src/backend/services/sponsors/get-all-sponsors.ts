@@ -65,9 +65,9 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
         'sponsors.bookmarks',
         Bookmark,
         'bookmarks',
-        'bookmarks.entityId = sponsors.id AND bookmarks.entityType = :entityType AND bookmarks.userId = :userId',
+        'bookmarks.entityId = sponsors.id AND bookmarks.entityType = :bookmarkEntityType AND bookmarks.userId = :userId',
         {
-          entityType: BookmarkConstants.entityTypes.sponsor,
+          bookmarkEntityType: BookmarkConstants.entityTypes.sponsor,
           userId: currentUserId,
         }
       )

@@ -59,8 +59,8 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
       'deals.attachments',
       Attachment,
       'attachments',
-      'attachments.entityId = deals.id AND attachments.entityType = :entityType',
-      { entityType: TargetTypesConstants.deals }
+      'attachments.entityId = deals.id AND attachments.entityType = :attachmentEntityType',
+      { attachmentEntityType: TargetTypesConstants.deals }
     )
     .leftJoinAndMapMany(
       'deals.locations',
@@ -269,9 +269,9 @@ export const getAllDeals = async (params: FindAllDealsInterface) => {
         'deals.bookmarks',
         Bookmark,
         'bookmarks',
-        'bookmarks.entityId = deals.id AND bookmarks.entityType = :entityType AND bookmarks.userId = :userId',
+        'bookmarks.entityId = deals.id AND bookmarks.entityType = :bookmarkEntityType AND bookmarks.userId = :userId',
         {
-          entityType: BookmarkConstants.entityTypes.deal,
+          bookmarkEntityType: BookmarkConstants.entityTypes.deal,
           userId: currentUserId,
         }
       )
