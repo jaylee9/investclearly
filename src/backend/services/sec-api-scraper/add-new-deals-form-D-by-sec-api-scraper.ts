@@ -33,7 +33,7 @@ export const addNewDealsFormDBySecApiScraper = async () => {
 
   if (deal && deal.fileDate) {
     startDate = moment(deal.fileDate)
-      .subtract(0, 'days')
+      .subtract(1, 'days')
       .format(MomentConstants.yearMonthDay);
     endDate = moment(startDate)
       .add(1, 'months')
