@@ -7,6 +7,8 @@ import SponsorsComponent from '@/components/page/List/Sponsors';
 import theme from '@/config/theme';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import useHeaderProps from '@/hooks/useHeaderProps';
+import { useListStyles } from '@/pages_styles/listStyles';
+import { Box } from '@mui/material';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { SyntheticEvent, useState } from 'react';
@@ -18,6 +20,7 @@ interface ListPageProps {
 
 const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
   const router = useRouter();
+  const classes = useListStyles();
   const { isDesktop } = useBreakpoints();
   const [searchValue, setSearchValue] = useState(
     (router.query.search as string) || ''
@@ -73,15 +76,17 @@ const List = ({ dealsResponse, sponsorsResponse }: ListPageProps) => {
   };
   return (
     <Layout {...headerProps}>
-      <CustomTabs
-        tabs={tabs}
-        onChange={handleChange}
-        value={router.query.type as string}
-        customStyles={{
-          background: theme.palette.common.white,
-          padding: isDesktop ? '0px 48px' : '0px 16px',
-        }}
-      />
+      <Box sx={classes.root}>
+        <CustomTabs
+          tabs={tabs}
+          onChange={handleChange}
+          value={router.query.type as string}
+          customStyles={{
+            background: theme.palette.common.white,
+            padding: isDesktop ? '0px 48px' : '0px 16px',
+          }}
+        />
+      </Box>
     </Layout>
   );
 };

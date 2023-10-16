@@ -1,7 +1,26 @@
 import theme from '@/config/theme';
 
+const { palette, customShadows } = theme;
+
+export const useListStyles = () => {
+  return {
+    root: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      '& .MuiTabs-root': {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        '& .MuiTabs-scroller': {
+          maxWidth: '1216px',
+        },
+      },
+    },
+  };
+};
+
 const useDealsPageStyles = () => {
-  const { palette, customShadows } = theme;
   return {
     root: {
       display: 'flex',
