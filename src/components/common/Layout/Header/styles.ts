@@ -31,7 +31,7 @@ const getStyles = ({
         md: '18px 16px',
         lg: '16px 48px',
       },
-      justifyContent: 'space-between',
+      justifyContent: 'center',
       alignItems: 'center',
       boxShadow: isShadow ? theme.customShadows.header : 'none',
       filter: isShadowInFront
@@ -42,6 +42,13 @@ const getStyles = ({
       position: rootPosition,
       top: 0,
       right: 0,
+      width: '100%',
+    },
+    content: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      maxWidth: '1216px',
       width: '100%',
     },
     dealsPopover: {

@@ -19,7 +19,10 @@ export const api = ky.create({
           window.location.href = '/login';
           localStorage.removeItem(USER_OBJECT_LOCALSTORAGE_KEY);
         }
-        if (!!localStorage.getItem(ADMIN_OBJECT_LOCALSTORAGE_KEY)) {
+        if (
+          !!localStorage.getItem(ADMIN_OBJECT_LOCALSTORAGE_KEY) &&
+          !localStorage.getItem(USER_OBJECT_LOCALSTORAGE_KEY)
+        ) {
           window.location.href = '/admin-panel/login';
           localStorage.removeItem(ADMIN_OBJECT_LOCALSTORAGE_KEY);
         }

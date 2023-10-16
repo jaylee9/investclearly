@@ -100,79 +100,81 @@ const Header = ({
       component="header"
       sx={{ ...classes.root, overflow: isOpenGlobalSearch ? '' : 'hidden' }}
     >
-      {!!content && content}
-      <Box sx={classes.leftSideWrapper}>
-        {!isMobileSearchInput && <Logo variant={logoVariant} />}
-        {isSearch && (
-          <GlobalSearch
-            type={type}
-            variant={globalSearchVariant}
-            onChangeSearch={handleChangeSearch}
-            isMobileSearchInput={isMobileSearchInput}
-            setIsMobileSearchInput={setIsMobileSearchInput}
-            isOpenGlobalSearch={isOpenGlobalSearch}
-            setIsOpenGlobalSearch={setIsOpenGlobalSearch}
-          />
-        )}
-        {title && title}
-      </Box>
-      {!isMobileSearchInput && (
-        <Box sx={classes.dealsPopover}>
-          {isDesktop && isLinks && (
-            <DealsPopover
+      <Box sx={classes.content}>
+        {!!content && content}
+        <Box sx={classes.leftSideWrapper}>
+          {!isMobileSearchInput && <Logo variant={logoVariant} />}
+          {isSearch && (
+            <GlobalSearch
               type={type}
+              variant={globalSearchVariant}
+              onChangeSearch={handleChangeSearch}
+              isMobileSearchInput={isMobileSearchInput}
+              setIsMobileSearchInput={setIsMobileSearchInput}
+              isOpenGlobalSearch={isOpenGlobalSearch}
+              setIsOpenGlobalSearch={setIsOpenGlobalSearch}
+            />
+          )}
+          {title && title}
+        </Box>
+        {!isMobileSearchInput && (
+          <Box sx={classes.dealsPopover}>
+            {isDesktop && isLinks && (
+              <DealsPopover
+                type={type}
+                isShadow={isShadow}
+                firstColumn={firstColumn}
+                secondColumn={secondColumn}
+                handleClickLink={handleClickLink}
+                isDealAssetClasses={!!isDealAssetClasses}
+              />
+            )}
+            {isDesktop ? (
+              <>
+                {isSignIn && user ? (
+                  <Box sx={classes.avatarWrapper} onClick={handleOpenMenu}>
+                    <UserAvatar
+                      src={user.profilePicture as string}
+                      width={44}
+                      height={44}
+                      name={`${user.firstName} ${user.lastName}`}
+                    />
+                  </Box>
+                ) : (
+                  <Link href="/sign-up">
+                    <Button>Log in / Sign up</Button>
+                  </Link>
+                )}
+              </>
+            ) : (
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={handleOpenMenu}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+            <Menu
               isShadow={isShadow}
               firstColumn={firstColumn}
               secondColumn={secondColumn}
               handleClickLink={handleClickLink}
+              user={user}
+              isDesktop={isDesktop}
+              anchorEl={anchorEl}
+              handleClose={handleCloseMenu}
+              open={openMenu}
               isDealAssetClasses={!!isDealAssetClasses}
             />
-          )}
-          {isDesktop ? (
-            <>
-              {isSignIn && user ? (
-                <Box sx={classes.avatarWrapper} onClick={handleOpenMenu}>
-                  <UserAvatar
-                    src={user.profilePicture as string}
-                    width={44}
-                    height={44}
-                    name={`${user.firstName} ${user.lastName}`}
-                  />
-                </Box>
-              ) : (
-                <Link href="/sign-up">
-                  <Button>Log in / Sign up</Button>
-                </Link>
-              )}
-            </>
-          ) : (
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={handleOpenMenu}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-          <Menu
-            isShadow={isShadow}
-            firstColumn={firstColumn}
-            secondColumn={secondColumn}
-            handleClickLink={handleClickLink}
-            user={user}
-            isDesktop={isDesktop}
-            anchorEl={anchorEl}
-            handleClose={handleCloseMenu}
-            open={openMenu}
-            isDealAssetClasses={!!isDealAssetClasses}
-          />
-          <CreateReviewForm
-            open={openCreateReviewForm}
-            onClose={handleCloseCreateReviewForm}
-          />
-        </Box>
-      )}
+            <CreateReviewForm
+              open={openCreateReviewForm}
+              onClose={handleCloseCreateReviewForm}
+            />
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };

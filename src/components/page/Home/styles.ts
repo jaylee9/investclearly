@@ -215,7 +215,7 @@ export const useNewDealsBlockStyles = () => {
     },
     dealCardsWrapper: {
       width: '100%',
-      maxWidth: '1376px',
+      maxWidth: '1216px',
       gap: '16px',
       display: 'flex',
       marginBottom: '40px',
@@ -250,11 +250,11 @@ export const useTopRatedSponsorsBlockStyles = () => {
       flexDirection: 'column',
       alignItems: 'center',
       padding: { xs: '64px 16px', md: '80px 40px', lg: '100px 25px' },
-      maxWidth: '1376px',
     },
     gridContainer: {
       width: { xs: '100%' },
       marginLeft: { xs: 0, lg: '-40px' },
+      maxWidth: '1216px',
     },
     title: {
       fontWeight: 600,
@@ -342,7 +342,7 @@ export const useDealsBlockStyles = () => {
       justifyContent: 'center',
     },
     gridContentStyles: {
-      maxWidth: 1376,
+      maxWidth: 1216,
       width: '100%',
     },
   };

@@ -242,7 +242,7 @@ const SponsorDetailsForm = ({
           )}
         />
         <CustomTextArea
-          placeholder="Tell us more about your deal"
+          placeholder="Tell us more about your company"
           topLabel="Description"
           register={register('description')}
           value={watch('description')}

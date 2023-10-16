@@ -24,21 +24,25 @@ const ColumnsComponent = ({
   const classes = useColumnsComponentStyles();
   return (
     <Box sx={classes.root}>
-      {leftColumnContent && (
-        <Box sx={classes.leftColumn}>
-          <Box sx={classes.leftColumnHeader}>{leftColumnHeader}</Box>
-          {leftColumnContent}
-        </Box>
-      )}
-      <Box sx={classes.rightColumn}>
-        <Box sx={classes.rightColumnHeader}>
-          <Box sx={classes.rightColumnHeaderTitle}>
-            {rightColumnHeaderTitle}
+      <Box sx={classes.content}>
+        {leftColumnContent && (
+          <Box sx={classes.leftColumn}>
+            <Box sx={classes.leftColumnHeader}>{leftColumnHeader}</Box>
+            {leftColumnContent}
           </Box>
-          {rightColumnHeaderContent}
+        )}
+        <Box sx={classes.rightColumn}>
+          <Box sx={classes.rightColumnHeader}>
+            <Box sx={classes.rightColumnHeaderTitle}>
+              {rightColumnHeaderTitle}
+            </Box>
+            {rightColumnHeaderContent}
+          </Box>
+          {rightColumnContent}
+          {!!count && (
+            <Box sx={classes.paggination}> {paginationComponent}</Box>
+          )}
         </Box>
-        {rightColumnContent}
-        {!!count && <Box sx={classes.paggination}> {paginationComponent}</Box>}
       </Box>
     </Box>
   );
