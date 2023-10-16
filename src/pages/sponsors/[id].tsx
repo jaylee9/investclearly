@@ -31,6 +31,7 @@ import { useRouter } from 'next/router';
 import { useUser } from '@/contexts/User';
 import { ClaimPayload } from '@/types/common';
 import Link from 'next/link';
+import parseCookies from 'next-cookies';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -540,10 +541,13 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const id = context.params?.id as string;
+  const cookies = parseCookies(context);
+  const token = cookies.accessToken;
   const sponsorResponse = await getSponsor({
     id,
     reviewsLimit: 3,
     dealsLimit: 3,
+    token,
   });
   if ('error' in sponsorResponse) {
     return {

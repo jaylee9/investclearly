@@ -67,14 +67,21 @@ interface GetSponsorPayload {
   id: string;
   reviewsLimit: number;
   dealsLimit: number;
+  token?: string;
 }
 
 export const getSponsor = async ({
   id,
   reviewsLimit,
   dealsLimit,
+  token,
 }: GetSponsorPayload): Promise<SponsorInterface | { error: string }> => {
   try {
+    const headers = token
+      ? {
+          Cookie: `accessToken=${token}`,
+        }
+      : {};
     const stringifiedParameters = queryString.stringify(
       { reviewsLimit, dealsLimit },
       {
@@ -84,7 +91,7 @@ export const getSponsor = async ({
       }
     );
     const response: SponsorInterface = await api
-      .get(`sponsors/${id}?${stringifiedParameters}`)
+      .get(`sponsors/${id}?${stringifiedParameters}`, { headers })
       .json();
     return response;
   } catch (error) {
