@@ -12,6 +12,7 @@ export const useProfileSettingsWrapperStyles = () => {
   return {
     wrapper: {
       height: '90%',
+      paddingBottom: '24px',
       '& .MuiTabs-scroller': {
         overflowX: { xs: 'scroll !important', md: 'hidden !important' },
       },
@@ -22,7 +23,7 @@ export const useProfileSettingsWrapperStyles = () => {
 export const useEditProfileStyles = () => {
   return {
     root: {
-      padding: { xs: '24px 16px 0px', lg: '24px' },
+      padding: { xs: '24px 16px 0px', lg: '24px 24px 0px' },
       height: '95%',
       '& .form': {
         height: '100%',
@@ -62,13 +63,14 @@ export const useEditProfileStyles = () => {
 export const useBooleanSettingsStyles = () => {
   return {
     root: {
-      padding: { xs: '24px 0px', lg: '24px' },
+      padding: { xs: '24px 0px 0px', lg: '24px 24px 0px' },
       height: { xs: '75vh', md: '90%' },
       '& .form': {
         height: '85%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        paddingBottom: '24px',
       },
       '& .firstCondition': {
         borderBottom: `1px solid ${palette.background.paper}`,
@@ -106,7 +108,7 @@ export const useBooleanSettingsStyles = () => {
 export const useInvestmentPreferencesStyles = () => {
   return {
     root: {
-      padding: { xs: '24px 0px 24px 16px', md: '24px' },
+      padding: { xs: '24px 0px 24px 16px', md: '24px 24px 0px' },
     },
     sectionTitle: {
       fontWeight: 600,
@@ -143,7 +145,7 @@ export const useInvestmentPreferencesStyles = () => {
 export const useCredentialsSettingsStyles = () => {
   return {
     root: {
-      padding: { xs: '24px 16px', md: '24px' },
+      padding: { xs: '24px 16px 0px', md: '24px 24p 0px' },
       maxWidth: '650px',
     },
     title: {
