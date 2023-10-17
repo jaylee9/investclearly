@@ -21,6 +21,7 @@ export const sendDealMatchedYourInvestmentPreferences = async (
       templateId: TemplatesIds.newDealsMatchingYourInvestmentPreferences,
       dynamicTemplateData: {
         frontendUrl: MailConfig.frontendUrl,
+        dealId: deal?.id,
         sponsorVanityName: deal?.sponsor?.vanityName || '',
         dealTitle: deal.vanityName,
         dealStateOrCountryDescription:

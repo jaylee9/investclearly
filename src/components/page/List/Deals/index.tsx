@@ -491,7 +491,7 @@ const DealsComponent = ({
       <BannerBlock
         title="Can’t find a deal? Let us know!"
         buttonLabel="Contact Us"
-        buttonHref="mailto:support@investclearly.io?subject=Can’t find a deal"
+        buttonHref={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}?subject=Can’t find a deal`}
       />
     </>
   );

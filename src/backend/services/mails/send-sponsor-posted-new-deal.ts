@@ -21,6 +21,8 @@ export const sendSponsorPostedNewDeal = async (
       templateId: TemplatesIds.sponsorPostedNewDeals,
       dynamicTemplateData: {
         frontendUrl: MailConfig.frontendUrl,
+        sponsorId: deal.sponsor?.id,
+        dealId: deal.id,
         sponsorVanityName: deal.sponsor?.vanityName,
         dealTitle: deal.vanityName,
         dealStateOrCountryDescription:

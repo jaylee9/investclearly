@@ -255,7 +255,9 @@ const ProfileInvestments = () => {
           <Typography variant="body1" fontWeight={600}>
             Can’t find a deal? Contact us and we’ll resolve it!
           </Typography>
-          <Link href="mailto:support@investclearly.io?subject=Can’t find a deal">
+          <Link
+            href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}?subject=Can’t find a deal`}
+          >
             <Button sxCustomStyles={classes.buttonContact}>Contact Us</Button>
           </Link>
         </Box>
