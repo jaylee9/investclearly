@@ -152,7 +152,9 @@ const ChooseSponsorStep = ({
               <Typography variant="body1" fontWeight={600}>
                 Can’t find a sponsor? Contact us and we’ll resolve it!
               </Typography>
-              <Link href="mailto:support@investclearly.io?subject=Can’t find a sponsor">
+              <Link
+                href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}?subject=Can’t find a sponsor`}
+              >
                 <Button sxCustomStyles={classes.buttonContact}>
                   Contact Us
                 </Button>
