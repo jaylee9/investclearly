@@ -280,7 +280,7 @@ const GlobalSearch = ({
                             variant="body1"
                             sx={classes.blockListItemContentTitle}
                           >
-                            {sponsor.legalName}
+                            {sponsor?.vanityName}
                           </Typography>
                         </Link>
                         <Typography
