@@ -119,7 +119,7 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
       accessor: data => (
         <EllipsisText
           variant="body1"
-          text={(data?.sponsor?.legalName || 'N/A') as string}
+          text={(data?.sponsor?.vanityName || 'N/A') as string}
           sx={classes.ellipsisText}
         />
       ),

@@ -10,9 +10,10 @@ export enum LogoVariant {
 
 interface LogoProps {
   variant?: LogoVariant;
+  isAdmin?: boolean;
 }
 
-const Logo = ({ variant = LogoVariant.Default }: LogoProps) => {
+const Logo = ({ variant = LogoVariant.Default, isAdmin }: LogoProps) => {
   const { isLargeDesktop } = useBreakpoints();
   const { palette } = theme;
 
@@ -30,7 +31,10 @@ const Logo = ({ variant = LogoVariant.Default }: LogoProps) => {
       : palette.common.white;
 
   return (
-    <Link href="/" style={{ lineHeight: 0 }}>
+    <Link
+      href={!isAdmin ? '/' : '/admin-panel/deals'}
+      style={{ lineHeight: 0 }}
+    >
       <svg
         width={width}
         height={height}

@@ -62,7 +62,7 @@ export const DealSponsor: FC<DealSponsorProps> = ({
           />
           <Box>
             <Link href={`/sponsors/${deal.sponsor.id}`}>
-              <Typography variant="h5">{deal.sponsor.legalName}</Typography>
+              <Typography variant="h5">{deal?.sponsor?.vanityName}</Typography>
             </Link>
             <Typography variant="body1" sx={classes.sponsorRating}>
               <i className="icon-Star"></i>

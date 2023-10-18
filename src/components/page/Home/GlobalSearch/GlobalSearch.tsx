@@ -209,7 +209,8 @@ const GlobalSearch = ({
                           sx={classes.blockListItemDefaultText}
                           marginBottom={6}
                         >
-                          {!!deal?.locations?.length
+                          {!!deal?.locations?.length &&
+                          deal?.locations?.[0]?.stateOrCountryDescription
                             ? capitalize(
                                 deal?.locations?.[0]?.stateOrCountryDescription
                               )
@@ -279,7 +280,7 @@ const GlobalSearch = ({
                             variant="body1"
                             sx={classes.blockListItemContentTitle}
                           >
-                            {sponsor.legalName}
+                            {sponsor?.vanityName}
                           </Typography>
                         </Link>
                         <Typography

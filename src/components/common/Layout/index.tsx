@@ -148,7 +148,7 @@ const Layout = ({
         <Box sx={adminStyles.root}>
           <Box sx={adminStyles.sideBar}>
             <Box sx={adminStyles.logoWrapper}>
-              <Logo />
+              <Logo isAdmin />
             </Box>
             <Box sx={adminStyles.linksWrapper}>
               {adminLinks.map(link => (

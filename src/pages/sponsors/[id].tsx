@@ -32,6 +32,7 @@ import { useUser } from '@/contexts/User';
 import { ClaimPayload } from '@/types/common';
 import Link from 'next/link';
 import parseCookies from 'next-cookies';
+import { capitalize } from '@/helpers/formatLocations';
 
 type ActiveTab = 'overview' | 'reviews';
 
@@ -235,7 +236,7 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
                 <EllipsisText
                   variant="h5"
                   width="186px"
-                  text={sponsor.legalName}
+                  text={sponsor.vanityName}
                 />
                 <Typography variant="body1" sx={classes.sponsorRating}>
                   <i className="icon-Star"></i>
@@ -299,7 +300,7 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
                   }}
                 />
                 <Box>
-                  <Typography variant="h3">{sponsor.legalName}</Typography>
+                  <Typography variant="h3">{sponsor?.vanityName}</Typography>
                   <Typography variant="body1" sx={classes.sponsorRating}>
                     <i className="icon-Star"></i>
                     {sponsor.avgTotalRating}
@@ -354,8 +355,11 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
                   <Box>
                     <Typography variant="caption">State</Typography>
                     <Typography variant="body1">
-                      {!!sponsor?.locations?.length
-                        ? sponsor?.locations?.[0]?.stateOrCountryDescription
+                      {!!sponsor?.locations?.length &&
+                      sponsor?.locations?.[0]?.stateOrCountryDescription
+                        ? capitalize(
+                            sponsor?.locations?.[0]?.stateOrCountryDescription
+                          )
                         : 'N/A'}
                     </Typography>
                   </Box>

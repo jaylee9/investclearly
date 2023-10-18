@@ -79,7 +79,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
               <EllipsisText
                 variant="body1"
                 fontWeight={500}
-                text={data.legalName as string}
+                text={data?.vanityName as string}
                 sx={classes.ellipsisText}
               />
             </Link>
