@@ -10,6 +10,7 @@ import { useBreakpoints } from '@/hooks/useBreakpoints';
 import Bookmark from './Bookmark';
 import { useUser } from '@/contexts/User';
 import { useRouter } from 'next/router';
+import { capitalize } from '@/helpers/formatLocations';
 
 export enum SponsorCardVariant {
   Base = 'base',
@@ -69,8 +70,9 @@ const SponsorCard = ({
         />
       </Link>
       <Typography variant="body1" noWrap>
-        {!!sponsor?.locations?.length
-          ? sponsor?.locations?.[0]?.stateOrCountryDescription
+        {!!sponsor?.locations?.length &&
+        sponsor?.locations?.[0]?.stateOrCountryDescription
+          ? capitalize(sponsor?.locations?.[0]?.stateOrCountryDescription)
           : 'N/A'}
       </Typography>
       <Typography variant="body1" sx={classes.baseRating}>
@@ -127,15 +129,18 @@ const SponsorCard = ({
           <Box sx={classes.sponsorPropertiesColumn}>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Location"></i>
-              {!!sponsor?.locations?.length
-                ? sponsor?.locations?.[0]?.stateOrCountryDescription
+              {!!sponsor?.locations?.length &&
+              sponsor?.locations?.[0]?.stateOrCountryDescription
+                ? capitalize(sponsor?.locations?.[0]?.stateOrCountryDescription)
                 : 'N/A'}
             </Typography>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Status"></i>
               {Array.isArray(sponsor.specialties)
-                ? sponsor.specialties.join(', ')
-                : sponsor.specialties}
+                ? !!sponsor.specialties.length
+                  ? sponsor.specialties.join(', ')
+                  : 'N/A'
+                : sponsor.specialties || 'N/A'}
             </Typography>
           </Box>
           <Box sx={classes.sponsorPropertiesColumn}>
