@@ -25,6 +25,9 @@ export const getAllStateOrCountryDescriptions = async (entityType: string) => {
 
   searchQuery = searchQuery
     .andWhere('locations.stateOrCountryDescription IS NOT NULL')
+    .andWhere('locations.stateOrCountryDescription != :value', {
+      value: '',
+    })
     .orderBy(
       'locations.stateOrCountryDescription',
       OrderDirectionConstants.ASC
