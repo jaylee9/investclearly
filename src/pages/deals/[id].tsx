@@ -147,7 +147,8 @@ const DealPage = ({ deal }: DealPageProps) => {
                   <Box>
                     <Typography variant="h3">{deal.vanityName}</Typography>
                     <Typography variant="body1">
-                      {!!deal?.locations?.length
+                      {!!deal?.locations?.length &&
+                      deal?.locations?.[0]?.stateOrCountryDescription
                         ? capitalize(
                             deal?.locations?.[0]?.stateOrCountryDescription
                           )
@@ -247,7 +248,8 @@ const DealPage = ({ deal }: DealPageProps) => {
                       <Box>
                         <Typography variant="caption">State</Typography>
                         <Typography variant="body1">
-                          {!!deal?.locations?.length
+                          {!!deal?.locations?.length &&
+                          deal?.locations?.[0]?.stateOrCountryDescription
                             ? capitalize(
                                 deal?.locations?.[0]?.stateOrCountryDescription
                               )

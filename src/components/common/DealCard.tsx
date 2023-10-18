@@ -86,7 +86,8 @@ const DealCard = ({
           />
         </Link>
         <Typography variant="body1" sx={classes.baseDealLocation}>
-          {!!deal?.locations?.length
+          {!!deal?.locations?.length &&
+          deal?.locations?.[0]?.stateOrCountryDescription
             ? capitalize(deal?.locations?.[0]?.stateOrCountryDescription)
             : 'N/A'}
         </Typography>
@@ -156,7 +157,8 @@ const DealCard = ({
           <Box sx={classes.sponsorPropertiesColumn}>
             <Typography variant="body1" sx={classes.sponsorProperty}>
               <i className="icon-Location"></i>
-              {!!deal?.locations?.length
+              {!!deal?.locations?.length &&
+              deal?.locations?.[0]?.stateOrCountryDescription
                 ? capitalize(deal?.locations?.[0]?.stateOrCountryDescription)
                 : 'N/A'}
             </Typography>
