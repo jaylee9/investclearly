@@ -85,4 +85,5 @@ export enum AssetClasses {
   vacationRental = 'Vacation Rental',
   vacationRentals = 'Vacation Rentals',
   witnessInvestments = 'Witness Investments',
+  note = 'Note',
 }
