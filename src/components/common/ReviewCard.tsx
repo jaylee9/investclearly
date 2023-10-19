@@ -76,19 +76,6 @@ const ReviewCard = ({
             </Typography>
           </Box>
         </Box>
-        <Box
-          sx={{
-            ...classes.defaultIndicatior,
-            ...classes[
-              review.isVerified ? 'verifiedIndicator' : 'unverifiedIndicator'
-            ],
-          }}
-        >
-          {review.isVerified && <i className="icon-Check" />}
-          <Typography variant="body1">
-            {review.isVerified ? 'Verified' : 'Unverified'} review
-          </Typography>
-        </Box>
       </Box>
       <Box sx={classes.ratingWrapper}>
         <Rating
