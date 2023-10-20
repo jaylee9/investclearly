@@ -111,7 +111,7 @@ const ChooseSponsorStep = ({
                     key={sponsor.id}
                     onClick={event =>
                       handleChooseSponsor(event, {
-                        name: sponsor.legalName as string,
+                        name: sponsor.vanityName as string,
                         id: sponsor.id,
                       })
                     }
@@ -131,7 +131,7 @@ const ChooseSponsorStep = ({
                     />
                     <Box>
                       <Typography variant="body1" fontWeight={600}>
-                        {sponsor.legalName}
+                        {sponsor.vanityName}
                       </Typography>
                       <Typography variant="caption" sx={classes.sponsorRating}>
                         <i className="icon-Star"></i>

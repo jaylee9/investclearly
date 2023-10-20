@@ -126,8 +126,8 @@ const AddEditSponsorModal = ({
               <Typography variant="body1">
                 {isEdit ? 'Edit' : 'List'} Sponsor
               </Typography>
-              {sponsor?.legalName && (
-                <Typography variant="caption">{sponsor.legalName}</Typography>
+              {sponsor?.vanityName && (
+                <Typography variant="caption">{sponsor.vanityName}</Typography>
               )}
             </Box>
           </Box>

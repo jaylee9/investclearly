@@ -65,7 +65,7 @@ const SponsorCard = ({
         <EllipsisText
           variant="h5"
           fontWeight={600}
-          text={`${sponsor.legalName}` as string}
+          text={`${sponsor.vanityName}` as string}
           sx={classes.baseTitle}
         />
       </Link>
@@ -106,7 +106,7 @@ const SponsorCard = ({
             )}
             <Link href={`/sponsors/${sponsor.id}`}>
               <Typography variant="h5" fontWeight={600}>
-                {sponsor.legalName}
+                {sponsor.vanityName}
               </Typography>
             </Link>
             <Box sx={classes.sponsorInfo}>
