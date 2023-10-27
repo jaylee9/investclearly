@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/cron/add-new-deals-form-D-by-sec-api-scraper",
-      "schedule": "*/5 * * * *"
+      "schedule": "59 23 * * *"
     }
   ]
 }
