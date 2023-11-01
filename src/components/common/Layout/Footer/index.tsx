@@ -34,7 +34,20 @@ const Footer = () => {
   return (
     <Box sx={classes.root}>
       <Box sx={classes.content}>
-        <Logo variant={LogoVariant.Light} />
+        <Box width="33%">
+          <Logo variant={LogoVariant.Light} />
+        </Box>
+        <Typography sx={classes.disclaimer}>
+          Invest Clearly, LLC is not providing any securities or other interest
+          in any company listed on this site in any way, is not promoting any
+          company, and is not affiliated with any such companies. Invest
+          Clearly, LLC has not verified the accuracy or completeness of any
+          information contained on this site.  Each investor or user of this
+          site is solely responsible for confirming whether all information that
+          it obtains is accurate and complete, and is further responsible for
+          engaging all necessary professionals and advisors needed to make any
+          investment decisions.
+        </Typography>
         <Box sx={classes.linksWrapper}>
           {links.map(link => (
             <Typography

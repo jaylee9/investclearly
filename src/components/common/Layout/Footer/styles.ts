@@ -28,6 +28,16 @@ const getStyles = () => {
       '& p': {
         cursor: 'pointer',
       },
+      width: { lg: '33%' },
+      justifyContent: 'center',
+    },
+    disclaimer: {
+      textAlign: 'center',
+      color: theme.palette.text.disabled,
+      width: { lg: '33%' },
+      fontSize: '8px',
+      lineHeight: '20px',
+      order: { xs: 3, lg: 'initial' },
     },
     rights: {
       textAlign: 'center',
