@@ -498,7 +498,7 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
               <Box sx={classes.sponsorInfo}>
                 <Box sx={classes.sponsorInfoColumn}>
                   <Box>
-                    <Typography variant="caption">Raising</Typography>
+                    <Typography variant="caption">Actively Raising</Typography>
                     <Typography variant="body1">
                       {sponsor.activelyRising ? 'Yes' : 'No'}
                     </Typography>
