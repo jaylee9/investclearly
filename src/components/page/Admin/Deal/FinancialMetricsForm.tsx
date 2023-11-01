@@ -77,6 +77,12 @@ const FinancialMetricsForm = ({
     }
   }, [deal, setValue]);
 
+  const preventDotInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === '.') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <Box sx={classes.formWrapper}>
@@ -85,6 +91,7 @@ const FinancialMetricsForm = ({
             <Input
               register={register('fees')}
               topLabel="Fees"
+              onKeyDown={preventDotInput}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -100,6 +107,7 @@ const FinancialMetricsForm = ({
             <Input
               register={register('equityMultiple')}
               topLabel="Equity Multiple"
+              onKeyDown={preventDotInput}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
