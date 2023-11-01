@@ -29,7 +29,6 @@ const validationSchema = z.object({
   street2: z.string().optional(),
   city: z.string().optional(),
   zipCode: z.string().optional(),
-  stateOrCountry: z.string().optional(),
   stateOrCountryDescription: z.string().optional(),
 });
 
@@ -80,7 +79,6 @@ const EditProfile = () => {
           'street2',
           'city',
           'zipCode',
-          'stateOrCountry',
           'stateOrCountryDescription',
         ];
         const location = user.locations[0];
