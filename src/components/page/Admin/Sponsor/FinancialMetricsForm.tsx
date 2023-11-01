@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 const validationSchema = z.object({
   aum: z.string().min(1, 'Required field'),
   fees: z.string().min(1, 'Required field'),
+  actualIRR: z.string().min(1, 'Required field'),
   regulations: z.array(z.string()),
   exemptions: z.array(z.string()),
   cashOnCash: z.string().min(1, 'Required field'),
@@ -67,7 +68,8 @@ const FinancialMetricsForm = ({
   });
 
   const onSubmit = handleSubmit(data => {
-    const { aum, cashOnCash, fees, equityMultiple, holdPeriod } = data;
+    const { aum, cashOnCash, fees, equityMultiple, holdPeriod, actualIRR } =
+      data;
     const formattedValues = {
       aum: +aum,
       cashOnCash: +cashOnCash,
@@ -76,6 +78,7 @@ const FinancialMetricsForm = ({
       holdPeriod: +holdPeriod,
       regions: payload.regions,
       specialties: payload.specialties,
+      actualIRR: +actualIRR,
     };
 
     const formattedPayload = isEdit
@@ -127,6 +130,12 @@ const FinancialMetricsForm = ({
     }
   }, [payload, setValue]);
 
+  const preventDotInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === '.') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <Box sx={classes.formWrapper}>
@@ -149,6 +158,7 @@ const FinancialMetricsForm = ({
           <Input
             register={register('fees')}
             topLabel="Fees"
+            onKeyDown={preventDotInput}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -213,6 +223,7 @@ const FinancialMetricsForm = ({
           <Input
             register={register('equityMultiple')}
             topLabel="Equity Multiple"
+            onKeyDown={preventDotInput}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -264,6 +275,22 @@ const FinancialMetricsForm = ({
                 placeholder="LP Types"
               />
             )}
+          />
+          <Input
+            register={register('actualIRR')}
+            topLabel="Average IRR"
+            onKeyDown={preventDotInput}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Typography variant="body1" sx={classes.symbol}>
+                    %
+                  </Typography>
+                </InputAdornment>
+              ),
+            }}
+            type="number"
+            value={watch('actualIRR')}
           />
         </Box>
       </Box>

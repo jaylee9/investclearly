@@ -7,6 +7,7 @@ import api from '@/config/ky';
 import { ClaimPayload } from '@/types/common';
 import { serialize } from 'object-to-formdata';
 import queryString from 'query-string';
+import { omitBy } from 'lodash';
 
 interface ISponsorActionFilters extends ISponsorFilters {
   page: number;
@@ -176,7 +177,8 @@ export const editSponsor = async ({
 }: {
   payload: PartialCreateSponsorInterface & { id: number };
 }): Promise<SponsorInterface | { error: string }> => {
-  const formData = serialize(payload, {
+  const cleanedPayload = omitBy(payload, val => !val);
+  const formData = serialize(cleanedPayload, {
     indices: true,
     nullsAsUndefineds: true,
   });

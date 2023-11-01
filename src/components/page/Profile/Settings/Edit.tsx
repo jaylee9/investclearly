@@ -31,7 +31,6 @@ const validationSchema = z.object({
   zipCode: z.string().optional(),
   stateOrCountry: z.string().optional(),
   stateOrCountryDescription: z.string().optional(),
-  regions: z.string().optional().array(),
 });
 
 type ValidationSchema = z.infer<typeof validationSchema>;
@@ -91,7 +90,6 @@ const EditProfile = () => {
       }
       setValue('firstName', user.firstName);
       setValue('lastName', user.lastName);
-      setValue('regions', user.regions);
     }
   }, [user, setValue]);
 
