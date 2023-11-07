@@ -120,6 +120,7 @@ const CreateReviewForm = ({ ...props }: CreateReviewFormProps) => {
               setStep={setStep}
               payload={payload}
               setPayload={setPayload}
+              sponsorName={String(payload.sponsorName)}
             />
           )}
           {step === steps['Review Submitted'] && (
