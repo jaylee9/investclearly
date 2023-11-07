@@ -10,6 +10,7 @@ interface UploadProofStepProps {
   step: number;
   payload: CreateReviewPayloadInterface;
   setPayload: (value: CreateReviewPayloadInterface) => void;
+  sponsorName: string;
 }
 
 const UploadProofStep = ({
@@ -17,6 +18,7 @@ const UploadProofStep = ({
   step,
   payload,
   setPayload,
+  sponsorName,
 }: UploadProofStepProps) => {
   const classes = useUploadProofStepStyles();
   const [files, setFiles] = useState<File[]>([]);
@@ -67,7 +69,7 @@ const UploadProofStep = ({
             </Typography>
             <Typography variant="body1" sx={classes.subTitle}>
               Attach any documents or screenshots that prove your involvement
-              with Cloud Investment Ltd.
+              with {sponsorName}.
             </Typography>
           </Box>
           <FileUploader

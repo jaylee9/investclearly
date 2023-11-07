@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   addSponsorToBookmark,
   claimSponsor,
@@ -399,7 +400,16 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
               <Box ref={overviewRef} sx={classes.overview}>
                 <Box sx={classes.overviewHeader}>
                   <Typography variant="h3">Sponsor Overview</Typography>
-                  <Typography variant="body1">{sponsor.description}</Typography>
+                  <Typography variant="body1">
+                    {sponsor.description
+                      ?.split(/\r\n|\r|\n/)
+                      ?.map((line, index) => (
+                        <React.Fragment key={index}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      ))}
+                  </Typography>
                 </Box>
                 <Box sx={classes.overviewContent}>
                   <Typography variant="h5">Details</Typography>

@@ -75,6 +75,7 @@ export const getServerSideProps = async () => {
     page: 1,
     pageSize: 4,
     limit: 4,
+    statuses: ['Active'],
   });
   const sponsorsResponse = await getAllSponsors({ page: 1, pageSize: 4 });
   const searchResponse = await globalSearch({ search: '' });

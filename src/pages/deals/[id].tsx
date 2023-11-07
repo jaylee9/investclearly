@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   SuggestEditDealPayload,
   addDealToBookmark,
@@ -227,7 +228,16 @@ const DealPage = ({ deal }: DealPageProps) => {
               <Box sx={classes.overview}>
                 <Box sx={classes.overviewHeader}>
                   <Typography variant="h3">Overview</Typography>
-                  <Typography variant="body1">{deal.description}</Typography>
+                  <Typography variant="body1">
+                    {deal.description
+                      ?.split(/\r\n|\r|\n/)
+                      ?.map((line, index) => (
+                        <React.Fragment key={index}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      ))}
+                  </Typography>
                 </Box>
                 <Box sx={classes.overviewContent}>
                   <Typography variant="h5">Details</Typography>
