@@ -48,7 +48,6 @@ const PrivacySettings = () => {
     control,
     handleSubmit,
     formState: { isDirty },
-    reset,
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
     defaultValues: {
@@ -72,7 +71,6 @@ const PrivacySettings = () => {
         USER_OBJECT_LOCALSTORAGE_KEY,
         JSON.stringify(response)
       );
-      reset();
     }
     setIsLoading(false);
   });

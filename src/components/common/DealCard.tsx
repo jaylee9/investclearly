@@ -51,6 +51,7 @@ const DealCard = ({
       router.push('/login');
     }
   };
+
   return variant === DealCardVariant.Base ? (
     <Box
       sx={{

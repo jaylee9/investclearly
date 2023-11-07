@@ -171,7 +171,7 @@ const EditReviewModal = ({
                     </Typography>
                     <Typography variant="body1" sx={classes.subTitle}>
                       Attach any documents or screenshots that prove your
-                      involvement with Cloud Investment Ltd.
+                      involvement with {review?.sponsor?.vanityName}.
                     </Typography>
                     <FileUploader
                       onUpload={onUpload}
