@@ -307,58 +307,12 @@ const DealPage = ({ deal }: DealPageProps) => {
                     <Typography variant="body1">{deal.fees}%</Typography>
                   </Box>
                 </Box>
-                {deal.sponsor && (
-                  <>
-                    <Box sx={classes.sponsorInfoRow}>
-                      <Box>
-                        <Typography variant="caption">Cash-on-Cash</Typography>
-                        <Typography variant="body1">
-                          {deal.cashOnCash}%
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <Typography variant="caption">
-                          Equity Multiple
-                        </Typography>
-                        <Typography variant="body1">
-                          x{deal.sponsor.equityMultiple}
-                        </Typography>
-                      </Box>
-                    </Box>
-                    <Box sx={classes.sponsorInfoRow}>
-                      <Box>
-                        <Typography variant="caption">
-                          Investment Type
-                        </Typography>
-                        <Typography variant="body1">
-                          {Array.isArray(deal.investmentStructures)
-                            ? deal.investmentStructures.join(', ')
-                            : deal.investmentStructures}
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <Typography variant="caption">Hold Period</Typography>
-                        <Typography variant="body1">
-                          {deal.holdPeriod}
-                        </Typography>
-                      </Box>
-                    </Box>
-                    <Box sx={classes.sponsorInfoRow}>
-                      <Box>
-                        <Typography variant="caption">Target IRR</Typography>
-                        <Typography variant="body1">
-                          {deal.targetIRR}%
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <Typography variant="caption">Actual IRR</Typography>
-                        <Typography variant="body1">
-                          {deal.actualIRR}%
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </>
-                )}
+                <Box sx={classes.sponsorInfoRow}>
+                  <Box>
+                    <Typography variant="caption">Target IRR</Typography>
+                    <Typography variant="body1">{deal?.targetIRR}%</Typography>
+                  </Box>
+                </Box>
               </Box>
 
               <Box sx={classes.textWithButton}>
