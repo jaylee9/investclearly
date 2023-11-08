@@ -5,9 +5,8 @@ import { Box, InputAdornment, Typography } from '@mui/material';
 import { useFinancialMetricsFormStyles } from './styles';
 import Input from '@/components/common/Input';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
-import { Regulations } from '@/backend/constants/enums/regulations';
-import { Exemptions } from '@/backend/constants/enums/exemptions';
-import { InvestmentStructures } from '@/backend/constants/enums/investment-structures';
+// import { Regulations } from '@/backend/constants/enums/regulations';
+// import { Exemptions } from '@/backend/constants/enums/exemptions';
 import { Interests } from '@/backend/constants/enums/interests';
 import Button from '@/components/common/Button';
 import { PartialCreateSponsorInterface } from '@/actions/sponsors';
@@ -32,22 +31,22 @@ const FinancialMetricsForm = ({
 }: FinancialMetricsFormProps) => {
   const classes = useFinancialMetricsFormStyles();
 
-  const investmentStructuresOptions = Object.values(InvestmentStructures).map(
-    item => ({ label: item, value: item })
-  );
+  // const investmentStructuresOptions = Object.values(InvestmentStructures).map(
+  //   item => ({ label: item, value: item })
+  // );
 
   const validationSchema = z.object({
     aum: isEdit ? z.string() : z.string().min(1, 'Required field'),
-    fees: isEdit ? z.string() : z.string().min(1, 'Required field'),
+    // fees: isEdit ? z.string() : z.string().min(1, 'Required field'),
     actualIRR: isEdit ? z.string() : z.string().min(1, 'Required field'),
-    regulations: z.array(z.string()),
-    exemptions: z.array(z.string()),
-    cashOnCash: isEdit ? z.string() : z.string().min(1, 'Required field'),
+    // regulations: z.array(z.string()),
+    // exemptions: z.array(z.string()),
+    // cashOnCash: isEdit ? z.string() : z.string().min(1, 'Required field'),
     equityMultiple: isEdit ? z.string() : z.string().min(1, 'Required field'),
-    investmentStructures: isEdit
-      ? z.string()
-      : z.string().min(1, 'Required field'),
-    holdPeriod: isEdit ? z.string() : z.string().min(1, 'Required field'),
+    // investmentStructures: isEdit
+    //   ? z.string()
+    //   : z.string().min(1, 'Required field'),
+    // holdPeriod: isEdit ? z.string() : z.string().min(1, 'Required field'),
     interests: z.array(z.string()),
   });
 
@@ -63,21 +62,17 @@ const FinancialMetricsForm = ({
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
     defaultValues: {
-      investmentStructures: investmentStructuresOptions[0]?.value,
+      // investmentStructures: investmentStructuresOptions[0]?.value,
     },
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
 
   const onSubmit = handleSubmit(data => {
-    const { aum, cashOnCash, fees, equityMultiple, holdPeriod, actualIRR } =
-      data;
+    const { aum, equityMultiple, actualIRR } = data;
     const formattedValues = {
       aum: +aum,
-      cashOnCash: +cashOnCash,
-      fees: +fees,
       equityMultiple: +equityMultiple,
-      holdPeriod: +holdPeriod,
       regions: payload.regions,
       specialties: payload.specialties,
       actualIRR: +actualIRR,
@@ -97,15 +92,15 @@ const FinancialMetricsForm = ({
     onSave(formattedPayload);
   });
 
-  const regulationsOptions = Object.values(Regulations).map(item => ({
-    label: item,
-    value: item,
-  }));
+  // const regulationsOptions = Object.values(Regulations).map(item => ({
+  //   label: item,
+  //   value: item,
+  // }));
 
-  const exemptionsOptions = Object.values(Exemptions).map(item => ({
-    label: item,
-    value: item,
-  }));
+  // const exemptionsOptions = Object.values(Exemptions).map(item => ({
+  //   label: item,
+  //   value: item,
+  // }));
 
   const interestsOptions = Object.values(Interests).map(item => ({
     label: item,
@@ -148,6 +143,21 @@ const FinancialMetricsForm = ({
             value={watch('aum')}
           />
           <Input
+            register={register('equityMultiple')}
+            topLabel="Average Equity Multiple"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Typography variant="body1" sx={classes.symbol}>
+                    X
+                  </Typography>
+                </InputAdornment>
+              ),
+            }}
+            type="number"
+            value={watch('equityMultiple')}
+          />
+          {/* <Input
             register={register('fees')}
             topLabel="Fees"
             InputProps={{
@@ -161,9 +171,9 @@ const FinancialMetricsForm = ({
             }}
             type="number"
             value={watch('fees')}
-          />
+          /> */}
         </Box>
-        <Box sx={classes.doubleInputsWrapper}>
+        {/* <Box sx={classes.doubleInputsWrapper}>
           <Controller
             control={control}
             name="regulations"
@@ -194,8 +204,8 @@ const FinancialMetricsForm = ({
               />
             )}
           />
-        </Box>
-        <Box sx={classes.doubleInputsWrapper}>
+        </Box> */}
+        {/* <Box sx={classes.doubleInputsWrapper}>
           <Input
             register={register('cashOnCash')}
             topLabel="Cash-on-Cash"
@@ -211,23 +221,8 @@ const FinancialMetricsForm = ({
             type="number"
             value={watch('cashOnCash')}
           />
-          <Input
-            register={register('equityMultiple')}
-            topLabel="Equity Multiple"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Typography variant="body1" sx={classes.symbol}>
-                    X
-                  </Typography>
-                </InputAdornment>
-              ),
-            }}
-            type="number"
-            value={watch('equityMultiple')}
-          />
-        </Box>
-        <Box sx={classes.doubleInputsWrapper}>
+        </Box> */}
+        {/* <Box sx={classes.doubleInputsWrapper}>
           <Controller
             control={control}
             name="investmentStructures"
@@ -249,7 +244,7 @@ const FinancialMetricsForm = ({
             type="number"
             value={watch('holdPeriod')}
           />
-        </Box>
+        </Box> */}
         <Box sx={classes.doubleInputsWrapper}>
           <Controller
             control={control}
