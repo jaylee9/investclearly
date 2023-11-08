@@ -7,7 +7,7 @@ import Input from '@/components/common/Input';
 import CustomSelect, { SelectVariant } from '@/components/common/Select';
 // import { Regulations } from '@/backend/constants/enums/regulations';
 // import { Exemptions } from '@/backend/constants/enums/exemptions';
-import { InvestmentStructures } from '@/backend/constants/enums/investment-structures';
+// import { InvestmentStructures } from '@/backend/constants/enums/investment-structures';
 import { Interests } from '@/backend/constants/enums/interests';
 import Button from '@/components/common/Button';
 import { PartialCreateSponsorInterface } from '@/actions/sponsors';
