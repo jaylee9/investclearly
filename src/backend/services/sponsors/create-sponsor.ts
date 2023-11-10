@@ -8,6 +8,7 @@ import { getSponsorById } from './get-sponsor-by-id';
 import { createLocation } from '../locations/create-location';
 import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 import { CreateSponsorInterface } from './interfaces/create-sponsor.interface';
+import { setNullIfNone } from '../../utils/set-null-if-none';
 
 export const createSponsorRecord = async (
   data: CreateSponsorInterface,
@@ -15,11 +16,9 @@ export const createSponsorRecord = async (
 ) => {
   const connection = await getDatabaseConnection();
   const {
+    aum,
     specialties,
-    investmentStructures,
-    exemptions,
     regions,
-    regulations,
     interests,
     street1,
     street2,
@@ -32,10 +31,7 @@ export const createSponsorRecord = async (
 
   const transformedData = transformObjectKeysToArrays({
     specialties,
-    investmentStructures,
-    exemptions,
     regions,
-    regulations,
     interests,
   });
   let businessAvatar: string = '';
@@ -49,10 +45,13 @@ export const createSponsorRecord = async (
     businessAvatar = fileData.fileName;
   }
 
+  const objectWithNullValues = setNullIfNone({ aum });
+
   const sponsor = connection.manager.create(Sponsor, {
     ...transformedData,
     ...createSponsorData,
     businessAvatar,
+    ...objectWithNullValues,
   }) as unknown as SponsorInterface;
   await connection.manager.save(sponsor);
 

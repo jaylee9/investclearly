@@ -8,6 +8,7 @@ import { deleteFile } from '../files/delete-file';
 import { transformObjectKeysToArrays } from '../../../backend/utils/transform-object-keys-to-arrays';
 import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 import { createOrUpdateLocation } from '../locations/create-or-update-location';
+import { setNullIfNone } from '../../utils/set-null-if-none';
 
 export const updateSponsorRecord = async (
   id: number,
@@ -20,11 +21,9 @@ export const updateSponsorRecord = async (
   });
 
   const {
+    aum,
     specialties,
-    investmentStructures,
-    exemptions,
     regions,
-    regulations,
     interests,
     street1,
     street2,
@@ -37,10 +36,7 @@ export const updateSponsorRecord = async (
 
   const transformedData = transformObjectKeysToArrays({
     specialties,
-    investmentStructures,
-    exemptions,
     regions,
-    regulations,
     interests,
   });
   let businessAvatar = sponsorRecord?.businessAvatar;
@@ -58,10 +54,17 @@ export const updateSponsorRecord = async (
     businessAvatar = fileData.fileName;
   }
 
+  const objectWithNullValues = setNullIfNone({ aum });
+
   await connection.manager.update(
     Sponsor,
     { id },
-    { ...updateSponsorData, ...transformedData, businessAvatar }
+    {
+      ...updateSponsorData,
+      ...transformedData,
+      businessAvatar,
+      ...objectWithNullValues,
+    }
   );
 
   await createOrUpdateLocation(
