@@ -16,12 +16,12 @@ export interface DealInterface {
   minimumInvestment: number;
   cashOnCash: number;
   investmentStructures: string | string[];
-  fees: number;
+  fees: number | null;
   targetRaise: number;
-  equityMultiple: number;
+  equityMultiple: number | null;
   holdPeriod: number;
-  targetIRR: number;
-  actualIRR: number;
+  targetIRR: number | null;
+  actualIRR: number | null;
   preferredReturn: number;
   dealLegalName: string;
   dealSponsor: string;
