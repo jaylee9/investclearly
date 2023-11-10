@@ -10,13 +10,10 @@ import {
 } from 'typeorm';
 import { PolymorphicParent } from 'typeorm-polymorphic';
 import { AssetClasses } from '../constants/enums/asset-classes';
-import { Exemptions } from '../constants/enums/exemptions';
 import { Regions } from '../constants/enums/regions';
 import { User } from './user.entity';
 import { Deal } from './deals.entity';
-import { InvestmentStructures } from '../constants/enums/investment-structures';
 import { Review } from './reviews.entity';
-import { Regulations } from '../constants/enums/regulations';
 import { Interests } from '../constants/enums/interests';
 import { Bookmark } from './bookmark.entity';
 import { Location } from './locations.entity';
@@ -57,18 +54,10 @@ export class Sponsor {
   description: string;
 
   @Column({ type: 'bigint', nullable: true })
-  aum: number;
+  aum: number | null;
 
   @Column({ type: 'enum', array: true, enum: AssetClasses, nullable: true })
   specialties: AssetClasses[] | AssetClasses;
-
-  @Column({
-    type: 'enum',
-    array: true,
-    enum: InvestmentStructures,
-    nullable: true,
-  })
-  investmentStructures: InvestmentStructures[] | InvestmentStructures;
 
   @Column({ type: 'varchar', nullable: true })
   facebookLink: string;
@@ -82,35 +71,17 @@ export class Sponsor {
   @Column({ type: 'varchar', nullable: true })
   instagramLink: string;
 
-  @Column({ type: 'enum', array: true, enum: Exemptions, nullable: true })
-  exemptions: Exemptions[] | Exemptions;
-
   @Column({ type: 'boolean', nullable: false, default: false })
   workForThisCompany: boolean;
 
   @Column({ type: 'enum', array: true, enum: Regions, nullable: true })
   regions: Regions[] | Regions;
 
-  @Column({ type: 'int', nullable: true })
-  cashOnCash: number;
-
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'decimal', nullable: true })
   equityMultiple: number;
 
-  @Column({ type: 'int', nullable: true })
-  holdPeriod: number;
-
-  @Column({ type: 'int', nullable: true })
-  targetIRR: number;
-
-  @Column({ type: 'int', nullable: true })
-  actualIRR: number;
-
-  @Column({ type: 'int', nullable: true })
-  fees: number;
-
-  @Column({ type: 'enum', array: true, enum: Regulations, nullable: true })
-  regulations: Regulations[] | Regulations;
+  @Column({ type: 'decimal', nullable: true })
+  averageIRR: number;
 
   @Column({
     type: 'enum',

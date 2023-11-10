@@ -94,10 +94,7 @@ const SponsorDetailsForm = ({
   const onSubmit = handleSubmit(data => {
     if (isEdit) {
       const formattedPayload = {
-        exemptions: payload.exemptions,
-        regulations: payload.regulations,
         interests: payload.interests,
-        investmentStructures: payload.investmentStructures,
         yearOfFoundation: Number(data.yearOfFoundation),
       };
       onSave({ ...data, ...formattedPayload });
