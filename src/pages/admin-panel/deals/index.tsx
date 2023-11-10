@@ -248,7 +248,9 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
         </Box>
       ) : (
         <Box sx={classes.noDealsContent}>
-          <Typography variant="h4">There are no published Deals yet</Typography>
+          <Typography variant="h4">
+            There are no {activeTab} Deals yet
+          </Typography>
         </Box>
       )}
       <EditDealModal

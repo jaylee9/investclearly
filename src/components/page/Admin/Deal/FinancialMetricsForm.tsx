@@ -11,10 +11,10 @@ import { editDeal } from '@/actions/deals';
 import { useEffect, useState } from 'react';
 
 const financialMetricsValidationSchema = z.object({
-  fees: z.string().min(1, 'Required field'),
-  equityMultiple: z.string().min(1, 'Required field'),
-  targetIRR: z.string().min(1, 'Required field'),
-  actualIRR: z.string().min(1, 'Required field'),
+  fees: z.string().optional(),
+  equityMultiple: z.string().optional(),
+  targetIRR: z.string().optional(),
+  actualIRR: z.string().optional(),
   holdPeriod: z.string().optional(),
   cashOnCash: z.string().optional(),
 });
@@ -38,15 +38,10 @@ const FinancialMetricsForm = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    register,
-    watch,
-    handleSubmit,
-    formState: { isValid },
-    setValue,
-  } = useForm<FinancialMetricsValidationSchema>({
-    resolver: zodResolver(financialMetricsValidationSchema),
-  });
+  const { register, watch, handleSubmit, setValue } =
+    useForm<FinancialMetricsValidationSchema>({
+      resolver: zodResolver(financialMetricsValidationSchema),
+    });
 
   const onSubmit = handleSubmit(async data => {
     setIsLoading(true);
@@ -62,8 +57,8 @@ const FinancialMetricsForm = ({
     });
     if (!('error' in response)) {
       await refetch();
-      setIsLoading(false);
     }
+    setIsLoading(false);
   });
 
   useEffect(() => {
@@ -72,7 +67,7 @@ const FinancialMetricsForm = ({
         const keyOfDeal = key as keyof DealInterface;
         if (keyOfDeal && deal[keyOfDeal] !== undefined) {
           const value = deal[keyOfDeal];
-          if (typeof value === 'number') {
+          if (typeof value === 'number' || typeof value === 'string') {
             setValue(
               key as keyof FinancialMetricsValidationSchema,
               String(value)
@@ -222,7 +217,7 @@ const FinancialMetricsForm = ({
           <Button variant="secondary" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" disabled={isLoading || !isValid}>
+          <Button type="submit" disabled={isLoading}>
             Save
           </Button>
         </Box>
