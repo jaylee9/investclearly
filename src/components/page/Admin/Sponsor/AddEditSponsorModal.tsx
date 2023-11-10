@@ -39,7 +39,7 @@ const AddEditSponsorModal = ({
     isAdded: step === steps['Sponsor Added'],
   });
   const [payload, setPayload] = useState<PartialCreateSponsorInterface>(
-    sponsor || {}
+    { ...sponsor, aum: Number(sponsor?.aum) || undefined } || {}
   );
 
   useEffect(() => {
@@ -54,10 +54,11 @@ const AddEditSponsorModal = ({
           stateOrCountry: location.stateOrCountry,
           stateOrCountryDescription: location.stateOrCountryDescription,
           zipCode: location.zipCode,
+          aum: Number(sponsor.aum) || undefined,
         };
         setPayload(formattedSponsor);
       } else {
-        setPayload(sponsor);
+        setPayload({ ...sponsor, aum: Number(sponsor?.aum) || undefined });
       }
     }
   }, [sponsor]);
@@ -84,7 +85,7 @@ const AddEditSponsorModal = ({
 
       if (!('error' in response)) {
         await refetchSponsors();
-        setPayload(response);
+        setPayload({ ...response, aum: Number(response?.aum) || undefined });
       }
       setIsLoading(false);
     }
