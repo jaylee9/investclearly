@@ -72,7 +72,7 @@ const FinancialMetricsForm = ({
   const onSubmit = handleSubmit(data => {
     const { aum, equityMultiple, actualIRR } = data;
     const formattedValues = {
-      aum: +aum,
+      aum: +aum || 'none',
       equityMultiple: +equityMultiple,
       regions: payload.regions,
       specialties: payload.specialties,
