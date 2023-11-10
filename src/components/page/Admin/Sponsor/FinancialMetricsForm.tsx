@@ -38,7 +38,7 @@ const FinancialMetricsForm = ({
   const validationSchema = z.object({
     aum: isEdit ? z.string() : z.string().min(1, 'Required field'),
     // fees: isEdit ? z.string() : z.string().min(1, 'Required field'),
-    actualIRR: isEdit ? z.string() : z.string().min(1, 'Required field'),
+    averageIRR: isEdit ? z.string() : z.string().min(1, 'Required field'),
     // regulations: z.array(z.string()),
     // exemptions: z.array(z.string()),
     // cashOnCash: isEdit ? z.string() : z.string().min(1, 'Required field'),
@@ -69,13 +69,12 @@ const FinancialMetricsForm = ({
   });
 
   const onSubmit = handleSubmit(data => {
-    const { aum, equityMultiple, actualIRR } = data;
+    const { aum, equityMultiple, averageIRR } = data;
     const formattedValues = {
       aum: +aum || 'none',
       equityMultiple: +equityMultiple,
-      regions: payload.regions,
       specialties: payload.specialties,
-      actualIRR: +actualIRR,
+      averageIRR: +averageIRR,
     };
 
     const formattedPayload = isEdit
@@ -89,7 +88,10 @@ const FinancialMetricsForm = ({
           ...formattedValues,
         };
 
-    onSave(formattedPayload);
+    onSave({
+      ...formattedPayload,
+      aum: formattedPayload.aum as number,
+    });
   });
 
   // const regulationsOptions = Object.values(Regulations).map(item => ({
@@ -262,7 +264,7 @@ const FinancialMetricsForm = ({
             )}
           />
           <Input
-            register={register('actualIRR')}
+            register={register('averageIRR')}
             topLabel="Average IRR"
             InputProps={{
               startAdornment: (
@@ -274,7 +276,7 @@ const FinancialMetricsForm = ({
               ),
             }}
             type="number"
-            value={watch('actualIRR')}
+            value={watch('averageIRR')}
           />
         </Box>
       </Box>
