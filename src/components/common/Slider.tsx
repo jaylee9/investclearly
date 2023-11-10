@@ -45,7 +45,11 @@ const CustomSlider = ({
   }, [props.value]);
 
   const formatNumber = (num: number): string => {
-    return num.toLocaleString();
+    if (num) {
+      return num.toLocaleString();
+    } else {
+      return '';
+    }
   };
 
   return (

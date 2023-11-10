@@ -203,13 +203,15 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
     return <Loading />;
   }
 
+  console.log(dealsResponse);
+
   return (
     <Layout variant={LayoutVariant.Admin}>
       <Typography variant="h3" sx={classes.title}>
         Deals
       </Typography>
       <CustomTabs value={activeTab} onChange={handleChangeTab} tabs={tabs} />
-      {dealsResponse?.deals?.length ? (
+      {!!dealsResponse?.deals?.length || !!data?.deals?.length ? (
         <Box>
           <Box sx={classes.header}>
             <Input
