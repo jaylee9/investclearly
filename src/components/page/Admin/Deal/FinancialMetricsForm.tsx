@@ -51,8 +51,12 @@ const FinancialMetricsForm = ({
   const onSubmit = handleSubmit(async data => {
     setIsLoading(true);
     const numericData = Object.fromEntries(
-      Object.entries(data).map(([key, value]) => [key, parseFloat(value)])
+      Object.entries(data).map(([key, value]) => [
+        key,
+        parseFloat(value) || 'none',
+      ])
     );
+
     const response = await editDeal({
       payload: { ...numericData, id: deal.id },
     });
