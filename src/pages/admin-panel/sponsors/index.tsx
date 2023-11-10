@@ -120,7 +120,7 @@ const SponsorsPage = ({ sponsorsResponse }: AdminSponsorsPageProps) => {
     {
       label: 'Average IRR',
       accessor: data => (
-        <Typography variant="body1">{data.actualIRR || 0}%</Typography>
+        <Typography variant="body1">{data.averageIRR || 0}%</Typography>
       ),
       width: '9%',
       align: 'right',

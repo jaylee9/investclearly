@@ -313,7 +313,7 @@ const DealPage = ({ deal }: DealPageProps) => {
                       <Box>
                         <Typography variant="caption">Cash-on-Cash</Typography>
                         <Typography variant="body1">
-                          {deal.sponsor.cashOnCash}%
+                          {deal.cashOnCash}%
                         </Typography>
                       </Box>
                       <Box>
@@ -331,15 +331,15 @@ const DealPage = ({ deal }: DealPageProps) => {
                           Investment Type
                         </Typography>
                         <Typography variant="body1">
-                          {Array.isArray(deal.sponsor.investmentStructures)
-                            ? deal.sponsor.investmentStructures.join(', ')
-                            : deal.sponsor.investmentStructures}
+                          {Array.isArray(deal.investmentStructures)
+                            ? deal.investmentStructures.join(', ')
+                            : deal.investmentStructures}
                         </Typography>
                       </Box>
                       <Box>
                         <Typography variant="caption">Hold Period</Typography>
                         <Typography variant="body1">
-                          {deal.sponsor.holdPeriod}
+                          {deal.holdPeriod}
                         </Typography>
                       </Box>
                     </Box>
@@ -347,13 +347,13 @@ const DealPage = ({ deal }: DealPageProps) => {
                       <Box>
                         <Typography variant="caption">Target IRR</Typography>
                         <Typography variant="body1">
-                          {deal.sponsor.targetIRR}%
+                          {deal.targetIRR}%
                         </Typography>
                       </Box>
                       <Box>
                         <Typography variant="caption">Actual IRR</Typography>
                         <Typography variant="body1">
-                          {deal.sponsor.actualIRR}%
+                          {deal.actualIRR}%
                         </Typography>
                       </Box>
                     </Box>
