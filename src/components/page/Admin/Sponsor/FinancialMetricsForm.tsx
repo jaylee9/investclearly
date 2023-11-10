@@ -115,7 +115,6 @@ const FinancialMetricsForm = ({
   const handleBack = () => setStep(0);
 
   useEffect(() => {
-    const { investmentStructures } = payload;
     if (payload) {
       for (const key in payload) {
         const value = payload[key as keyof typeof payload];
@@ -125,9 +124,6 @@ const FinancialMetricsForm = ({
             Array.isArray(value) ? value : String(value)
           );
         }
-      }
-      if (investmentStructures?.length) {
-        setValue('investmentStructures', investmentStructures?.[0]);
       }
     }
   }, [payload, setValue]);

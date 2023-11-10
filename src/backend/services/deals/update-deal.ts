@@ -12,6 +12,7 @@ import { UpdateDealInterface } from './interfaces/update-deal.interface';
 import { createOrUpdateLocation } from '../locations/create-or-update-location';
 import { LocationTargetTypesConstants } from '../../constants/location-target-types-constants';
 import { sendMailToUsersWithNewDealsFromBookmarkedSponsors } from './send-mail-to-users-with-new-deal-from-bookmarked-sponsors';
+import { setNullIfNone } from '../../utils/set-null-if-none';
 
 export const update = async (
   id: number,
@@ -21,6 +22,10 @@ export const update = async (
 ) => {
   const connection = await getDatabaseConnection();
   const {
+    fees,
+    equityMultiple,
+    targetIRR,
+    actualIRR,
     attachmentsIdsToDelete,
     investmentStructures,
     regions,
@@ -43,11 +48,13 @@ export const update = async (
     regions,
   });
 
-  let updatedSponsorId: number | null | undefined = sponsorId;
-
-  if (updatedSponsorId?.toString() === 'none') {
-    updatedSponsorId = null;
-  }
+  const objectWithNullValues = setNullIfNone({
+    sponsorId,
+    fees,
+    equityMultiple,
+    targetIRR,
+    actualIRR,
+  });
 
   const dealRecord = await getDealById(id, showOnlyPublishedDeals);
 
@@ -55,7 +62,7 @@ export const update = async (
     Deal,
     { id },
     {
-      sponsorId: updatedSponsorId,
+      ...objectWithNullValues,
       ...updateDealData,
       ...transformedData,
     }

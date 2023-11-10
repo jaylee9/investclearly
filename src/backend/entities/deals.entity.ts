@@ -64,23 +64,23 @@ export class Deal {
   })
   investmentStructures: InvestmentStructures[] | InvestmentStructures;
 
-  @Column({ type: 'int', nullable: true })
-  fees: number;
+  @Column({ type: 'decimal', nullable: true })
+  fees: number | null;
 
   @Column({ type: 'bigint', nullable: true })
   targetRaise: number;
 
-  @Column({ type: 'int', nullable: true })
-  equityMultiple: number;
+  @Column({ type: 'decimal', nullable: true })
+  equityMultiple: number | null;
 
   @Column({ type: 'int', nullable: true })
   holdPeriod: number;
 
-  @Column({ type: 'int', nullable: true })
-  targetIRR: number;
+  @Column({ type: 'decimal', nullable: true })
+  targetIRR: number | null;
 
-  @Column({ type: 'int', nullable: true })
-  actualIRR: number;
+  @Column({ type: 'decimal', nullable: true })
+  actualIRR: number | null;
 
   @Column({ type: 'varchar', nullable: true })
   dealLegalName: string;

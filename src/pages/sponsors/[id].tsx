@@ -526,7 +526,7 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
                   <Box>
                     <Typography variant="caption">Average IRR</Typography>
                     <Typography variant="body1">
-                      {sponsor.actualIRR}%
+                      {sponsor.averageIRR}%
                     </Typography>
                   </Box>
                   <Box>
