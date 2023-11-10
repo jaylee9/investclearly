@@ -130,6 +130,7 @@ export const prepareDealData = async (offering: FormD) => {
     actualIRR: 0,
     preferredReturn: 0,
     dealSponsor: '',
+    sponsorId: null,
     closeDate: offering?.filedAt,
     attachmentsIdsToDelete: [],
     isDealPublished: isDealPublished,
