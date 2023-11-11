@@ -48,7 +48,7 @@ const FinancialMetricsForm = ({
     const numericData = Object.fromEntries(
       Object.entries(data).map(([key, value]) => [
         key,
-        parseFloat(value) || 'none',
+        parseFloat(value) || (key !== 'cashOnCash' ? 'none' : value),
       ])
     );
 

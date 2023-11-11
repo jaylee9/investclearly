@@ -219,6 +219,9 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
     await claimSponsor(data);
   };
 
+  const aum = sponsor.aum ? +sponsor?.aum : 'N/A';
+  const formattedAum = aum === 'N/A' ? aum : `$ ${aum.toLocaleString()}`;
+
   return (
     <Layout {...headerProps}>
       <Fade in={isStickyHeader}>
@@ -531,7 +534,11 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
                   </Box>
                   <Box>
                     <Typography variant="caption">AUM</Typography>
-                    <Typography variant="body1">$ {sponsor.aum}</Typography>
+                    <EllipsisText
+                      variant="body1"
+                      width="100px"
+                      text={formattedAum}
+                    />
                   </Box>
                 </Box>
               </Box>
