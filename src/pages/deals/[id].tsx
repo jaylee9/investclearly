@@ -313,7 +313,7 @@ const DealPage = ({ deal }: DealPageProps) => {
                     <Typography variant="body1">{deal?.targetIRR}%</Typography>
                   </Box>
                   <Box>
-                    <Typography variant="caption">Equity Multiply</Typography>
+                    <Typography variant="caption">Equity Multiple</Typography>
                     <Typography variant="body1">
                       {deal?.equityMultiple}
                     </Typography>
