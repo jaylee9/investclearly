@@ -319,6 +319,20 @@ const DealPage = ({ deal }: DealPageProps) => {
                     </Typography>
                   </Box>
                 </Box>
+                <Box sx={classes.sponsorInfoRow}>
+                  <Box>
+                    <Typography variant="caption">Hold Period</Typography>
+                    <Typography variant="body1">
+                      {deal?.holdPeriod} years
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="caption">Cash-on-Cash</Typography>
+                    <Typography variant="body1">
+                      {deal?.cashOnCash} %
+                    </Typography>
+                  </Box>
+                </Box>
               </Box>
 
               <Box sx={classes.textWithButton}>
