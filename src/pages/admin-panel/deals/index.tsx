@@ -203,8 +203,6 @@ const DealsPage = ({ dealsResponse }: AdminDealsPageProps) => {
     return <Loading />;
   }
 
-  console.log(dealsResponse);
-
   return (
     <Layout variant={LayoutVariant.Admin}>
       <Typography variant="h3" sx={classes.title}>
