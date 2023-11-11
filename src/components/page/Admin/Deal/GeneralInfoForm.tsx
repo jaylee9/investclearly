@@ -171,7 +171,7 @@ const GeneralInfoForm = ({
       'zipCode',
       'stateOrCountryDescription',
     ];
-    if (deal.locations && deal.locations.length > 0) {
+    if (deal?.locations && deal?.locations?.length > 0) {
       const location = deal.locations[0];
 
       locationFields.forEach(field => {
