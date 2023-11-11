@@ -23,6 +23,8 @@ const EditDealModal = ({ onClose, deal, refetch, ...props }: EditDealModal) => {
 
   const [step, setStep] = useState(steps['General Info']);
 
+  const [dealData, setDealData] = useState<DealInterface | null>(null);
+
   const handleClose = (e: MouseEvent | object) => {
     setStep(steps['General Info']);
     if (onClose) {
@@ -58,14 +60,16 @@ const EditDealModal = ({ onClose, deal, refetch, ...props }: EditDealModal) => {
             </Typography>
             {step === steps['General Info'] && (
               <GeneralInfoForm
-                deal={deal}
+                setDeal={setDealData}
+                deal={dealData || deal}
                 refetch={refetch}
                 onClose={handleClose}
               />
             )}
             {step === steps['Financial Metrics'] && (
               <FinancialMetricsForm
-                deal={deal}
+                setDeal={setDealData}
+                deal={dealData || deal}
                 refetch={refetch}
                 onClose={handleClose}
               />

@@ -19,9 +19,10 @@ import CustomTextArea from '@/components/common/TextArea';
 // import CustomDateRangePicker from '@/components/common/DateRangePicker';
 import Button from '@/components/common/Button';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
-import { editDeal } from '@/actions/deals';
+import { PartialEditDealInterface, editDeal } from '@/actions/deals';
 import CustomCheckbox from '@/components/common/CustomCheckbox';
 import { LocationInterface } from '@/backend/services/locations/interfaces/location.interface';
+import { omit } from 'lodash';
 
 const validationSchema = z.object({
   vanityName: z.string().min(1),
@@ -49,9 +50,15 @@ interface GeneralInfoFormProps {
   onClose: (e: MouseEvent | object) => void;
   refetch: () => void;
   deal: DealInterface;
+  setDeal: (value: DealInterface) => void;
 }
 
-const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
+const GeneralInfoForm = ({
+  onClose,
+  refetch,
+  deal,
+  setDeal,
+}: GeneralInfoFormProps) => {
   const classes = useGeneralInfoFormStyles();
 
   const [tagSelectorValue, setTagSelectorValue] = useState('');
@@ -119,20 +126,36 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
     });
   const onSubmit = handleSubmit(async data => {
     setIsUpdateDealLoading(true);
+    const formattedDeal = omit(deal, [
+      'locations',
+      'reviewsCount',
+      'avgTotalRating',
+      'isInInvestments',
+      'isInBookmarks',
+      'sponsor',
+      'fileDate',
+      'preferredReturn',
+    ]);
     const response = await editDeal({
       payload: {
+        ...formattedDeal,
         ...data,
         id: deal.id,
         // holdPeriod: +data.holdPeriod,
         attachmentsIdsToDelete: fileToDelete,
         photoOfTheObjects: choosedFile,
         sponsorId: tag.id || 'none',
-      },
+        fees: deal.fees || 'none',
+        equityMultiple: deal.equityMultiple || 'none',
+        targetIRR: deal.targetIRR || 'none',
+        actualIRR: deal.actualIRR || 'none',
+      } as PartialEditDealInterface & { id: number },
     });
     if (!('error' in response)) {
+      setDeal(response);
       await refetch();
-      setIsUpdateDealLoading(false);
     }
+    setIsUpdateDealLoading(false);
   });
 
   const assetClassOptions = Object.values(AssetClasses).map(item => ({
@@ -148,7 +171,7 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
       'zipCode',
       'stateOrCountryDescription',
     ];
-    if (deal.locations && deal.locations.length > 0) {
+    if (deal?.locations && deal?.locations?.length > 0) {
       const location = deal.locations[0];
 
       locationFields.forEach(field => {

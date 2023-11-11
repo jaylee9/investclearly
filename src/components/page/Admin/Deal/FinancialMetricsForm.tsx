@@ -7,8 +7,10 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@/components/common/Button';
 import { DealInterface } from '@/backend/services/deals/interfaces/deal.interface';
-import { editDeal } from '@/actions/deals';
+import { PartialEditDealInterface, editDeal } from '@/actions/deals';
 import { useEffect, useState } from 'react';
+
+import { omit } from 'lodash';
 
 const financialMetricsValidationSchema = z.object({
   fees: z.string().optional(),
@@ -27,12 +29,14 @@ interface FinancialMetricsFormProps {
   onClose: (e: MouseEvent | object) => void;
   refetch: () => void;
   deal: DealInterface;
+  setDeal: (value: DealInterface) => void;
 }
 
 const FinancialMetricsForm = ({
   onClose,
   refetch,
   deal,
+  setDeal,
 }: FinancialMetricsFormProps) => {
   const classes = useFinancialMetricsFormStyles();
 
@@ -63,11 +67,41 @@ const FinancialMetricsForm = ({
         }
       })
     );
+    const formattedDeal = omit(deal, [
+      'locations',
+      'reviewsCount',
+      'avgTotalRating',
+      'isInInvestments',
+      'isInBookmarks',
+      'sponsor',
+      'fileDate',
+      'preferredReturn',
+    ]);
 
+    const location = deal?.locations?.[0];
+    const payload = location
+      ? ({
+          ...formattedDeal,
+          ...numericData,
+          id: deal.id,
+          street1: location?.street1,
+          street2: location?.street2,
+          city: location?.city,
+          zipCode: location?.zipCode,
+          stateOrCountryDescription: location?.stateOrCountryDescription,
+          sponsorId: deal?.sponsor?.id,
+        } as PartialEditDealInterface & { id: number })
+      : ({
+          ...formattedDeal,
+          ...numericData,
+          id: deal.id,
+          sponsorId: deal?.sponsor?.id,
+        } as PartialEditDealInterface & { id: number });
     const response = await editDeal({
-      payload: { ...numericData, id: deal.id },
+      payload,
     });
     if (!('error' in response)) {
+      setDeal(response);
       await refetch();
     }
     setIsLoading(false);
