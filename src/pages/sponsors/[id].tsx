@@ -220,7 +220,7 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
   };
 
   const aum = sponsor.aum ? +sponsor?.aum : 'N/A';
-  const formattedAum = aum.toLocaleString();
+  const formattedAum = aum === 'N/A' ? aum : `$ ${aum.toLocaleString()}`;
 
   return (
     <Layout {...headerProps}>
@@ -537,7 +537,7 @@ const SponsorPage: FC<SponsorPageProps> = ({ sponsor, reviews, deals }) => {
                     <EllipsisText
                       variant="body1"
                       width="100px"
-                      text={`$ ${formattedAum}`}
+                      text={formattedAum}
                     />
                   </Box>
                 </Box>
