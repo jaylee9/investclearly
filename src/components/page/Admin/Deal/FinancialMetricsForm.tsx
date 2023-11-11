@@ -29,12 +29,14 @@ interface FinancialMetricsFormProps {
   onClose: (e: MouseEvent | object) => void;
   refetch: () => void;
   deal: DealInterface;
+  setDeal: (value: DealInterface) => void;
 }
 
 const FinancialMetricsForm = ({
   onClose,
   refetch,
   deal,
+  setDeal,
 }: FinancialMetricsFormProps) => {
   const classes = useFinancialMetricsFormStyles();
 
@@ -75,7 +77,7 @@ const FinancialMetricsForm = ({
       'fileDate',
       'preferredReturn',
     ]);
-    console.log(deal.sponsor);
+
     const location = deal?.locations?.[0];
     const payload = location
       ? ({
@@ -99,6 +101,7 @@ const FinancialMetricsForm = ({
       payload,
     });
     if (!('error' in response)) {
+      setDeal(response);
       await refetch();
     }
     setIsLoading(false);
