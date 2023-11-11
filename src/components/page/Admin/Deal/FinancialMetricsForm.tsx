@@ -46,10 +46,22 @@ const FinancialMetricsForm = ({
   const onSubmit = handleSubmit(async data => {
     setIsLoading(true);
     const numericData = Object.fromEntries(
-      Object.entries(data).map(([key, value]) => [
-        key,
-        parseFloat(value) || (key !== 'cashOnCash' ? 'none' : value),
-      ])
+      Object.entries(data).map(([key, value]) => {
+        const parsedValue = isNaN(parseFloat(value))
+          ? value
+          : parseFloat(value);
+
+        if (
+          value !== '0' &&
+          !value &&
+          key !== 'cashOnCash' &&
+          key !== 'holdPeriod'
+        ) {
+          return [key, 'none'];
+        } else {
+          return [key, parsedValue];
+        }
+      })
     );
 
     const response = await editDeal({

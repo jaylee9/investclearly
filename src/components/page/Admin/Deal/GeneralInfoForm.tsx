@@ -28,7 +28,7 @@ const validationSchema = z.object({
   assetClass: z.string().min(1),
   description: z.string(),
   // closeDate: z.string().min(1),
-  holdPeriod: z.string().min(1),
+  // holdPeriod: z.string().min(1),
   isDealPublished: z.boolean(),
   street1: z.string().optional(),
   street2: z.string().optional(),
@@ -123,7 +123,7 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
       payload: {
         ...data,
         id: deal.id,
-        holdPeriod: +data.holdPeriod,
+        // holdPeriod: +data.holdPeriod,
         attachmentsIdsToDelete: fileToDelete,
         photoOfTheObjects: choosedFile,
         sponsorId: tag.id || 'none',
@@ -317,14 +317,13 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
           value={watch('description')}
           height="140px"
         />
-        <Box sx={classes.doubleInputsWrapper}>
-          {/* maybe will be added after client answer */}
-          {/* <CustomDateRangePicker
+        {/* <Box sx={classes.doubleInputsWrapper}>
+          <CustomDateRangePicker
             topLabel="Close Date"
             control={control}
             name="closeDate"
             placeholder="mm/dd/yyyy"
-          /> */}
+          />
           <Input
             register={register('holdPeriod')}
             topLabel="Hold Period, years"
@@ -333,7 +332,7 @@ const GeneralInfoForm = ({ onClose, refetch, deal }: GeneralInfoFormProps) => {
             type="number"
             value={watch('holdPeriod')}
           />
-        </Box>
+        </Box> */}
         <Controller
           control={control}
           name="isDealPublished"
