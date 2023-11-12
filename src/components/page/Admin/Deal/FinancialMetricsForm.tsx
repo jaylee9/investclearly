@@ -76,6 +76,7 @@ const FinancialMetricsForm = ({
       'sponsor',
       'fileDate',
       'preferredReturn',
+      'attachments',
     ]);
 
     const location = deal?.locations?.[0];
