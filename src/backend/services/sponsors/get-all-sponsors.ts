@@ -47,6 +47,9 @@ export const getAllSponsors = async (params: FindAllSponsorsInterface) => {
     .leftJoin('sponsors.deals', 'openDeals', 'openDeals.status = :status', {
       status: DealStatuses.active,
     })
+    .andWhere('deals.isDealPublished = :isPublished', {
+      isPublished: true,
+    })
     .leftJoin('sponsors.deals', 'deals')
     .leftJoin('sponsors.reviews', 'reviews', 'reviews.status = :reviewStatus', {
       reviewStatus: ReviewStatuses.published,
