@@ -135,6 +135,7 @@ const GeneralInfoForm = ({
       'sponsor',
       'fileDate',
       'preferredReturn',
+      'attachments',
     ]);
     const response = await editDeal({
       payload: {
