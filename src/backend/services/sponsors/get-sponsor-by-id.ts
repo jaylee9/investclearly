@@ -47,6 +47,9 @@ export const getSponsorById = async (
   const dealsQuery = connection.manager
     .createQueryBuilder(Deal, 'deals')
     .where('deals.sponsorId = :sponsorId', { sponsorId: id })
+    .andWhere('deals.isDealPublished = :isPublished', {
+      isPublished: true,
+    })
     .leftJoinAndMapMany(
       'deals.attachments',
       Attachment,
