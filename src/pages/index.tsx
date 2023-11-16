@@ -58,7 +58,7 @@ const Home: FC<HomeProps> = ({
         <BannerBlock
           title="Investing In a Real Estate Syndication or Fund?
 Share Your Experience With Other Investors"
-          buttonLabel="Write a review"
+          buttonLabel="Leave a review"
           onButtonClick={handleOpenCreateReviewForm}
         />
         <CreateReviewForm
